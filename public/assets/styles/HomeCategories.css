@@ -1,0 +1,11 @@
+.di{
+    padding-left: 28px;
+    padding-right: 28px;
+}
+
+.di::after{
+    border-width: 15px 22px 0 22px;
+    border-color: #02A91f transparent transparent transparent;
+    position: absolute;
+    bottom: -14px;
+}

@@ -1,0 +1,31 @@
+.horizontal-slider {
+    width:100%;
+    margin: auto;
+  }
+  .example-thumb {
+    cursor: pointer;
+    position: absolute;
+    z-index: 100;
+    background: #ffffff;
+    border: 10px solid #373737;
+    border-radius: 100%;
+    display: block;
+  }
+
+  .example-track{
+      border-bottom: 5px solid #7A797B;
+      border-radius: 4px;
+  }
+ 
+  
+  .horizontal-slider .example-track {
+    top: 19px;
+    height: 5px;
+  }
+  .horizontal-slider .example-thumb {
+    top: 12px;
+    width: 10px;
+    outline: none;
+    height: 10px;
+    line-height: 38px;
+  }

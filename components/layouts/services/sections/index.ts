@@ -1,0 +1,6 @@
+export {default as AppleRepairsMainSection} from "./AppleRepairsMainSection"
+export {default as ComputerRepairMainSection} from "./ComputerRepairMainSection"
+export {default as Contact} from "./Contact"
+export {default as ItSoulutonMainSecion} from "./ItSoulutonMainSecion"
+export {default as ServicesMainsection} from "./Mainsection"
+export {default as TabletMobileRepairMAinSection} from "./TabletMobileRepairMAinSection"

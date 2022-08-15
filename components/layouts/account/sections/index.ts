@@ -1,0 +1,6 @@
+export {default as AddressBook} from "./AddressBook"
+export {default as AccountMainSection} from "./MainSection"
+export {default as MyAccountOptions} from "./MyAccountOptions"
+export {default as MyProfile} from "./MyProfile"
+export {default as PaymentMethod} from "./PaymentMethod"
+export * from "./modals"

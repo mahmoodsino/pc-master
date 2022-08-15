@@ -1,0 +1,15 @@
+.downn{
+    opacity: 0;
+    animation: n11;
+    animation-duration: 0.4s;
+    animation-fill-mode: forwards;
+    height: 56px;
+}
+
+@keyframes n11{
+    0%{opacity: 0;
+    height: 0;}
+    100%{opacity: 1;
+    height: 56px;}
+}
+

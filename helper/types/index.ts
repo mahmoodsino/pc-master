@@ -1,0 +1,6 @@
+export type {default as homePage} from "./homePage"
+export type {default as ProductsType} from "./ProductsType"
+export type {default as DetailsType} from "./DetailsType"
+export type {default as ContactType} from "./ContactType"
+export type {default as ModifiersGroupType} from "./ModifiersGroupType"
+export type {default as ModifiersType} from "./ModifiersType"

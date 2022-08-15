@@ -1,0 +1,482 @@
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
+import { v4 as uuidv4 } from "uuid";
+import {
+  CartItemsAtom,
+  CouninueAsGuestModalAtom,
+  deleteWishList,
+  DetailsAtom,
+  DetailsType,
+  getDetails,
+  getWishList,
+  items,
+  NewCartAtom,
+  OpenAddToWishListAtom,
+  TokenAtom,
+  Variation,
+  VariationAtom,
+  WishListAtom,
+} from "../../../../helper";
+import { BaseButton } from "../../../buttons";
+import { BlusIcon, HeartIcon, MinusIcon, RedHeartIcon } from "../../../icons";
+import { AddToWishList } from "../../wishlist";
+import ContinueAsGuest from "./ContinueAsGuest";
+import useProtectPurchaseCard, { modifiersIdAtom } from "./ProtectPurchaseCard";
+
+const DetailsCard = () => {
+  const [detailsState, setDetailState] = useRecoilState(DetailsAtom);
+  const [token, setToken] = useRecoilState(TokenAtom);
+  const [variationState, setVariationState] = useRecoilState(VariationAtom);
+  const [openAddToWishList, setOpenAddToWishList] = useRecoilState(
+    OpenAddToWishListAtom
+  );
+  const [wishList, setWishList] = useRecoilState(WishListAtom);
+  const [ContinueAsGuestModal, setContinueAsGuestModal] = useRecoilState(
+    CouninueAsGuestModalAtom
+  );
+  const [names, setNames] = useState<any>({});
+  const [isChange, setIsChange] = useState<boolean>(true);
+  const [selectedAttributes, setSelectedAttributes] = useState<number[]>([]);
+  const [attributeValueNumbers, setAttributeValueNumber] = useState<any>();
+  const [boolAttributeValue, setBoolAttributeValue] = useState<{
+    [key: number]: boolean;
+  }>({});
+  const [newArrayOFArray, setNewArrayOFArry] = useState<any>();
+  const [attributeToSetVAriation, setAttributesToSetVAriation] = useState<{}[]>(
+    []
+  );
+  const { modifiersId } = useProtectPurchaseCard();
+  const [newCart, setNewCart] = useRecoilState(NewCartAtom);
+  
+
+  const handleAddToCart = async (clickedItem: DetailsType) => {
+    setNewCart((prev) => {
+      const isItemInCarts = prev.find((item) =>
+       
+        modifiersId === 0
+          ? item.product_id === clickedItem.product.id &&
+            item.variation_id === variationState.id
+          : item.product_id === clickedItem.product.id &&
+            item.variation_id === variationState.id &&
+            item.modifierGroups?.find(
+              (modifier) => modifier === modifiersId
+            ) !== undefined
+      );
+      if (isItemInCarts) {
+        return prev.map((item) =>
+          modifiersId === 0
+            ? item.product_id === clickedItem.product.id &&
+              item.variation_id === variationState.id
+              ? { ...item, quantity: item.quantity + 1 }
+              : item
+            : item.product_id === clickedItem.product.id &&
+              item.variation_id === variationState.id &&
+              item.modifierGroups?.find(
+                (modifier) => modifier === modifiersId
+              ) !== undefined
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
+      }
+      return [
+        ...prev,
+        {
+          ...clickedItem,
+          type: 1,
+          quantity: 1,
+          product_id: clickedItem.product.id,
+          branch_id: 1,
+          description: "",
+          modifierGroups: modifiersId !== 0 ? [modifiersId] : [],
+          variation_id: variationState.id,
+        },
+      ];
+    });
+  };
+
+  const handleRemoveFromCart = async (id: number, reomve?: string) => {
+    setNewCart((prev) =>
+      prev.reduce((ack, item) => {
+        if (item.id === id) {
+          if (item.quantity === 1) return ack;
+          if (reomve) return ack;
+          return [...ack, { ...item, quantity: item.quantity - 1 }];
+        } else {
+          return [...ack, item];
+        }
+      }, [] as items[])
+    );
+    };
+
+  useEffect(() => {
+    const newNames = names;
+    for (let i = 0; i < detailsState.variations.length; i++) {
+      const attributes = detailsState?.variations[i]?.attributes;
+      if (attributes)
+        for (let j = 0; j < attributes.length; j++) {
+          const attribute = attributes[j];
+          const Parent_id: number = attribute.id;
+
+          let attribute_value = {
+            id: attribute.attribute_values.id,
+            name: attribute.attribute_values.name,
+            parent_id: Parent_id,
+          };
+          if (newNames[`${attribute.name}`]) {
+            newNames[`${attribute.name}`].map((item: any) => {
+              if (item.name !== attribute.attribute_values.name) {
+                newNames[`${attribute.name}`].push(attribute_value);
+              }
+            });
+          } else {
+            newNames[`${attribute.name}`] = [attribute_value];
+          }
+        }
+    }
+
+    setNames(newNames);
+
+    setIsChange(false);
+  }, [detailsState]);
+
+  useEffect(() => {
+    setNewCart([]);
+    let attributValueID: number[] = [];
+    let attributeValueNumber: any = [];
+    detailsState.variations.map((variation) => {
+      if (variation.attributes && variation.attributes?.length > 0) {
+        variation.attributes?.map((attribut) => {
+          attributValueID.push(attribut.attribute_values.id);
+          setBoolAttributeValue((prev) => ({
+            ...prev,
+            [attribut.attribute_values.id]: false,
+          }));
+        });
+
+        attributeValueNumber.push(attributValueID);
+        attributValueID = [];
+      }
+      if (variation.is_default) {
+        setVariationState(variation);
+      }
+    });
+    setAttributeValueNumber(attributeValueNumber);
+  }, [detailsState]);
+
+  useEffect(() => {
+    setSelectedAttributes([]);
+    variationState.attributes?.map((attribute) => {
+      setSelectedAttributes((prev) => [...prev, attribute.attribute_values.id]);
+    });
+  }, [variationState]);
+
+  useEffect(() => {
+    let arrayOfArrays: any = [];
+    let errorCount: number = 0;
+
+    if (
+      attributeValueNumbers &&
+      attributeValueNumbers.length > 0 &&
+      selectedAttributes &&
+      selectedAttributes.length > 0
+    ) {
+      for (let i = 0; i < attributeValueNumbers.length; i++) {
+        errorCount = 0;
+        const attribute = [...attributeValueNumbers[i]];
+
+        for (let j = 0; j < attribute.length; j++) {
+          const selectedAttribute = selectedAttributes[j];
+          const valueAttribute = attribute[j];
+          if (selectedAttribute !== valueAttribute) {
+            errorCount++;
+          }
+        }
+        //most be ===1
+        if (errorCount === 1) {
+          arrayOfArrays.push(attribute);
+        }
+      }
+    }
+    setNewArrayOFArry(arrayOfArrays);
+  }, [
+    selectedAttributes,
+    attributeValueNumbers,
+    variationState,
+    attributeToSetVAriation,
+  ]);
+
+  useEffect(() => {
+    detailsState.variations.map((variation) => {
+      if (variation.attributes && variation.attributes?.length > 0) {
+        variation.attributes?.map((attribut) => {
+          setBoolAttributeValue((prev) => ({
+            ...prev,
+            [attribut.attribute_values.id]: false,
+          }));
+        });
+      }
+    });
+    Object.keys(boolAttributeValue).map((key) => {
+      newArrayOFArray.map((array: number[]) => {
+        array.map((attributeValue) => {
+          if (attributeValue === +key) {
+            setBoolAttributeValue((prev) => ({ ...prev, [key]: true }));
+          }
+        });
+      });
+    });
+  }, [newArrayOFArray, variationState, attributeToSetVAriation]);
+
+  const handelAttribute = (value: { id: number; parent_id: number }) => {
+    let num: { id: number; parent: number }[] = [{ id: -1, parent: -1 }];
+
+    num = [{ id: value.id, parent: value.parent_id }];
+
+    setAttributesToSetVAriation(num);
+  };
+  useEffect(() => {
+    detailsState.variations.map((variation) => {
+      if (attributeToSetVAriation.length > 0) {
+        attributeToSetVAriation.map((item: any) => {
+          variation.attributes?.map((attribute) => {
+            if (
+              attribute.id === item.parent &&
+              attribute.attribute_values.id === item.id
+            ) {
+              setVariationState(variation);
+            } else {
+            }
+          });
+        });
+      } else {
+      }
+    });
+  }, [attributeToSetVAriation]);
+
+  const EditCArt = (id: number) => {
+    let indexcart: number;
+    indexcart = newCart.findIndex((item) =>
+      //  item.variation_id === id
+      {
+        if (modifiersId === 0) {
+          return item.variation_id === id;
+        } else if (modifiersId !== 0) {
+          return (
+            item.variation_id === id &&
+            item.modifierGroups?.find((mid) => mid === modifiersId) !==
+              undefined
+          );
+        }
+      }
+    );
+    if (indexcart >= 0) {
+      return (
+        <div>
+          <div className="flex bg-green-950 rounded-full space-x-7 px-4 py-1">
+            <BaseButton
+              // @ts-ignore
+              onClick={() => handleRemoveFromCart(newCart[indexcart].id)}
+              className="text-2xl"
+            >
+              <MinusIcon className="w-3.5 text-white" />
+            </BaseButton>
+            <h1 className="text-white">{newCart[indexcart].quantity}</h1>
+            <BaseButton
+              disabled={
+                newCart[indexcart].quantity ===
+                variationState.available_quantity
+                  ? true
+                  : false
+              }
+              onClick={() => handleAddToCart(detailsState)}
+              className="disabled:cursor-not-allowed"
+            >
+              <BlusIcon className="text-white w-4" />
+            </BaseButton>
+          </div>
+        </div>
+      );
+    }
+  };
+  //for button
+  const getbg = (id: number) => {
+    let isfound = false;
+    Object.keys(boolAttributeValue).forEach((key) => {
+      const val = boolAttributeValue[+key];
+      if (+key === id) {
+        isfound = val;
+      }
+    });
+    return isfound;
+  };
+
+  const handelHeart = (id: number) => {
+    let isFound = false;
+    for (let item of wishList) {
+      if (wishList.length === 0) return isFound;
+      else if (item.variation?.id === id) {
+        return (isFound = true);
+      }
+    }
+    return isFound;
+  };
+
+  const handelCart = (id: number) => {
+    let isFound = false;
+    for (let item of newCart) {
+      if (newCart.length === 0) return isFound;
+      else if (modifiersId === 0) {
+        if (item.variation_id === id) {
+          return (isFound = true);
+        }
+      } else if (modifiersId !== 0) {
+        if (
+          item.variation_id === id &&
+          item.modifierGroups.find((item) => item === modifiersId) !== undefined
+        ) {
+          return (isFound = true);
+        }
+      }
+    }
+    return isFound;
+  };
+
+  const removeFromWishList = async (Variat: Variation) => {
+    const index = wishList.findIndex(
+      (item) => item.variation?.id === Variat.id
+    );
+    if (index >= 0) {
+      const id = wishList[index].id;
+      if (id) {
+        const res = await deleteWishList(token, id);
+      }
+    }
+    const response = await getWishList(token);
+    setWishList(response.result.items);
+  };
+
+  return (
+    <div className="shadow-[0_0_10px_rgba(0,0,0,0.25)] pb-14  tracking-[0.11em]">
+      <div className="mx-5 space-y-4 border-b pt-2 pb-10">
+        <span className="underline text-sm text-[#7A7A7A]">
+          {detailsState.product.name}
+        </span>
+        <h1 className="text-lg font-medium ">
+          {detailsState.product.description}
+        </h1>
+        <h1 className="text-[22px] font-semibold">
+          Price : {variationState.price}$
+        </h1>
+        {variationState.id > 0 && (
+          <div className="flex justify-between items-center">
+            {newCart.length === 0 ? (
+              <BaseButton
+                disabled={variationState.available_quantity < 1 ? true : false}
+                onClick={() =>
+                  token.length > 1
+                    ? handleAddToCart(detailsState)
+                    : setContinueAsGuestModal(true)
+                }
+                title="Add To Cart"
+                className={`text-white bg-green-950 tracking-[0.095em] px-3 py-1 rounded-full disabled:cursor-not-allowed disabled:bg-gray-500`}
+              />
+            ) : (
+              <div>
+                {handelCart(variationState.id) ? (
+                  <div>{EditCArt(variationState.id)}</div>
+                ) : (
+                  <BaseButton
+                    disabled={
+                      variationState.available_quantity < 1 ? true : false
+                    }
+                    onClick={() =>
+                      token.length > 1
+                        ? handleAddToCart(detailsState)
+                        : setContinueAsGuestModal(true)
+                    }
+                    title="Add To Cart"
+                    className={`text-white bg-green-950 tracking-[0.095em] px-3 py-1 rounded-full disabled:cursor-not-allowed disabled:bg-gray-500`}
+                  />
+                )}
+              </div>
+            )}
+            {variationState.available_quantity < 1 && (
+              <h1 className="text-red-950 text-xs ">
+                this product is not available now !!
+              </h1>
+            )}
+
+            <div>
+              {wishList.length === 0 ? (
+                <HeartIcon
+                  onClick={() =>
+                    token.length > 1
+                      ? setOpenAddToWishList(true)
+                      : setContinueAsGuestModal(true)
+                  }
+                  className="w-10 cursor-pointer"
+                />
+              ) : (
+                <div>
+                  {variationState.id && handelHeart(variationState.id) ? (
+                    <RedHeartIcon
+                      onClick={() =>
+                        variationState && removeFromWishList(variationState)
+                      }
+                      className="w-10 cursor-pointer"
+                    />
+                  ) : (
+                    <HeartIcon
+                      onClick={() => setOpenAddToWishList(true)}
+                      className="w-10 cursor-pointer"
+                    />
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+      <div className="ml-4">
+        {Object.keys(names).map((key) => {
+          const values = names[key];
+          return (
+            <div key={uuidv4()}>
+              <div>
+                <h1 className="font-bold mt-5">{key}</h1>
+                <div className="flex space-x-3">
+                  {values.map((value: any) => {
+                    return (
+                      <BaseButton
+                        key={uuidv4()}
+                        onClick={() => handelAttribute(value)}
+                        className={`
+                        ${
+                          selectedAttributes.findIndex(
+                            (item: number) => item === value.id
+                          ) > -1
+                            ? "border-black"
+                            : "null"
+                        } 
+                        ${getbg(value.id) ? "text-blue-500" : "text-red-500"}
+                        } px-3 py-3 mt-2 rounded-md cursor-pointer  border-2 hover:border-black`}
+                      >
+                        {value.name}
+                      </BaseButton>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <AddToWishList />
+      <ContinueAsGuest  />
+    </div>
+  );
+};
+
+export default DetailsCard;
