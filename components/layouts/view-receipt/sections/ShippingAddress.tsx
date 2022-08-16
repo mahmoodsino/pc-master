@@ -16,13 +16,13 @@ const ShippingAddress = () => {
             <div className="w-[100%] flex md:flex-row sm:flex-col ">
               <h1 className="w-[60%] text-gray-1100 inline-block">address</h1>
               <span className="text-gray-950">
-                {orderDetails.address.address}
+                 {orderDetails.address&& orderDetails.address.address}
               </span>
             </div>
             <div className="w-[100%] flex md:flex-row sm:flex-col ">
               <h1 className="w-[60%] text-gray-1100 inline-block">city name</h1>
               <span className="text-gray-950">
-                {orderDetails.address.city_name}
+                {orderDetails.address && orderDetails.address.city_name}
               </span>
             </div>
           </div>
@@ -30,13 +30,13 @@ const ShippingAddress = () => {
             <div className="md:ml-10 flex md:flex-row sm:flex-col">
               <h1 className="w-[30%] text-gray-1100 inline-block">building </h1>
               <span className="text-gray-950">
-                {orderDetails.address.build_number}
+                {orderDetails.address && orderDetails.address.build_number}
               </span>
             </div>
             <div className="md:ml-10 flex md:flex-row sm:flex-col">
               <h1 className="w-[30%] text-gray-1100  inline-block">zipcode</h1>
               <span className="text-gray-950">
-                {orderDetails.address.post_code}
+                {orderDetails.address && orderDetails.address.post_code}
               </span>
             </div>
           </div>

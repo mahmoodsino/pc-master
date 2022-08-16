@@ -1,7 +1,7 @@
 import {BaseButton} from '../../../buttons';
 import { v4 as uuidv4 } from 'uuid';
 import { useRecoilState } from 'recoil';
-import { OrderAtom} from '../../../../helper';
+import { getOrderCratedOrder, OrderAtom, TokenAtom} from '../../../../helper';
 import { useRouter } from 'next/router';
 
 
@@ -9,10 +9,12 @@ import { useRouter } from 'next/router';
 
 const Orders = () => {
     const [orderState, setOrderState] = useRecoilState(OrderAtom)
+    const [token, setToken] = useRecoilState(TokenAtom);
 
   const {push}=useRouter()
 
-    const getOrdreDetails = (id:number) => {
+    const getOrdreDetails = async (id:number) => {
+
       push({
         pathname: "/viewreceipt",
         query: { order: encodeURI(id.toString()) },

@@ -30,6 +30,7 @@ const MainSection = () => {
       setLoading(true);
       if (router.order) {
         const res = await getOrderCratedOrder(token, +router.order);
+        
         setOrderDetails(res.data);
         if (res) {
           setLoading(false);
