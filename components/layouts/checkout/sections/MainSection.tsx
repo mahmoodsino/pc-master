@@ -4,13 +4,10 @@ import { getClientToken } from '../../../../helper'
 import Searchbar from '../../../header/Searchbar'
 import CartSummary from './CartSummary'
 import CheckoutDetails from './CheckoutDetails'
-import { clientTokenAtom, PaymentForm } from './PaypalH'
 import { openSelectAddressModal } from './SelectAddAddress'
-import App from './submite'
 
 const MainSection = () => {
   const [openAddress,setOpenAddress]=useRecoilState(openSelectAddressModal)
-  const [clientToken,setClientToken]=useRecoilState(clientTokenAtom)
 
 // useEffect(() => {
 //   const getData = async () => {

@@ -7,17 +7,12 @@ import { checkoutSchema } from "../../../../helper/validation";
 import { useRecoilState } from "recoil";
 import {
   PayPalScriptProvider,
-  PayPalButtons,
-  FUNDING,
 } from '@paypal/react-paypal-js'
 import {
   AddresToDeleteIdAtom,
   getClientToken,
-  getOrderCratedOrder,
   getOrderID,
   getPaymentProvidor,
-  OpenAddNewAddressModalAtom,
-  optionTypeCountry,
   OrderDetailsAtom,
   registerCountryAtom,
   TokenAtom,
@@ -25,12 +20,10 @@ import {
 import { useEffect, useState } from "react";
 import { PayPalButton } from "react-paypal-button-v2";
 import { Spinner } from "../../../spinner";
-import axios from "axios";
-import details from "../../../../pages/details";
 import { useRouter } from "next/router";
 import SelectAddAddress, { openSelectAddressModal } from "./SelectAddAddress";
 import { BaseButton } from "../../../buttons";
-import { PaymentForm } from "./PaypalH";
+
 
 interface IFormInputs {
   firstName: string;
