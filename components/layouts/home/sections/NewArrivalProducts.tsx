@@ -40,7 +40,7 @@ const NewArrivalProducts = () => {
           setItem={setItem}
         />
       </div>
-      <div className="grid sm:grid-cols-2 lg:grid-cols-5 md:grid-cols-3 my-5  lg:mx-10 xl:mx-10 mb-10">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-5 md:grid-cols-3 my-5   xl:mx-4 mb-10">
         {newArrivalProducts?.map((item) => {
           return (
             <BaseCard

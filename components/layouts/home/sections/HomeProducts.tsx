@@ -4,7 +4,6 @@ import GREATDEALS from "./GREATDEALS";
 import NewArrivalProducts from "./NewArrivalProducts";
 
 
-export const categories = ["laptops", "Desktops", "phonse", "Monitors", "Accseeories"];
 const Products = () => {
   return (
     <div>

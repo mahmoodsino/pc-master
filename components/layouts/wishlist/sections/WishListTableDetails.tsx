@@ -62,7 +62,7 @@ const WishListTableDetails = ({handelincreaseWishList,handelDecreaseWishList,mov
                       <Image src={no_image} />
                       }
                       </div>
-                      <span className="">{item.variation.name}</span>
+                      <span className="">{item.title}</span>
                     </div>
                   </td>
                   <td className="p-2 pr-20 text-left w-[10%]">

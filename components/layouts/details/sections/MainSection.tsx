@@ -71,14 +71,16 @@ useEffect(() => {
     <div>
       {loading ? (
         <div>
-          <div className="flex flex-row justify-around mt-10 ">
+          <div className="flex flex-row justify-center lg:left-0 lg:right-0 lg:mx-auto ">
             <HomeCategories />
-
-            <div className="flex flex-col  lg:w-[73%] md:mr-4 ">
+            <div className="flex flex-col  lg:w-[79.5%] md:mr-4 ">
               <Searchbar />
               <div className="mt-7 grid md:grid-cols-2 sm:grid-cols-1 sm:space-y-32 md:space-y-0">
-                <div className="col-span-1">
+                <div className="col-span-1 grid grid-rows-2">
                   <DetailsProductPhoto />
+                  <div>
+                    some data
+                  </div>
                 </div>
                 <div className="col-span-1 ">
                   <DetailsCard />
@@ -90,7 +92,7 @@ useEffect(() => {
 
           <div className="tracking-[0.11em] my-10 sm:mx-5 md:px-12">
             <div className="text-lg font-bold border-b-2 pb-8">
-              <h1>About this item:</h1>
+              <span>About this item:</span>
             </div>
             <div className="mt-10 border-b-2 pb-10">
               <h1 className="text-xl mb-10">Product details</h1>

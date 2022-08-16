@@ -23,7 +23,7 @@ const Hero = () => {
       <div>
           <div className="flex flex-row justify-center lg:left-0 lg:right-0 lg:mx-auto   ">
             <HomeCategories />
-            <div className="flex flex-col sm:w-[100%] lg:w-[73%] mr-4 ">
+            <div className="flex flex-col sm:w-[100%] lg:w-[79.5%] mr-4 ">
               <Searchbar />
 
               <div className="">
@@ -34,7 +34,7 @@ const Hero = () => {
 
       </div>
 
-      <div className="w-[92%] sm:hidden lg:flex h-fit border-t border-b mt-16  mb-5 px-10 ml-16  flex-row justify-between  relative ">
+      <div className="w-[97.5%] sm:hidden lg:flex h-fit border-t border-b mt-16  mb-5 px-10 ml-5  flex-row justify-between  relative ">
         <div className=" border-l h-[135%] absolute -top-2.5 left-2  "></div>
         <HomeHelp
           image={FreeDeleveryTruck}
@@ -50,9 +50,9 @@ const Hero = () => {
         <HomeHelp image={BestIcon} title="only best" desc="Brands" />
         <div className=" border-r absolute -top-2.5 h-[140%]  right-2 "></div>
       </div>
-      <div className=" lg:flex sm:hidden flex-row justify-between mt-14">
+      <div className=" lg:flex sm:hidden flex-row  mt-14">
         <div
-          className=" w-[50%] h-fit  flex flex-row justify-between py-5 px-8 bg-cover text-white tracking-[0.055em]"
+          className=" w-[49%] ml-4 h-fit  flex flex-row justify-between py-5 px-8 bg-cover text-white tracking-[0.055em]"
           style={{
             backgroundImage: `url(/assets/image/bgHero1.PNG)`,
           }}
@@ -77,7 +77,7 @@ const Hero = () => {
         </div>
 
         <div
-          className=" w-[50%] h-fit  flex flex-row justify-between px-1 py-5 bg-cover text-white tracking-[0.055em]"
+          className=" w-[49%] h-fit  flex flex-row justify-between px-1 py-5 bg-cover text-white tracking-[0.055em]"
           style={{
             backgroundImage: `url(/assets/image/bgHero2.PNG)`
           }}

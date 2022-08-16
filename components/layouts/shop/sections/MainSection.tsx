@@ -20,6 +20,7 @@ import { Spinner } from "../../../spinner";
 import useBrands from "./Brands";
 import useRating from "./Rating";
 import useAttributes from "./Attributes";
+import { AddToWishList } from "../../wishlist";
 
 const MainSection = () => {
   const [showFillterProducts, setShowFillterProducts] =
@@ -148,6 +149,8 @@ const MainSection = () => {
           <Spinner className="w-40 fill-green-950" />
         </div>
       )}
+      <AddToWishList />
+
     </div>
   );
 };

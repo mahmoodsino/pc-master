@@ -11,8 +11,10 @@ import {
   DetailsAtom,
   getWishList,
   ModifiersGroupAtom,
+  OpenAddToWishListAtom,
   TokenAtom,
   Variation,
+  VariationAtom,
   WishListAtom,
 } from "../../helper";
 import { useRouter } from "next/router";
@@ -45,6 +47,11 @@ const BaseCard = ({
   const [ContinueAsGuestModal, setContinueAsGuestModal] = useRecoilState(
     CouninueAsGuestModalAtom
   );
+  const [openAddToWishList, setOpenAddToWishList] = useRecoilState(
+    OpenAddToWishListAtom
+  );
+  const [variationState, setVariationState] = useRecoilState(VariationAtom);
+
 
   const push = useRouter().push;
 
@@ -108,7 +115,7 @@ const BaseCard = ({
     <div
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      className="border mb-3 border-gray-1500 md:w-[98%] sm:w-[100%] md:h-[95%] py-2  hover:border-green-950 hover:shadow-md md:ml-3 md:px-7 sm:px-4"
+      className="border mb-3 border-gray-1500 md:w-[98%] sm:w-[100%] md:h-[95%] py-2  hover:border-green-950 hover:shadow-md  md:px-7 sm:px-4"
     >
       <div>
         <div

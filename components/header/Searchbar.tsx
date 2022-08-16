@@ -59,7 +59,7 @@ const Searchbar = () => {
 
             <BaseButton
               onClick={ () => handelSearch(searchState)}
-              className="absolute right-[41.5%]  top-0 mt-3 mr-4"
+              className="absolute right-[41.5%]  top-0 mt-2.5 mr px-0.5 py-0.5"
             >
               {searchForInputIcon}
             </BaseButton>
