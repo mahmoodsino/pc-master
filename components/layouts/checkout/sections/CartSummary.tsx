@@ -19,7 +19,7 @@ const CartSummary = () => {
           <div key={item.id} className="md:px-10 sm:px-5">
             <div className="flex flex-row justify-between sm:text-sm md:text-base my-5 mb-2">
               <span className=" tracking-[0.11em] font-semibold">
-                1x {item.product?.name}
+                {item.quantity}x {item.product?.name}
               </span>
               <span>${item.variation?.price}</span>
             </div>

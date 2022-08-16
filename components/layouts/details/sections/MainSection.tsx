@@ -40,6 +40,8 @@ useEffect(() => {
     return cart.map(async (item) => {
       if(item.product){        
         const res = await addToCart(token,1,item.product?.id,item.variation_id,1,1,item.modifierGroups,item.quantity,"item")
+        console.log(res);
+        
       }
     })
   }

@@ -4,17 +4,13 @@ import { MinusIcon } from "../../../icons";
 import Image from "next/image";
 import { useRecoilState } from "recoil";
 import {
-  CartItemsAtom,
   deleteCart,
   FetchedCartItemsAtom,
   FetchedItems,
-  items,
   TokenAtom,
   updateCart,
 } from "../../../../helper";
 import { v4 as uuidv4 } from "uuid";
-import modifierGroups from "../../../../helper/interfaces/cartItems/modifierGroups";
-
 import no_image from "../../../../public/assets/image/no_image.jpg";
 
 const CartItems = () => {
@@ -62,6 +58,7 @@ const CartItems = () => {
         if (item.id === id) {
           if (item.quantity === 1) return ack;
           if (reomve) return ack;
+          if(item.available_quantity && item.quantity>item.available_quantity) return [...ack, { ...item, quantity: item.available_quantity-1 }]
           return [...ack, { ...item, quantity: item.quantity - 1 }];
         } else {
           return [...ack, item];
@@ -71,10 +68,16 @@ const CartItems = () => {
 
     const isItemInCarts = carts.findIndex((item) => item.id === id);
     let itemQuantity = carts[isItemInCarts].quantity;
+    let availableQuantity = carts[isItemInCarts].available_quantity
+
+    if(availableQuantity&& itemQuantity>availableQuantity){
+      itemQuantity=availableQuantity
+      const res = await updateCart(token,id,itemQuantity,"item")
+    }
 
     if (itemQuantity > 1 && !reomve) {
       itemQuantity--;
-      const res = await updateCart(token, id, itemQuantity, "");
+      const res = await updateCart(token, id, itemQuantity,"item");
     } else if (itemQuantity === 1 || reomve) {
       const res = await deleteCart(token, id);
     }
@@ -90,11 +93,11 @@ const CartItems = () => {
                 Pickup or delivery from store, within 3 working days
               </h1>
               <div className="md:px-5">
-                <div className="flex flex-row">
+                <div className="flex flex-row ">
                   <div className="w-40 ">
                     {item.variation?.images !== undefined &&
                     item.variation.images.length > 0 ? (
-                      <Image src={item.variation.images[0]} alt="" />
+                      <Image className="" src={item.variation.images[0]} alt="" />
                     ) : (
                       <Image src={no_image} />
                     )}
@@ -118,13 +121,13 @@ const CartItems = () => {
                   {item.modifierGroups.map((it) => {
                     return (
                       <h1 key={it.id} className="md:w-[60%] sm:w-[90%]">
-                        {it.name} with price of{" "}
+                        {it.name} with price of
                         <span className="font-semibold">${it.total_price}</span>
                       </h1>
                     );
                   })}
                 </div>
-                <div className="flex sm:justify-around md:justify-end sm:space-x-2 md:space-x-14 py-6">
+                <div className={`flex sm:justify-around md:justify-end sm:space-x-2 md:space-x-14 py-6 ${item.available_quantity&& item.quantity> item.available_quantity ? "bg-red-700" : "bg-white"}`} >
                   <BaseButton
                     onClick={() =>
                       item.id && handleRemoveFromCart(item.id, "remove")

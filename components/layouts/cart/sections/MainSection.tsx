@@ -20,11 +20,9 @@ const MainSection = () => {
 
   useEffect(() => {
     setNewCart([])
-
     const getData = async () => {
       const res = await getCartItems(token);
       setAllCartsInfo(res.result)
-     
     };
     if(token.length>1) {
       getData();
@@ -32,7 +30,6 @@ const MainSection = () => {
   }, [carts]);
 
   useEffect(() => {
-    
     setLoading(true)
     const getData = async () => {
       const res = await getCartItems(token);

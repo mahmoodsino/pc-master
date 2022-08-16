@@ -401,11 +401,11 @@ const DetailsCard = () => {
                 )}
               </div>
             )}
-            {variationState.available_quantity < 1 && (
+            {variationState.available_quantity < 1 ? (
               <h1 className="text-red-950 text-xs ">
                 this product is not available now !!
               </h1>
-            )}
+            ) : null}
 
             <div>
               {wishList.length === 0 ? (

@@ -1,15 +1,33 @@
 import { useRouter } from 'next/router' 
 import React, { useEffect } from 'react'
 import { useRecoilState, useSetRecoilState } from 'recoil'
-import { AllCartsInfo} from '../../../../helper'
+import { AllCartsInfo, FetchedCartItemsAtom} from '../../../../helper'
 import {BaseButton} from '../../../buttons'
 
 const CartSummary = () => {
 
   const [allCartsInfo,setAllCartsInfo]=useRecoilState(AllCartsInfo)
+  const [carts, setCarts] = useRecoilState(FetchedCartItemsAtom);
   
 
   const {push}=useRouter()
+
+
+  const checkQuantity = () => {
+    let isFound=true
+    for (const item of carts) {
+      if(item.available_quantity){
+          if(item.available_quantity===item.quantity){
+              return isFound=true
+          }else if(item.available_quantity>item.quantity){
+              return isFound=true
+          }else if(item.available_quantity<item.quantity){
+              isFound=false
+          }
+      }
+    }
+    return isFound
+}
 
   return (
     <div className="shadow-[0_0_10px_rgba(0,0,0,0.25)] md:tracking-[0.11] rounded-md mb-10">
@@ -17,7 +35,7 @@ const CartSummary = () => {
       <div className="w-fit left-0 right-0 m-auto ">
         <BaseButton
           onClick={() => push("./checkout")}
-          disabled={allCartsInfo.items.length===0 && true}
+          disabled={checkQuantity() ? false : true}
           title="Continue to check out"
           className="text-white disabled:bg-gray-500 disabled:cursor-not-allowed bg-green-1000 px-8 py-2 text-xl font-bold  rounded-full"
         />
