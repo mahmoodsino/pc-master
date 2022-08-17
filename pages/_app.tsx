@@ -111,7 +111,7 @@ useEffect(() => {
   return (
     <div
       onClick={() => (activeDropDown ? setActiveDropDown(false) : null)}
-      className="font-newFont"
+      className="font-newFont min-h-[60vh]"
     >
       {/* <Notification /> */}
       {children}

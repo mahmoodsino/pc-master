@@ -41,14 +41,14 @@ const MainSection = () => {
   }, [wishList]);
   
   useEffect(() => {
-    setLoading(true)
     const getData = async () => {
+      setLoading(true)
       const response =await getWishList(token)
       setWishList(response.result.items)
+      setLoading(false)
     };
     if(token.length>1) {
       getData();
-      setLoading(false)
 
     }
   }, []);
@@ -125,6 +125,12 @@ const MainSection = () => {
 
   const moveWishListToCart = async (id: number) => {
     const res = await handelMoveWishListToCart(token, id);
+    console.log(res);
+    if(res===null){
+        
+      alert("there is no available quantity")
+    }
+    
     push("./cart")
   };
 

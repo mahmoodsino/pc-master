@@ -55,12 +55,12 @@ const AddToWishList = () => {
           ...prev,
           {
             ...detailsState,
-            title: "  ",
+            title:data.title,
             quantity: 1,
             company_id:1,
             product_id: detailsState.product.id,
             branch_id: 1,
-            description: " ",
+            description:"item",
             variation_id: variationState.id,
             variation:variationState
           },
@@ -71,7 +71,7 @@ const AddToWishList = () => {
       (item) => item.variation_id === variationState.id
     );
     if(isItemInWishList<0){
-      const res = await addToWishList(token,detailsState.product.id,variationState.id,1,1,1," z","z ")
+      const res = await addToWishList(token,detailsState.product.id,variationState.id,1,1,1,data.title,data.title)
       
       
     }
@@ -104,6 +104,7 @@ const AddToWishList = () => {
                 placeholder="Title"
                 title="Title"
               />
+              <p className="text-sm text-red-950">{errors.title?.message}</p>
 
               <div className="flex justify-between items-center">
                 <BaseButton

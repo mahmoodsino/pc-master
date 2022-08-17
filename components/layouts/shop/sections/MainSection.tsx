@@ -6,7 +6,10 @@ import FilterShop from "./FilterShop";
 import ShopProducts from "./ShopProducts";
 import ShopSelect from "./ShopSelect";
 import {
+  ActiveDropDownAtom,
+  FetchedCartItemsAtom,
   FillterProductAtom,
+  NewCartAtom,
   ProductsAtom,
   RangeSliderAtom,
   SelectedShopCategoryAtom,
@@ -20,6 +23,10 @@ import { Spinner } from "../../../spinner";
 import useBrands from "./Brands";
 import useRating from "./Rating";
 import useAttributes from "./Attributes";
+import { AddToWishList } from "../../wishlist";
+import Link from "next/link";
+import { CartIcon, HeartIcon, PersonIcon } from "../../../icons";
+import { Dropdown } from "../../../dropdown";
 
 const MainSection = () => {
   const [showFillterProducts, setShowFillterProducts] =
@@ -35,13 +42,15 @@ const MainSection = () => {
   const { ratingState } = useRating();
   const { selectedAttribute } = useAttributes();
   const [token, setToken] = useRecoilState(TokenAtom);
-  const [inWishList,setInwishList]=useState(false)
+  const [inWishList, setInwishList] = useState(false);
+  const [carts, setCarts] = useRecoilState(FetchedCartItemsAtom);
+  const [activeDropDown, setActiveDropDown] =
+    useRecoilState(ActiveDropDownAtom);
+  const [newCart, setNewCart] = useRecoilState(NewCartAtom);
 
   const timerRef = useRef() as MutableRefObject<NodeJS.Timeout>;
 
   const query = useRouter().query;
-
-    
 
   useEffect(() => {
     const getDAta = async () => {
@@ -67,19 +76,19 @@ const MainSection = () => {
     ratingState,
     selectedAttribute,
     rangeSlider,
-    selecterCategory
+    selecterCategory,
   ]);
 
   useEffect(() => {
     const getData = async () => {
       setLoading(true);
-      
+
       if (query.search) {
-        const res = await getProducts(token,query.search.toString());
+        const res = await getProducts(token, query.search.toString());
         setProductsState(res.result.items);
         setLoading(false);
       } else if (query.categorey) {
-        const res = await getProducts(token,"", +query.categorey);
+        const res = await getProducts(token, "", +query.categorey);
         setProductsState(res.result.items);
         setLoading(false);
       } else {
@@ -94,10 +103,10 @@ const MainSection = () => {
   useEffect(() => {
     const getData = async () => {
       if (query.search) {
-        const res = await getProducts(token,query.search.toString());
+        const res = await getProducts(token, query.search.toString());
         setProductsState(res.result.items);
       } else if (query.categorey) {
-        const res = await getProducts(token,"", +query.categorey);
+        const res = await getProducts(token, "", +query.categorey);
         setProductsState(res.result.items);
       } else {
         const res = await getProducts(token);
@@ -107,12 +116,56 @@ const MainSection = () => {
     getData();
   }, [wishList]);
 
-  
-
   return (
-    <div>
+    <div className="lg:ml-4">
       <div className="sm:ml-4 md:ml-0">
-        <Breadcrumbs />
+        <div className="flex justify-between">
+          <Breadcrumbs />
+          <div>
+            <div className="flex items-center space-x-5  relative mr-5 ">
+              <div className="flex space-x-5 ">
+                <Link href="/wishlist">
+                  <a className="w-5">
+                    <div>
+                      <div className="absolute -top-0 right-[80%]  flex items-center cursor-pointer justify-center text-white bg-red-950 rounded-full text-sm w-4 h-4 ">
+                        {wishList.length}
+                      </div>
+                      <HeartIcon className="w-6" />
+                    </div>
+                  </a>
+                </Link>
+                <Link className="" href="/cart">
+                  <a>
+                    <div>
+                      <div className="absolute -top-0 right-[48%] cursor-pointer flex items-center justify-center text-white bg-red-950 rounded-full text-sm w-4 h-4 ">
+                        {carts.length + newCart.length}
+                      </div>
+
+                      <CartIcon className="text-black w-6" />
+                    </div>
+                  </a>
+                </Link>
+              </div>
+              <div
+                onClick={() => setActiveDropDown(!activeDropDown)}
+                className={`space-x-2 flex pb-2 mt-2 items-center cursor-pointer h-full ${
+                  !activeDropDown ? "" : "bg-white"
+                }`}
+              >
+                {!activeDropDown ? (
+                  <PersonIcon className="w-5 text-black" />
+                ) : (
+                  <PersonIcon className="w-5 text-green-950" />
+                )}
+              </div>
+              {activeDropDown ? (
+                <div className="bg-white absolute  z-10 top-[100%] right-[1%]  shadow-[0_0_10px_rgba(0,0,0,0.25)]">
+                  <Dropdown />
+                </div>
+              ) : null}
+            </div>
+          </div>
+        </div>
       </div>
       {!loading ? (
         <div>
@@ -148,6 +201,7 @@ const MainSection = () => {
           <Spinner className="w-40 fill-green-950" />
         </div>
       )}
+      <AddToWishList />
     </div>
   );
 };

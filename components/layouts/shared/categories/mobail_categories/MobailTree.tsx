@@ -2,6 +2,9 @@ import  { useState } from "react";
 import { categoriesType } from "../../../../../helper/interfaces";
 import { totherightArrowIcon } from "../../../../icons/Icons";
 import { v4 as uuidv4 } from 'uuid';
+import { useRouter } from "next/router";
+import { useRecoilState } from "recoil";
+import { OpenCategoryModalAtom } from "../../../../../helper";
 
 interface data {
   data: categoriesType[] | categoriesType;
@@ -39,9 +42,23 @@ interface node {
 }
 
 const MobailTreeNode = ({ node,MobailselectedParentId,setMobailParentId }: node) => {
+  const [openCategoryModal, setOpencategoryModal] = useRecoilState(
+    OpenCategoryModalAtom
+  );
  
 
   const hasChild = node.categories?.length>0 ? true : false;
+  const push = useRouter().push
+
+
+  const handelSearch = async (categoreyID: number) => {
+    
+    push({
+      pathname: '/shop',
+      query: { categorey: encodeURI(`${categoreyID}`) },
+  });
+  setOpencategoryModal(false)
+  };
   return (
     <li className=" relative ">
       <div className="">
@@ -54,7 +71,7 @@ const MobailTreeNode = ({ node,MobailselectedParentId,setMobailParentId }: node)
         )}
 
         <div className=" flex justify-between py-3 text-sm font-medium tracking-[0.11em] cursor-pointer  border-t border-b border-t-white">
-          <div onClick={() => console.log(node.name)} className="text">
+          <div onClick={() => handelSearch(node.id)}  className="text">
             {node.name}
           </div>
           <div className="flex items-center space-x-1">

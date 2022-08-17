@@ -61,7 +61,7 @@ export const resetpasswordschema = yup.object().shape({
 
 
 export const addToWishListSchema = yup.object().shape({
-  title: yup.string(),
+  title: yup.string().required(),
 })
 
 

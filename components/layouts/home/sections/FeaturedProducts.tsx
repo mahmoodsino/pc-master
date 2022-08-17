@@ -35,13 +35,13 @@ const FeaturedProducts = () => {
   },[wishList])
   return (
     <div>
-        <div className="flex sm:flex-col space-y-3 lg:flex-row items-center sm:justify-start lg:justify-around my-10 pt-10">
+        <div className="flex sm:flex-col space-y-3 lg:flex-row items-center sm:justify-start lg:justify-between my-10 pt-10">
           <div className="text-xl  font-bold leading-[30px] tracking-[0.055em] whitespace-nowrap	">
           Featured Products
           </div>
           <Cheips categories={homePageState.featured_categories} setItem={setItem}/>
         </div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-5 md:grid-cols-3 my-5  lg:mx-10 xl:mx-10 mb-10">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-5 md:grid-cols-3 my-5 xl:mx-4  mb-10">
           {featuredProducts.map((item) => {
             return (
               <BaseCard key={uuidv4()}

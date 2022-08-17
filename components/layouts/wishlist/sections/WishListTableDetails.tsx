@@ -1,31 +1,27 @@
-import { async } from "@firebase/util";
 import { useRecoilState } from "recoil";
 import {
-  deleteWishList,
-  handelMoveWishListToCart,
-  TokenAtom,
-  updateWishList,
   WishListAtom,
   WishListItems,
 } from "../../../../helper";
 import { BaseButton } from "../../../buttons";
 import { CartIcon } from "../../../icons";
 import { CloseIcon } from "../../../icons";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import Image from "next/image";
 import no_image from "../../../../public/assets/image/no_image.jpg";
 
-
 interface Props {
-  handelincreaseWishList: (clickedItem:WishListItems) => void
-  handelDecreaseWishList : (id:number , remove?:string) => void
-  moveWishListToCart : (id:number) => void
+  handelincreaseWishList: (clickedItem: WishListItems) => void;
+  handelDecreaseWishList: (id: number, remove?: string) => void;
+  moveWishListToCart: (id: number) => void;
 }
 
-
-const WishListTableDetails = ({handelincreaseWishList,handelDecreaseWishList,moveWishListToCart}:Props) => {
+const WishListTableDetails = ({
+  handelincreaseWishList,
+  handelDecreaseWishList,
+  moveWishListToCart,
+}: Props) => {
   const [wishList, setWishList] = useRecoilState(WishListAtom);
-  
 
   return (
     <div>
@@ -34,8 +30,6 @@ const WishListTableDetails = ({handelincreaseWishList,handelDecreaseWishList,mov
           <thead className="">
             <tr className="border-b text-left text-xl font-semibold text-gray-1150 ">
               <th className=" p-2 pb-5">PRODUCT</th>
-              <th className=" p-2 pb-5">SIZE</th>
-              <th className=" p-2 pb-5 w-auto">COLOR</th>
               <th className=" p-2 pb-5 w-auto">PRICE</th>
               <th className=" p-2 pb-5 w-auto">QTY</th>
               <th className=" p-2 pb-5 w-auto">UNIT PRICE</th>
@@ -44,34 +38,43 @@ const WishListTableDetails = ({handelincreaseWishList,handelDecreaseWishList,mov
           <tbody>
             {wishList.map((item) => {
               return (
-                <tr key={uuidv4()} className="border-b text-left text-gray-1150">
-                  <td className=" p-2 w-[25%] ">
+                <tr
+                  key={uuidv4()}
+                  className="border-b text-left text-gray-1150"
+                >
+                  <td className=" p-2 w-[38%] ">
                     <div className="flex flex-row items-center space-x-5 ">
                       <BaseButton
-                        onClick={() => item.id && handelDecreaseWishList(item.id,"remove")}
+                        onClick={() =>
+                          item.id && handelDecreaseWishList(item.id, "remove")
+                        }
                         className=" rounded-full w-5 h-5 flex justify-center items-center bg-red-950/10 text-red-950"
                       >
                         <CloseIcon className="w-2.5" />
                       </BaseButton>
 
                       <div className="w-20 h-20">
-                      {
-                        item.variation?.images !==undefined && item.variation.images.length>0 ?
-                      <Image src={item.variation.images[0]} alt="" />
-                      :
-                      <Image src={no_image} />
-                      }
+                        {item.variation?.images !== undefined &&
+                        item.variation.images.length > 0 ? (
+                          <Image src={item.variation.images[0]} alt="" />
+                        ) : (
+                          <Image src={no_image} />
+                        )}
                       </div>
-                      <span className="">{item.variation.name}</span>
-                    </div>
-                  </td>
-                  <td className="p-2 pr-20 text-left w-[10%]">
-                    Size 1 CT 1 Power 1
-                  </td>
-                  <td className="p-2 w-[10%] text-gray-1150">
-                    <div className="flex space-x-3 items-center">
-                      <div className="w-4 h-4 rounded-full bg-blue-700"></div>
-                      <span>Blue</span>
+                      <div>
+                        <span className="font-semibold text-lg">
+                          {item.title}
+                        </span>
+                        <div className="">
+                          {item.variation.attributes?.map((atttibute) => {
+                            return (
+                              <span key={atttibute.id} className="text-sm">
+                                {atttibute.attribute_values.name}.{" "}
+                              </span>
+                            );
+                          })}
+                        </div>
+                      </div>
                     </div>
                   </td>
                   <td className="p-2 w-[10%] text-lg">

@@ -1,5 +1,5 @@
 import { useRecoilState } from "recoil";
-import {  ActiveDropDownAtom, FetchedCartItemsAtom, ShowSidbarAtom, WishListAtom } from "../../helper/state";
+import {  ActiveDropDownAtom, FetchedCartItemsAtom, NewCartAtom, ShowSidbarAtom, WishListAtom } from "../../helper/state";
 import { goingUpAtom } from "./FixedNavbar";
 import Dropdown from "../dropdown/Dropdown";
 import { burgerIcon } from "../icons/Icons";
@@ -19,6 +19,8 @@ const MobileHeader = () => {
     useRecoilState(ActiveDropDownAtom);
     const [wishList,setWishList]=useRecoilState(WishListAtom)
     const [carts, setCarts] = useRecoilState(FetchedCartItemsAtom)
+  const [newCart,setNewCart] = useRecoilState(NewCartAtom)
+
 
   return (
     <div
@@ -51,7 +53,7 @@ const MobileHeader = () => {
             <a>
               <div>
                 <div className="absolute -top-0 right-[48%] cursor-pointer flex items-center justify-center text-white bg-red-950 rounded-full text-sm w-4 h-4 ">
-                  {carts.length}
+                  {carts.length+newCart.length}
                 </div>
 
                 <CartIcon className="text-black w-6" />

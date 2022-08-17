@@ -21,7 +21,7 @@ const Navbar = () => {
         <MobileHeader />
       </div>
       <div className="sm:hidden md:block">
-        <div className=" flex flex-row justify-end mr-10">
+        <div className=" flex flex-row justify-end mr-7">
           <div className="md:flex sm:hidden items-center lg:hidden">
             <div className=" w-fit h-fit flex mr-7">
               <HeadPhoneIcon className="w-7" />

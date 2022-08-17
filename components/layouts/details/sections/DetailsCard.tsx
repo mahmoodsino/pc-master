@@ -19,7 +19,13 @@ import {
   WishListAtom,
 } from "../../../../helper";
 import { BaseButton } from "../../../buttons";
-import { BlusIcon, HeartIcon, MinusIcon, RedHeartIcon } from "../../../icons";
+import {
+  BlusIcon,
+  CartIcon,
+  HeartIcon,
+  MinusIcon,
+  RedHeartIcon,
+} from "../../../icons";
 import { AddToWishList } from "../../wishlist";
 import ContinueAsGuest from "./ContinueAsGuest";
 import useProtectPurchaseCard, { modifiersIdAtom } from "./ProtectPurchaseCard";
@@ -48,12 +54,10 @@ const DetailsCard = () => {
   );
   const { modifiersId } = useProtectPurchaseCard();
   const [newCart, setNewCart] = useRecoilState(NewCartAtom);
-  
 
   const handleAddToCart = async (clickedItem: DetailsType) => {
     setNewCart((prev) => {
       const isItemInCarts = prev.find((item) =>
-       
         modifiersId === 0
           ? item.product_id === clickedItem.product.id &&
             item.variation_id === variationState.id
@@ -107,7 +111,7 @@ const DetailsCard = () => {
         }
       }, [] as items[])
     );
-    };
+  };
 
   useEffect(() => {
     const newNames = names;
@@ -273,7 +277,7 @@ const DetailsCard = () => {
     if (indexcart >= 0) {
       return (
         <div>
-          <div className="flex bg-green-950 rounded-full space-x-7 px-4 py-1">
+          <div className="flex bg-green-950 rounded-full space-x-4  px-4 py-1">
             <BaseButton
               // @ts-ignore
               onClick={() => handleRemoveFromCart(newCart[indexcart].id)}
@@ -281,7 +285,9 @@ const DetailsCard = () => {
             >
               <MinusIcon className="w-3.5 text-white" />
             </BaseButton>
-            <h1 className="text-white">{newCart[indexcart].quantity}</h1>
+            <p className="text-white w-[35px] text-center">
+              {newCart[indexcart].quantity}
+            </p>
             <BaseButton
               disabled={
                 newCart[indexcart].quantity ===
@@ -357,19 +363,19 @@ const DetailsCard = () => {
   };
 
   return (
-    <div className="shadow-[0_0_10px_rgba(0,0,0,0.25)] pb-14  tracking-[0.11em]">
-      <div className="mx-5 space-y-4 border-b pt-2 pb-10">
-        <span className="underline text-sm text-[#7A7A7A]">
+    <div className="shadow-[0_0_10px_rgba(0,0,0,0.25)] pb-14  tracking-[0.03em]">
+      <div className="mx-5 space-y-4 border-b pt-5   pb-10">
+        <h1 className=" text-xl font-bold text-[#7A7A7A]">
           {detailsState.product.name}
+        </h1>
+        <p className="text-lg font-medium ">
+          {detailsState.product.short_description}
+        </p>
+        <span className="text-[22px] font-semibold">
+          Price : ${variationState.price}
         </span>
-        <h1 className="text-lg font-medium ">
-          {detailsState.product.description}
-        </h1>
-        <h1 className="text-[22px] font-semibold">
-          Price : {variationState.price}$
-        </h1>
         {variationState.id > 0 && (
-          <div className="flex justify-between items-center">
+          <div className="flex  items-center space-x-4">
             {newCart.length === 0 ? (
               <BaseButton
                 disabled={variationState.available_quantity < 1 ? true : false}
@@ -378,9 +384,11 @@ const DetailsCard = () => {
                     ? handleAddToCart(detailsState)
                     : setContinueAsGuestModal(true)
                 }
-                title="Add To Cart"
                 className={`text-white bg-green-950 tracking-[0.095em] px-3 py-1 rounded-full disabled:cursor-not-allowed disabled:bg-gray-500`}
-              />
+              >
+                <CartIcon className="w-[19px] mb-0.5 mr-2 fill-white inline-block" />
+                Add To Cart
+              </BaseButton>
             ) : (
               <div>
                 {handelCart(variationState.id) ? (
@@ -395,42 +403,47 @@ const DetailsCard = () => {
                         ? handleAddToCart(detailsState)
                         : setContinueAsGuestModal(true)
                     }
-                    title="Add To Cart"
                     className={`text-white bg-green-950 tracking-[0.095em] px-3 py-1 rounded-full disabled:cursor-not-allowed disabled:bg-gray-500`}
-                  />
+                  >
+                    <CartIcon className="w-[19px] mr-2 fill-white inline-block" />
+                    Add to cart
+                  </BaseButton>
                 )}
               </div>
             )}
-            {variationState.available_quantity < 1 ? (
+            {/* {variationState.available_quantity < 1 ? (
               <h1 className="text-red-950 text-xs ">
                 this product is not available now !!
               </h1>
-            ) : null}
+            ) : null} */}
 
             <div>
               {wishList.length === 0 ? (
-                <HeartIcon
-                  onClick={() =>
-                    token.length > 1
-                      ? setOpenAddToWishList(true)
-                      : setContinueAsGuestModal(true)
-                  }
-                  className="w-10 cursor-pointer"
-                />
+                <BaseButton onClick={() =>
+                  token.length > 1
+                    ? setOpenAddToWishList(true)
+                    : setContinueAsGuestModal(true)
+                } className=" bg-gray-400 px-3 py-1 rounded-full text-white">
+                  <HeartIcon
+                    className="w-4 mr-1 fill-white mb-0.5 cursor-pointer inline-block "
+                  />Add to Wishlist
+                </BaseButton>
               ) : (
                 <div>
                   {variationState.id && handelHeart(variationState.id) ? (
+                    <BaseButton onClick={() =>
+                      variationState && removeFromWishList(variationState)
+                    } className=" bg-gray-400 px-3 py-1 rounded-full text-white">
                     <RedHeartIcon
-                      onClick={() =>
-                        variationState && removeFromWishList(variationState)
-                      }
-                      className="w-10 cursor-pointer"
-                    />
+                      className="w-4 mr-1 fill-white mb-0.5 cursor-pointer inline-block "
+                    />Add to Wishlist
+                  </BaseButton>
                   ) : (
-                    <HeartIcon
-                      onClick={() => setOpenAddToWishList(true)}
-                      className="w-10 cursor-pointer"
-                    />
+                    <BaseButton onClick={() => setOpenAddToWishList(true)} className=" bg-gray-400 px-3 py-1 rounded-full text-white">
+                      <HeartIcon
+                        className="w-4 mr-1 fill-white mb-0.5 cursor-pointer inline-block "
+                      />Add to Wishlist
+                    </BaseButton>
                   )}
                 </div>
               )}
@@ -456,11 +469,11 @@ const DetailsCard = () => {
                           selectedAttributes.findIndex(
                             (item: number) => item === value.id
                           ) > -1
-                            ? "border-black"
-                            : "null"
+                            ? " text-green-950 bg-[#19cb3529] font-semibold"
+                            : "text-[#aaa] bg-[#f8f8f8] font-semibold"
                         } 
-                        ${getbg(value.id) ? "text-blue-500" : "text-red-500"}
-                        } px-3 py-3 mt-2 rounded-md cursor-pointer  border-2 hover:border-black`}
+                        ${getbg(value.id) ? "" : ""}
+                          mt-2 rounded-md cursor-pointer px-3 py-0.5    hover:border-black`}
                       >
                         {value.name}
                       </BaseButton>
@@ -474,7 +487,7 @@ const DetailsCard = () => {
       </div>
 
       <AddToWishList />
-      <ContinueAsGuest  />
+      <ContinueAsGuest />
     </div>
   );
 };
