@@ -12,13 +12,17 @@ import {
 } from "../../../../helper";
 import { v4 as uuidv4 } from "uuid";
 import no_image from "../../../../public/assets/image/no_image.jpg";
+import { useState } from "react";
+import { Spinner } from "../../../spinner";
 
 const CartItems = () => {
   const [carts, setCarts] = useRecoilState(FetchedCartItemsAtom);
   const [token, setToken] = useRecoilState(TokenAtom);
+  const [loading,setLoading]=useState(false)
 
   const handleAddToCart = async (clickedItem: FetchedItems) => {
     setCarts((prev) => {
+      setLoading(true)
       const isItemInCarts = prev.find((item) => item.id === clickedItem.id);
       if (isItemInCarts) {
         return prev.map((item) =>
@@ -48,11 +52,15 @@ const CartItems = () => {
       let id = carts[isItemInCarts].id;
       if (id) {
         const res = await updateCart(token, id, newQuantity, "item");
+        if(res){
+          setLoading(false)
+        }
       }
     }
   };
 
   const handleRemoveFromCart = async (id: number, reomve?: string) => {
+    setLoading(true)
     setCarts((prev) =>
       prev.reduce((ack, item) => {
         if (item.id === id) {
@@ -78,6 +86,9 @@ const CartItems = () => {
     if (itemQuantity > 1 && !reomve) {
       itemQuantity--;
       const res = await updateCart(token, id, itemQuantity,"item");
+      if(res){
+        setLoading(false)
+      }
     } else if (itemQuantity === 1 || reomve) {
       const res = await deleteCart(token, id);
     }
@@ -127,6 +138,7 @@ const CartItems = () => {
                     );
                   })}
                 </div>
+                
                 <div className={`flex sm:justify-around md:justify-end sm:space-x-2 md:space-x-14 py-6 ${item.available_quantity&& item.quantity> item.available_quantity ? "bg-red-700" : "bg-white"}`} >
                   <BaseButton
                     onClick={() =>
@@ -139,24 +151,30 @@ const CartItems = () => {
                     title="Save for later"
                     className="underline text-sm tracking-[0.05em]"
                   />
-                  <div className="border sm:space-x-3 md:space-x-7 px-2 flex items-center rounded-full border-black">
-                    <BaseButton
-                      onClick={() => item.id && handleRemoveFromCart(item.id)}
-                      className="text-2xl"
-                    >
-                      <MinusIcon className="w-3.5 text-black" />
-                    </BaseButton>
-                    <span className="text-lg font-bold">{item.quantity}</span>
-                    <BaseButton
-                      disabled={
-                        item.quantity === item.available_quantity ? true : false
-                      }
-                      onClick={() => handleAddToCart(item)}
-                      className="disabled:cursor-not-allowed "
-                    >
-                      <BlusIcon className="text-black w-4" />
-                    </BaseButton>
-                  </div>
+                  {!loading ?
+                      <div className=" w-[129px] border sm:space-x-3 md:space-x-7 px-2 flex justify-around items-center rounded-full border-black">
+                        <BaseButton
+                          onClick={() => item.id && handleRemoveFromCart(item.id)}
+                          className="text-2xl"
+                        >
+                          <MinusIcon className="w-3.5 text-black" />
+                        </BaseButton>
+                        <span className="text-lg font-bold">{item.quantity}</span>
+                        <BaseButton
+                          disabled={
+                            item.quantity === item.available_quantity ? true : false
+                          }
+                          onClick={() => handleAddToCart(item)}
+                          className="disabled:cursor-not-allowed "
+                        >
+                          <BlusIcon className="text-black w-4" />
+                        </BaseButton>
+                      </div> :
+                      <div className="w-[129px] flex items-center justify-center">
+                        <Spinner className="w-7 fill-green-950" />
+                      </div>
+                  
+                }
                   {item.quantity === item.available_quantity && (
                     <h1 className="text-red-950 text-xs ">
                       you cant add more of this product

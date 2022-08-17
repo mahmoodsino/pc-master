@@ -5,6 +5,7 @@ import {
   addToWishList,
   deleteWishList,
   DetailsAtom,
+  getWishList,
   OpenAddToWishListAtom,
   TokenAtom,
   VariationAtom,
@@ -72,6 +73,7 @@ const AddToWishList = () => {
     );
     if(isItemInWishList<0){
       const res = await addToWishList(token,detailsState.product.id,variationState.id,1,1,1,data.title,data.title)
+    setOpenAddToWishList(false);
       
       
     }
@@ -79,12 +81,15 @@ const AddToWishList = () => {
       const id = wishList[isItemInWishList].id
       if(id){
         const res =await deleteWishList(token,id)
+    setOpenAddToWishList(false);
         
       }
 
     }
 
-    setOpenAddToWishList(false);
+    const response = await getWishList(token);
+    setWishList(response.result.items);
+
   };
 
   return (

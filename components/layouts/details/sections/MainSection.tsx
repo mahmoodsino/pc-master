@@ -87,32 +87,42 @@ const MainSection = () => {
               <div className="mt-7 grid md:grid-cols-2 sm:grid-cols-1 sm:space-y-32 md:space-y-0">
                 <div className="col-span-1 grid grid-rows-2">
                   <DetailsProductPhoto />
-                  <div className="-ml-[219px] -mt-14 mr-5 lg:block sm:hidden">
-                    <div className="text-lg font-bold border-b-2 pb-8">
-                      <span>About this item:</span>
-                    </div>
-                    <div className="mt-10 border-b-2 pb-10">
-                      <h1 className="text-xl mb-10">Product details</h1>
-                      <span className="font-bold">
+                  <div className="-ml-[219px] -mt-32   mr-5 lg:block sm:hidden">
+                    <div className="mt-10 border-b-2 pb-5">
+                      <h1 className="text-xl mb-5 font-bold">
+                        Product details
+                      </h1>
+                      <span className="">
                         {detailsState.product.description}
                       </span>
                     </div>
-                    <div className="mt-10">
-              <h1 className="text-xl mb-10">Specifications</h1>
-              <div className="grid  xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-2">
-                {detailsState.product.custome_properties.map((item) => {
-                  return (
-                    <div
-                      key={uuidv4()}
-                      className="mb-10 shadow-[0_0_10px_rgba(0,0,0,0.25)] sm:w-[90%] md-[100%] rounded-md  lg:w-[80%] py-4 pl-5 "
-                    >
-                      <h1 className="font-bold">{item.name}</h1>
-                      <h1>{item.value}</h1>
+                    <div className="mt-5">
+                      <h1 className="text-xl font-bold mb-10">Specifications</h1>
+                      <div className="grid  xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-2 pb-5">
+                        {variationState.attributes?.map((attribute) => {
+                          return (
+                            <div
+                              key={uuidv4()}
+                              className="mb-6 shadow-[0_0_10px_rgba(0,0,0,0.25)] sm:w-[90%] md-[100%] rounded-md  lg:w-[90%] py-4 px-4 "
+                            >
+                              <p className="font-bold">{attribute.name}</p>
+                              <span>{attribute.attribute_values.name}</span>
+                            </div>
+                          );
+                        })}
+                        {detailsState.product.custome_properties.map((item) => {
+                          return (
+                            <div
+                              key={uuidv4()}
+                              className="mb-6 shadow-[0_0_10px_rgba(0,0,0,0.25)] sm:w-[90%] md-[100%] rounded-md  lg:w-[90%] py-4 px-4 "
+                            >
+                              <p className="font-bold">{item.name}</p>
+                              <span>{item.value}</span>
+                            </div>
+                          );
+                        })}
+                      </div>
                     </div>
-                  );
-                })}
-              </div>
-            </div>
                   </div>
                 </div>
                 <div className="col-span-1 ">
@@ -124,26 +134,32 @@ const MainSection = () => {
           </div>
 
           <div className="sm:block lg:hidden  tracking-[0.03em] my-10 sm:mx-5 md:px-12">
-            <div className="text-lg font-bold border-b-2 pb-8">
-              <span>About this item:</span>
+            <div className="mt-10 border-b-2 pb-5">
+              <h1 className="text-xl mb-5 font-bold">Product details</h1>
+              <span className="">{detailsState.product.description}</span>
             </div>
-            <div className="mt-10 border-b-2 pb-10">
-              <h1 className="text-xl mb-10">Product details</h1>
-              <span className="font-bold">
-                {detailsState.product.description}
-              </span>
-            </div>
-            <div className="mt-10">
+            <div className="mt-5">
               <h1 className="text-xl mb-10">Specifications</h1>
-              <div className="grid  xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-2">
+              <div className="grid  xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-2 pb-5">
+                {variationState.attributes?.map((attribute) => {
+                  return (
+                    <div
+                      key={uuidv4()}
+                      className="mb-6 shadow-[0_0_10px_rgba(0,0,0,0.25)] sm:w-[90%] md-[100%] rounded-md  lg:w-[90%] py-4 px-4 "
+                    >
+                      <p className="font-bold">{attribute.name}</p>
+                      <span>{attribute.attribute_values.name}</span>
+                    </div>
+                  );
+                })}
                 {detailsState.product.custome_properties.map((item) => {
                   return (
                     <div
                       key={uuidv4()}
-                      className="mb-10 shadow-[0_0_10px_rgba(0,0,0,0.25)] sm:w-[90%] md-[100%] rounded-md  lg:w-[80%] py-4 pl-5 "
+                      className="mb-6 shadow-[0_0_10px_rgba(0,0,0,0.25)] sm:w-[90%] md-[100%] rounded-md  lg:w-[90%] py-4 px-4 "
                     >
-                      <h1 className="font-bold">{item.name}</h1>
-                      <h1>{item.value}</h1>
+                      <p className="font-bold">{item.name}</p>
+                      <span>{item.value}</span>
                     </div>
                   );
                 })}

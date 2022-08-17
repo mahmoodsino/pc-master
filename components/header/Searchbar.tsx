@@ -90,10 +90,10 @@ const Searchbar = () => {
               </Link>
             </div>
           </div>
-          <div className="w-[35%]">
-            <h1 className=" text-white inline-block  w- text-xs font-medium  ">
+          <div className="w-[35%] ">
+            <span className="  inline-block text-white  w- text-xs font-medium  ">
               item(s):${(allCartsInfo.sub_total_price).toFixed(2)}
-            </h1>
+            </span>
           </div>
           
           { useType === "guest" || useType === "user"  &&
@@ -108,12 +108,6 @@ const Searchbar = () => {
               ) : (
                 <PersonIcon className="w-5 text-green-950" />
               )}
-
-              {/* {!activeDropDown ? (
-                <ArrowIcon className="w-3 text-white" />
-              ) : (
-                <ArrowIcon className="w-3 text-green-950" />
-              )} */}
             </div>
         }
          {activeDropDown ? (

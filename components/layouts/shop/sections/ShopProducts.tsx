@@ -16,8 +16,6 @@ const ShopProducts = () => {
   return (
     <div className="grid sm:grid-cols-2 lg:grid-cols-4 my-5  lg:mx-10 xl:mx-10 mb-10">
       {productsState.map((item) => {
-        console.log(item);
-        
         return (
           <div key={uuidv4()}>
             <BaseCard image={item.images}  price={item.variation.price}  description={item.short_description} id={item.id} variation={item.variation} in_wishlist={item.in_wishlist}/>

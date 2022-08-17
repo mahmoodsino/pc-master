@@ -26,6 +26,7 @@ import {
   MinusIcon,
   RedHeartIcon,
 } from "../../../icons";
+import { Spinner } from "../../../spinner";
 import { AddToWishList } from "../../wishlist";
 import ContinueAsGuest from "./ContinueAsGuest";
 import useProtectPurchaseCard, { modifiersIdAtom } from "./ProtectPurchaseCard";
@@ -54,6 +55,7 @@ const DetailsCard = () => {
   );
   const { modifiersId } = useProtectPurchaseCard();
   const [newCart, setNewCart] = useRecoilState(NewCartAtom);
+  const[removeLoading,setRemoveLoading]=useState(false)
 
   const handleAddToCart = async (clickedItem: DetailsType) => {
     setNewCart((prev) => {
@@ -351,15 +353,20 @@ const DetailsCard = () => {
   const removeFromWishList = async (Variat: Variation) => {
     const index = wishList.findIndex(
       (item) => item.variation?.id === Variat.id
-    );
-    if (index >= 0) {
+      );
+      setRemoveLoading(true)
+    if (index !== -1) {
       const id = wishList[index].id;
       if (id) {
         const res = await deleteWishList(token, id);
+        if(res){
+          setRemoveLoading(false)
+        }
       }
     }
     const response = await getWishList(token);
     setWishList(response.result.items);
+   
   };
 
   return (
@@ -416,38 +423,43 @@ const DetailsCard = () => {
                 this product is not available now !!
               </h1>
             ) : null} */}
-
-            <div>
-              {wishList.length === 0 ? (
-                <BaseButton onClick={() =>
-                  token.length > 1
-                    ? setOpenAddToWishList(true)
-                    : setContinueAsGuestModal(true)
-                } className=" bg-gray-400 px-3 py-1 rounded-full text-white">
-                  <HeartIcon
-                    className="w-4 mr-1 fill-white mb-0.5 cursor-pointer inline-block "
-                  />Add to Wishlist
-                </BaseButton>
-              ) : (
+              {!removeLoading ? 
                 <div>
-                  {variationState.id && handelHeart(variationState.id) ? (
+                  
+                  {wishList.length === 0 ? (
                     <BaseButton onClick={() =>
-                      variationState && removeFromWishList(variationState)
+                      token.length > 1
+                        ? setOpenAddToWishList(true)
+                        : setContinueAsGuestModal(true)
                     } className=" bg-gray-400 px-3 py-1 rounded-full text-white">
-                    <RedHeartIcon
-                      className="w-4 mr-1 fill-white mb-0.5 cursor-pointer inline-block "
-                    />Add to Wishlist
-                  </BaseButton>
-                  ) : (
-                    <BaseButton onClick={() => setOpenAddToWishList(true)} className=" bg-gray-400 px-3 py-1 rounded-full text-white">
                       <HeartIcon
                         className="w-4 mr-1 fill-white mb-0.5 cursor-pointer inline-block "
                       />Add to Wishlist
                     </BaseButton>
+                  ) : (
+                    <div>
+                      {variationState.id && handelHeart(variationState.id) ? (
+                        <BaseButton onClick={() =>
+                          variationState && removeFromWishList(variationState)
+                        } className=" bg-gray-400 px-3 py-1 rounded-full text-white">
+                        <RedHeartIcon
+                          className="w-4 mr-1 fill-white mb-0.5 cursor-pointer inline-block "
+                        />Add to Wishlist
+                      </BaseButton>
+                      ) : (
+                        <BaseButton onClick={() => setOpenAddToWishList(true)} className=" bg-gray-400 px-3 py-1 rounded-full text-white">
+                          <HeartIcon
+                            className="w-4 mr-1 fill-white mb-0.5 cursor-pointer inline-block "
+                          />Add to Wishlist
+                        </BaseButton>
+                      )}
+                    </div>
                   )}
+                </div> : 
+                <div className="flex justify-center items-center">
+                  <Spinner className="w-7 fill-green-950" />
                 </div>
-              )}
-            </div>
+            }
           </div>
         )}
       </div>

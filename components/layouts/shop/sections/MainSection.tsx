@@ -7,6 +7,7 @@ import ShopProducts from "./ShopProducts";
 import ShopSelect from "./ShopSelect";
 import {
   ActiveDropDownAtom,
+  AllCartsInfo,
   FetchedCartItemsAtom,
   FillterProductAtom,
   NewCartAtom,
@@ -47,10 +48,17 @@ const MainSection = () => {
   const [activeDropDown, setActiveDropDown] =
     useRecoilState(ActiveDropDownAtom);
   const [newCart, setNewCart] = useRecoilState(NewCartAtom);
+  const [allCartsInfo,setAllCartsInfo]=useRecoilState(AllCartsInfo)
+
 
   const timerRef = useRef() as MutableRefObject<NodeJS.Timeout>;
 
   const query = useRouter().query;
+  let useType
+  if(typeof window !== "undefined"){
+
+     useType = localStorage.getItem("type" || "");
+  }
 
   useEffect(() => {
     const getDAta = async () => {
@@ -122,48 +130,57 @@ const MainSection = () => {
         <div className="flex justify-between">
           <Breadcrumbs />
           <div>
-            <div className="flex items-center space-x-5  relative mr-5 ">
-              <div className="flex space-x-5 ">
-                <Link href="/wishlist">
-                  <a className="w-5">
-                    <div>
-                      <div className="absolute -top-0 right-[80%]  flex items-center cursor-pointer justify-center text-white bg-red-950 rounded-full text-sm w-4 h-4 ">
-                        {wishList.length}
-                      </div>
-                      <HeartIcon className="w-6" />
-                    </div>
-                  </a>
-                </Link>
-                <Link className="" href="/cart">
-                  <a>
-                    <div>
-                      <div className="absolute -top-0 right-[48%] cursor-pointer flex items-center justify-center text-white bg-red-950 rounded-full text-sm w-4 h-4 ">
-                        {carts.length + newCart.length}
-                      </div>
-
-                      <CartIcon className="text-black w-6" />
-                    </div>
-                  </a>
-                </Link>
-              </div>
-              <div
-                onClick={() => setActiveDropDown(!activeDropDown)}
-                className={`space-x-2 flex pb-2 mt-2 items-center cursor-pointer h-full ${
-                  !activeDropDown ? "" : "bg-white"
-                }`}
-              >
-                {!activeDropDown ? (
-                  <PersonIcon className="w-5 text-black" />
-                ) : (
-                  <PersonIcon className="w-5 text-green-950" />
-                )}
-              </div>
+            <div className="flex items-center space-x-5 relative   mr-5 ">
+              { useType === "guest" || useType === "user"  &&
+            <div 
+              onClick={() => setActiveDropDown(!activeDropDown)}
+              className={`space-x-2 flex   items-center cursor-pointer h-full mb-1 ${
+                !activeDropDown ? "" : "bg-white"
+              }`}
+            >
+              {!activeDropDown ? (
+                <PersonIcon className="w-5 text-black" />
+              ) : (
+                <PersonIcon className="w-5 text-green-950" />
+              )}
+            </div>
+        }
               {activeDropDown ? (
-                <div className="bg-white absolute  z-10 top-[100%] right-[1%]  shadow-[0_0_10px_rgba(0,0,0,0.25)]">
+                <div className="bg-white absolute  z-10 top-[102%] right-[90%]  shadow-[0_0_10px_rgba(0,0,0,0.25)]">
                   <Dropdown />
                 </div>
               ) : null}
-            </div>
+              <span className=" text-black inline-block text-xs font-semibold  ">
+              item(s):${(allCartsInfo.sub_total_price).toFixed(2)}
+            </span>
+              <div className="relative flex space-x-5">
+                  <Link href="/wishlist">
+                    <a className="w-5">
+                      <div>
+                        <div className="absolute -top-2 right-[54%]  flex items-center cursor-pointer justify-center text-white bg-red-950 rounded-full text-sm w-4 h-4 ">
+                          {wishList.length}
+                        </div>
+                        <HeartIcon className="w-6" />
+                      </div>
+                    </a>
+                  </Link>
+                  <Link className="" href="/cart">
+                    <a>
+                      <div>
+                        <div className="absolute -top-2 right-[0%] cursor-pointer flex items-center justify-center text-white bg-red-950 rounded-full text-sm w-4 h-4 ">
+                          {carts.length + newCart.length}
+                        </div>
+
+                        <CartIcon className="text-black w-6" />
+                      </div>
+                    </a>
+                  </Link>
+
+              </div>
+              </div>
+              
+             
+            
           </div>
         </div>
       </div>
