@@ -5,6 +5,9 @@ import withAuth from '../helper/with-auth'
 const cart = () => {
   return (
     <div className='sm:px-[10px]'>
+      <head>
+        <title>Cart</title>
+      </head>
       <CartMainSection />
     </div>
   )

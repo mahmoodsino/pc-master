@@ -87,7 +87,7 @@ const MainSection = () => {
               <div className="mt-7 grid md:grid-cols-2 sm:grid-cols-1 sm:space-y-32 md:space-y-0">
                 <div className="col-span-1 grid grid-rows-2">
                   <DetailsProductPhoto />
-                  <div className="-ml-[219px] -mt-32   mr-5 lg:block sm:hidden">
+                  <div className="-ml-[219px] -mt-14   mr-5 lg:block sm:hidden">
                     <div className="mt-10 border-b-2 pb-5">
                       <h1 className="text-xl mb-5 font-bold">
                         Product details

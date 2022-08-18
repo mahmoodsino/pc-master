@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import {  HomePageAtom, TokenAtom, WishListAtom } from '../../../../helper/state';
 import {BaseCard} from '../../../cards';
-import {Cheips} from '../../../inputs';
+import {Cheips, MobaiChips} from '../../../inputs';
 import { v4 as uuidv4 } from 'uuid';
 import { getfeaturedProducts, ProductsType } from '../../../../helper';
 
@@ -39,7 +39,18 @@ const FeaturedProducts = () => {
           <div className="text-xl  font-bold leading-[30px] tracking-[0.055em] whitespace-nowrap	">
           Featured Products
           </div>
-          <Cheips categories={homePageState.featured_categories} setItem={setItem}/>
+          <div className="lg:w-[70%] lg:block sm:hidden whitespace-nowrap">
+          <Cheips
+            categories={homePageState.featured_categories}
+            setItem={setItem}
+          />
+        </div>
+        <div className="lg:hidden sm:block sm:w-[95%] whitespace-nowrap overflow-x-auto">
+          <MobaiChips
+            categories={homePageState.featured_categories}
+            setItem={setItem}
+          />
+        </div>
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-5 md:grid-cols-3 my-5 xl:mx-4  mb-10">
           {featuredProducts.map((item) => {

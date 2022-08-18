@@ -4,14 +4,11 @@ import Slider from "react-slick";
 import { v4 as uuidv4 } from "uuid";
 import { useRecoilState } from "recoil";
 import { DetailsAtom, VariationAtom } from "../../../../helper";
-
+import no_image from "../../../../public/assets/image/no_image.jpg";
 
 const DetailsProductPhoto = () => {
   const [variationState, setVariationState] = useRecoilState(VariationAtom);
   const [detailsState, setDetailState] = useRecoilState(DetailsAtom);
-
-
-  
 
   const settings = {
     customPaging: function (i: number) {
@@ -41,7 +38,7 @@ const DetailsProductPhoto = () => {
   return (
     <div className="">
       <Slider {...settings}>
-        {variationState.images
+        {variationState.images&& variationState.images?.length > 0
           ? variationState.images.map((img) => {
               return (
                 <div key={uuidv4()} className="">
@@ -49,14 +46,15 @@ const DetailsProductPhoto = () => {
                 </div>
               );
             })
-          : detailsState.product.images.map((img) => {
+          : detailsState.product.images.length>0 ? detailsState.product.images.map((img) => {
               return (
                 <div key={uuidv4()} className="">
                   <Image src={img} />
                 </div>
               );
-            })}
+            }) : <Image src={no_image} />}
       </Slider>
+      
     </div>
   );
 };

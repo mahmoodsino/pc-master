@@ -130,7 +130,7 @@ const MainSection = () => {
         <div className="flex justify-between">
           <Breadcrumbs />
           <div>
-            <div className="flex items-center space-x-5 relative   mr-5 ">
+            <div className="flex items-center space-x-5 relative sm:hidden md:flex   mr-5 ">
               { useType === "guest" || useType === "user"  &&
             <div 
               onClick={() => setActiveDropDown(!activeDropDown)}
