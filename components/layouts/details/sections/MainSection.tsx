@@ -78,6 +78,15 @@ const MainSection = () => {
 
   return (
     <div>
+      <head>
+        <title>{detailsState.product.seo_title}</title>
+        <meta name="description" content={detailsState.product.seo_description} />
+        {detailsState.product.seo_keywords.map(keyword => {
+          return (
+            <meta name="keywords" content={keyword} />
+          )
+        })}
+      </head>
       {loading ? (
         <div>
           <div className="flex flex-row justify-center lg:left-0 lg:right-0 lg:mx-auto ">

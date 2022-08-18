@@ -39,7 +39,7 @@ const FeaturedProducts = () => {
           <div className="text-xl  font-bold leading-[30px] tracking-[0.055em] whitespace-nowrap	">
           Featured Products
           </div>
-          <div className="lg:w-[70%] lg:block sm:hidden whitespace-nowrap">
+          <div className="lg:w-[60%] lg:block sm:hidden whitespace-nowrap">
           <Cheips
             categories={homePageState.featured_categories}
             setItem={setItem}

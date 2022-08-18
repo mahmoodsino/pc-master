@@ -10,7 +10,7 @@ interface Props {
 }
 
 function SampleNextArrow(props: any) {
-  const { className, style, onClick, hover } = props;
+  const { className, style, onClick} = props;
   return (
     <div
       className={`text-black absolute right-5 opacity-0 -top-2   text  h-20 w-20  rounded-full text-center cursor-pointer bg-white z-20 `}
@@ -36,7 +36,7 @@ function SampleNextArrow(props: any) {
 }
 
 function SamplePrevArrow(props: any) {
-  const { className, style, onClick, hover } = props;
+  const { className, style, onClick } = props;
   return (
     <div
       className={`text-black absolute -top-2 opacity-0  h-20 w-20  rounded-full text-center  cursor-pointer bg-white  z-20    `}
@@ -67,10 +67,10 @@ const Cheips = ({ categories, setItem }: Props) => {
     infinite: false,
     speed: 500,
     autoplay: false,
-    slidesToShow: 4,
+    slidesToShow: 3,
     rows: 1,
     autoplaySpeed: 2000,
-    slidesToScroll: 3,
+    slidesToScroll: 4,
     nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />,
     // dotsClass: "carousal__shop",
