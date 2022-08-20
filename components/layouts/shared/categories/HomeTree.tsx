@@ -76,7 +76,7 @@ const TreeNode = ({ node, selectedParentId, setParentId }: node) => {
             className={`${selectedParentId === node.id ? "active" : ""}`}
           ></div>
         )} */}
-        <div onClick={() => handelSearch(node.id)} className="bg-[#303030] rounded-sm hover:bg-[#303030]/80 block  py-3 text-sm px-3  tracking-[0.11em] cursor-pointer   border-b border-t-white">
+        <div onClick={() => handelSearch(node.id)} className="bg-[#303030] rounded-sm hover:bg-[#303030]/80 block  py-3 text-sm px-3  tracking-[0.03em] cursor-pointer   border-b border-t-white">
           {node.name}
         </div>
         {hasChild && selectedParentId === node.id && (

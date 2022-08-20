@@ -10,7 +10,7 @@ const CartSummary = () => {
       <div className="md:pl-10 sm:pl-5 space-x-5 border-b py-8">
         <CartIcon className="text-black w-6 inline-block" />
 
-        <h1 className="inline-block text-[20px] font-bold tracking-[0.11em]">
+        <h1 className="inline-block text-[20px] font-bold tracking-[0.03em]">
           Cart summary
         </h1>
       </div>
@@ -18,7 +18,7 @@ const CartSummary = () => {
         return (
           <div key={item.id} className="md:px-10 sm:px-5">
             <div className="flex flex-row justify-between sm:text-sm md:text-base my-5 mb-2">
-              <span className=" tracking-[0.11em] font-semibold">
+              <span className=" tracking-[0.03em] font-semibold">
                 {item.quantity}x {item.product?.name}
               </span>
               <span>${item.variation?.price}</span>

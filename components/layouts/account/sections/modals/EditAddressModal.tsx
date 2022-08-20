@@ -1,6 +1,6 @@
 import { MouseEvent, useEffect, useId } from "react";
 import { useRecoilState } from "recoil";
-import { registerCountryAtom, SuccessEdit, TokenAtom } from "../../../../../helper/state/index";
+import { registerCountryAtom, ShippingAddressIdAtom, SuccessEdit, TokenAtom } from "../../../../../helper/state/index";
 import { BaseButton } from "../../../../buttons";
 import { BaseInput } from "../../../../inputs";
 //@ts-ignore
@@ -39,7 +39,9 @@ const EditAddressModal = () => {
     useRecoilState(registerCountryAtom);
   const [token, setToken] = useRecoilState(TokenAtom);
   const [editAddress, setEditAddress] = useRecoilState(EditAddressIdAtom);
-  const [addressId,setAddressId]= useRecoilState(AddresToDeleteIdAtom)
+
+  const [shippingAddressId,setShippingAddressId]=useRecoilState(ShippingAddressIdAtom)
+
 
 
 
@@ -83,7 +85,7 @@ const EditAddressModal = () => {
         data.check,
         token
       );
-      setAddressId(res.data.id);
+      setShippingAddressId(res.data.id);
       
       setEditSuccess("addSucess");
       setTimeout(() => {

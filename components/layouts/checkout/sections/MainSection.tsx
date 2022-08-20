@@ -4,10 +4,8 @@ import { getClientToken } from '../../../../helper'
 import Searchbar from '../../../header/Searchbar'
 import CartSummary from './CartSummary'
 import CheckoutDetails from './CheckoutDetails'
-import { openSelectAddressModal } from './SelectAddAddress'
 
 const MainSection = () => {
-  const [openAddress,setOpenAddress]=useRecoilState(openSelectAddressModal)
 
 // useEffect(() => {
 //   const getData = async () => {
@@ -21,7 +19,7 @@ const MainSection = () => {
 
 
   return (
-    <div  onClick={() =>openAddress&&setOpenAddress(false) } className="lg:px-10 2xl:px-24 lg:ml-4 2xl:container mt-10">
+    <div   className="lg:px-10 2xl:px-24 lg:ml-4 2xl:container mt-10">
       <Searchbar />
 
       <h1 className="text-xl font-medium px-14 mt-10">Payment</h1>

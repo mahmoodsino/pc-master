@@ -8,7 +8,7 @@ const Breadcrumbs = () => {
   const pathnames = useRouter().pathname.split("/").filter((x: string) => x);
   return (
     <div>
-      <BaseButton  className="text-gray-1400 font-semibold tracking-[0.11em]"
+      <BaseButton  className="text-gray-1400 font-semibold tracking-[0.03em]"
         onClick={() => push("/")}
         title="HOME /"/>
      
@@ -17,14 +17,14 @@ const Breadcrumbs = () => {
         const isLast = index === pathnames.length - 1;
         return isLast ? (
           <span
-            className="font-semibold tracking-[0.11em] uppercase"
+            className="font-semibold tracking-[0.03em] uppercase"
             key={name}
           >
             {" "}
             {name}
           </span>
         ) : (
-          <BaseButton className="font-semibold text-gray-1400 uppercase tracking-[0.11em] !bg-white"
+          <BaseButton className="font-semibold text-gray-1400 uppercase tracking-[0.03em] !bg-white"
           key={name}
           onClick={() => push(routeTo)}
           title={`${name} /`}/>

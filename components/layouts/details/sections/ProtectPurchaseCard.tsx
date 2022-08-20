@@ -27,7 +27,7 @@ const useProtectPurchaseCard = () => {
           return (
             <div key={uuidv4()} className="shadow-[0_0_10px_rgba(0,0,0,0.25)] sm:w-[100%] md:pl-10 mt-10 h-fit rounded-md pb-7">
               <div className=" py-5 pr-10 text-left">
-                <h1 className=" text-lg font-bold tracking-[0.11em]">{key}</h1>
+                <h1 className=" text-lg font-bold tracking-[0.03em]">{key}</h1>
                 <span className="text-sm tracking-[0.05em] text-[#383838]">
                   Get the best value on product protection including fast
                   repairs.

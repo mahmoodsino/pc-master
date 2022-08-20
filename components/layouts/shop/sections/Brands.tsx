@@ -23,7 +23,7 @@ const useBrands = () => {
   return {
     selectBrand,
     render:(
-    <div className=" flex flex-col justify-between  text-sm tracking-[0.11em] cursor-pointer  border-t border-b border-t-white">
+    <div className=" flex flex-col justify-between  text-sm tracking-[0.03em] cursor-pointer  border-t border-b border-t-white">
       {brands.map((brand) => {
         return (
           <div key={brand.id}>

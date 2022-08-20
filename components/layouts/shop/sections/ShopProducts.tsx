@@ -18,7 +18,7 @@ const ShopProducts = () => {
       {productsState.map((item) => {
         return (
           <div key={uuidv4()}>
-            <BaseCard image={item.images}  price={item.variation.price}  description={item.short_description} id={item.id} variation={item.variation} in_wishlist={item.in_wishlist}/>
+            <BaseCard name={item.name} image={item.images}  price={item.variation.price}  description={item.short_description} id={item.id} variation={item.variation} in_wishlist={item.in_wishlist}/>
           </div>
         );
       })}

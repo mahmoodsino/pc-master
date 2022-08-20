@@ -90,7 +90,7 @@ const FilterShop = () => {
           </BaseButton>
         </div>
         <div className="ml-2 mt-10">
-          <h1 className="text-lg font-bold tracking-[0.11em] text-[#7A797B]">
+          <h1 className="text-lg font-bold tracking-[0.03em] text-[#7A797B]">
             FILTER BY PRICE
           </h1>
           <div className="w-[45px] ml-1 border border-[#7A797B]  mt-3"></div>
@@ -104,14 +104,14 @@ const FilterShop = () => {
                 handleChange={handleChange}
               />
               <div className="pt-1 flex flex-wrap flex-row justify-between ">
-                <h1 className="pt-3 inline-block text-[#B2ACB6] tracking-[0.11em]">
+                <h1 className="pt-3 inline-block text-[#B2ACB6] tracking-[0.03em]">
                   Price:${rangeSlider[0]} - ${rangeSlider[1]}
                 </h1>
               </div>
             </div>
           </div>
           <div>
-            <h1 className="text-lg font-bold tracking-[0.11em] text-[#7A797B]">
+            <h1 className="text-lg font-bold tracking-[0.03em] text-[#7A797B]">
               PRODUCT CATEGORIES
             </h1>
             <div className="w-[45px] ml-1 border border-[#7A797B]  mt-3"></div>

@@ -28,6 +28,7 @@ interface cardType {
   id: number;
   variation: Variation;
   in_wishlist: boolean;
+  name:string
 }
 
 const BaseCard = ({
@@ -37,6 +38,7 @@ const BaseCard = ({
   id,
   variation,
   in_wishlist,
+  name
 }: cardType) => {
   const [hover, setHover] = useState(false);
   const [detailsState, setDetailState] = useRecoilState(DetailsAtom);
@@ -142,8 +144,9 @@ const BaseCard = ({
         <h1 className="text-lg font-bold md:leading-[24px] md:tracking-[0.055em] mb-1">
           ${price}
         </h1>
-        <span className="line-clamp text-sm md:leading-[19px]  md:tracking-[0.11em]">
-          {description}
+        <span className="line-clamp text-sm md:leading-[19px]  md:tracking-[0.03em]">
+          {/* {description} */}
+          {name}
         </span>
         <div className="flex justify-end my-2">
           {in_wishlist ? (

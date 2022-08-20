@@ -82,7 +82,7 @@ const ShopTreeNode = ({
       <div className="">
         
 
-        <div className=" flex justify-between  text-sm tracking-[0.11em] cursor-pointer  border-t border-b border-t-white">
+        <div className=" flex justify-between  text-sm tracking-[0.03em] cursor-pointer  border-t border-b border-t-white">
           <label  className="shopContainer flex items-center">
             {node.name}
             <input
@@ -94,7 +94,7 @@ const ShopTreeNode = ({
             <span className="text-sm  shopCheckmark"></span>
           </label>
           <div className="flex items-center space-x-1">
-            <h1 className="text-[10px] mt-2 inline-block text-[#7A797B] tracking-[0.11em]"></h1>
+            <h1 className="text-[10px] mt-2 inline-block text-[#7A797B] tracking-[0.03em]"></h1>
             <div
               onClick={() => (
                 setShopParentId(node.id),

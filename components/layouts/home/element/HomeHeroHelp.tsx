@@ -6,7 +6,7 @@ type props = {
   };
 const HomeHelp = ({image,title,desc}:props) => {
   return (
-    <div className=' w-fit items-center justify-center h-fit flex leading-[21px] tracking-[0.11em] text-center my-2'>
+    <div className=' w-fit items-center justify-center h-fit flex leading-[21px] tracking-[0.03em] text-center my-2'>
       <div >
         {image}
       </div>

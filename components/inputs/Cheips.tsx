@@ -73,6 +73,7 @@ const Cheips = ({ categories, setItem }: Props) => {
     slidesToScroll: 4,
     nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />,
+    variableWidth:true
     // dotsClass: "carousal__shop",
   };
   return (

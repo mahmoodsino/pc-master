@@ -56,7 +56,7 @@ const FixedNavbar = () => {
         <div className=" w-[21%]">
           <Image src={img1}/>
         </div>
-        <div className=" flex grow  justify-end gap-8    uppercase  font-bold leading-[21px] tracking-[0.11em]  text-sm ">
+        <div className=" flex grow  justify-end gap-8    uppercase  font-bold leading-[21px] tracking-[0.03em]  text-sm ">
           {routseWAuth.map((item) => {
             return (
               <Link

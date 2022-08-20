@@ -4,7 +4,7 @@ import {
   WishListItems,
 } from "../../../../helper";
 import { BaseButton } from "../../../buttons";
-import { CartIcon } from "../../../icons";
+import { BlusIcon, CartIcon, MinusIcon } from "../../../icons";
 import { CloseIcon } from "../../../icons";
 import { v4 as uuidv4 } from "uuid";
 import Image from "next/image";
@@ -69,7 +69,7 @@ const WishListTableDetails = ({
                           {item.variation.attributes?.map((atttibute) => {
                             return (
                               <span key={atttibute.id} className="text-sm">
-                                {atttibute.attribute_values.name}.{" "}
+                                {atttibute.attribute_values.name}•{" "}
                               </span>
                             );
                           })}
@@ -82,23 +82,23 @@ const WishListTableDetails = ({
                   </td>
                   <td className="p-2 w-[10%]">
                     <div className="w-[88%]">
-                      <div className="flex border flex-row justify-around items-center">
-                        <BaseButton
-                          onClick={() =>
-                            item.id && handelDecreaseWishList(item.id)
-                          }
-                          className="bg-green-950 rounded-full w-4 h-4 flex justify-center items-center"
-                        >
-                          <h1 className="mt-0.5">-</h1>
-                        </BaseButton>
-                        <h1 className="mt-1">{item.quantity}</h1>
-                        <BaseButton
-                          onClick={() => handelincreaseWishList(item)}
-                          className="bg-green-950 rounded-full w-4 h-4 flex justify-center items-center"
-                        >
-                          <h1 className="mt-0.5">+</h1>
-                        </BaseButton>
-                      </div>
+                    <div className=" w-[129px] border sm:space-x-3 md:space-x-7 px-2 flex justify-around items-center rounded-full border-black">
+                      <BaseButton
+                        onClick={() =>  item.id && handelDecreaseWishList(item.id)}
+                        className="text-2xl"
+                      >
+                        <MinusIcon className="w-3.5 text-black" />
+                      </BaseButton>
+                      <span className="text-lg font-bold">{item.quantity}</span>
+                      <BaseButton
+                       
+                        onClick={() => handelincreaseWishList(item)}
+                        className="disabled:cursor-not-allowed "
+                      >
+                        <BlusIcon className="text-black w-4" />
+                      </BaseButton>
+                    </div>
+                      
                     </div>
                   </td>
                   <td className="p-2 w-[25%]">

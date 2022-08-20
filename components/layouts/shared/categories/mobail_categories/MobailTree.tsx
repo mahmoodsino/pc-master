@@ -70,12 +70,12 @@ const MobailTreeNode = ({ node,MobailselectedParentId,setMobailParentId }: node)
           ></div>
         )}
 
-        <div className=" flex justify-between py-3 text-sm font-medium tracking-[0.11em] cursor-pointer  border-t border-b border-t-white">
+        <div className=" flex justify-between py-3 text-sm font-medium tracking-[0.03em] cursor-pointer  border-t border-b border-t-white">
           <div onClick={() => handelSearch(node.id)}  className="text">
             {node.name}
           </div>
           <div className="flex items-center space-x-1">
-            <h1 className="text-[10px] mt-2 inline-block text-[#7A797B] tracking-[0.11em]"></h1>
+            <h1 className="text-[10px] mt-2 inline-block text-[#7A797B] tracking-[0.03em]"></h1>
             <div
               onClick={() => (
                 setMobailParentId(node.id),

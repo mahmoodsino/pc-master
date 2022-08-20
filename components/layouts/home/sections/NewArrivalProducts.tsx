@@ -34,10 +34,13 @@ const NewArrivalProducts = () => {
   return (
     <div>
       <div className="flex sm:flex-col space-y-3 lg:flex-row items-center sm:justify-start lg:justify-between ml-5 my-10 pt-10">
-        <div className="text-xl  font-bold leading-[30px] tracking-[0.055em] whitespace-nowrap	">
+        <div className="text-xl  font-bold leading-[30px] tracking-[0.055em] whitespace-nowrap	mt-2">
+          <span>
+
           New Arrivals
+          </span>
         </div>
-        <div className="lg:w-[60%] lg:block sm:hidden whitespace-nowrap">
+        <div className="lg:w-[78%] lg:block sm:hidden whitespace-nowrap">
           <Cheips
             categories={homePageState.featured_categories}
             setItem={setItem}
@@ -54,6 +57,7 @@ const NewArrivalProducts = () => {
         {newArrivalProducts?.map((item) => {
           return (
             <BaseCard
+            name={item.name}
               key={uuidv4()}
               image={item.images}
               price={item.variation.price}

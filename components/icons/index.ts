@@ -16,3 +16,4 @@ export {default as RightSignIcon} from './RightSignIcon'
 export {default as SpeedMeterIcon} from './SpeedMeterIcon'
 export {default as RedHeartIcon} from './RedHeartIcon'
 export {default as StarIcon} from "./StarIcon"
+export {default as TrashIcon} from "./TrashIcon"

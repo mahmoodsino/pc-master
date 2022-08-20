@@ -57,7 +57,7 @@ const MobileWishList = ({
                     {item.variation.attributes?.map((atttibute) => {
                       return (
                         <span key={atttibute.id} className="text-sm">
-                          {atttibute.attribute_values.name}°{" "}
+                          {atttibute.attribute_values.name}•{" "}
                         </span>
                       );
                     })}

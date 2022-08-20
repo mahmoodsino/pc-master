@@ -30,7 +30,7 @@ const HomeCategories = () => {
       <div className=" lg:block sm:hidden">
         <div className=" ml-5 h-fit w-[230px]  text-white">
           <div className="relative z-50  py-[11px] rounded-l-md bg-green-950  ">
-            <span className=" tracking-[0.11em]  text-white top-2  di font-extrabold after:w-0 after:h-0 after:border-solid">
+            <span className=" tracking-[0.03em]  text-white top-2  di font-extrabold after:w-0 after:h-0 after:border-solid">
             CATEGORIES
             </span>
           </div>

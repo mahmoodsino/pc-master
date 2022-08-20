@@ -172,7 +172,7 @@ const MainSection = () => {
                   </div>
               </div> :
               <div className="text-center my-10">
-                <h1 className="font-semibold text-xl tracking-[0.11em]">wish List is Empty Start shoping</h1>
+                <h1 className="font-semibold text-xl tracking-[0.03em]">wish List is Empty Start shoping</h1>
 
               </div>
             

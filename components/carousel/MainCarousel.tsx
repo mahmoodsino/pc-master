@@ -9,15 +9,11 @@ import Image from "next/image";
 import { useRecoilState } from "recoil";
 import { HomePageAtom } from "../../helper/state";
 import { v4 as uuidv4 } from 'uuid';
-
-
+import { BaseButton } from "../buttons";
 
 
 const  Carousel = () =>{
   const [homePageState,setHomePageState]=useRecoilState(HomePageAtom)
-  
-
- 
     const settings = {
       dots: true,
       infinite: true,
@@ -54,13 +50,11 @@ const  Carousel = () =>{
                     {item.title}
                   </h1>
                   <div className="mt-10">
-                    <Link
-                      href="/shop"
+                    <BaseButton
+                     className="uppercase  text-lg font-bold hover:bg-gray-1300/90 bg-gray-1300 text-white px-3 py-2 rounded-full leading-5 tracking-[0.03em]"
                     >
-                      <a className="uppercase  text-lg font-bold hover:bg-gray-1300/90 bg-gray-1300 text-white px-3 py-2 rounded-full leading-5 tracking-[0.11em]">
-                      SHOP NOW
-                      </a>
-                    </Link>
+                      {item.button_text}
+                    </BaseButton>
                   </div>
                 </div>
 

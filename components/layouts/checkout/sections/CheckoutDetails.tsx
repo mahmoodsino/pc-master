@@ -9,9 +9,7 @@ import {
   PayPalScriptProvider,
 } from '@paypal/react-paypal-js'
 import {
-  AddresToDeleteIdAtom,
   getClientToken,
-  getOrderID,
   getPaymentProvidor,
   OrderDetailsAtom,
   registerCountryAtom,
@@ -21,7 +19,6 @@ import { useEffect, useState } from "react";
 import { PayPalButton } from "react-paypal-button-v2";
 import { Spinner } from "../../../spinner";
 import { useRouter } from "next/router";
-import SelectAddAddress, { openSelectAddressModal } from "./SelectAddAddress";
 import { BaseButton } from "../../../buttons";
 
 
@@ -45,7 +42,6 @@ const CheckoutDetails = () => {
   const [savedOrderId, setSavedOrderId] = useState<number>(0);
   const [orderDetails, setOrderDetails] = useRecoilState(OrderDetailsAtom);
   const [checkout, setCheckOut] = useState(false);
-  const [addressId, setAddressId] = useRecoilState(AddresToDeleteIdAtom);
   const [clientToken,setClientToken]=useState<string>()
   const [firstName,setFirstName]=useState("")
   const [lastName,setLastName]=useState("")
@@ -108,26 +104,19 @@ const CheckoutDetails = () => {
 
   const submit = async (data: IFormInputs) => {
     setPhone(data.phone)
-    if (addressId > 0) {
       setCheckOut(true);
-    }
   };
 
   return (
     <div className="shadow-[0_0_10px_rgba(0,0,0,0.25)] sm:w-[100%] mb-10 md:w-[75%] lg:w-[55%] rounded-md">
-      <h1 className="text-xl font-bold py-3 bg-gray-1350 px-14 tracking-[0.11em]">
+      <h1 className="text-xl font-bold py-3 bg-gray-1350 px-14 tracking-[0.03em]">
         Billing Details
       </h1>
       {!loading ? 
     <div>
 
 
-        <div className="px-14 pt-5">
-              <SelectAddAddress />
-              {addressId > 0 ? null : (
-                <p className=" text-xs text-red-950">Please Select Address</p>
-              )}
-            </div>
+     
         <form onSubmit={handleSubmit(submit)}> 
           <div className="md:mx-14 sm:mx-7 py-4 border-b mb-10">
             <BaseInput
@@ -165,7 +154,7 @@ const CheckoutDetails = () => {
             <p className="text-xs text-red-950 ">{errors.phone?.message}</p>
           </div>
           <div className="  flex  justify-between px-14 ">
-            <h1 className=" text-xl font-bold tracking-[0.11em]">
+            <h1 className=" text-xl font-bold tracking-[0.03em]">
               Payment Method
             </h1>
           
@@ -189,11 +178,11 @@ const CheckoutDetails = () => {
             //   height: 40
             // }}
             
-              createOrder={async () => {
-                const res = await getOrderID(token,addressId,paymentProvidorState[0].id,firstName,lastName,email,phone);
-                setSavedOrderId(res.result.saved_order_id);
-                return res.result.client_result.order_id;
-              }}
+              // createOrder={async () => {
+              //   const res = await getOrderID(token,addressId,paymentProvidorState[0].id,firstName,lastName,email,phone);
+              //   setSavedOrderId(res.result.saved_order_id);
+              //   return res.result.client_result.order_id;
+              // }}
               onApprove={async ( action: any) => {
                 const order = await action.order.capture();
               }}

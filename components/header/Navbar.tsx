@@ -54,7 +54,7 @@ const Navbar = () => {
           <div className=" w-[18%]">
             <Image src={img1} />
           </div>
-          <div className="grow flex justify-evenly items-center  text-sm uppercase  font-bold leading-[21px] tracking-[0.11em]">
+          <div className="grow flex justify-evenly items-center  text-sm uppercase  font-bold leading-[21px] tracking-[0.03em]">
             {routse.map((item) => {
               return (
                 <Link key={uuidv4()} href={item.path}>
