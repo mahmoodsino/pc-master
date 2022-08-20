@@ -3,14 +3,13 @@ import {EditModel} from "./modals/index";
 import {ChangePassword} from "./modals";
 import {BaseButton} from "../../../buttons";
 import { keyIcon } from "../../../icons/Icons";
-import { OpenEditModelAtom,ChangePassAtom,ProfileInfo, TokenAtom } from "../../../../helper/state";
+import { OpenEditModelAtom,ChangePassAtom, TokenAtom } from "../../../../helper/state";
 import getUser from "../../../../helper/sever/users/user/services";
 import { useEffect, useState } from "react";
 import { UserInterface } from "../../../../helper/interfaces";
 
 const MyProfile = () => {
-  const [profileInformarion, setProfileInformation] =
-    useRecoilState(ProfileInfo);
+  
   const [showEditModel, setShowEditModel] = useRecoilState(OpenEditModelAtom);
   const [showChangePassword, setShowChangePassword] =
     useRecoilState(ChangePassAtom);
@@ -39,7 +38,7 @@ const MyProfile = () => {
 
         getdata()
       }
-    },[])
+    },[showEditModel])
 
 
 

@@ -4,7 +4,6 @@ import { BaseButton } from "../../../../buttons";
 import { BaseInput } from "../../../../inputs";
 import {
   OpenEditModelAtom,
-  ProfileInfo,
   SuccessEdit,
 } from "../../../../../helper/state";
 import { UserInterface } from "../../../../../helper/interfaces";
@@ -28,19 +27,8 @@ interface IFormInputs {
 
 const EditModel = ({ userInfo, setUserInfo, token }: User) => {
   const [showEditModel, setShowEditModel] = useRecoilState(OpenEditModelAtom);
-  const [profileInformarion, setProfileInformation] =
-    useRecoilState(ProfileInfo);
   const [editSuccess, setEditSuccess] = useRecoilState(SuccessEdit);
   
-
-
-  // const defaultValues = {
-  //   firstName: userInfo?.first_name,
-  //   lastName:userInfo?.last_name,
-  //   email: userInfo?.email
-  // };
-
-
 
 
 const {

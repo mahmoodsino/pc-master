@@ -55,7 +55,7 @@ const DetailsCard = () => {
   );
   const { modifiersId } = useProtectPurchaseCard();
   const [newCart, setNewCart] = useRecoilState(NewCartAtom);
-  const[removeLoading,setRemoveLoading]=useState(false)
+  const [removeLoading, setRemoveLoading] = useState(false);
 
   const handleAddToCart = async (clickedItem: DetailsType) => {
     setNewCart((prev) => {
@@ -260,6 +260,7 @@ const DetailsCard = () => {
     });
   }, [attributeToSetVAriation]);
 
+  let notAvailable: string = "";
   const EditCArt = (id: number) => {
     let indexcart: number;
     indexcart = newCart.findIndex((item) =>
@@ -277,34 +278,39 @@ const DetailsCard = () => {
       }
     );
     if (indexcart >= 0) {
-      return (
-        <div>
-          <div className="flex bg-green-950 rounded-full space-x-4  px-4 py-1">
-            <BaseButton
-              // @ts-ignore
-              onClick={() => handleRemoveFromCart(newCart[indexcart].id)}
-              className="text-2xl"
-            >
-              <MinusIcon className="w-3.5 text-white" />
-            </BaseButton>
-            <p className="text-white w-[35px] text-center">
-              {newCart[indexcart].quantity}
-            </p>
-            <BaseButton
-              disabled={
-                newCart[indexcart].quantity ===
-                variationState.available_quantity
-                  ? true
-                  : false
-              }
-              onClick={() => handleAddToCart(detailsState)}
-              className="disabled:cursor-not-allowed"
-            >
-              <BlusIcon className="text-white w-4" />
-            </BaseButton>
+      if (newCart[indexcart].quantity === variationState.available_quantity){
+        notAvailable="sorry we dont have more quantity !!"
+      }else {
+        notAvailable=""
+      }
+        return (
+          <div>
+            <div className="flex bg-green-950 rounded-full space-x-4  px-4 py-1">
+              <BaseButton
+                // @ts-ignore
+                onClick={() => handleRemoveFromCart(newCart[indexcart].id)}
+                className="text-2xl"
+              >
+                <MinusIcon className="w-3.5 text-white" />
+              </BaseButton>
+              <p className="text-white w-[35px] text-center">
+                {newCart[indexcart].quantity}
+              </p>
+              <BaseButton
+                disabled={
+                  newCart[indexcart].quantity ===
+                  variationState.available_quantity
+                    ? true
+                    : false
+                }
+                onClick={() => handleAddToCart(detailsState)}
+                className="disabled:cursor-not-allowed"
+              >
+                <BlusIcon className="text-white w-4" />
+              </BaseButton>
+            </div>
           </div>
-        </div>
-      );
+        );
     }
   };
   //for button
@@ -353,20 +359,19 @@ const DetailsCard = () => {
   const removeFromWishList = async (Variat: Variation) => {
     const index = wishList.findIndex(
       (item) => item.variation?.id === Variat.id
-      );
-      setRemoveLoading(true)
+    );
+    setRemoveLoading(true);
     if (index !== -1) {
       const id = wishList[index].id;
       if (id) {
         const res = await deleteWishList(token, id);
-        if(res){
-          setRemoveLoading(false)
+        if (res) {
+          setRemoveLoading(false);
         }
       }
     }
     const response = await getWishList(token);
     setWishList(response.result.items);
-   
   };
 
   return (
@@ -418,50 +423,61 @@ const DetailsCard = () => {
                 )}
               </div>
             )}
-            {/* {variationState.available_quantity < 1 ? (
-              <h1 className="text-red-950 text-xs ">
-                this product is not available now !!
-              </h1>
-            ) : null} */}
-              {!removeLoading ? 
-                <div>
-                  
-                  {wishList.length === 0 ? (
-                    <BaseButton onClick={() =>
+
+            {!removeLoading ? (
+              <div>
+                {wishList.length === 0 ? (
+                  <BaseButton
+                    onClick={() =>
                       token.length > 1
                         ? setOpenAddToWishList(true)
                         : setContinueAsGuestModal(true)
-                    } className=" bg-gray-400 px-3 py-1 rounded-full text-white">
-                      <HeartIcon
-                        className="w-4 mr-1 fill-white mb-0.5 cursor-pointer inline-block "
-                      />Add to Wishlist
-                    </BaseButton>
-                  ) : (
-                    <div>
-                      {variationState.id && handelHeart(variationState.id) ? (
-                        <BaseButton onClick={() =>
+                    }
+                    className=" bg-gray-400 px-3 py-1 rounded-full text-white"
+                  >
+                    <HeartIcon className="w-4 mr-1 fill-white mb-0.5 cursor-pointer inline-block " />
+                    Add to Wishlist
+                  </BaseButton>
+                ) : (
+                  <div>
+                    {variationState.id && handelHeart(variationState.id) ? (
+                      <BaseButton
+                        onClick={() =>
                           variationState && removeFromWishList(variationState)
-                        } className=" bg-gray-400 px-3 py-1 rounded-full text-white">
-                        <RedHeartIcon
-                          className="w-4 mr-1 fill-white mb-0.5 cursor-pointer inline-block "
-                        />Add to Wishlist
+                        }
+                        className=" bg-gray-400 px-3 py-1 rounded-full text-white"
+                      >
+                        <RedHeartIcon className="w-4 mr-1 fill-white mb-0.5 cursor-pointer inline-block " />
+                        Add to Wishlist
                       </BaseButton>
-                      ) : (
-                        <BaseButton onClick={() => setOpenAddToWishList(true)} className=" bg-gray-400 px-3 py-1 rounded-full text-white">
-                          <HeartIcon
-                            className="w-4 mr-1 fill-white mb-0.5 cursor-pointer inline-block "
-                          />Add to Wishlist
-                        </BaseButton>
-                      )}
-                    </div>
-                  )}
-                </div> : 
-                <div className="flex justify-center items-center">
-                  <Spinner className="w-7 fill-green-950" />
-                </div>
-            }
+                    ) : (
+                      <BaseButton
+                        onClick={() => setOpenAddToWishList(true)}
+                        className=" bg-gray-400 px-3 py-1 rounded-full text-white"
+                      >
+                        <HeartIcon className="w-4 mr-1 fill-white mb-0.5 cursor-pointer inline-block " />
+                        Add to Wishlist
+                      </BaseButton>
+                    )}
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="flex justify-center items-center">
+                <Spinner className="w-7 fill-green-950" />
+              </div>
+            )}
           </div>
         )}
+        {variationState.available_quantity < 1 ? (
+          <h1 className="text-red-950 text-xs ">
+            this product is not available now !!
+          </h1>
+        ) : notAvailable.length>2 ?(
+          <h1 className="text-red-950 text-xs ">
+            {notAvailable}
+          </h1>
+        )  : null}
       </div>
       <div className="ml-4">
         {Object.keys(names).map((key) => {

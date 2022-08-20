@@ -47,6 +47,14 @@ const useProtectPurchaseCard = () => {
                   </label>
                 );
               })}
+              <div className="border-t border-dashed mr-16 mt-5 border-[#d7d7d7] " defaultChecked={true}>
+              <label  className="mt-5">
+                    <input checked={modifiersId===0 ? true : false} onChange={(e) => setModifiersId(0)}  type="radio"  />
+                    
+                    <span className="design"></span>
+                    <span className="value">I don't need protection at this time</span>
+                  </label>
+              </div>
             </div>
           );
         }
