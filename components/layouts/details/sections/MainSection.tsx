@@ -83,7 +83,7 @@ const MainSection = () => {
         <meta name="description" content={detailsState.product.seo_description} />
         {detailsState.product.seo_keywords.map(keyword => {
           return (
-            <meta name="keywords" content={keyword} />
+            <meta key={keyword} name="keywords" content={keyword} />
           )
         })}
       </head>
