@@ -4,7 +4,7 @@ import { RecoilRoot, useRecoilState } from "recoil";
 import { FixedNavbar, Navbar } from "../components/header";
 import { Footer } from "../components/fotter";
 import { MobileSidbar } from "../components/sidebar";
-import {  ReactNode, useEffect } from "react";
+import {  MutableRefObject, ReactNode, useEffect, useRef } from "react";
 import { ActiveDropDownAtom, AllCartsInfo, AllWishListsInfoAtom,  FetchedCartItemsAtom, getAddress, getCartItems, getCountries, getWishList, OpenAddNewAddressModalAtom, OpenEditAddressModalAtom, optionTypeCountry, registerCountryAtom, TokenAtom, WishListAtom } from "../helper";
 import { addressatom } from "../components/layouts/account/sections/AddressBook";
 import Notification from "../components/push-notification-layout/Notification";
@@ -35,26 +35,29 @@ const App = ({ children }: Props) => {
   const [openAddNewAddressModal, setOpenAddNewAddressModal] = useRecoilState(
     OpenAddNewAddressModalAtom
   );
+  const timerRef = useRef() as MutableRefObject<NodeJS.Timeout>;
+
 
 
   if (typeof window !== "undefined") {
     setToken(localStorage.getItem("token") || "");
   }
-  // useEffect(() => {
-     
-  // },[])
 
- 
 
 useEffect(() => {
   const getData = async () => {
     const res = await getCartItems(token);
+    console.log(res);
+    
     setAllCartsInfo(res.result)
     const response =await getWishList(token)
     setAllWishListInfo(response.result)
   };
   if(token.length>1) {
-    getData();
+    clearTimeout(timerRef.current);
+    timerRef.current=setTimeout(() => {
+      getData();
+    }, 1000);
   }
 }, [wishList,token]);
 
@@ -66,7 +69,10 @@ useEffect(() => {
     setWishList(response.result.items)
   };
   if(token.length>1) {
-    getData();
+    clearTimeout(timerRef.current);
+      timerRef.current=setTimeout(() => {
+        getData();
+      }, 1000);
   }
 }, [token]);
 
@@ -129,7 +135,10 @@ function MyApp({ Component, pageProps }: AppProps) {
           </div>
           <Navbar />
           <MobileSidbar />
-          <Component {...pageProps} />
+          <div className="min-h-[60vh]">
+            <Component {...pageProps} />
+
+          </div>
           <Footer />
         </App>
       </RecoilRoot>

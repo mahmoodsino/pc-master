@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { MutableRefObject, useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 import {
   AllCartsInfo,
@@ -36,6 +36,8 @@ const MainSection = () => {
   const [selectDelivaryTypeState, setSelectDelivaryTypeState] = useRecoilState(
     SelectDelivaryTypeAtom
   );
+  const timerRef = useRef() as MutableRefObject<NodeJS.Timeout>;
+
 
   useEffect(() => {
     setNewCart([]);
@@ -44,7 +46,12 @@ const MainSection = () => {
       setAllCartsInfo(res.result);
     };
     if (token.length > 1) {
-      getData();
+      clearTimeout(timerRef.current);
+      timerRef.current=setTimeout(() => {
+        getData();
+        
+      }, 1000);
+
     }
   }, [carts]);
 
@@ -58,7 +65,12 @@ const MainSection = () => {
       }
     };
     if (token.length > 1) {
-      getData();
+      clearTimeout(timerRef.current);
+      timerRef.current=setTimeout(() => {
+        getData();
+        
+      }, 1000);
+
     }
   }, []);
 

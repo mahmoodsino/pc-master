@@ -12,17 +12,17 @@ import {
 } from "../../../../helper";
 import { v4 as uuidv4 } from "uuid";
 import no_image from "../../../../public/assets/image/no_image.jpg";
-import { useState } from "react";
+import { MutableRefObject, useRef, useState } from "react";
 import { Spinner } from "../../../spinner";
 
 const CartItems = () => {
   const [carts, setCarts] = useRecoilState(FetchedCartItemsAtom);
   const [token, setToken] = useRecoilState(TokenAtom);
-  const [loading, setLoading] = useState(false);
+
+  const timerRef = useRef() as MutableRefObject<NodeJS.Timeout>;
 
   const handleAddToCart = async (clickedItem: FetchedItems) => {
     setCarts((prev) => {
-      setLoading(true);
       const isItemInCarts = prev.find((item) => item.id === clickedItem.id);
       if (isItemInCarts) {
         return prev.map((item) =>
@@ -50,17 +50,17 @@ const CartItems = () => {
       let newQuantity = carts[isItemInCarts].quantity;
       newQuantity++;
       let id = carts[isItemInCarts].id;
-      if (id) {
-        const res = await updateCart(token, id, newQuantity, "item");
-        if (res) {
-          setLoading(false);
+
+      clearTimeout(timerRef.current);
+      timerRef.current = setTimeout(async () => {
+        if (id) {
+          const res = await updateCart(token, id, newQuantity, "item");
         }
-      }
+      }, 1000);
     }
   };
 
   const handleRemoveFromCart = async (id: number, reomve?: string) => {
-    setLoading(true);
     setCarts((prev) =>
       prev.reduce((ack, item) => {
         if (item.id === id) {
@@ -84,15 +84,18 @@ const CartItems = () => {
 
     if (availableQuantity && itemQuantity > availableQuantity) {
       itemQuantity = availableQuantity;
-      const res = await updateCart(token, id, itemQuantity, "item");
+      clearTimeout(timerRef.current);
+      timerRef.current=setTimeout(async () => {
+        const res = await updateCart(token, id, itemQuantity, "item");
+      }, 1000);
     }
-
     if (itemQuantity > 1 && !reomve) {
       itemQuantity--;
-      const res = await updateCart(token, id, itemQuantity, "item");
-      if (res) {
-        setLoading(false);
-      }
+      clearTimeout(timerRef.current);
+
+      timerRef.current=setTimeout(async () => {
+        const res = await updateCart(token, id, itemQuantity, "item");
+      }, 1000);
     } else if (itemQuantity === 1 || reomve) {
       const res = await deleteCart(token, id);
     }
@@ -100,14 +103,22 @@ const CartItems = () => {
 
   return (
     <div>
-      {carts.map((item) => {
-        return (
-          <div key={uuidv4()}>
-            <div className="shadow-[0_0_10px_rgba(0,0,0,0.25)] md:tracking-[0.03em] rounded-md mb-10">
-              <h1 className="md:text-xl font-bold   text-center py-5 left-0 right-0 m-auto bg-gray-1350">
-                Pickup or delivery from store, within 3 working days
-              </h1>
-              <div className="md:px-5">
+      <div >
+        <div className="shadow-[0_0_10px_rgba(0,0,0,0.25)] md:tracking-[0.03em] rounded-md mb-10">
+          <h1 className="md:text-xl font-bold   text-center py-5 left-0 right-0 m-auto bg-gray-1350">
+            Pickup or delivery from store, within 3 working days
+          </h1>
+          {carts.map((item) => {
+            return (
+              <div
+              key={uuidv4()}
+                className={`md:px-5 ${
+                  item.available_quantity &&
+                  item.quantity > item.available_quantity
+                    ? "bg-red-100"
+                    : "bg-white"
+                }`}
+              >
                 <div className="flex flex-row ">
                   <div className="w-40 ">
                     {item.variation?.images !== undefined &&
@@ -136,7 +147,7 @@ const CartItems = () => {
                     </span>
                   </div>
                 </div>
-                <div className=" mt-5 whitespace-nowrap mx-8 w-fit">
+                <div className="whitespace-nowrap mx-8 w-fit">
                   {item.modifierGroups.map((it) => {
                     return (
                       <h1 key={it.id} className="md:w-[60%] sm:w-[90%]">
@@ -153,12 +164,7 @@ const CartItems = () => {
                 </div>
 
                 <div
-                  className={`flex sm:justify-around  md:justify-between sm:space-x-2 md:space-x-14 border-t mx-8 py-6 ${
-                    item.available_quantity &&
-                    item.quantity > item.available_quantity
-                      ? "bg-red-700"
-                      : "bg-white"
-                  }`}
+                  className={`flex sm:justify-around  md:justify-between sm:space-x-2 md:space-x-14 border-b border-t mx-8 py-6 `}
                 >
                   <BaseButton
                     onClick={() =>
@@ -173,38 +179,30 @@ const CartItems = () => {
                     title="Save for later"
                     className="underline text-sm tracking-[0.05em]"
                   /> */}
-                  {!loading ? (
-                    <div className=" w-[129px] border sm:space-x-3 md:space-x-7 px-2 flex justify-around items-center rounded-full border-black">
-                      <BaseButton
-                        onClick={() => item.id && handleRemoveFromCart(item.id)}
-                        className="text-2xl"
-                      >
-                        <MinusIcon className="w-3.5 text-black" />
-                      </BaseButton>
-                      <span className="text-lg font-bold">{item.quantity}</span>
-                      <BaseButton
-                        disabled={
-                          item.quantity === item.available_quantity
-                            ? true
-                            : false
-                        }
-                        onClick={() => handleAddToCart(item)}
-                        className="disabled:cursor-not-allowed "
-                      >
-                        <BlusIcon className="text-black w-4" />
-                      </BaseButton>
-                    </div>
-                  ) : (
-                    <div className="w-[129px] flex items-center justify-center">
-                      <Spinner className="w-7 fill-green-950" />
-                    </div>
-                  )}
+                  <div className=" w-[129px] border sm:space-x-3 md:space-x-7 px-2 flex justify-around items-center rounded-full border-black">
+                    <BaseButton
+                      onClick={() => item.id && handleRemoveFromCart(item.id)}
+                      className="text-2xl  h-full"
+                    >
+                      <MinusIcon className="w-3.5 text-black" />
+                    </BaseButton>
+                    <span className="text-lg font-bold">{item.quantity}</span>
+                    <BaseButton
+                      disabled={
+                        item.quantity === item.available_quantity ? true : false
+                      }
+                      onClick={() => handleAddToCart(item)}
+                      className="disabled:cursor-not-allowed  h-full"
+                    >
+                      <BlusIcon className="text-black w-4 " />
+                    </BaseButton>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
-        );
-      })}
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 };

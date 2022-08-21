@@ -9,6 +9,7 @@ import {
   TokenAtom,
 } from "../../../../helper";
 import { BaseButton } from "../../../buttons";
+import { Spinner } from "../../../spinner";
 import SelectAddAddress from "./SelectAddAddress";
 import SelectDelivaryType, { selctedMethodAtom } from "./SelectDelivaryType";
 
@@ -21,6 +22,9 @@ const CartSummary = () => {
   );
   const [token,setToken]=useRecoilState(TokenAtom)
   const [savedOrderId,setSavedOrderId]=useState<number>()
+  const[loading,setLoading]=useState(false)
+
+  
 
   const { push } = useRouter();
 
@@ -42,21 +46,27 @@ const CartSummary = () => {
 
   const createOrder =async () => {
     if(selectedMethod==="PICKUP"){
+      setLoading(true)
       const res = await handelCrateOrder(token,selectedMethod)
-      console.log(res);
-      
       setSavedOrderId(res.result.saved_order_id);
       push({
         pathname: '/checkout',
         query: {savedOrder: encodeURI(res.result.saved_order_id) },
-    });
+      });
+      if(res){
+        setLoading(false)
+      }
     }else{
+      setLoading(true)
         const res = await handelCrateOrder(token,selectedMethod,shippingAddressId)
         setSavedOrderId(res.result.saved_order_id);
         push({
           pathname: '/checkout',
           query: {savedOrder: encodeURI(res.result.saved_order_id) },
-      });
+        });
+        if(res){
+          setLoading(false)
+        }
     }
     
   }
@@ -84,6 +94,13 @@ const CartSummary = () => {
           </div>
           <SelectDelivaryType />
         </div>
+        {selectedMethod==="DELIVERY" && 
+       <div className="flex flex-row justify-between">
+       <span className="font-semibold ">delivery fee</span>
+       <span className="">${allCartsInfo.delivery_fee}</span>
+     </div>
+
+        }
         {selectedMethod !== "PICKUP" && (
           <div className="flex flex-row justify-between text-sm md:tracking-[0.03em]">
             <div>
@@ -92,31 +109,39 @@ const CartSummary = () => {
             <SelectAddAddress />
           </div>
         )}
-        <div></div>
         <div className="flex flex-row justify-between">
           <span className="font-semibold ">Taxes</span>
-          <span className="">Calculated at checkout</span>
+          <span className="">{allCartsInfo.tax}</span>
         </div>
       </div>
 
       <div className="flex flex-row justify-between items-center px-7 py-6 ">
         <span className="font-semibold">Estimated Total</span>
-        <span className="font-bold text-lg">${allCartsInfo.total_price}</span>
+        {selectedMethod==="DELIVERY" ? 
+        <span className="font-bold text-lg">${allCartsInfo.total_price+allCartsInfo.delivery_fee}</span> : 
+        <span className="font-bold text-lg">${allCartsInfo.total_price}</span>  
+      }
       </div>
       <div className="  py-5 ">
         <div className="w-fit left-0 right-0 m-auto ">
-          <BaseButton
-            onClick={() => createOrder()}
-            disabled={
-              checkQuantity() &&
-              selectedMethod === "DELIVERY" &&
-              shippingAddressId < 0
-                ? true
-                : false
-            }
-            title="Continue to check out"
-            className="text-white disabled:bg-gray-500 disabled:cursor-not-allowed bg-green-1000 px-8 py-2 text-xl font-bold  rounded-full"
-          />
+          {!loading ? 
+            <BaseButton
+              onClick={() => createOrder()}
+              disabled={
+                checkQuantity() &&
+                selectedMethod === "DELIVERY" &&
+                shippingAddressId < 0
+                  ? true
+                  : false
+              }
+              title="Continue to checkout"
+              className="text-white disabled:bg-gray-500 disabled:cursor-not-allowed bg-green-1000 px-8 py-2 text-xl font-bold  rounded-full"
+            /> :
+            <div className="flex justify-center items-center">
+              <Spinner className="fill-green-950 w-20"/>
+            </div>
+          
+        }
         </div>
       </div>
       <div className="flex justify-center pb-3">

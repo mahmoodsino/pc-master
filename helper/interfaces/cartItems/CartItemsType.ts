@@ -5,7 +5,7 @@ import items from "./items"
 interface CartItemsType {
     cost_points:number,
     customer_points:number,
-    delivery_fee:boolean,
+    delivery_fee:string,
     earned_points:number,
     items:items[],
     sub_total_price:number,

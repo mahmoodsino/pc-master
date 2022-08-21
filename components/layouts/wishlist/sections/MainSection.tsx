@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { MutableRefObject, useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 import {
   AllWishListsInfoAtom,
@@ -24,6 +24,7 @@ const MainSection = () => {
   const [wishList, setWishList] = useRecoilState(WishListAtom);
   const [token, setToken] = useRecoilState(TokenAtom);
   const [loading,setLoading]=useState(false)
+  const timerRef = useRef() as MutableRefObject<NodeJS.Timeout>;
 
 
   const {push} =useRouter()
@@ -32,13 +33,11 @@ const MainSection = () => {
     const getData = async () => {
       const response =await getWishList(token)
       setAllWishListInfo(response.result)
-      setLoading(false)
-
     };
     if(token.length>1) {
       getData();
     }
-  }, [wishList]);
+  }, []);
   
   useEffect(() => {
     const getData = async () => {
@@ -94,9 +93,13 @@ const MainSection = () => {
       let newQuantity = wishList[isItemInCarts].quantity;
       newQuantity++;
       let id = wishList[isItemInCarts].id;
-      if (id) {
-        const res = await updateWishList(token, id, newQuantity, "b ", "b ");
-      }
+      clearTimeout(timerRef.current)
+      timerRef.current=setTimeout( async() => {
+          if (id) {
+            const res = await updateWishList(token, id, newQuantity, "item", clickedItem.title);
+          }
+        
+      }, 1000);
     }
   };
 
@@ -115,9 +118,13 @@ const MainSection = () => {
 
     const isItemInCarts = wishList.findIndex((item) => item.id === id);
     let itemQuantity = wishList[isItemInCarts].quantity;
+    let title = wishList[isItemInCarts].title
     if (itemQuantity > 1) {
       itemQuantity--;
-      const res = await updateWishList(token, id, itemQuantity, "v", "v");
+      clearTimeout(timerRef.current)
+      timerRef.current=setTimeout(async () => {
+        const res = await updateWishList(token, id, itemQuantity, "item", title);
+      }, 1000);
     } else if (itemQuantity === 1 || remove) {
       const res = await deleteWishList(token, id);
     }

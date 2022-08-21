@@ -40,7 +40,7 @@ const NewArrivalProducts = () => {
           New Arrivals
           </span>
         </div>
-        <div className="lg:w-[78%] lg:block sm:hidden whitespace-nowrap">
+        <div className="lg:w-[82%] lg:block sm:hidden whitespace-nowrap">
           <Cheips
             categories={homePageState.featured_categories}
             setItem={setItem}

@@ -85,7 +85,7 @@ const WishListTableDetails = ({
                     <div className=" w-[129px] border sm:space-x-3 md:space-x-7 px-2 flex justify-around items-center rounded-full border-black">
                       <BaseButton
                         onClick={() =>  item.id && handelDecreaseWishList(item.id)}
-                        className="text-2xl"
+                        className="text-2xl h-full py-1"
                       >
                         <MinusIcon className="w-3.5 text-black" />
                       </BaseButton>
@@ -93,9 +93,9 @@ const WishListTableDetails = ({
                       <BaseButton
                        
                         onClick={() => handelincreaseWishList(item)}
-                        className="disabled:cursor-not-allowed "
+                        className="disabled:cursor-not-allowed    "
                       >
-                        <BlusIcon className="text-black w-4" />
+                        <BlusIcon className="text-black w-4 py-1" />
                       </BaseButton>
                     </div>
                       

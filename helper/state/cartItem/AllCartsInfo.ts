@@ -6,7 +6,7 @@ const AllCartsInfoAtom = atom<CartItemsType>({
     default: {
         cost_points: 0,
         customer_points: 0,
-        delivery_fee: false,
+        delivery_fee: "",
         earned_points: 0,
         items: [],
         sub_total_price: 0,

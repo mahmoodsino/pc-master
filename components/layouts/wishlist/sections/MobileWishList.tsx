@@ -1,7 +1,7 @@
 import { useRecoilState } from "recoil";
 import { WishListAtom, WishListItems } from "../../../../helper";
 import { BaseButton } from "../../../buttons";
-import { CartIcon } from "../../../icons";
+import { BlusIcon, CartIcon, MinusIcon } from "../../../icons";
 import { CloseIcon } from "../../../icons";
 import { v4 as uuidv4 } from "uuid";
 import Image from "next/image";
@@ -78,17 +78,16 @@ const MobileWishList = ({
               <div className="flex border flex-row sm:w-[50%] md:w-[20%] justify-around items-center">
                 <BaseButton
                   onClick={() => item.id && handelDecreaseWishList(item.id)}
-                  className="bg-green-950 rounded-full w-4 h-4 flex justify-center items-center"
+                  className="text-2xl h-full py-1"
                 >
-                  <h1 className="mt-0.5">-</h1>
+                  <MinusIcon className="w-3.5 text-black" />
                 </BaseButton>
-
-                <h1 className="mt-1">2</h1>
+                <span className="text-lg font-bold">{item.quantity}</span>
                 <BaseButton
                   onClick={() => handelincreaseWishList(item)}
-                  className="bg-green-950 rounded-full w-4 h-4 flex justify-center items-center"
+                  className="disabled:cursor-not-allowed h-full py-1"
                 >
-                  <h1 className="mt-0.5">+</h1>
+                  <BlusIcon className="text-black w-4" />
                 </BaseButton>
               </div>
             </div>
