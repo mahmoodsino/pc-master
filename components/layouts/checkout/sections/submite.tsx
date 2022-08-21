@@ -5,7 +5,7 @@ import {
   usePayPalHostedFields,
 } from "@paypal/react-paypal-js";
 import { useRecoilState } from "recoil";
-import { AddresToDeleteIdAtom, getOrderID, TokenAtom } from "../../../../helper";
+import { AddresToDeleteIdAtom,  TokenAtom } from "../../../../helper";
 import { clientTokenAtom } from "./PaypalH";
 
 const SubmitPayment = () => {

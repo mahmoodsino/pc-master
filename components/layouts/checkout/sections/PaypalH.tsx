@@ -6,7 +6,7 @@
 //   usePayPalHostedFields
 // } from "@paypal/react-paypal-js";
 // import { Spinner } from "../../../spinner";
-import { AddresToDeleteIdAtom, getClientToken, getOrderID, TokenAtom } from "../../../../helper";
+import { AddresToDeleteIdAtom, getClientToken, TokenAtom } from "../../../../helper";
 // import { atom, useRecoilState } from "recoil";
 
 
