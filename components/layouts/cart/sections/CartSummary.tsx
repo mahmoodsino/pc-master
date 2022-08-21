@@ -1,10 +1,12 @@
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import {
   AllCartsInfo,
   FetchedCartItemsAtom,
+  handelCrateOrder,
   ShippingAddressIdAtom,
+  TokenAtom,
 } from "../../../../helper";
 import { BaseButton } from "../../../buttons";
 import SelectAddAddress from "./SelectAddAddress";
@@ -17,6 +19,8 @@ const CartSummary = () => {
   const [shippingAddressId, setShippingAddressId] = useRecoilState(
     ShippingAddressIdAtom
   );
+  const [token,setToken]=useRecoilState(TokenAtom)
+  const [savedOrderId,setSavedOrderId]=useState<number>()
 
   const { push } = useRouter();
 
@@ -35,6 +39,27 @@ const CartSummary = () => {
     }
     return isFound;
   };
+
+  const createOrder =async () => {
+    if(selectedMethod==="PICKUP"){
+      const res = await handelCrateOrder(token,selectedMethod)
+      console.log(res);
+      
+      setSavedOrderId(res.result.saved_order_id);
+      push({
+        pathname: '/checkout',
+        query: {savedOrder: encodeURI(res.result.saved_order_id) },
+    });
+    }else{
+        const res = await handelCrateOrder(token,selectedMethod,shippingAddressId)
+        setSavedOrderId(res.result.saved_order_id);
+        push({
+          pathname: '/checkout',
+          query: {savedOrder: encodeURI(res.result.saved_order_id) },
+      });
+    }
+    
+  }
 
   return (
     <div className="shadow-[0_0_10px_rgba(0,0,0,0.25)]  md:tracking-[0.03] rounded-md mb-10">
@@ -55,11 +80,11 @@ const CartSummary = () => {
         <div className="flex flex-row justify-between text-sm md:tracking-[0.03em] z-50">
           <div>
             <span className="font-semibold">Order type </span>
-            {selectedMethod === "pickup" && <span>(free)</span>}
+            {selectedMethod === "PICKUP" && <span>(free)</span>}
           </div>
           <SelectDelivaryType />
         </div>
-        {selectedMethod !== "pickup" && (
+        {selectedMethod !== "PICKUP" && (
           <div className="flex flex-row justify-between text-sm md:tracking-[0.03em]">
             <div>
               <span className="font-semibold">Address</span>
@@ -81,10 +106,10 @@ const CartSummary = () => {
       <div className="  py-5 ">
         <div className="w-fit left-0 right-0 m-auto ">
           <BaseButton
-            onClick={() => push("./checkout")}
+            onClick={() => createOrder()}
             disabled={
               checkQuantity() &&
-              selectedMethod === "delivery" &&
+              selectedMethod === "DELIVERY" &&
               shippingAddressId < 0
                 ? true
                 : false
@@ -95,7 +120,7 @@ const CartSummary = () => {
         </div>
       </div>
       <div className="flex justify-center pb-3">
-        {selectedMethod === "delivery" && shippingAddressId < 0 && (
+        {selectedMethod === "DELIVERY" && shippingAddressId < 0 && (
           <span className="text-xs text-red-950">
             Please select address to checkout !
           </span>

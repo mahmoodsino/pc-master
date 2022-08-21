@@ -11,6 +11,7 @@ import {
 import {
   getClientToken,
   getPaymentProvidor,
+  handelOrderPay,
   OrderDetailsAtom,
   registerCountryAtom,
   TokenAtom,
@@ -32,15 +33,13 @@ interface IFormInputs {
 interface PaymentProvider {
   public_key:string,
   id:number
+  name:string
 }
 
 const CheckoutDetails = () => {
-  const [registerCountry, setRegisterCountry] =
-    useRecoilState(registerCountryAtom);
-  const [scriptLoaded, setScriptLoaded] = useState(false);
+  
   const [token, setToken] = useRecoilState(TokenAtom);
   const [savedOrderId, setSavedOrderId] = useState<number>(0);
-  const [orderDetails, setOrderDetails] = useRecoilState(OrderDetailsAtom);
   const [checkout, setCheckOut] = useState(false);
   const [clientToken,setClientToken]=useState<string>()
   const [firstName,setFirstName]=useState("")
@@ -51,6 +50,10 @@ const CheckoutDetails = () => {
   const [paymentProvidorState,setPaymentProvidorState]=useState<PaymentProvider[]>([])
   const [loading,setLoading]=useState(false)
   const[phone,setPhone]=useState<number>(0)
+  const[paymentProvidorId,setPaymenProvidorId]=useState<number>()
+  const[publicKey,setPublicKey]=useState<string>()
+
+  const router = useRouter().query
   
   useEffect(() => {
     const first =localStorage.getItem("first_name"||"")
@@ -69,10 +72,32 @@ const CheckoutDetails = () => {
   },[])
 
   useEffect(() => {
+    paymentProvidorState.map(providor => {
+      if(providor.name==="paypal"){
+        setPaymenProvidorId(providor.id)
+        setPublicKey(providor.public_key)
+      }
+    })
+  },[paymentProvidorState])
+
+  // useEffect(() => {
+  //   console.log(router.savedOrder);
+  //   const getData=async () => {
+  //     if(paymentProvidorId&&router.savedOrder){
+  //       const res =await handelOrderPay(Number(router.savedOrder),paymentProvidorId)
+  //       console.log(res);
+  //     }
+  //   }
+  //   getData()
+    
+  // },[router.savedOrder,paymentProvidorId])
+  
+
+  useEffect(() => {
     const getData = async () => {
       setLoading(true)
-      if(paymentProvidorState.length>0&&userId&&email){
-        const res = await getClientToken(paymentProvidorState[0].id,userId,email)
+      if(paymentProvidorId&&userId&&email){
+        const res = await getClientToken(paymentProvidorId,userId,email)
         setClientToken(res.result.client_token);
         if(res){
           setLoading(false)
@@ -80,44 +105,45 @@ const CheckoutDetails = () => {
       }
     }
     getData()
-  }, [paymentProvidorState,userId,email]);
+  }, [paymentProvidorId,userId,email]);
 
-  const {
-    control,
-    register,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm<IFormInputs>({
-    resolver: yupResolver(checkoutSchema),
-  });
-  useEffect(() => {
-    const userType = localStorage.getItem("type")
+  // const {
+  //   control,
+  //   register,
+  //   handleSubmit,
+  //   setValue,
+  //   formState: { errors },
+  // } = useForm<IFormInputs>({
+  //   resolver: yupResolver(checkoutSchema),
+  // });
 
-    if(userType === "user") {
-      setValue("firstName",firstName)
-      setValue("lastName",lastName)
-      setValue("email",email)
-    }
+  // useEffect(() => {
+  //   const userType = localStorage.getItem("type")
 
-  },[firstName,lastName,email])
+  //   if(userType === "user") {
+  //     setValue("firstName",firstName)
+  //     setValue("lastName",lastName)
+  //     setValue("email",email)
+  //   }
 
-  const submit = async (data: IFormInputs) => {
-    setPhone(data.phone)
-      setCheckOut(true);
-  };
+  // },[firstName,lastName,email])
+
+  // const submit = async (data: IFormInputs) => {
+  //   setPhone(data.phone)
+  //     setCheckOut(true);
+  // };
 
   return (
     <div className="shadow-[0_0_10px_rgba(0,0,0,0.25)] sm:w-[100%] mb-10 md:w-[75%] lg:w-[55%] rounded-md">
       <h1 className="text-xl font-bold py-3 bg-gray-1350 px-14 tracking-[0.03em]">
         Billing Details
       </h1>
-      {!loading ? 
+      {!loading&&publicKey&&clientToken ? 
     <div>
 
 
      
-        <form onSubmit={handleSubmit(submit)}> 
+        {/* <form onSubmit={handleSubmit(submit)}> 
           <div className="md:mx-14 sm:mx-7 py-4 border-b mb-10">
             <BaseInput
               placeholder="FirstName"
@@ -158,38 +184,41 @@ const CheckoutDetails = () => {
               Payment Method
             </h1>
           
-          </div>
+          </div> */}
 
-          {checkout ? (
+          {/* {checkout ? ( */}
             <div className="my-10 px-14">
 
             <PayPalScriptProvider
             options={{
-              'client-id':`https://www.paypal.com/sdk/js?client-id=${paymentProvidorState[0].public_key}`,
+              'client-id':`https://www.paypal.com/sdk/js?client-id=${publicKey}`,
               "data-client-token":clientToken,
               
             }}
           >
             <PayPalButton
-            // style={{
-            //   color:  'blue',
-            //   shape:  'pill',
-            //   label:  'pay',
-            //   height: 40
-            // }}
+            style={{
+              color:  'blue',
+              shape:  'pill',
+              label:  'pay',
+              height: 40
+            }}
             
-              // createOrder={async () => {
-              //   const res = await getOrderID(token,addressId,paymentProvidorState[0].id,firstName,lastName,email,phone);
-              //   setSavedOrderId(res.result.saved_order_id);
-              //   return res.result.client_result.order_id;
-              // }}
+              createOrder={async () => {
+                if(router.savedOrder&&paymentProvidorId){
+                  const res = await handelOrderPay(token,Number(router.savedOrder),paymentProvidorId)
+                  console.log(res);
+                  return res.result.client_result.order_id
+                }
+                
+              }}
               onApprove={async ( action: any) => {
                 const order = await action.order.capture();
               }}
               onSuccess={async () => {
                 push({
                   pathname: "/viewreceipt",
-                  query: { order: encodeURI(savedOrderId.toString()) },
+                  query: { order: encodeURI(Number(router.savedOrder).toString()) },
                 });
               }}
               onError={(err: any) => {
@@ -198,14 +227,14 @@ const CheckoutDetails = () => {
             />
             </PayPalScriptProvider>
             </div>
-          ) : (
+          {/* ) : (
             <BaseButton
             type="submit"
             className="ml-14 mt-5 mb-10 px-3 py-2  text-white font-semibold hover:bg-green-950/80 rounded-lg bg-green-950"
             title="checkout"
             ></BaseButton>
-            )}
-        </form> 
+            )} */}
+        {/* </form>  */}
     </div>  : 
     <div className="flex justify-center items-center">
       <Spinner className="w-32 fill-green-950"/>

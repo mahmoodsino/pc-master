@@ -7,10 +7,10 @@ export const SelectDelivaryTypeAtom = atom({
   default: false,
 });
 
-const delivaryMethods: string[] = ["pickup", "delivery"];
+const delivaryMethods: string[] = ["PICKUP", "DELIVERY"];
 export const selctedMethodAtom = atom({
   key: "selctedMethodAtom",
-  default: "pickup",
+  default: "PICKUP",
 });
 
 const SelectDelivaryType = () => {
@@ -24,7 +24,7 @@ const SelectDelivaryType = () => {
 
 
   useEffect(() => {
-    if(selectedMethod==="pickup"){
+    if(selectedMethod==="PICKUP"){
 
         setShippingAddressId(-1)
     }

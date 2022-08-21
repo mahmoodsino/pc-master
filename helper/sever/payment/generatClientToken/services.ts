@@ -7,8 +7,11 @@ const getClientToken = async (payment_provider_id:number,id:number,email:string)
             user:{
                 id:id,
                 email:email
-            }
-        })
+            },
+        },{    headers:{
+            "D-PAYMENT-AUTHORIZATION":"PK_1_OFJ6hbNa3BZ86vcYFe6a&1|7612616003^HZ8CG7Kl6QLpdYmVD0ns"
+        },}
+        )
         return res.data
     } catch (error) {
         console.log(error)
