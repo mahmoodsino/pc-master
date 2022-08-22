@@ -47,8 +47,6 @@ const App = ({ children }: Props) => {
 useEffect(() => {
   const getData = async () => {
     const res = await getCartItems(token);
-    console.log(res);
-    
     setAllCartsInfo(res.result)
     const response =await getWishList(token)
     setAllWishListInfo(response.result)

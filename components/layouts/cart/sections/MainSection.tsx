@@ -104,7 +104,7 @@ const MainSection = () => {
               </Link>
             </div>
             {carts.length > 0 ? (
-              <div className="md:ml-10 flex sm:flex-col lg:flex-row justify-between mt-10 md:pr-10">
+              <div className="md:ml-10 flex sm:flex-col lg:flex-row justify-around mt-10 md:pr-10">
                 <div className="lg:w-[56%]">
                   <CartItems />
                 </div>

@@ -9,7 +9,7 @@ const MinusIcon = ({className}:Props) => {
     <svg
     className={className}
     viewBox="0 0 14 3"
-    fill="none"
+    fill="current"
     xmlns="http://www.w3.org/2000/svg"
   >
     <path

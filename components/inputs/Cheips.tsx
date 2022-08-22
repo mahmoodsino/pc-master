@@ -13,7 +13,7 @@ function SampleNextArrow(props: any) {
   const { className, style, onClick } = props;
   return (
     <div
-      className={`text-black absolute right-1  -top-2   text  h-16 w-16   text-center cursor-pointer bg-white z-20 `}
+      className={`text-black absolute right-0  -top-2   text  h-16 w-16   text-center cursor-pointer bg-white z-20 `}
       style={{
         ...style,
         background: "linear-gradient(89deg, #ff000000, white)",
@@ -26,7 +26,7 @@ function SampleNextArrow(props: any) {
         width="35"
         height="35"
         fill="currentColor"
-        className="bi bi-caret-right absolute top-2 left-9"
+        className="bi bi-caret-right absolute top-2 left-9 opacity-75"
         viewBox="0 0 16 16"
       >
         <path d="M6 12.796V3.204L11.481 8 6 12.796zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753z" />
@@ -42,7 +42,7 @@ function SamplePrevArrow(props: any) {
       className={`text-black absolute -top-2 left-0   h-16 w-10  text-center  cursor-pointer bg-white  z-20    `}
       style={{
         ...style,
-        background: "linear-gradient(89deg, #ff000000, white)",
+        background: "linear-gradient(89deg,white , #ff000000)",
       }}
       onClick={onClick}
       onMouseEnter={onClick}
@@ -52,7 +52,7 @@ function SamplePrevArrow(props: any) {
         width="35"
         height="35"
         fill="currentColor"
-        className="bi bi-caret-left absolute top-2 right-1"
+        className="bi bi-caret-left absolute top-2 right-1 opacity-75"
         viewBox="0 0 16 16"
       >
         <path d="M10 12.796V3.204L4.519 8 10 12.796zm-.659.753-5.48-4.796a1 1 0 0 1 0-1.506l5.48-4.796A1 1 0 0 1 11 3.204v9.592a1 1 0 0 1-1.659.753z" />

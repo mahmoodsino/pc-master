@@ -3,11 +3,14 @@ import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { v4 as uuidv4 } from "uuid";
 import {
+  addToCart,
   CartItemsAtom,
   CouninueAsGuestModalAtom,
   deleteWishList,
   DetailsAtom,
   DetailsType,
+  FetchedCartItemsAtom,
+  getCartItems,
   getDetails,
   getWishList,
   items,
@@ -54,6 +57,8 @@ const DetailsCard = () => {
     []
   );
   const { modifiersId } = useProtectPurchaseCard();
+  const [carts, setCarts] = useRecoilState(FetchedCartItemsAtom);
+
   const [newCart, setNewCart] = useRecoilState(NewCartAtom);
   const [removeLoading, setRemoveLoading] = useState(false);
 
@@ -93,13 +98,29 @@ const DetailsCard = () => {
           quantity: 1,
           product_id: clickedItem.product.id,
           branch_id: 1,
-          description: "",
+          description: "item",
           modifierGroups: modifiersId !== 0 ? [modifiersId] : [],
           variation_id: variationState.id,
         },
       ];
     });
   };
+  useEffect(() => {
+    if (variationState.available_quantity > 0) {
+      setNewCart([
+        {
+          ...detailsState,
+          type: 1,
+          quantity: 1,
+          product_id: detailsState.product.id,
+          branch_id: 1,
+          description: "item",
+          modifierGroups: modifiersId !== 0 ? [modifiersId] : [],
+          variation_id: variationState.id,
+        },
+      ]);
+    }
+  }, [variationState,modifiersId]);
 
   const handleRemoveFromCart = async (id: number, reomve?: string) => {
     setNewCart((prev) =>
@@ -261,41 +282,96 @@ const DetailsCard = () => {
   }, [attributeToSetVAriation]);
 
   let notAvailable: string = "";
-  const EditCArt = (id: number) => {
-    let indexcart: number;
-    indexcart = newCart.findIndex((item) =>
-      //  item.variation_id === id
-      {
-        if (modifiersId === 0) {
-          return item.variation_id === id;
-        } else if (modifiersId !== 0) {
-          return (
-            item.variation_id === id &&
-            item.modifierGroups?.find((mid) => mid === modifiersId) !==
-              undefined
-          );
+  // const EditCArt = (id: number) => {
+  //   let indexcart: number;
+  //   indexcart = newCart.findIndex((item) =>
+  //     //  item.variation_id === id
+  //     {
+  //       if (modifiersId === 0) {
+  //         return item.variation_id === id;
+  //       } else if (modifiersId !== 0) {
+  //         return (
+  //           item.variation_id === id &&
+  //           item.modifierGroups?.find((mid) => mid === modifiersId) !==
+  //             undefined
+  //         );
+  //       }
+  //     }
+  //   );
+  //   if (indexcart >= 0) {
+  //     if (newCart[indexcart].quantity === variationState.available_quantity) {
+  //       notAvailable = "sorry we dont have more quantity !!";
+  //     } else {
+  //       notAvailable = "";
+  //     }
+  //     return (
+  //       <div>
+  //         <div className="flex bg-green-950 rounded-full space-x-4  px-4 py-1">
+  //           <BaseButton
+  //             // @ts-ignore
+  //             onClick={() => handleRemoveFromCart(newCart[indexcart].id)}
+  //             className="text-2xl"
+  //           >
+  //             <MinusIcon className="w-3.5 text-white" />
+  //           </BaseButton>
+  //           <p className="text-white w-[35px] text-center">
+  //             {newCart[indexcart].quantity}
+  //           </p>
+  //           <BaseButton
+  //             disabled={
+  //               newCart[indexcart].quantity ===
+  //               variationState.available_quantity
+  //                 ? true
+  //                 : false
+  //             }
+  //             onClick={() => handleAddToCart(detailsState)}
+  //             className="disabled:cursor-not-allowed"
+  //           >
+  //             <BlusIcon className="text-white w-4" />
+  //           </BaseButton>
+  //         </div>
+  //       </div>
+  //     );
+  //   }
+  // };
+  //for button
+
+  const CartButton = (id: number) => {
+    if (variationState.available_quantity === 0) {
+      return <h1 className="text-sm text-red-950">this product is not available now !!</h1>;
+    } else {
+      let indexcart: number;
+      indexcart = newCart.findIndex((item) =>
+        //  item.variation_id === id
+        {
+          if (modifiersId === 0) {
+            return item.variation_id === id;
+          } else if (modifiersId !== 0) {
+            return (
+              item.variation_id === id &&
+              item.modifierGroups?.find((mid) => mid === modifiersId) !==
+                undefined
+            );
+          }
         }
-      }
-    );
-    if (indexcart >= 0) {
-      if (newCart[indexcart].quantity === variationState.available_quantity){
-        notAvailable="sorry we dont have more quantity !!"
-      }else {
-        notAvailable=""
-      }
+      );
+      if (indexcart >= 0) {
         return (
-          <div>
-            <div className="flex bg-green-950 rounded-full space-x-4  px-4 py-1">
+          <div className="flex items-center space-x-3">
+            <div className="flex  sapce-x-2   ">
               <BaseButton
-                // @ts-ignore
+                //@ts-ignore
                 onClick={() => handleRemoveFromCart(newCart[indexcart].id)}
-                className="text-2xl"
+                className="bg-[#f2f2f2] rounded-full w-6 h-6 disabled:opacity-50"
+                disabled={newCart[indexcart].quantity === 1 ? true : false}
               >
-                <MinusIcon className="w-3.5 text-white" />
+                <MinusIcon className="w-3 text-center ml-1.5  " />
               </BaseButton>
-              <p className="text-white w-[35px] text-center">
+
+              <p className=" w-[35px] text-center">
                 {newCart[indexcart].quantity}
               </p>
+
               <BaseButton
                 disabled={
                   newCart[indexcart].quantity ===
@@ -304,16 +380,39 @@ const DetailsCard = () => {
                     : false
                 }
                 onClick={() => handleAddToCart(detailsState)}
-                className="disabled:cursor-not-allowed"
+                className="bg-[#f2f2f2] rounded-full w-6 h-6 disabled:opacity-50"
               >
-                <BlusIcon className="text-white w-4" />
+                <BlusIcon className="w-3 text-center ml-1.5  " />
               </BaseButton>
             </div>
+            <span className="text-xs text-[#999999]">only {variationState.available_quantity} available</span>
           </div>
         );
+      }
     }
   };
-  //for button
+
+  const finallAddtoCart = async () => {
+    newCart.map(async (item) => {
+      if (item.product) {
+        const res = await addToCart(
+          token,
+          1,
+          item.product?.id,
+          item.variation_id,
+          1,
+          1,
+          item.modifierGroups,
+          item.quantity,
+          "item"
+        );
+
+        const response = await getCartItems(token);
+        setCarts(response.result.items);
+      }
+    });
+  };
+
   const getbg = (id: number) => {
     let isfound = false;
     Object.keys(boolAttributeValue).forEach((key) => {
@@ -336,25 +435,25 @@ const DetailsCard = () => {
     return isFound;
   };
 
-  const handelCart = (id: number) => {
-    let isFound = false;
-    for (let item of newCart) {
-      if (newCart.length === 0) return isFound;
-      else if (modifiersId === 0) {
-        if (item.variation_id === id) {
-          return (isFound = true);
-        }
-      } else if (modifiersId !== 0) {
-        if (
-          item.variation_id === id &&
-          item.modifierGroups.find((item) => item === modifiersId) !== undefined
-        ) {
-          return (isFound = true);
-        }
-      }
-    }
-    return isFound;
-  };
+  // const handelCart = (id: number) => {
+  //   let isFound = false;
+  //   for (let item of newCart) {
+  //     if (newCart.length === 0) return isFound;
+  //     else if (modifiersId === 0) {
+  //       if (item.variation_id === id) {
+  //         return (isFound = true);
+  //       }
+  //     } else if (modifiersId !== 0) {
+  //       if (
+  //         item.variation_id === id &&
+  //         item.modifierGroups.find((item) => item === modifiersId) !== undefined
+  //       ) {
+  //         return (isFound = true);
+  //       }
+  //     }
+  //   }
+  //   return isFound;
+  // };
 
   const removeFromWishList = async (Variat: Variation) => {
     const index = wishList.findIndex(
@@ -386,43 +485,21 @@ const DetailsCard = () => {
         <span className="text-[22px] font-semibold">
           Price : ${variationState.price}
         </span>
+        {CartButton(variationState.id)}
         {variationState.id > 0 && (
           <div className="flex  items-center space-x-4">
-            {newCart.length === 0 ? (
-              <BaseButton
-                disabled={variationState.available_quantity < 1 ? true : false}
-                onClick={() =>
-                  token.length > 1
-                    ? handleAddToCart(detailsState)
-                    : setContinueAsGuestModal(true)
-                }
-                className={`text-white bg-green-950 tracking-[0.095em] px-3 py-1 rounded-full disabled:cursor-not-allowed disabled:bg-gray-500`}
-              >
-                <CartIcon className="w-[19px] mb-0.5 mr-2 fill-white inline-block" />
-                Add To Cart
-              </BaseButton>
-            ) : (
-              <div>
-                {handelCart(variationState.id) ? (
-                  <div>{EditCArt(variationState.id)}</div>
-                ) : (
-                  <BaseButton
-                    disabled={
-                      variationState.available_quantity < 1 ? true : false
-                    }
-                    onClick={() =>
-                      token.length > 1
-                        ? handleAddToCart(detailsState)
-                        : setContinueAsGuestModal(true)
-                    }
-                    className={`text-white bg-green-950 tracking-[0.095em] px-3 py-1 rounded-full disabled:cursor-not-allowed disabled:bg-gray-500`}
-                  >
-                    <CartIcon className="w-[19px] mr-2 fill-white inline-block" />
-                    Add to cart
-                  </BaseButton>
-                )}
-              </div>
-            )}
+            <BaseButton
+              disabled={variationState.available_quantity < 1 ? true : false}
+              onClick={() =>
+                token.length > 1
+                  ? finallAddtoCart()
+                  : setContinueAsGuestModal(true)
+              }
+              className={`text-white bg-green-950 tracking-[0.095em] px-3 py-1 rounded-full disabled:cursor-not-allowed disabled:bg-gray-500`}
+            >
+              <CartIcon className="w-[19px] mb-0.5 mr-2 fill-white inline-block" />
+              Add To Cart
+            </BaseButton>
 
             {!removeLoading ? (
               <div>
@@ -469,15 +546,6 @@ const DetailsCard = () => {
             )}
           </div>
         )}
-        {variationState.available_quantity < 1 ? (
-          <h1 className="text-red-950 text-xs ">
-            this product is not available now !!
-          </h1>
-        ) : notAvailable.length>2 ?(
-          <h1 className="text-red-950 text-xs ">
-            {notAvailable}
-          </h1>
-        )  : null}
       </div>
       <div className="ml-4">
         {Object.keys(names).map((key) => {

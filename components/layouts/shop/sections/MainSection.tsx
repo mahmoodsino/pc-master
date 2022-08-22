@@ -168,7 +168,7 @@ const MainSection = () => {
                     <a>
                       <div>
                         <div className="absolute -top-2 right-[0%] cursor-pointer flex items-center justify-center text-white bg-red-950 rounded-full text-sm w-4 h-4 ">
-                          {carts.length + newCart.length}
+                          {carts.length }
                         </div>
 
                         <CartIcon className="text-black w-6" />
