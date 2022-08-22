@@ -61,7 +61,7 @@ const useModifiers = () => {
                       <div className="flex ">
                         {val.modifiers.map((item) => {
                           return (
-                            <div className="flex justify-around">
+                            <div key={item.id} className="flex justify-around">
                               <Image
                                 src={item.image}
                                 alt="Picture of the author"
