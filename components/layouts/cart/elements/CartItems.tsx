@@ -164,7 +164,7 @@ const CartItems = () => {
                 </div>
 
                 <div
-                  className={`flex sm:justify-around  md:justify-between sm:space-x-2 md:space-x-14 border-b border-t mx-8 py-6 `}
+                  className={`flex sm:justify-around  md:justify-between sm:space-x-2 md:space-x-14 border-b  mx-8 py-6 `}
                 >
                   <BaseButton
                     onClick={() =>

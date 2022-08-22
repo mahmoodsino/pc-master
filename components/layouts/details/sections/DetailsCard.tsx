@@ -32,6 +32,7 @@ import {
 import { Spinner } from "../../../spinner";
 import { AddToWishList } from "../../wishlist";
 import ContinueAsGuest from "./ContinueAsGuest";
+import useModifiers from "./Modifiers";
 import useProtectPurchaseCard, { modifiersIdAtom } from "./ProtectPurchaseCard";
 
 const DetailsCard = () => {
@@ -61,6 +62,26 @@ const DetailsCard = () => {
 
   const [newCart, setNewCart] = useRecoilState(NewCartAtom);
   const [removeLoading, setRemoveLoading] = useState(false);
+  const {modifiersIdforModifiers} = useModifiers()
+  const [allModifires,setAllModifiers]=useState<number[]>([])
+
+
+  useEffect(() => {
+    if(modifiersId!==0){
+      setAllModifiers([])
+      modifiersIdforModifiers.map(item=>{
+        setAllModifiers(prev=> [...prev,item])
+      })
+      setAllModifiers(prev => [...prev,modifiersId])
+    }else{
+      setAllModifiers([])
+      modifiersIdforModifiers.map(item=>{
+        setAllModifiers(prev=> [...prev,item])
+      })
+    }
+  },[modifiersIdforModifiers,modifiersId])
+
+ 
 
   const handleAddToCart = async (clickedItem: DetailsType) => {
     setNewCart((prev) => {
@@ -71,7 +92,7 @@ const DetailsCard = () => {
           : item.product_id === clickedItem.product.id &&
             item.variation_id === variationState.id &&
             item.modifierGroups?.find(
-              (modifier) => modifier === modifiersId
+              (modifier) => modifier === allModifires.find(all=>modifier===all)
             ) !== undefined
       );
       if (isItemInCarts) {
@@ -84,7 +105,7 @@ const DetailsCard = () => {
             : item.product_id === clickedItem.product.id &&
               item.variation_id === variationState.id &&
               item.modifierGroups?.find(
-                (modifier) => modifier === modifiersId
+                (modifier) => modifier === allModifires.find(all=>modifier===all)
               ) !== undefined
             ? { ...item, quantity: item.quantity + 1 }
             : item
@@ -99,7 +120,7 @@ const DetailsCard = () => {
           product_id: clickedItem.product.id,
           branch_id: 1,
           description: "item",
-          modifierGroups: modifiersId !== 0 ? [modifiersId] : [],
+          modifierGroups: allModifires,
           variation_id: variationState.id,
         },
       ];
@@ -115,12 +136,12 @@ const DetailsCard = () => {
           product_id: detailsState.product.id,
           branch_id: 1,
           description: "item",
-          modifierGroups: modifiersId !== 0 ? [modifiersId] : [],
+          modifierGroups:allModifires,
           variation_id: variationState.id,
         },
       ]);
     }
-  }, [variationState,modifiersId]);
+  }, [variationState,modifiersId,allModifires]);
 
   const handleRemoveFromCart = async (id: number, reomve?: string) => {
     setNewCart((prev) =>
@@ -281,64 +302,11 @@ const DetailsCard = () => {
     });
   }, [attributeToSetVAriation]);
 
-  let notAvailable: string = "";
-  // const EditCArt = (id: number) => {
-  //   let indexcart: number;
-  //   indexcart = newCart.findIndex((item) =>
-  //     //  item.variation_id === id
-  //     {
-  //       if (modifiersId === 0) {
-  //         return item.variation_id === id;
-  //       } else if (modifiersId !== 0) {
-  //         return (
-  //           item.variation_id === id &&
-  //           item.modifierGroups?.find((mid) => mid === modifiersId) !==
-  //             undefined
-  //         );
-  //       }
-  //     }
-  //   );
-  //   if (indexcart >= 0) {
-  //     if (newCart[indexcart].quantity === variationState.available_quantity) {
-  //       notAvailable = "sorry we dont have more quantity !!";
-  //     } else {
-  //       notAvailable = "";
-  //     }
-  //     return (
-  //       <div>
-  //         <div className="flex bg-green-950 rounded-full space-x-4  px-4 py-1">
-  //           <BaseButton
-  //             // @ts-ignore
-  //             onClick={() => handleRemoveFromCart(newCart[indexcart].id)}
-  //             className="text-2xl"
-  //           >
-  //             <MinusIcon className="w-3.5 text-white" />
-  //           </BaseButton>
-  //           <p className="text-white w-[35px] text-center">
-  //             {newCart[indexcart].quantity}
-  //           </p>
-  //           <BaseButton
-  //             disabled={
-  //               newCart[indexcart].quantity ===
-  //               variationState.available_quantity
-  //                 ? true
-  //                 : false
-  //             }
-  //             onClick={() => handleAddToCart(detailsState)}
-  //             className="disabled:cursor-not-allowed"
-  //           >
-  //             <BlusIcon className="text-white w-4" />
-  //           </BaseButton>
-  //         </div>
-  //       </div>
-  //     );
-  //   }
-  // };
   //for button
 
   const CartButton = (id: number) => {
     if (variationState.available_quantity === 0) {
-      return <h1 className="text-sm text-red-950">this product is not available now !!</h1>;
+      return <span className="text-sm block text-red-950">this product is not available now !!</span>;
     } else {
       let indexcart: number;
       indexcart = newCart.findIndex((item) =>
@@ -435,25 +403,6 @@ const DetailsCard = () => {
     return isFound;
   };
 
-  // const handelCart = (id: number) => {
-  //   let isFound = false;
-  //   for (let item of newCart) {
-  //     if (newCart.length === 0) return isFound;
-  //     else if (modifiersId === 0) {
-  //       if (item.variation_id === id) {
-  //         return (isFound = true);
-  //       }
-  //     } else if (modifiersId !== 0) {
-  //       if (
-  //         item.variation_id === id &&
-  //         item.modifierGroups.find((item) => item === modifiersId) !== undefined
-  //       ) {
-  //         return (isFound = true);
-  //       }
-  //     }
-  //   }
-  //   return isFound;
-  // };
 
   const removeFromWishList = async (Variat: Variation) => {
     const index = wishList.findIndex(

@@ -6,7 +6,7 @@ const nextConfig = {
 module.exports = {
   reactStrictMode: true,
   images: {
-      domains: ["192.168.1.10:8000"],
+      domains: ["pc-master-back.para-store.net"],
       formats: ["image/webp"],
   },
 };

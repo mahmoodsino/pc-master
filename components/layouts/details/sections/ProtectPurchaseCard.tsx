@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { atom, useRecoilState } from "recoil";
-import { AllCartsInfo, CartItemsAtom, getCartItems, getProductModifiers, ModifiersGroupAtom, TokenAtom } from "../../../../helper";
+import {  ModifiersGroupAtom} from "../../../../helper";
 import { outLineProtectIcon } from "../../../icons/Icons";
 import { v4 as uuidv4 } from "uuid";
-import { useRouter } from "next/router";
 
 export const modifiersIdAtom = atom<number>({
   key:"modifiersIdAtom",
@@ -20,7 +19,7 @@ const useProtectPurchaseCard = () => {
   return {
     modifiersId,
     render :(
-    <div>
+    <div className=" h-fit">
       {Object.keys(modifiers).map((key) => {
         const value = modifiers[key];
         if (key === "warranty") {
@@ -47,7 +46,7 @@ const useProtectPurchaseCard = () => {
                   </label>
                 );
               })}
-              <div className="border-t border-dashed mr-16 mt-5 border-[#d7d7d7] " defaultChecked={true}>
+              <div className=" mr-16 mt-5  " defaultChecked={true}>
               <label  className="mt-5">
                     <input checked={modifiersId===0 ? true : false} onChange={(e) => setModifiersId(0)}  type="radio"  />
                     
