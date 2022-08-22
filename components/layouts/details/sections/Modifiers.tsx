@@ -41,10 +41,38 @@ const useModifiers = () => {
                 key={uuidv4()}
                 className="shadow-[0_0_10px_rgba(0,0,0,0.25)] sm:px-3 sm:w-[100%] pt-10 md:pl-10 mt-10 h-fit rounded-md pb-7"
               >
+                <div className=" py-5 pr-10 text-left">
+                  <span className=" text-lg font-bold tracking-[0.03em]">
+                    By with
+                  </span>
+                </div>
+                <label
+                  onClick={() => setModifiersIdforModifiers([])}
+                  className=""
+                >
+                  <input
+                    type="radio"
+                    checked={
+                      modifiersIdforModifiers.length === 0 ? true : false
+                    }
+                  />
+                  <span className="design"></span>
+                  <span className="value">no package</span>
+                </label>
                 {value.map((val) => {
                   return (
-                    <div key={uuidv4()}>
-                      <label onClick={() => addModifiers(val.id)} className="">
+                    <div
+                      onClick={() => addModifiers(val.id)}
+                      key={uuidv4()}
+                      className={`cursor-pointer w-[80%] border my-2 ${
+                        modifiersIdforModifiers.findIndex(
+                          (item) => item === val.id
+                        ) > -1
+                          ? "border-green-950"
+                          : " "
+                      } `}
+                    >
+                      <label className="">
                         <input
                           type="radio"
                           checked={
@@ -65,8 +93,8 @@ const useModifiers = () => {
                               <Image
                                 src={item.image}
                                 alt="Picture of the author"
-                                width={100}
-                                height={100}
+                                width={70}
+                                height={70}
                               />
                             </div>
                           );
@@ -75,19 +103,6 @@ const useModifiers = () => {
                     </div>
                   );
                 })}
-                <label
-                  onClick={() => setModifiersIdforModifiers([])}
-                  className=""
-                >
-                  <input
-                    type="radio"
-                    checked={
-                      modifiersIdforModifiers.length === 0 ? true : false
-                    }
-                  />
-                  <span className="design"></span>
-                  <span className="value">no package</span>
-                </label>
               </div>
             );
           }
