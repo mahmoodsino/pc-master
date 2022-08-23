@@ -131,10 +131,24 @@ const MainSection = () => {
           <Breadcrumbs />
           <div>
             <div className="flex items-center space-x-5 relative sm:hidden md:flex   mr-5 ">
-              { useType === "guest" || useType === "user"  &&
+            {  useType === "user" &&
             <div 
               onClick={() => setActiveDropDown(!activeDropDown)}
-              className={`space-x-2 flex   items-center cursor-pointer h-full mb-1 ${
+              className={`space-x-2 flex   items-center cursor-pointer h-full px-2.5 ${
+                !activeDropDown ? "" : "bg-white"
+              }`}
+            >
+              {!activeDropDown ? (
+                <PersonIcon className="w-5 text-black" />
+              ) : (
+                <PersonIcon className="w-5 text-green-950" />
+              )}
+            </div>
+        }
+        {   useType === "guest"&&
+            <div 
+              onClick={() => setActiveDropDown(!activeDropDown)}
+              className={`space-x-2 flex   items-center cursor-pointer h-full px-2.5 ${
                 !activeDropDown ? "" : "bg-white"
               }`}
             >

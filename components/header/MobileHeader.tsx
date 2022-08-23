@@ -21,6 +21,12 @@ const MobileHeader = () => {
     const [carts, setCarts] = useRecoilState(FetchedCartItemsAtom)
 
 
+    let useType
+  if(typeof window !== "undefined"){
+
+     useType = localStorage.getItem("type" || "");
+  }
+
   return (
     <div
       className={`flex justify-between top-0 bg-white items-center w-screen ${
@@ -60,24 +66,35 @@ const MobileHeader = () => {
             </a>
           </Link>
         </div>
-        <div
-          onClick={() => setActiveDropDown(!activeDropDown)}
-          className={`space-x-2 flex pb-2 mt-2 items-center cursor-pointer h-full ${
-            !activeDropDown ? "" : "bg-white"
-          }`}
-        >
-          {!activeDropDown ? (
-            <PersonIcon className="w-5 text-black" />
-          ) : (
-            <PersonIcon className="w-5 text-green-950" />
-          )}
-
-          {/* {!activeDropDown ? (
-            <ArrowIcon className="w-3 text-black" />
-          ) : (
-            <ArrowIcon className="w-3 text-green-950" />
-          )} */}
-        </div>
+        
+        {  useType === "user" &&
+            <div 
+              onClick={() => setActiveDropDown(!activeDropDown)}
+              className={`space-x-2 flex   items-center cursor-pointer h-full px-2.5 ${
+                !activeDropDown ? "" : "bg-white"
+              }`}
+            >
+              {!activeDropDown ? (
+                <PersonIcon className="w-5 text-black" />
+              ) : (
+                <PersonIcon className="w-5 text-green-950" />
+              )}
+            </div>
+        }
+        {   useType === "guest"&&
+            <div 
+              onClick={() => setActiveDropDown(!activeDropDown)}
+              className={`space-x-2 flex   items-center cursor-pointer h-full px-2.5 ${
+                !activeDropDown ? "" : "bg-white"
+              }`}
+            >
+              {!activeDropDown ? (
+                <PersonIcon className="w-5 text-black" />
+              ) : (
+                <PersonIcon className="w-5 text-green-950" />
+              )}
+            </div>
+        }
         {activeDropDown ? (
           <div className="bg-white absolute  z-10 top-[100%] right-[1%]  shadow-[0_0_10px_rgba(0,0,0,0.25)]">
             <Dropdown />

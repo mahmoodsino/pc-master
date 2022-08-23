@@ -92,7 +92,7 @@ const ShopCarousel = ({ img, hover }: Props) => {
             <div key={uuidv4()}>
               <div className="">
                 <div className="ml-2">
-                  <Image src={item} />
+                  <Image width={150} height={150} src={item} />
                 </div>
               </div>
             </div>

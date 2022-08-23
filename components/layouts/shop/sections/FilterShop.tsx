@@ -118,16 +118,16 @@ const FilterShop = () => {
           </div>
           <h1 className="font-semibold px-5 mt-10">Categories</h1>
 
-          <div className=" h-[350px] overflow-y-auto pr-4 mb-10">
+          <div className=" h-[350px] overflow-y-auto pr-4 mt-3  mb-10">
             <ShopTree data={shopCategorey} />
           </div>
           <h1 className="font-semibold px-5">Brands</h1>
-          <div className=" h-[350px] overflow-y-auto pr-4 mb-10">{render}</div>
+          <div className=" h-[350px] overflow-y-auto pr-4 mt-3 mb-10">{render}</div>
           <h1 className="font-semibold px-5">Attributes</h1>
           <div className="pl-5 h-[350px] overflow-y-auto pr-4 mb-10">
             {AttributeRender}
           </div>
-          <h1 className="font-semibold px-5">Rating</h1>
+          <h1 className="font-semibold px-5 mt-3">Rating</h1>
           <div className=" h-[350px] overflow-y-auto pr-4 mb-10">{rende}</div>
         </div>
       </div>

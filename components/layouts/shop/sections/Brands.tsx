@@ -11,10 +11,8 @@ const useBrands = () => {
     const index = selectBrand.findIndex((brand) => brand === id);
     if (index < 0) {
       setSelectBrand(prev => [...prev,id])
-      // brandNum.push(id)
     } else if (index >= 0) {
       setSelectBrand(prev => prev.filter(item => item!==id))
-      // brandNum.splice(index,1)
     }
 
   };
@@ -23,15 +21,15 @@ const useBrands = () => {
   return {
     selectBrand,
     render:(
-    <div className=" flex flex-col justify-between  text-sm tracking-[0.03em] cursor-pointer  border-t border-b border-t-white">
+    <div className=" flex flex-col justify-between  text-sm tracking-[0.03em] cursor-pointer ">
       {brands.map((brand) => {
         return (
-          <div key={brand.id}>
-            <label  className="shopContainer flex items-center">
+          <div className="" key={brand.id}>
+            <label  className="shopContainer flex items-center pb-1 mt-0 border-b">
               {brand.name}
               <input
                 onChange={() =>( handeBrands(brand.id))}
-                
+                checked={selectBrand.findIndex(bran => bran===brand.id)>-1 ? true : false }
                 className="checkbox"
                 type="checkbox"
               />

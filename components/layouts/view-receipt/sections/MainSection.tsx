@@ -30,7 +30,8 @@ const MainSection = () => {
       setLoading(true);
       if (router.order) {
         const res = await getOrderCratedOrder(token, +router.order);
-        
+        console.log(res);
+
         setOrderDetails(res.data);
         if (res) {
           setLoading(false);
@@ -66,7 +67,7 @@ const MainSection = () => {
             <div className="lg:w-[55%] sm:w-[100%] flex flex-col">
               <OrderDetails />
               {/* <PaymentInfo /> */}
-              <ShippingAddress />
+              {orderDetails.address === null ? null : <ShippingAddress />}
             </div>
             <div className="lg:w-[41%] flex flex-col">
               <OrderReview gridForLargScreen="grid-cols-1" />

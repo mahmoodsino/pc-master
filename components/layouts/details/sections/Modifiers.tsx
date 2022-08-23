@@ -64,7 +64,7 @@ const useModifiers = () => {
                     <div
                       onClick={() => addModifiers(val.id)}
                       key={uuidv4()}
-                      className={`cursor-pointer w-[80%] border my-2 ${
+                      className={`cursor-pointer w-[80%] border hover:-translate-y-0.5 hover:shadow-sm duration-300 my-2 ${
                         modifiersIdforModifiers.findIndex(
                           (item) => item === val.id
                         ) > -1

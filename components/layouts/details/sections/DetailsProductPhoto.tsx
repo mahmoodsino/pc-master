@@ -15,9 +15,13 @@ const DetailsProductPhoto = () => {
       return (
         <a className="">
           {variationState.images ? (
-            <Image src={variationState.images[0]} />
+            <Image width={75} height={75} src={variationState.images[0]} />
           ) : (
-            <Image src={detailsState.product.images[0]} />
+            <Image
+              width={75}
+              height={75}
+              src={detailsState.product.images[0]}
+            />
           )}
         </a>
       );
@@ -38,23 +42,26 @@ const DetailsProductPhoto = () => {
   return (
     <div className="">
       <Slider {...settings}>
-        {variationState.images&& variationState.images?.length > 0
-          ? variationState.images.map((img) => {
-              return (
-                <div key={uuidv4()} className="">
-                  <Image src={img} />
-                </div>
-              );
-            })
-          : detailsState.product.images.length>0 ? detailsState.product.images.map((img) => {
-              return (
-                <div key={uuidv4()} className="">
-                  <Image src={img} />
-                </div>
-              );
-            }) : <Image src={no_image} />}
+        {variationState.images && variationState.images?.length > 0 ? (
+          variationState.images.map((img) => {
+            return (
+              <div key={uuidv4()} className="">
+                <Image width={400} height={400} src={img} />
+              </div>
+            );
+          })
+        ) : detailsState.product.images.length > 0 ? (
+          detailsState.product.images.map((img) => {
+            return (
+              <div key={uuidv4()} className="">
+                <Image width={400} height={400} src={img} />
+              </div>
+            );
+          })
+        ) : (
+          <Image width={400} height={400} src={no_image} />
+        )}
       </Slider>
-      
     </div>
   );
 };

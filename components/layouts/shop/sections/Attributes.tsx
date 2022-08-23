@@ -80,9 +80,11 @@ const useAttributes = () => {
                         <label  className="shopContainer flex items-center">
                           {att_value.name}
                           <input
+                          
                             onChange={() =>
                               handelValues(attribute.id, att_value.id)
                             }
+                            
                             className="checkbox"
                             type="checkbox"
                           />
