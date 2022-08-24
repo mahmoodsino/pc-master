@@ -22,6 +22,7 @@ const ShopProducts = () => {
           </div>
         );
       })}
+      
       <ContinueAsGuest  />
 
     </div>

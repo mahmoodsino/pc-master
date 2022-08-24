@@ -10,6 +10,7 @@ import {
   OpenCategoryModalAtom,
   SearchAtom,
   ProductsAtom,
+  ContactAtom,
 } from "../../helper/state";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -23,6 +24,7 @@ const MobileSidbar = () => {
   );
   const [searchState, setSearchState] = useRecoilState(SearchAtom);
   const [productsState, setProductsState] = useRecoilState(ProductsAtom);
+  const [contact,setContact]=useRecoilState(ContactAtom)
   const push = useRouter().push;
 
   const handelSearch = async (productToSearch: string) => {
@@ -94,9 +96,24 @@ const MobileSidbar = () => {
             <div className="flex  justify-between">
               <div className="text-white font-salsa text-sm">Follow US :</div>
               <div className="flex items-center space-x-4">
+                <Link href={contact.insta_link}>
+                  <a>
+
                 <InstagramIcon className="w-4 text-white" />
+                  </a>
+                </Link>
+                <Link href={contact.fb_link}>
+                  <a>
+
                 <FacebookIcon className="w-3 text-white" />
+                  </a>
+                </Link>
+                <Link href={contact.lin_link}>
+                  <a>
+
                 <LinkedInIcon className="w-5 text-white" />
+                  </a>
+                </Link>
               </div>
             </div>
           </div>

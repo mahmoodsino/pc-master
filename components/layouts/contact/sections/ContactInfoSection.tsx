@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { ContactAtom, ContactType, getContactInfo } from "../../../../helper";
@@ -12,6 +13,8 @@ import {
 
 const ContactInfoSection = () => {
   const [contact,setContact]=useRecoilState(ContactAtom)
+  console.log(contact);
+  
 
 
   return (
@@ -40,11 +43,21 @@ const ContactInfoSection = () => {
           Follow Us:
         </h1>
         <div className="flex space-x-3">
-          <InstagramIcon className="text-black w-7" />
-
-          <FacebookIcon className="text-black w-4" />
-
-          <LinkedInIcon className="text-black w-7" />
+          <Link  href={contact.insta_link}>
+          <a>
+            <InstagramIcon className="text-black w-7" />
+          </a>
+          </Link>
+          <Link href={contact.fb_link}>
+            <a>
+            <FacebookIcon className="text-black w-4" />
+            </a>
+          </Link>
+          <Link href={contact.lin_link}>
+            <a>
+            <LinkedInIcon className="text-black w-7" />
+            </a>
+          </Link>
         </div>
       </div>
     </div>

@@ -64,6 +64,7 @@ const DetailsCard = () => {
   const [removeLoading, setRemoveLoading] = useState(false);
   const {modifiersIdforModifiers} = useModifiers()
   const [allModifires,setAllModifiers]=useState<number[]>([])
+  const [loading,setLoading]=useState(false)
 
 
   useEffect(() => {
@@ -306,7 +307,7 @@ const DetailsCard = () => {
 
   const CartButton = (id: number) => {
     if (variationState.available_quantity === 0) {
-      return <span className="text-sm block text-red-950">this product is not available now !!</span>;
+      return <p className="text-sm block text-red-950 h-[24px]">this product is not available now !!</p>;
     } else {
       let indexcart: number;
       indexcart = newCart.findIndex((item) =>
@@ -362,6 +363,7 @@ const DetailsCard = () => {
 
   const finallAddtoCart = async () => {
     newCart.map(async (item) => {
+      setLoading(true)
       if (item.product) {
         const res = await addToCart(
           token,
@@ -375,10 +377,14 @@ const DetailsCard = () => {
           "item"
         );
 
-        const response = await getCartItems(token);
-        setCarts(response.result.items);
       }
     });
+    const response = await getCartItems(token);
+    setCarts(response.result.items);
+    if(response){
+
+      setLoading(false)
+    }
   };
 
   const getbg = (id: number) => {
@@ -437,18 +443,25 @@ const DetailsCard = () => {
         {CartButton(variationState.id)}
         {variationState.id > 0 && (
           <div className="flex  items-center space-x-4">
-            <BaseButton
-              disabled={variationState.available_quantity < 1 ? true : false}
-              onClick={() =>
-                token.length > 1
-                  ? finallAddtoCart()
-                  : setContinueAsGuestModal(true)
-              }
-              className={`text-white bg-green-950 tracking-[0.095em] px-3 py-1 rounded-full disabled:cursor-not-allowed disabled:bg-gray-500`}
-            >
-              <CartIcon className="w-[19px] mb-0.5 mr-2 fill-white inline-block" />
-              Add To Cart
-            </BaseButton>
+            {!loading ? 
+              <BaseButton
+                disabled={variationState.available_quantity < 1 ? true : false}
+                onClick={() =>
+                  token.length > 1
+                    ? finallAddtoCart()
+                    : setContinueAsGuestModal(true)
+                }
+                className={`text-white bg-green-950 tracking-[0.095em] px-3 py-1 rounded-full disabled:cursor-not-allowed disabled:bg-gray-500`}
+              >
+                <CartIcon className="w-[19px] mb-0.5 mr-2 fill-white inline-block" />
+                Add To Cart
+              </BaseButton>
+              : 
+              <div className="w-[162.55px] flex justify-center">
+                <Spinner className="w-5 fill-green-950" />
+              </div>
+            
+          }
 
             {!removeLoading ? (
               <div>
@@ -489,7 +502,7 @@ const DetailsCard = () => {
                 )}
               </div>
             ) : (
-              <div className="flex justify-center items-center">
+              <div className="w-[161.22px] flex justify-center items-center">
                 <Spinner className="w-7 fill-green-950" />
               </div>
             )}

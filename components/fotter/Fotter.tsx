@@ -92,9 +92,22 @@ const Footer = () => {
             <span className="italic text-white">Follow us :</span>
 
             <div className="flex space-x-5">
-              <InstagramIcon className="text-white w-6" />
-              <FacebookIcon className="text-white w-4" />
-              <LinkedInIcon className="text-white w-6" />
+            <Link  href={contact.insta_link}>
+          <a>
+            <InstagramIcon className="text-white w-7" />
+          </a>
+          </Link>
+          <Link href={contact.fb_link}>
+            <a>
+            <FacebookIcon className="text-white w-4" />
+            </a>
+          </Link>
+          <Link href={contact.lin_link}>
+            <a>
+            <LinkedInIcon className="text-white w-7" />
+            </a>
+          </Link>
+              
             </div>
           </div>
         </div>
