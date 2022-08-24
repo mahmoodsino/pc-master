@@ -69,11 +69,11 @@ const MainSection = () => {
           </div>
           <div className="grid sm:grid-cols-1 md:grid-cols-2  mt-10 md:px-4  lg:px-20">
             <div className="grid grid-rows-2">
-              <div className=" ">
+              <div className=" row-span-1">
 
               <DetailsProductPhoto/>
               </div>
-              <div className=" -mt-40  mr-5 lg:block sm:hidden">
+              <div className="row-span-1  mr-5 lg:block sm:hidden">
                     <div className="mt-10 border-b-2 pb-5">
                       <h1 className="text-xl mb-5 font-bold">
                         Product details
@@ -113,11 +113,7 @@ const MainSection = () => {
             </div>
             <div className="lg:pl-14 ">
               <DetailsCard/>
-              {render}
-              {modifiersRender}
-
             </div>
-
           </div>
           {/* <div className="flex flex-row justify-center lg:left-0 lg:right-0 lg:mx-auto ">
             <HomeCategories />

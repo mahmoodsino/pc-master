@@ -42,12 +42,12 @@ const MobileHeader = () => {
         </div>
       </div>
 
-      <div className="flex items-center space-x-10  relative mr-5 sa">
-        <div className="flex space-x-7 ">
+      <div className="flex items-center space-x-10   mr-5 sa">
+        <div className="relative flex space-x-7 ">
           <Link href="/wishlist">
             <a className="w-5">
               <div>
-                <div className="absolute -top-0 right-[80%]  flex items-center cursor-pointer justify-center text-white bg-red-950 rounded-full text-sm w-4 h-4 ">
+                <div className="absolute -top-0 right-[60%]  flex items-center cursor-pointer justify-center text-white bg-red-950 rounded-full text-sm w-4 h-4 ">
                   {wishList.length}
                 </div>
                 <HeartIcon className="w-6" />
@@ -57,7 +57,7 @@ const MobileHeader = () => {
           <Link className="" href="/cart">
             <a>
               <div>
-                <div className="absolute -top-0 right-[48%] cursor-pointer flex items-center justify-center text-white bg-red-950 rounded-full text-sm w-4 h-4 ">
+                <div className="absolute -top-0 -right-[5%] cursor-pointer flex items-center justify-center text-white bg-red-950 rounded-full text-sm w-4 h-4 ">
                   {carts.length}
                 </div>
 

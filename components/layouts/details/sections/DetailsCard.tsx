@@ -57,12 +57,12 @@ const DetailsCard = () => {
   const [attributeToSetVAriation, setAttributesToSetVAriation] = useState<{}[]>(
     []
   );
-  const { modifiersId } = useProtectPurchaseCard();
+  const { modifiersId ,render } = useProtectPurchaseCard();
   const [carts, setCarts] = useRecoilState(FetchedCartItemsAtom);
 
   const [newCart, setNewCart] = useRecoilState(NewCartAtom);
   const [removeLoading, setRemoveLoading] = useState(false);
-  const {modifiersIdforModifiers} = useModifiers()
+  const {modifiersIdforModifiers ,modifiersRender} = useModifiers()
   const [allModifires,setAllModifiers]=useState<number[]>([])
   const [loading,setLoading]=useState(false)
 
@@ -429,7 +429,7 @@ const DetailsCard = () => {
   };
 
   return (
-    <div className="shadow-[0_0_10px_rgba(0,0,0,0.25)] pb-14  tracking-[0.03em]">
+    <div className="shadow-[0_0_10px_rgba(0,0,0,0.25)] pb-14  tracking-[0.03em] mb-20">
       <div className="mx-5 space-y-4 border-b pt-5   pb-10">
         <h1 className=" text-xl font-bold text-[#7A7A7A]">
           {detailsState.product.name}
@@ -543,7 +543,13 @@ const DetailsCard = () => {
           );
         })}
       </div>
+      <div className="px-4 mt-10">
 
+        {render}
+      </div>
+      <div className="px-4 mt-5">
+        {modifiersRender}
+      </div>
       <AddToWishList />
       <ContinueAsGuest />
     </div>
