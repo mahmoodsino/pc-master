@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
 import { Breadcrumbs } from "../../../breadcrumbs";
-import { BaseButton } from "../../../buttons";
 import { Searchbar } from "../../../header";
 import { OrderReview } from "../../shared";
 import { ProgressLine } from "../../../steper";
-import { Title2 } from "../../../titles";
 import OrderDetails from "./OrderDetails";
 import PaymentInfo from "./PaymentInfo";
 import ShippingAddress from "./ShippingAddress";
@@ -50,7 +48,11 @@ const MainSection = () => {
             <Breadcrumbs />
           </div>
           <div className="mt-10">
-            <Title2 title={orderDetails.number} />
+            <div className="py-3 flex flex-row justify-between items-center md:px-10">
+              <h1 className="md:text-[19px] sm:text-[15px] font-bold whitespace-nowrap">
+                #{orderDetails.number}
+              </h1>
+            </div>
           </div>
           <h1 className="md:ml-10 text-xl font-bold text-gray-950 mt-8">
             Order Status

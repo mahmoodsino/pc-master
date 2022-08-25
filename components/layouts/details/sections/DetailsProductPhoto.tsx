@@ -14,7 +14,7 @@ const DetailsProductPhoto = () => {
     customPaging: function (i: number) {
       return (
         <a className="">
-          {variationState.images ? (
+          {/* {variationState.images ? (
             <Image width={75} height={75} src={variationState.images[0]} />
           ) : (
             <Image
@@ -22,7 +22,12 @@ const DetailsProductPhoto = () => {
               height={75}
               src={detailsState.product.images[0]}
             />
-          )}
+          )} */}
+           <Image
+              width={75}
+              height={75}
+              src={no_image}
+            /> 
         </a>
       );
     },
@@ -42,7 +47,7 @@ const DetailsProductPhoto = () => {
   return (
     <div className="">
       <Slider {...settings}>
-        {variationState.images && variationState.images?.length > 0 ? (
+        {/* {variationState.images && variationState.images?.length > 0 ? (
           variationState.images.map((img) => {
             return (
               <div key={uuidv4()} className="">
@@ -60,7 +65,16 @@ const DetailsProductPhoto = () => {
           })
         ) : (
           <Image width={400} height={400} src={no_image} />
-        )}
+        )} */}
+        <div className="lg:ml-10 md:ml-40">
+        <Image width={400} height={400} src={no_image} /> 
+        </div>
+        <div className="lg:ml-10 md:ml-40">
+        <Image width={400} height={400} src={no_image} /> 
+        </div>
+        <div className="lg:ml-10 md:ml-40">
+        <Image width={400} height={400} src={no_image} /> 
+        </div>
       </Slider>
     </div>
   );

@@ -32,8 +32,7 @@ const MainSection = () => {
   const router = useRouter().query;
   const [token, setToken] = useRecoilState(TokenAtom);
   const [newCart, setNewCart] = useRecoilState(NewCartAtom);
-  const {modifiersRender}=useModifiers()
-
+  const { modifiersRender } = useModifiers();
 
   useEffect(() => {
     setLoading(false);
@@ -45,6 +44,8 @@ const MainSection = () => {
           setLoading(true);
         }
         const respones = await getProductModifiers(+router.product);
+        console.log(respones);
+
         setModifiers(respones.result);
       }
     };
@@ -52,122 +53,63 @@ const MainSection = () => {
   }, [router.product]);
 
   return (
-    <div>
+    <div className="pb-32">
       <head>
         <title>{detailsState.product.seo_title}</title>
-        <meta name="description" content={detailsState.product.seo_description} />
-        {detailsState.product.seo_keywords.map(keyword => {
-          return (
-            <meta key={keyword} name="keywords" content={keyword} />
-          )
+        <meta
+          name="description"
+          content={detailsState.product.seo_description}
+        />
+        {detailsState.product.seo_keywords.map((keyword) => {
+          return <meta key={keyword} name="keywords" content={keyword} />;
         })}
       </head>
       {loading ? (
-        <div >
+        <div>
           <div className="ml-7 w-[97%]">
             <Searchbar />
           </div>
-          <div className="grid sm:grid-cols-1 md:grid-cols-2  mt-10 md:px-4  lg:px-20">
-            <div className="grid grid-rows-2">
-              <div className=" row-span-1">
-
-              <DetailsProductPhoto/>
-              </div>
-              <div className="row-span-1  mr-5 lg:block sm:hidden">
-                    <div className="mt-10 border-b-2 pb-5">
-                      <h1 className="text-xl mb-5 font-bold">
-                        Product details
-                      </h1>
-                      <span className="">
-                        {detailsState.product.description}
-                      </span>
-                    </div>
-                    <div className="mt-5">
-                      <h1 className="text-xl font-bold mb-10">Specifications</h1>
-                      <div className="grid  xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-2 pb-5">
-                        {variationState.attributes?.map((attribute) => {
-                          return (
-                            <div
-                              key={uuidv4()}
-                              className="mb-6 shadow-[0_0_10px_rgba(0,0,0,0.25)] sm:w-[90%] md-[100%] rounded-md  lg:w-[90%] py-4 px-4 "
-                            >
-                              <p className="font-bold">{attribute.name}</p>
-                              <span>{attribute.attribute_values.name}</span>
-                            </div>
-                          );
-                        })}
-                        {detailsState.product.custome_properties.map((item) => {
-                          return (
-                            <div
-                              key={uuidv4()}
-                              className="mb-6 shadow-[0_0_10px_rgba(0,0,0,0.25)] sm:w-[90%] md-[100%] rounded-md  lg:w-[90%] py-4 px-4 "
-                            >
-                              <p className="font-bold">{item.name}</p>
-                              <span>{item.value}</span>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  </div>
-            </div>
-            <div className="lg:pl-14 ">
-              <DetailsCard/>
-            </div>
-          </div>
-          {/* <div className="flex flex-row justify-center lg:left-0 lg:right-0 lg:mx-auto ">
-            <HomeCategories />
-            <div className="flex flex-col  lg:w-[79.5%] md:mr-4 ">
-              <Searchbar />
-              <div className="mt-7 grid md:grid-cols-2 sm:grid-cols-1 sm:space-y-32 md:space-y-0">
-                <div className="col-span-1 grid grid-rows-2">
-                  <DetailsProductPhoto />
-                  <div className="  mr-5 lg:block sm:hidden">
-                    <div className="mt-10 border-b-2 pb-5">
-                      <h1 className="text-xl mb-5 font-bold">
-                        Product details
-                      </h1>
-                      <span className="">
-                        {detailsState.product.description}
-                      </span>
-                    </div>
-                    <div className="mt-5">
-                      <h1 className="text-xl font-bold mb-10">Specifications</h1>
-                      <div className="grid  xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-2 pb-5">
-                        {variationState.attributes?.map((attribute) => {
-                          return (
-                            <div
-                              key={uuidv4()}
-                              className="mb-6 shadow-[0_0_10px_rgba(0,0,0,0.25)] sm:w-[90%] md-[100%] rounded-md  lg:w-[90%] py-4 px-4 "
-                            >
-                              <p className="font-bold">{attribute.name}</p>
-                              <span>{attribute.attribute_values.name}</span>
-                            </div>
-                          );
-                        })}
-                        {detailsState.product.custome_properties.map((item) => {
-                          return (
-                            <div
-                              key={uuidv4()}
-                              className="mb-6 shadow-[0_0_10px_rgba(0,0,0,0.25)] sm:w-[90%] md-[100%] rounded-md  lg:w-[90%] py-4 px-4 "
-                            >
-                              <p className="font-bold">{item.name}</p>
-                              <span>{item.value}</span>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  </div>
+          <div className="lg:flex lg:space-x-6 lg:px-14 my-10">
+            <div className="lg:w-1/2 lg:inline-block">
+              <DetailsProductPhoto />
+              <div className="  mr-5 relative top-20 lg:block sm:hidden">
+                <div className="mt-10 border-b-2 pb-5">
+                  <h1 className="text-xl mb-5 font-bold">Product details</h1>
+                  <span className="">{detailsState.product.description}</span>
                 </div>
-                <div className="col-span-1 ">
-                  <DetailsCard />
-                  {render}
+                <div className="mt-5">
+                  <h1 className="text-xl font-bold mb-10">Specifications</h1>
+                  <div className="grid  xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-2 pb-5">
+                    {variationState.attributes?.map((attribute) => {
+                      return (
+                        <div
+                          key={uuidv4()}
+                          className="mb-6 shadow-[0_0_10px_rgba(0,0,0,0.25)] sm:w-[90%] md-[100%] rounded-md  lg:w-[90%] py-4 px-4 "
+                        >
+                          <p className="font-bold">{attribute.name}</p>
+                          <span>{attribute.attribute_values.name}</span>
+                        </div>
+                      );
+                    })}
+                    {detailsState.product.custome_properties.map((item) => {
+                      return (
+                        <div
+                          key={uuidv4()}
+                          className="mb-6 shadow-[0_0_10px_rgba(0,0,0,0.25)] sm:w-[90%] md-[100%] rounded-md  lg:w-[90%] py-4 px-4 "
+                        >
+                          <p className="font-bold">{item.name}</p>
+                          <span>{item.value}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
             </div>
+            <div className="lg:w-1/2 sm:mt-28 md:px-16 lg:px-0 lg:mt-0  lg:inline-block">
+              <DetailsCard />
+            </div>
           </div>
-
           <div className="sm:block lg:hidden  tracking-[0.03em] my-10 sm:mx-5 md:px-12">
             <div className="mt-10 border-b-2 pb-5">
               <h1 className="text-xl mb-5 font-bold">Product details</h1>
@@ -200,7 +142,7 @@ const MainSection = () => {
                 })}
               </div>
             </div>
-          </div> */}
+          </div>
         </div>
       ) : (
         <div className="flex justify-center items-center ">

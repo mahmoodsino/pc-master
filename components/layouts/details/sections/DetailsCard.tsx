@@ -4,6 +4,7 @@ import { useRecoilState } from "recoil";
 import { v4 as uuidv4 } from "uuid";
 import {
   addToCart,
+  AllCartsInfo,
   CartItemsAtom,
   CouninueAsGuestModalAtom,
   deleteWishList,
@@ -65,6 +66,8 @@ const DetailsCard = () => {
   const {modifiersIdforModifiers ,modifiersRender} = useModifiers()
   const [allModifires,setAllModifiers]=useState<number[]>([])
   const [loading,setLoading]=useState(false)
+  const [allCartsInfo,setAllCartsInfo]=useRecoilState(AllCartsInfo)
+
 
 
   useEffect(() => {
@@ -381,8 +384,9 @@ const DetailsCard = () => {
     });
     const response = await getCartItems(token);
     setCarts(response.result.items);
-    if(response){
-
+    const res = await getCartItems(token);
+    setAllCartsInfo(res.result)
+    if(res){
       setLoading(false)
     }
   };
