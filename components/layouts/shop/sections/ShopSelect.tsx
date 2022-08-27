@@ -58,6 +58,8 @@ const ShopSelect = () => {
               selectedOption: optionType | null
             ) => {
               const res = await getProducts(token,"",-1,[],selectedOption?.label);
+              console.log(res);
+              
               setProductsState(res.result.items)
             };
             return (

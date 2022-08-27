@@ -3,6 +3,7 @@ import custome_properties from "./custome_properties";
 
 interface product {
     brand:Brand,
+    avg_rate:number
     brand_id:number,
     company:Company,
     company_id:number,

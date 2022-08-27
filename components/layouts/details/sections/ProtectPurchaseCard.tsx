@@ -17,6 +17,11 @@ export const warrantyActiveAtom = atom({
   default: false,
 });
 
+interface Prop {
+  name:string,
+  total_price:number
+}
+
 const useProtectPurchaseCard = () => {
   const [modifiers, setModifiers] = useRecoilState(ModifiersGroupAtom);
   const [modifiersId, setModifiersId] = useRecoilState(modifiersIdAtom);
@@ -24,6 +29,7 @@ const useProtectPurchaseCard = () => {
     useRecoilState(warrantyActiveAtom);
   const [modifierActive, setModifierActive] =
     useRecoilState(modifierActiveAtom);
+    const[selectedWarranty,setSelectedWarranty]=useState<Prop>({}as Prop)
 
   useEffect(() => {
     setModifiersId(0);
@@ -45,21 +51,26 @@ const useProtectPurchaseCard = () => {
                       className="border bg-gray-1000 hover:bg-gray-1400 w-full flex py-2 px-3 justify-between"
                     >
                       <span className="font-bold">warranty</span>
-                      <svg
-                        data-accordion-icon
-                        className={`w-6 h-6  shrink-0 inline-block transition-all duration-500 ease-in-out ${
-                          warrantyActive ? "rotate-180" : "rotate-0"
-                        }`}
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                          clipRule="evenodd"
-                        ></path>
-                      </svg>
+                      <div>
+                        {selectedWarranty.name && 
+                        
+                        <span>{selectedWarranty.name}  ${selectedWarranty.total_price}</span>}
+                          <svg
+                            data-accordion-icon
+                            className={`w-6 h-6  shrink-0 inline-block transition-all duration-500 ease-in-out ${
+                              warrantyActive ? "rotate-180" : "rotate-0"
+                            }`}
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                              clipRule="evenodd"
+                            ></path>
+                          </svg>
+                      </div>
                     </BaseButton>
                   }
                 >
@@ -82,6 +93,7 @@ const useProtectPurchaseCard = () => {
                             return (
                               <label key={uuidv4()} className="mt-10">
                                 <input
+                                onClick={() => setSelectedWarranty(item)}
                                   checked={
                                     item.id === modifiersId ? true : false
                                   }
@@ -93,12 +105,14 @@ const useProtectPurchaseCard = () => {
                                 />
                                 <span className="design"></span>
                                 <span className="value">{item.name}</span>
+                                <p className="ml-10">with price of $  {item.total_price}</p>
                               </label>
                             );
                           })}
                           <div className=" mr-16 mt-5  " defaultChecked={true}>
                             <label className="mt-5">
                               <input
+                              onClick={() => setSelectedWarranty({}as Prop)}
                                 checked={modifiersId === 0 ? true : false}
                                 onChange={(e) => setModifiersId(0)}
                                 type="radio"

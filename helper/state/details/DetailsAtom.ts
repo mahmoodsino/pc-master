@@ -5,6 +5,7 @@ const DetailsAtom = atom<DetailsType>({
     key: "DetailsAtom",
     default: {
         product: {
+            avg_rate:0,
             brand: {
                 id: -1,
                 name: "",

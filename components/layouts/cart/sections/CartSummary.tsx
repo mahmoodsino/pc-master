@@ -48,6 +48,8 @@ const CartSummary = () => {
     if(selectedMethod==="PICKUP"){
       setLoading(true)
       const res = await handelCrateOrder(token,selectedMethod)
+      console.log(res);
+      
       setSavedOrderId(res.result.saved_order_id);
       push({
         pathname: '/checkout',

@@ -81,7 +81,7 @@ const TreeNode = ({ node, selectedParentId, setParentId }: node) => {
         </div>
         {hasChild && selectedParentId === node.id && (
           <div className=" text-white text-left ">
-            <ul className={` absolute h-[440px] w-[230px]  bg-[#303030] overflow-y-scroll overflow-x-hidden top-[0px] left-[98%]  z-50`}>
+            <ul className={` absolute h-[440px] w-[230px]  bg-[#303030] overflow-y-scroll overflow-x-hidden top-[0px] left-[96.5%]  z-50`}>
               <HomeTree data={node} />
             </ul>
           </div>

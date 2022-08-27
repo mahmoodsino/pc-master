@@ -21,6 +21,9 @@ import { useEffect, useState } from "react";
 import { Spinner } from "../../../spinner";
 import Modifiers from "./Modifiers";
 import useModifiers from "./Modifiers";
+import ReactRating from "react-rating";
+import Reviews from "./Reviews";
+
 let cart: items[] = [];
 
 const MainSection = () => {
@@ -39,13 +42,12 @@ const MainSection = () => {
     const Data = async () => {
       if (router.product) {
         const res = await getDetails(+router.product);
+        console.log(res);
         setDetailState(res.result);
         if (res) {
           setLoading(true);
         }
         const respones = await getProductModifiers(+router.product);
-        console.log(respones);
-
         setModifiers(respones.result);
       }
     };
@@ -149,6 +151,10 @@ const MainSection = () => {
           <Spinner className="w-40 fill-green-950" />
         </div>
       )}
+        <div className="pt-10 px-14">
+
+        <Reviews />
+        </div>
     </div>
   );
 };

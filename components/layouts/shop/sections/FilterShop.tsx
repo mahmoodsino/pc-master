@@ -100,7 +100,7 @@ const FilterShop = () => {
                 from={rangeSlider[0]}
                 to={rangeSlider[1]}
                 lower={0}
-                higher={20000}
+                higher={5000}
                 handleChange={handleChange}
               />
               <div className="pt-1 flex flex-wrap flex-row justify-between ">
