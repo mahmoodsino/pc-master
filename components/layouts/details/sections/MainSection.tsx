@@ -4,9 +4,11 @@ import {
   DetailsAtom,
   getDetails,
   getProductModifiers,
+  getSimilarProducts,
   items,
   ModifiersGroupAtom,
   NewCartAtom,
+  ProductsType,
   TokenAtom,
 } from "../../../../helper";
 import VariationAtom from "../../../../helper/state/products/VariationAtom";
@@ -23,6 +25,7 @@ import Modifiers from "./Modifiers";
 import useModifiers from "./Modifiers";
 import ReactRating from "react-rating";
 import Reviews from "./Reviews";
+import { BaseCard } from "../../../cards";
 
 let cart: items[] = [];
 
@@ -36,13 +39,23 @@ const MainSection = () => {
   const [token, setToken] = useRecoilState(TokenAtom);
   const [newCart, setNewCart] = useRecoilState(NewCartAtom);
   const { modifiersRender } = useModifiers();
+  const [similarProducts, setSimilarProducts] = useState<ProductsType[]>([]);
+
+  useEffect(() => {
+    const getData = async () => {
+      const res = await getSimilarProducts(token, detailsState.product.id);
+      setSimilarProducts(res.result);
+    };
+    if (detailsState.product.id > 0) {
+      getData();
+    }
+  }, [detailsState]);
 
   useEffect(() => {
     setLoading(false);
     const Data = async () => {
       if (router.product) {
         const res = await getDetails(+router.product);
-        console.log(res);
         setDetailState(res.result);
         if (res) {
           setLoading(true);
@@ -106,10 +119,32 @@ const MainSection = () => {
                     })}
                   </div>
                 </div>
+                <div className="">
+                  <Reviews />
+                </div>
               </div>
             </div>
             <div className="lg:w-1/2 sm:mt-28 md:px-16 lg:px-0 lg:mt-0  lg:inline-block">
               <DetailsCard />
+              <div className="mt-10  pb-5">
+                  <h1 className="text-xl mb-5 font-bold">similer products </h1>
+                </div>
+              <div className="grid grid-cols-2 gap-2">
+                {similarProducts?.map((item) => {
+                  return (
+                    <BaseCard
+                      name={item.name}
+                      key={uuidv4()}
+                      image={item.images}
+                      price={item.variation.price}
+                      description={item.short_description}
+                      id={item.id}
+                      variation={item.variation}
+                      in_wishlist={item.in_wishlist}
+                    />
+                  );
+                })}
+              </div>
             </div>
           </div>
           <div className="sm:block lg:hidden  tracking-[0.03em] my-10 sm:mx-5 md:px-12">
@@ -151,10 +186,6 @@ const MainSection = () => {
           <Spinner className="w-40 fill-green-950" />
         </div>
       )}
-        <div className="pt-10 px-14">
-
-        <Reviews />
-        </div>
     </div>
   );
 };

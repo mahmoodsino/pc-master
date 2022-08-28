@@ -9,17 +9,28 @@ import ShippingAddress from "./ShippingAddress";
 import { useRecoilState } from "recoil";
 import {
   getOrderCratedOrder,
+  getPaymentProvidor,
   OrderDetailsAtom,
   TokenAtom,
 } from "../../../../helper";
 import { useRouter } from "next/router";
 import { Spinner } from "../../../spinner";
+import { BaseButton } from "../../../buttons";
+
+interface PaymentProvider {
+  public_key:string,
+  id:number
+  name:string
+}
 
 const MainSection = () => {
   const [progressPercentage, setProgressPercentage] = useState(35);
   const [orderDetails, setOrderDetails] = useRecoilState(OrderDetailsAtom);
   const [token, setToken] = useRecoilState(TokenAtom);
   const [loading, setLoading] = useState(false);
+  const [paymentProvidorState,setPaymentProvidorState]=useState<PaymentProvider[]>([])
+  const[paymentProvidorId,setPaymenProvidorId]=useState<number>()
+
 
   const router = useRouter().query;
 
@@ -29,7 +40,6 @@ const MainSection = () => {
       if (router.order) {
         const res = await getOrderCratedOrder(token, +router.order);
         console.log(res);
-
         setOrderDetails(res.data);
         if (res) {
           setLoading(false);
@@ -38,6 +48,22 @@ const MainSection = () => {
     };
     getData();
   }, [router.order]);
+
+  useEffect(() => {
+    const getData = async () => {
+      const res = await getPaymentProvidor()
+      console.log(res);
+      setPaymentProvidorState(res.result.payment_providers)
+    }
+    getData()
+  },[])
+  useEffect(() => {
+    paymentProvidorState.map(providor => {
+      if(providor.name==="paypal"){
+        setPaymenProvidorId(providor.id)
+      }
+    })
+  },[paymentProvidorState])
 
   return (
     <div>
@@ -49,9 +75,10 @@ const MainSection = () => {
           </div>
           <div className="mt-10">
             <div className="py-3 flex flex-row justify-between items-center md:px-10">
-              <h1 className="md:text-[19px] sm:text-[15px] font-bold whitespace-nowrap">
+              <span className="md:text-[19px] sm:text-[15px] font-bold whitespace-nowrap">
                 #{orderDetails.number}
-              </h1>
+              </span>
+              <span>status:{orderDetails.status}</span>
             </div>
           </div>
           <h1 className="md:ml-10 text-xl font-bold text-gray-950 mt-8">
@@ -92,6 +119,17 @@ const MainSection = () => {
                   <span>TOTAL</span>
                   <span>${orderDetails.total}</span>
                 </div>
+                {orderDetails.status === "UN_PAID" && (
+                  <div className="flex justify-between mx-5 mt-3">
+                    <span className="font-semibold uppercase text-gray-1150 items-center">
+                      pay for your order{" "}
+                    </span>
+                    <BaseButton
+                      className="px-4 py-1 bg-green-950 text-white rounded-full hover:bg-green-1000 "
+                      title="pay"
+                    />
+                  </div>
+                )}
               </div>
             </div>
           </div>

@@ -66,6 +66,7 @@ const CheckoutDetails = () => {
     setUserId(Number(id)||0)
     const getData = async () => {
       const res = await getPaymentProvidor()
+      console.log(res);
       setPaymentProvidorState(res.result.payment_providers)
     }
     getData()
@@ -80,24 +81,12 @@ const CheckoutDetails = () => {
     })
   },[paymentProvidorState])
 
-  // useEffect(() => {
-  //   console.log(router.savedOrder);
-  //   const getData=async () => {
-  //     if(paymentProvidorId&&router.savedOrder){
-  //       const res =await handelOrderPay(Number(router.savedOrder),paymentProvidorId)
-  //       console.log(res);
-  //     }
-  //   }
-  //   getData()
-    
-  // },[router.savedOrder,paymentProvidorId])
-  
 
   useEffect(() => {
     const getData = async () => {
       setLoading(true)
-      if(paymentProvidorId&&userId&&email){
-        const res = await getClientToken(paymentProvidorId,userId,email)
+      if(paymentProvidorId){
+        const res = await getClientToken(paymentProvidorId,token)
         setClientToken(res.result.client_token);
         if(res){
           setLoading(false)

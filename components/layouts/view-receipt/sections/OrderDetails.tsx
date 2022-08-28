@@ -40,7 +40,7 @@ const OrderDetails = () => {
             {useType === "guest" ? (
               <span className="text-gray-950">---</span>
             ) : (
-              <span className="text-gray-950">{orderDetails.user_name}</span>
+              <span className="text-gray-950">{orderDetails.first_name} {orderDetails.last_name}</span>
             )}
           </div>
           <div className="md:ml-10 flex md:flex-row sm:flex-col">
@@ -48,7 +48,7 @@ const OrderDetails = () => {
             {useType === "guest" ? (
               <span className="text-gray-950">---</span>
             ) : (
-              <span className="text-gray-950">{orderDetails.user_email}</span>
+              <span className="text-gray-950">{orderDetails.email}</span>
             )}
           </div>
         </div>

@@ -1,9 +1,19 @@
 import React, { useEffect, useState } from "react";
-import ReactRating from "react-rating";
-import { useRecoilState } from "recoil";
-import { checkRewiewable, DetailsAtom, getReviews, TokenAtom } from "../../../../helper";
+import ReactStars from "react-stars";
+import { atom, useRecoilState } from "recoil";
+import {
+  checkRewiewable,
+  DetailsAtom,
+  getReviews,
+  handelDeleteReview,
+  TokenAtom,
+} from "../../../../helper";
 import { BaseButton } from "../../../buttons";
-import WriteReviewModal, { OpenWriteReviewModalAtom } from "./WriteReviewModal";
+import { Spinner } from "../../../spinner";
+import WriteReviewModal, {
+  OpenUpdateReviewModalAtom,
+  OpenWriteReviewModalAtom,
+} from "./WriteReviewModal";
 
 interface reviewsType {
   created_at: string;
@@ -20,6 +30,11 @@ interface reviewsType {
   };
 }
 
+export const userReviewAtom = atom<reviewsType>({
+  key: "userReviewAtom",
+  default: {} as reviewsType,
+});
+
 const Reviews = () => {
   const [detailsState, setDetailState] = useRecoilState(DetailsAtom);
   const [token, setToken] = useRecoilState(TokenAtom);
@@ -27,117 +42,149 @@ const Reviews = () => {
   const [openWriteReviewModal, setOpenWriteReviewModal] = useRecoilState(
     OpenWriteReviewModalAtom
   );
-
+  const [userReview, setUserReview] = useRecoilState(userReviewAtom);
+  const [openUbdateReviewModal, setOpenUpdateReviewModal] = useRecoilState(
+    OpenUpdateReviewModalAtom
+  );
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
+    setUserReview({}as reviewsType )
     const getData = async () => {
       const res = await getReviews(token, detailsState.product.id);
+      if (res.result.user_review) {
+        setUserReview(res.result.user_review);
+      }
       setRewiew(res.result.items);
     };
     getData();
-  }, [detailsState]);
+  }, [detailsState, openUbdateReviewModal, openWriteReviewModal]);
 
-  const handalcheckReviewable = async (id:number) => {
-    const res =await checkRewiewable(token,id)
+  const handalcheckReviewable = async (id: number) => {
+    const res = await checkRewiewable(token, id);
     console.log(res);
-    setOpenWriteReviewModal(true)
-  }
-
-
+    if(res.name==="AxiosError"){
+       if(res.response.status===400){
+        alert(res.response.data.message)
+       }else{
+        alert("some thing went wrong !!")
+       }
+    }else{
+      setOpenWriteReviewModal(true);
+    }
+  };
+  const deleteReview = async (id: number) => {
+    const response = await handelDeleteReview(token, id);
+    const res = await getReviews(token, detailsState.product.id);
+    if (res.result.user_review) {
+      setUserReview(res.result.user_review);
+    } else {
+      setUserReview({} as reviewsType);
+    }
+    setRewiew(res.result.items);
+  };
   return (
     <div>
-      {review.length > 0 && 
+      {!loading ? (
         <div>
-      <p className="text-xl font-semibold">
-        Customer reviews & ratings
-      </p>
-      <div className="font-bold text-gray-950 mt-5">
-        <span className="text-7xl ">{detailsState.product.avg_rate}</span>
-        <span>out of</span>
-        <span className="text-7xl ">5</span>
-      </div>
-      <div className="flex items-center mt-2">
-        <ReactRating
-            emptySymbol={
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                className="bi bi-star"
-                viewBox="0 0 16 16"
-            >
-                <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
-            </svg>
-            }
-            fullSymbol={
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                className="bi bi-star-fill"
-                viewBox="0 0 16 16"
-            >
-                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-            </svg>
-            }
-            initialRating={detailsState.product.avg_rate}
-            readonly={true}
-        />
-        <span className="text-xs"> ({review.length} review)</span>
-      </div>
-      <BaseButton onClick={() => handalcheckReviewable(detailsState.product.id)} className="bg-[#0071dc] text-white rounded-full px-4 py-1 mt-2 "  title="write review"/>
+          <div>
+            <p className="text-xl font-semibold">Customer reviews & ratings</p>
+            <div className="font-bold text-gray-950 mt-5">
+              <span className="text-7xl ">{detailsState.product.avg_rate}</span>
+              <span>out of</span>
+              <span className="text-7xl ">5</span>
+            </div>
+            <div className="flex items-center mt-2">
+              <ReactStars value={detailsState.product.avg_rate} edit={false} />
+              <span className="text-xs"> ({review.length} review)</span>
+            </div>
+            <BaseButton
+              onClick={() => handalcheckReviewable(detailsState.product.id)}
+              className="bg-green-950 text-white rounded-full px-4 py-1 mt-2 "
+              title="write review"
+            />
 
-      <div className="grid grid-cols-4 mt-10 gap-2">
-          {review.map((item) => {
-            return (
-              <div key={item.id} className="shadow-[0_0_5px_rgba(0,0,0,0.12)] rounded-md px-3  py-2 mt-2">
-                <div className=" flex items-center justify-between whitespace-nowrap w-full mb-5">
-                  <ReactRating
-                    emptySymbol={
+            <div className="grid grid-cols-2 mt-10 gap-2">
+              {userReview.id !== undefined && (
+                <div className="shadow-[0_0_5px_rgba(0,0,0,0.12)] rounded-md px-3  py-2 mt-2">
+                  <div className=" flex items-center justify-between whitespace-nowrap w-full mb-5">
+                    <ReactStars value={userReview.rate} edit={false} />
+
+                    <div className="flex space-x-3 ">
+                      <span className="text-xs text-[#74767c]">
+                        {userReview.created_at}
+                      </span>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        onClick={() => setOpenUpdateReviewModal(true)}
+                        fill="currentColor"
+                        className="bi bi-pencil-square text-green-950 cursor-pointer"
+                        viewBox="0 0 16 16"
+                      >
+                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                        <path
+                          fillRule="evenodd"
+                          d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"
+                        />
+                      </svg>
+
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="16"
                         height="16"
                         fill="currentColor"
-                        className="bi bi-star"
+                        onClick={() => deleteReview(userReview.id)}
+                        className="text-red-950 bi bi-trash-fill cursor-pointer"
                         viewBox="0 0 16 16"
                       >
-                        <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
+                        <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z" />
                       </svg>
-                    }
-                    fullSymbol={
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        fill="currentColor"
-                        className="bi bi-star-fill"
-                        viewBox="0 0 16 16"
-                      >
-                        <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                      </svg>
-                    }
-                    initialRating={item.rate}
-                    readonly={true}
-                  />
-                  <span className="text-xs text-[#74767c]">
-                    {item.created_at}
+                    </div>
+                  </div>
+                  <span className="text-[#46474a] text-sm">
+                    {userReview.text}
+                  </span>
+                  <span className="text-xs text-[#74767c] block mt-1">
+                    {userReview.user?.first_name} {userReview.user?.last_name}
                   </span>
                 </div>
-                <span className="text-[#46474a] text-sm">{item.text}</span>
-                <span className="text-xs text-[#74767c] block mt-1">
-                  {item.user.first_name} {item.user.last_name}
-                </span>
-              </div>
-            );
-          })}
+              )}
+              {review.map((item) => {
+                return (
+                  <div
+                    key={item.id}
+                    className="shadow-[0_0_5px_rgba(0,0,0,0.12)] rounded-md px-3  py-2 mt-2"
+                  >
+                    <div className=" flex items-center justify-between whitespace-nowrap w-full mb-5">
+                      <ReactStars value={item.rate} edit={false} />
+                      <span className="text-xs text-[#74767c]">
+                        {item.created_at}
+                      </span>
+                    </div>
+                    <span className="text-[#46474a] text-sm">{item.text}</span>
+                    <span className="text-xs text-[#74767c] block mt-1">
+                      {item.user.first_name} {item.user.last_name}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          {openUbdateReviewModal ? (
+            <WriteReviewModal
+              rated={userReview.rate}
+              id={userReview.id}
+              text={userReview.text}
+            />
+          ) : (
+            <WriteReviewModal />
+          )}
         </div>
-        </div>
-        }
-        <WriteReviewModal />
+      ) : (
+        <Spinner className="fill-green-950 w-20" />
+      )}
     </div>
-
   );
 };
 

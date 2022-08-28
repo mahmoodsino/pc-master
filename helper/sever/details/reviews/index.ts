@@ -1,2 +1,5 @@
 export * from "./getReviews"
 export * from "./checkReviewable"
+export * from "./postReviews"
+export * from "./updateReview"
+export * from "./deleteReview"

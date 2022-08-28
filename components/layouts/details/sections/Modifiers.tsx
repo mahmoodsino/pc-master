@@ -15,8 +15,8 @@ export const modifierActiveAtom = atom({
   default: false,
 });
 interface Prop {
-  name:string,
-  total_price:number
+  name: string;
+  total_price: number;
 }
 const useModifiers = () => {
   const [modifiers, setModifiers] = useRecoilState(ModifiersGroupAtom);
@@ -26,8 +26,7 @@ const useModifiers = () => {
   const [modifierswithoutWarranty, setModifierswithoutWarranty] = useState<
     ModifiersGroupType[]
   >([]);
-  const [selectedPackage,setSelectedPackage]=useState<Prop>({}as Prop)
-  
+  const [selectedPackage, setSelectedPackage] = useState<Prop>({} as Prop);
 
   const [modifierActive, setModifierActive] =
     useRecoilState(modifierActiveAtom);
@@ -37,7 +36,7 @@ const useModifiers = () => {
   const addModifiers = (modefier: ModifiersGroupType) => {
     setModifiersIdforModifiers([]);
     setModifiersIdforModifiers((prev) => [...prev, modefier.id]);
-    setSelectedPackage(modefier)
+    setSelectedPackage(modefier);
   };
   useEffect(() => {
     Object.keys(modifiers).map((key) => {
@@ -67,10 +66,11 @@ const useModifiers = () => {
               >
                 <span className="font-bold">buy with</span>
                 <div>
-                  {selectedPackage.name &&
-                  
-                  <span>{selectedPackage.name}  ${selectedPackage.total_price}</span>
-                  }
+                  {selectedPackage.name && (
+                    <span>
+                      {selectedPackage.name} ${selectedPackage.total_price}
+                    </span>
+                  )}
                   <svg
                     data-accordion-icon
                     className={`w-6 h-6 inline-block transition-all duration-500 ease-in-out ${
@@ -92,10 +92,13 @@ const useModifiers = () => {
           >
             <div>
               <label
-                onClick={() => (setModifiersIdforModifiers([]),setSelectedPackage({}as Prop))}
+                onClick={() => (
+                  setModifiersIdforModifiers([]), setSelectedPackage({} as Prop)
+                )}
                 className=""
               >
                 <input
+                  onChange={(e) => console.log(e)}
                   type="radio"
                   checked={modifiersIdforModifiers.length === 0 ? true : false}
                 />
@@ -118,6 +121,7 @@ const useModifiers = () => {
                     <label className="">
                       <input
                         type="radio"
+                        onChange={(e) => console.log(e)}
                         checked={
                           modifiersIdforModifiers.findIndex(
                             (item) => item === modefier.id
@@ -127,25 +131,27 @@ const useModifiers = () => {
                         }
                       />
                       <span className="design"></span>
-                        <span className="value">{modefier.name}</span>
-                        <p className="ml-10"> with price of ${modefier.total_price}</p>
+                      <span className="value">{modefier.name}</span>
+                      <p className="ml-10">
+                        {" "}
+                        with price of ${modefier.total_price}
+                      </p>
                     </label>
                     <div className="flex ">
                       {modefier.modifiers.map((item) => {
-                        if(item.image){
-
-                            return (
-                              <div
-                                key={item.id}
-                                className="flex justify-around bg-cover"
-                              >
-                                <img
-                                  className="w-20 bg-cover"
-                                  src={item.image}
-                                  alt="Picture of the author"
-                                />
-                              </div>
-                            );
+                        if (item.image) {
+                          return (
+                            <div
+                              key={uuidv4()}
+                              className="flex justify-around bg-cover"
+                            >
+                              <img
+                                className="w-20 bg-cover"
+                                src={item.image}
+                                alt="Picture of the author"
+                              />
+                            </div>
+                          );
                         }
                       })}
                     </div>

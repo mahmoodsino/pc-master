@@ -976,6 +976,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-stars@^2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@types/react-stars/-/react-stars-2.2.1.tgz#4a176a38e591d93557b529e00ae087dd7c467544"
+  integrity sha512-x0Z7+OsImFfBbHpLm/o3Z/q9qbapQbaSbKkozSIJXs6OAkFW5keA4Qw4MOjocdmhPPUYI6DDVSB0NOm0QmY+Xg==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-transition-group@^4.4.0":
   version "4.4.4"
   resolved "https://registry.npmjs.org/@types/react-transition-group/-/react-transition-group-4.4.4.tgz"
@@ -5779,10 +5786,10 @@ react-paypal-button-v2@^2.6.3:
     prop-types "^15.7.2"
     rimraf "^3.0.0"
 
-react-rating@^2.0.5:
-  version "2.0.5"
-  resolved "https://registry.yarnpkg.com/react-rating/-/react-rating-2.0.5.tgz#2c9d7ebe5907db0361ba28b7c19f0394e6e4dd76"
-  integrity sha512-uldxgLCe5bzqGX7V+7/bPgQQj2Kok6eiMgTMxjKOhfhnQkFLDlc4TjMlp7gaJFAHWdbiOnqpiShI7z8as6oWtg==
+react-rating@2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/react-rating/-/react-rating-2.0.4.tgz#fcc7426cee6c2966a7ce8d05b938b13c93275941"
+  integrity sha512-qSsfIVNhEega1mfGTSKK1e4qX9Nkcy8TQlftyyU3PsJbl01rOlQZRflwL/Uyf//KseirCyC5f2UbypP3pQh7nA==
   dependencies:
     "@types/lodash" "^4.14.105"
     "@types/react" "^16.0.40"
@@ -5830,6 +5837,11 @@ react-slider@^2.0.1:
   integrity sha512-EnPLeyPGQcgpU9i+OvdD6W1Fk+rHg7LOVGvREXqLnbSngYvnE+d++nus0iHho1kcDw6NzF1OXzqWXAEs2Nbl4Q==
   dependencies:
     prop-types "^15.8.1"
+
+react-stars@^2.2.5:
+  version "2.2.5"
+  resolved "https://registry.yarnpkg.com/react-stars/-/react-stars-2.2.5.tgz#911852018e1574a0f9a2c1dfa4f0bc9af071b921"
+  integrity sha512-O//KS6Z9RZnUOU/r+3+wxCzNalVn/wEWIcbAQFRV3dw8WbV+ys/kgcpBPijqTiNpHGrcwZdtb/7wF/UVem20CQ==
 
 react-toastify@^9.0.5:
   version "9.0.5"

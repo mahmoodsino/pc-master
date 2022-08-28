@@ -1,15 +1,12 @@
 import axios from "axios"
-const root = process.env.NEXT_PUBLIC_PAYMENT
-const getClientToken = async (payment_provider_id:number,id:number,email:string) => {
+const root = process.env.NEXT_PUBLIC_PAY
+const getClientToken = async (payment_provider_id:number,token:string) => {
     try {
-        const res = await axios.post(`${root}/payment-way/customers/token`,{
+        const res = await axios.post(`${root}/orders/payments/client-token`,{
             payment_provider_id:payment_provider_id,
-            user:{
-                id:id,
-                email:email
-            },
         },{    headers:{
-            "D-PAYMENT-AUTHORIZATION":"PK_1_OFJ6hbNa3BZ86vcYFe6a&1|7612616003^HZ8CG7Kl6QLpdYmVD0ns"
+            "D-PAYMENT-AUTHORIZATION":"PK_1_tCxdXbDjnPVFgRSMeXMK&1|3107166041^aMcY4cmO0Qa1aPZiSVfK",
+            Authorization: `Bearer ${token}`
         },}
         )
         return res.data

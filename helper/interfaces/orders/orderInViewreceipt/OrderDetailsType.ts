@@ -2,21 +2,16 @@ import { items } from "../../cartItems"
 import PaymentTransactionsType from "./PaymentTransactionsType"
 
 interface OrderDetailsTyps {
-    id: number,
-    number: string,
-    created_at: string,
-    sub_total: number,
-    user_name: string,
-    user_email: string,
-    discount: number,
-    delivery_fee: number,
-    total: number,
-    earning: number,
-    user_id: number,
-    branch_id: number,
-    country_name: string,
-    city_name: string,
-    post_code: string,
+    branch_id: number
+    created_at: string
+    delivery_date: string
+    delivery_fee: number
+    description: string
+    discount: number
+    earning: number
+    email: string
+    first_name: string
+    id: number
     address: {
         address: string
         build_number: string
@@ -25,12 +20,18 @@ interface OrderDetailsTyps {
         post_code: string
         street: null
     },
-    delivery_date: number,
-    pickup_address: string,
-    description: number,
-    tax: number,
+    last_name: string
+    number: string
+
     payment_transactions: PaymentTransactionsType[]
     items: items[]
+    phone: number
+    pickup_address: null
+    status: string
+    sub_total: number
+    tax: number
+    total: number
+    user_id: number
 }
 
 export default OrderDetailsTyps

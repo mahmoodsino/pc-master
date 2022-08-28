@@ -39,9 +39,11 @@ const App = ({ children }: Props) => {
 
 
 
-  if (typeof window !== "undefined") {
-    setToken(localStorage.getItem("token") || "");
-  }
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setToken(localStorage.getItem("token") || "");
+    }
+  },[])
 
 
 useEffect(() => {
@@ -95,23 +97,19 @@ useEffect(() => {
     });
     setRegisterCountry(modifCountries);
   };
-  
   getdata();
-}, [token]);
+}, []);
 
 
 useEffect(() => {
   const getData = async () => {
     const res = await getAddress(token)
-    
     setaddress(res.result)
-    
   }
   if(token.length>1) {
     getData();
   }
 },[openAddNewAddressModal,openEditAddressModal,token])
-
   return (
     <div
       onClick={() => (activeDropDown ? setActiveDropDown(false) : null)}
