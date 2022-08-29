@@ -48,6 +48,8 @@ const useModifiers = () => {
       }
     });
   }, [modifiers]);
+  console.log(modifierswithoutWarranty);
+  
 
   return {
     modifiersIdforModifiers,

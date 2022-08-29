@@ -14,10 +14,13 @@ import { v4 as uuidv4 } from "uuid";
 import no_image from "../../../../public/assets/image/no_image.jpg";
 import { MutableRefObject, useRef, useState } from "react";
 import { Spinner } from "../../../spinner";
+import Collapsible from "react-collapsible";
 
 const CartItems = () => {
   const [carts, setCarts] = useRecoilState(FetchedCartItemsAtom);
   const [token, setToken] = useRecoilState(TokenAtom);
+  console.log(carts);
+  
 
   const timerRef = useRef() as MutableRefObject<NodeJS.Timeout>;
 
@@ -85,7 +88,7 @@ const CartItems = () => {
     if (availableQuantity && itemQuantity > availableQuantity) {
       itemQuantity = availableQuantity;
       clearTimeout(timerRef.current);
-      timerRef.current=setTimeout(async () => {
+      timerRef.current = setTimeout(async () => {
         const res = await updateCart(token, id, itemQuantity, "item");
       }, 1000);
     }
@@ -93,7 +96,7 @@ const CartItems = () => {
       itemQuantity--;
       clearTimeout(timerRef.current);
 
-      timerRef.current=setTimeout(async () => {
+      timerRef.current = setTimeout(async () => {
         const res = await updateCart(token, id, itemQuantity, "item");
       }, 1000);
     } else if (itemQuantity === 1 || reomve) {
@@ -103,7 +106,7 @@ const CartItems = () => {
 
   return (
     <div>
-      <div >
+      <div>
         <div className="shadow-[0_0_10px_rgba(0,0,0,0.25)] md:tracking-[0.03em] rounded-md mb-10">
           <h1 className="md:text-xl font-bold   text-center py-5 left-0 right-0 m-auto bg-gray-1350">
             Pickup or delivery from store, within 3 working days
@@ -111,7 +114,7 @@ const CartItems = () => {
           {carts.map((item) => {
             return (
               <div
-              key={uuidv4()}
+                key={uuidv4()}
                 className={`md:px-5 ${
                   item.available_quantity &&
                   item.quantity > item.available_quantity
@@ -147,13 +150,50 @@ const CartItems = () => {
                     </span>
                   </div>
                 </div>
-                <div className="whitespace-nowrap mx-8 w-fit">
+                <div className="whitespace-nowrap ml-8  mr-10 w-full">
                   {item.modifierGroups.map((it) => {
                     return (
-                      <h1 key={it.id} className="md:w-[60%] sm:w-[90%]">
-                        {it.name} with price of
-                        <span className="font-semibold">${it.total_price}</span>
-                      </h1>
+                      <Collapsible
+                      key={uuidv4()}
+                        trigger={
+                          <BaseButton className="shadow-md flex justify-between items-center w-[90%] border">
+                            <span className="font-semibold">{it.name}</span>
+                            <div className="space-x-3">
+                              <span className="font-semibold">${it.total_price}</span>
+                              <svg
+                                data-accordion-icon
+                                className={`w-6 h-6 inline-block  `}
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  fillRule="evenodd"
+                                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                  clipRule="evenodd"
+                                ></path>
+                              </svg>
+                            </div>
+                          </BaseButton>
+                        }
+                      >
+                        <div className="ml-5">
+                          {it.modifiers.map(modi => {
+                            return(
+                              <div
+                              key={uuidv4()}
+                              className="space-x-3 mt-3 bg-cover"
+                            >
+                              <img
+                                className="w-20 bg-cover"
+                                src={modi.image}
+                                alt="Picture of the author"
+                              />
+                            </div>
+                            )
+                          })}
+                        </div>
+                      </Collapsible>
                     );
                   })}
                   {item.quantity === item.available_quantity && (

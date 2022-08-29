@@ -8,7 +8,9 @@ const shopFilterProducts = async (token?:string,Brands?: number[], Category?: nu
     try {
         const res = await axios.get(`${root}/products`,{
             headers:{
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${token}`,
+                "branch_id":1,
+                "company-id":1
             },
             params:{
                 Brands:Brands,

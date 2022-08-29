@@ -1,4 +1,4 @@
-import { items } from "../../cartItems"
+import { FetchedItems, items } from "../../cartItems"
 import PaymentTransactionsType from "./PaymentTransactionsType"
 
 interface OrderDetailsTyps {
@@ -22,9 +22,8 @@ interface OrderDetailsTyps {
     },
     last_name: string
     number: string
-
-    payment_transactions: PaymentTransactionsType[]
-    items: items[]
+    payment_transaction: PaymentTransactionsType|null;
+    items: FetchedItems[]
     phone: number
     pickup_address: null
     status: string

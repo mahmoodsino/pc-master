@@ -11,6 +11,7 @@ import {
 import {
   getClientToken,
   getPaymentProvidor,
+  handelComletePay,
   handelOrderPay,
   OrderDetailsAtom,
   registerCountryAtom,
@@ -95,6 +96,9 @@ const CheckoutDetails = () => {
     }
     getData()
   }, [paymentProvidorId,userId,email]);
+
+  console.log(router.paymentTransaction);
+  
 
   // const {
   //   control,
@@ -194,9 +198,14 @@ const CheckoutDetails = () => {
             }}
             
               createOrder={async () => {
+                if(router.paymentTransaction&&paymentProvidorId){
+                  const res = await handelComletePay(token,Number(router.paymentTransaction))
+                  console.log(res,"11");
+                  return res.result.client_result.order_id
+                }
                 if(router.savedOrder&&paymentProvidorId){
                   const res = await handelOrderPay(token,Number(router.savedOrder),paymentProvidorId)
-                  console.log(res);
+                  console.log(res,"22");
                   return res.result.client_result.order_id
                 }
                 

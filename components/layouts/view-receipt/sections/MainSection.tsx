@@ -18,9 +18,9 @@ import { Spinner } from "../../../spinner";
 import { BaseButton } from "../../../buttons";
 
 interface PaymentProvider {
-  public_key:string,
-  id:number
-  name:string
+  public_key: string;
+  id: number;
+  name: string;
 }
 
 const MainSection = () => {
@@ -28,9 +28,10 @@ const MainSection = () => {
   const [orderDetails, setOrderDetails] = useRecoilState(OrderDetailsAtom);
   const [token, setToken] = useRecoilState(TokenAtom);
   const [loading, setLoading] = useState(false);
-  const [paymentProvidorState,setPaymentProvidorState]=useState<PaymentProvider[]>([])
-  const[paymentProvidorId,setPaymenProvidorId]=useState<number>()
-
+  const [paymentProvidorState, setPaymentProvidorState] = useState<
+    PaymentProvider[]
+  >([]);
+  const [paymentProvidorId, setPaymenProvidorId] = useState<number>();
 
   const router = useRouter().query;
 
@@ -40,6 +41,7 @@ const MainSection = () => {
       if (router.order) {
         const res = await getOrderCratedOrder(token, +router.order);
         console.log(res);
+
         setOrderDetails(res.data);
         if (res) {
           setLoading(false);
@@ -51,19 +53,44 @@ const MainSection = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const res = await getPaymentProvidor()
+      const res = await getPaymentProvidor();
       console.log(res);
-      setPaymentProvidorState(res.result.payment_providers)
-    }
-    getData()
-  },[])
+      setPaymentProvidorState(res.result.payment_providers);
+    };
+    getData();
+  }, []);
   useEffect(() => {
-    paymentProvidorState.map(providor => {
-      if(providor.name==="paypal"){
-        setPaymenProvidorId(providor.id)
+    paymentProvidorState.map((providor) => {
+      if (providor.name === "paypal") {
+        setPaymenProvidorId(providor.id);
       }
-    })
-  },[paymentProvidorState])
+    });
+  }, [paymentProvidorState]);
+
+  const { push } = useRouter();
+
+  const handelpayForOrder = async () => {
+    if (paymentProvidorId) {
+      push({
+        pathname: "/checkout",
+        query: { savedOrder: encodeURI(orderDetails.id.toString()) },
+      });
+    }
+  };
+
+  const handelComletetheOrder = async () => {
+    if (orderDetails.payment_transaction?.id) {
+      push({
+        pathname: "/checkout",
+        query: {
+          savedOrder: encodeURI(orderDetails.id.toString()),
+          paymentTransaction: encodeURI(
+            orderDetails.payment_transaction.id?.toString()
+          ),
+        },
+      });
+    }
+  };
 
   return (
     <div>
@@ -78,7 +105,12 @@ const MainSection = () => {
               <span className="md:text-[19px] sm:text-[15px] font-bold whitespace-nowrap">
                 #{orderDetails.number}
               </span>
-              <span>status:{orderDetails.status}</span>
+              {orderDetails.payment_transaction === null && (
+                <span>status:{orderDetails.status}</span>
+              )}
+              {orderDetails.payment_transaction !== null && (
+                <span>status:{orderDetails.payment_transaction?.status}</span>
+              )}
             </div>
           </div>
           <h1 className="md:ml-10 text-xl font-bold text-gray-950 mt-8">
@@ -119,17 +151,32 @@ const MainSection = () => {
                   <span>TOTAL</span>
                   <span>${orderDetails.total}</span>
                 </div>
-                {orderDetails.status === "UN_PAID" && (
+                {orderDetails.status!=="PAID" && (orderDetails.payment_transaction === null ? (
                   <div className="flex justify-between mx-5 mt-3">
                     <span className="font-semibold uppercase text-gray-1150 items-center">
                       pay for your order{" "}
                     </span>
                     <BaseButton
+                      onClick={() => handelpayForOrder()}
                       className="px-4 py-1 bg-green-950 text-white rounded-full hover:bg-green-1000 "
                       title="pay"
                     />
                   </div>
-                )}
+                ) : orderDetails.payment_transaction?.can_completed ===
+                  false ? (
+                  <span>{orderDetails.payment_transaction?.status}</span>
+                ) : orderDetails.payment_transaction?.can_completed ? (
+                  <div className="flex justify-between mx-5 mt-3">
+                    <span className="font-semibold uppercase text-gray-1150 items-center">
+                    complete pay for your order
+                    </span>
+                    <BaseButton
+                    onClick={() => handelComletetheOrder()}
+                      className="px-4 py-1 bg-green-950 text-white rounded-full hover:bg-green-1000 "
+                      title="complete"
+                    />
+                  </div>
+                ) : null)}
               </div>
             </div>
           </div>

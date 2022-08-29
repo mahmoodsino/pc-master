@@ -1,6 +1,10 @@
+import Collapsible from "react-collapsible";
 import { useRecoilState } from "recoil";
 import { AllCartsInfo } from "../../../../helper";
+import { BaseButton } from "../../../buttons";
 import { CartIcon } from "../../../icons";
+import { v4 as uuidv4 } from "uuid";
+
 
 const CartSummary = () => {
   const [allCartsInfo, setAllCartsInfo] = useRecoilState(AllCartsInfo);
@@ -24,6 +28,52 @@ const CartSummary = () => {
               <span>${item.variation?.price}</span>
             </div>
             <span>{item.description}</span>
+            {item.modifierGroups?.map((it) => {
+                    return (
+                      <Collapsible
+                      key={uuidv4()}
+                        trigger={
+                          <BaseButton
+                           className="flex justify-between items-center w-[100%] border">
+                            <span className="font-semibold">{it.name}</span>
+                            <div className="space-x-3">
+                              <span className="font-semibold">${it.total_price}</span>
+                              <svg
+                                data-accordion-icon
+                                className={`w-6 h-6 inline-block  `}
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  fillRule="evenodd"
+                                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                  clipRule="evenodd"
+                                ></path>
+                              </svg>
+                            </div>
+                          </BaseButton>
+                        }
+                      >
+                        <div className="ml-5">
+                          {it.modifiers.map(modi => {
+                            return(
+                              <div
+                              key={uuidv4()}
+                              className="space-x-3 mt-3 bg-cover"
+                            >
+                              <img
+                                className="w-20 bg-cover"
+                                src={modi.image}
+                                alt="Picture of the author"
+                              />
+                            </div>
+                            )
+                          })}
+                        </div>
+                      </Collapsible>
+                    );
+                  })}
             <div className="w-[90%] left-0 right-0 m-auto border-b my-8"></div>
           </div>
         );
