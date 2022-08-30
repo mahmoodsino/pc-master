@@ -37,13 +37,15 @@ const App = ({ children }: Props) => {
   );
   const timerRef = useRef() as MutableRefObject<NodeJS.Timeout>;
 
+  if (typeof window !== "undefined") {
+    setToken(localStorage.getItem("token") || "");
+  }
 
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      setToken(localStorage.getItem("token") || "");
-    }
-  },[])
+  // useEffect(() => {
+  //   if (typeof window !== "undefined") {
+  //     setToken(localStorage.getItem("token") || "");
+  //   }
+  // },[])
 
 
 useEffect(() => {

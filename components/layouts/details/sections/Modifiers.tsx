@@ -64,7 +64,7 @@ const useModifiers = () => {
                 onClick={() => (
                   setModifierActive(!modifierActive), setWarrantyActive(false)
                 )}
-                className="border hover:bg-gray-1400 bg-gray-1000 w-full flex py-2 px-3 justify-between"
+                className="border bg-[#f5f5f5] w-full flex py-2 px-3 justify-between"
               >
                 <span className="font-bold">buy with</span>
                 <div>

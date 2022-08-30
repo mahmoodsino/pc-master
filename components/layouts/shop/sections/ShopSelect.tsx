@@ -4,7 +4,13 @@ import Select, { StylesConfig, ActionMeta } from "react-select";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRecoilState } from "recoil";
-import { getProducts, handelFilterProduct, OrderByAtom, ProductsAtom, TokenAtom } from "../../../../helper";
+import {
+  getProducts,
+  handelFilterProduct,
+  OrderByAtom,
+  ProductsAtom,
+  TokenAtom,
+} from "../../../../helper";
 import { orderBySchema } from "../../../../helper/validation";
 
 export interface optionType {
@@ -19,7 +25,7 @@ interface IFormInputs {
 const ShopSelect = () => {
   const [orderByState, setOrderByState] = useRecoilState(OrderByAtom);
   const [productsState, setProductsState] = useRecoilState(ProductsAtom);
-  const [token,setToken]=useRecoilState(TokenAtom)
+  const [token, setToken] = useRecoilState(TokenAtom);
 
   const {
     control,
@@ -29,8 +35,6 @@ const ShopSelect = () => {
   } = useForm<IFormInputs>({
     resolver: yupResolver(orderBySchema),
   });
-
-
 
   const customStyles: StylesConfig<optionType> = {
     option: (provided: ActionMeta, state: ActionMeta) => ({
@@ -49,18 +53,24 @@ const ShopSelect = () => {
   };
   return (
     <div className="inline-block sm:w-[100%] md:w-[25%]  lg:w-[22%]">
-      <form >
+      <form>
         <Controller
           name="orderBy"
           control={control}
-          render={({ field: { onChange, value, name, ref } }) => {
+          render={({ field: {name,ref} }) => {
             const handleSelectChange = async (
               selectedOption: optionType | null
             ) => {
-              const res = await getProducts(token,"",-1,[],selectedOption?.label);
+              const res = await getProducts(
+                token,
+                "",
+                -1,
+                [],
+                selectedOption?.label
+              );
               console.log(res);
-              
-              setProductsState(res.result.items)
+
+              setProductsState(res.result.items);
             };
             return (
               <Select

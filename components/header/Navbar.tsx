@@ -14,6 +14,10 @@ const Navbar = () => {
   const { pathname } = useRouter();
   const [contact,setContact]=useRecoilState(ContactAtom)
 
+  let useType;
+  if (typeof window !== "undefined") {
+    useType = localStorage.getItem("type" || "");
+  }
 
   return (
     <div className="2xl:container">
@@ -39,6 +43,8 @@ const Navbar = () => {
               <span className="font-medium text-xs">{contact.email}</span>
             </div>
           </div>
+          {useType !== "user" && 
+          
           <div className="border flex flex-row bg-gray-1300 text-white w-[150px] h-[34px] justify-around rounded-b-xl leading-[21px] text-[14px] ">
             <Link href="/register">
               <a className="mt-1">Register</a>
@@ -48,6 +54,7 @@ const Navbar = () => {
               <a className="mt-1">Login</a>
             </Link>
           </div>
+          }
         </div>
 
         <div className="flex  items-center">

@@ -48,7 +48,7 @@ const useProtectPurchaseCard = () => {
                   trigger={
                     <BaseButton
                       onClick={() =>( setWarrantyActive(!warrantyActive),setModifierActive(false))}
-                      className="border bg-gray-1000 hover:bg-gray-1400 w-full flex py-2 px-3 justify-between"
+                      className="border bg-[#f5f5f5] w-full flex py-2 px-3 justify-between"
                     >
                       <span className="font-bold">warranty</span>
                       <div>

@@ -34,6 +34,7 @@ import { Spinner } from "../../../spinner";
 import { AddToWishList } from "../../wishlist";
 import ContinueAsGuest from "./ContinueAsGuest";
 import useModifiers from "./Modifiers";
+import { MoveToCartPageModalAtom } from "./MoveToCartPageModal";
 import useProtectPurchaseCard, { modifiersIdAtom } from "./ProtectPurchaseCard";
 
 const DetailsCard = () => {
@@ -67,6 +68,8 @@ const DetailsCard = () => {
   const [allModifires,setAllModifiers]=useState<number[]>([])
   const [loading,setLoading]=useState(false)
   const [allCartsInfo,setAllCartsInfo]=useRecoilState(AllCartsInfo)
+  const [MoveToCartPageModalState,setMoveToCartPageModalState]=useRecoilState(MoveToCartPageModalAtom)
+
 
 
 
@@ -389,6 +392,10 @@ const DetailsCard = () => {
     if(res){
       setLoading(false)
     }
+    if(response){
+
+      setMoveToCartPageModalState(true)
+    }
   };
 
   const getbg = (id: number) => {
@@ -433,7 +440,7 @@ const DetailsCard = () => {
   };
 
   return (
-    <div className="shadow-[0_0_10px_rgba(0,0,0,0.25)] pb-14  tracking-[0.03em] mb-20">
+    <div className="shadow-[0_0_5px_rgba(0,0,0,0.12)] rounded-md pb-14  tracking-[0.03em] mb-8">
       <div className="mx-5 space-y-4 border-b pt-5   pb-10">
         <h1 className=" text-xl font-bold text-[#7A7A7A]">
           {detailsState.product.name}

@@ -72,7 +72,7 @@ const MainSection = () => {
         ratingState,
         selectedAttribute
       );
-      //  setProductsState(res.result.items);
+       setProductsState(res.result.items);
       setLoading(false);
     };
     clearTimeout(timerRef.current);
@@ -160,7 +160,7 @@ const MainSection = () => {
             </div>
         }
               {activeDropDown ? (
-                <div className="bg-white absolute  z-10 top-[102%] right-[90%]  shadow-[0_0_10px_rgba(0,0,0,0.25)]">
+                <div className="bg-white absolute  z-10 top-[102%] right-[90%]  shadow-[0_0_5px_rgba(0,0,0,0.12)]">
                   <Dropdown />
                 </div>
               ) : null}

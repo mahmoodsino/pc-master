@@ -68,6 +68,8 @@ const WriteReviewModal = ({ rated, text, id }: Props) => {
     if (OpenUpdateReviewModalAtom && id) {
       setLoading(true);
       const res = await handelUpdateReview(token, id, rate, writeReview);
+      console.log(res);
+      
       setUserReview(res.result);
       if (userReview.id > 0) {
         setLoading(false);
@@ -89,7 +91,9 @@ const WriteReviewModal = ({ rated, text, id }: Props) => {
           <div>
             {!loading ? (
               <div>
-                <div className="flex  flex-col items-center space-y-3 mb-5 ml-0 mr-0 mx-auto">
+                <h1 className="text-xl font-bold ">write your review</h1>
+                <div className="flex  flex-col items-start my-3 ml-0 mr-0 mx-auto">
+
                   <span className="font-bold block">rate the item </span>
                   <ReactStars
                     value={rate}
@@ -99,9 +103,10 @@ const WriteReviewModal = ({ rated, text, id }: Props) => {
                 </div>
                 <form>
                   <textarea
+                    aria-setsize={50}
                     name="review"
-                    className="w-full border"
-                    placeholder="review"
+                    className="w-full h-20 border pl-3 resize-none"
+                    placeholder="write your review"
                     title="write review "
                     value={writeReview}
                     onChange={(e) => setWriteReview(e.target.value)}
@@ -119,7 +124,7 @@ const WriteReviewModal = ({ rated, text, id }: Props) => {
                   <BaseButton
                     onClick={() => handelSubmit()}
                     disabled={rate ? false : true}
-                    className="px-4 py-1 text-white bg-[#0071dc] disabled:bg-gray-600"
+                    className="px-4 py-1 text-green-950 border border-green-950  disabled:border-red-950 disabled:text-red-950"
                     title="submit"
                   />
                 </div>

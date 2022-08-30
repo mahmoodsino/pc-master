@@ -26,7 +26,7 @@ const MobileWishList = ({
         return (
           <div
             key={item.id}
-            className="md:mx-12 px-5 mb-10 py-5 sm:block lg:hidden shadow-[0_0_10px_rgba(0,0,0,0.25)]"
+            className="md:mx-12 px-5 mb-10 py-5 sm:block lg:hidden shadow-[0_0_5px_rgba(0,0,0,0.12)]"
           >
             <div className="flex justify-end">
               <BaseButton

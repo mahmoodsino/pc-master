@@ -3,20 +3,26 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 import { atom, useRecoilState } from "recoil";
-import img1 from "../../public/assets/image/img1.png"
-import { v4 as uuidv4 } from 'uuid';
-
+import img1 from "../../public/assets/image/img1.png";
+import { v4 as uuidv4 } from "uuid";
 
 export const routseWAuth = [
   { path: "/", name: "Home" },
   { path: "/shop", name: "shop" },
   { path: "/services", name: "services" },
-  { path: "/about", name: "about"},
+  { path: "/about", name: "about" },
   { path: "/contact", name: "contact" },
-  { path: "/login", name: "login" },
   { path: "/register", name: "register" },
+  { path: "/login", name: "login" },
 ];
 
+export const routswithout = [
+  { path: "/", name: "Home" },
+  { path: "/shop", name: "shop" },
+  { path: "/services", name: "services" },
+  { path: "/about", name: "about" },
+  { path: "/contact", name: "contact" },
+];
 
 export const goingUpAtom = atom<boolean>({
   key: "goingupatom",
@@ -43,6 +49,10 @@ const FixedNavbar = () => {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, [goingUp]);
+  let useType;
+  if (typeof window !== "undefined") {
+    useType = localStorage.getItem("type" || "");
+  }
 
   return (
     <div
@@ -54,25 +64,45 @@ const FixedNavbar = () => {
     >
       <div className="flex items-center 2xl:container">
         <div className=" w-[21%]">
-          <Image src={img1}/>
+          <Image src={img1} />
         </div>
-        <div className=" flex grow  justify-end gap-8    uppercase  font-bold leading-[21px] tracking-[0.03em]  text-sm ">
-          {routseWAuth.map((item) => {
-            return (
-              <Link
-              key={uuidv4()}
-                href={item.path}
-                
-              >
-                <a className={`h-fit px-2 py-1 rounded-xl ${
-                  pathname.slice(1) !== item.path.slice(1)
-                    ? "hover:bg-green-950 hover:text-white"
-                    : "bg-green-950 text-white"
-                } `}>{item.name}</a>
-              </Link>
-            );
-          })}
-        </div>
+        {useType !== "user" ? (
+          <div className=" flex grow  justify-end gap-8  mr-3   uppercase  font-bold leading-[21px] tracking-[0.03em]  text-sm ">
+            {routseWAuth.map((item) => {
+              return (
+                <Link key={uuidv4()} href={item.path}>
+                  <a
+                    className={`h-fit px-2 py-1 rounded-xl ${
+                      pathname.slice(1) !== item.path.slice(1)
+                        ? "hover:bg-green-950 hover:text-white"
+                        : "bg-green-950 text-white"
+                    } `}
+                  >
+                    {item.name}
+                  </a>
+                </Link>
+              );
+            })}
+          </div>
+        ) : (
+          <div className=" flex grow  justify-end gap-8  mr-3   uppercase  font-bold leading-[21px] tracking-[0.03em]  text-sm ">
+            {routswithout.map((item) => {
+              return (
+                <Link key={uuidv4()} href={item.path}>
+                  <a
+                    className={`h-fit px-2 py-1 rounded-xl ${
+                      pathname.slice(1) !== item.path.slice(1)
+                        ? "hover:bg-green-950 hover:text-white"
+                        : "bg-green-950 text-white"
+                    } `}
+                  >
+                    {item.name}
+                  </a>
+                </Link>
+              );
+            })}
+          </div>
+        )}
       </div>
     </div>
   );

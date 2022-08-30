@@ -9,7 +9,8 @@ const getNewArraivalProducts = async (token:string,id?: number) => {
         if (id) {
             const res = await axios.get(`${root}/products?page_size=5&orderbynewest&category=${id}`, {
                 headers: {
-                    'branch_id': 1,
+                    "branch_id": 1,
+                    "company-id": 1,
                     Authorization: `Bearer ${token}`
                 }
             })
@@ -18,7 +19,8 @@ const getNewArraivalProducts = async (token:string,id?: number) => {
 
             const res = await axios.get(`${root}/products?page_size=5&orderbynewest`, {
                 headers: {
-                    'branch_id': 1,
+                    "branch_id": 1,
+                    "company-id": 1,
                     Authorization: `Bearer ${token}`
                 }
             })

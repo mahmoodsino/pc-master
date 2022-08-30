@@ -1,10 +1,15 @@
 import { MouseEvent, useEffect, useId } from "react";
 import { useRecoilState } from "recoil";
-import { registerCountryAtom, ShippingAddressIdAtom, SuccessEdit, TokenAtom } from "../../../../../helper/state/index";
+import {
+  registerCountryAtom,
+  ShippingAddressIdAtom,
+  SuccessEdit,
+  TokenAtom,
+} from "../../../../../helper/state/index";
 import { BaseButton } from "../../../../buttons";
 import { BaseInput } from "../../../../inputs";
 //@ts-ignore
-import Select, { ActionMeta,StylesConfig } from "react-select";
+import Select, { ActionMeta, StylesConfig } from "react-select";
 
 import {
   AddresToDeleteIdAtom,
@@ -16,7 +21,11 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { addressBookSchema } from "../../../../../helper/validation";
 
-import { handelAddAress, handelUpdateAddress, optionTypeCountry } from "../../../../../helper";
+import {
+  handelAddAress,
+  handelUpdateAddress,
+  optionTypeCountry,
+} from "../../../../../helper";
 
 interface IFormInputs {
   addressName: string;
@@ -40,10 +49,9 @@ const EditAddressModal = () => {
   const [token, setToken] = useRecoilState(TokenAtom);
   const [editAddress, setEditAddress] = useRecoilState(EditAddressIdAtom);
 
-  const [shippingAddressId,setShippingAddressId]=useRecoilState(ShippingAddressIdAtom)
-
-
-
+  const [shippingAddressId, setShippingAddressId] = useRecoilState(
+    ShippingAddressIdAtom
+  );
 
   const customStyles: StylesConfig<optionTypeCountry> = {
     option: (provided: ActionMeta, state: ActionMeta) => ({
@@ -72,7 +80,6 @@ const EditAddressModal = () => {
     resolver: yupResolver(addressBookSchema),
   });
 
-
   const submitForm = async (data: IFormInputs) => {
     if (openAddNewAddressModal) {
       const res = await handelAddAress(
@@ -86,7 +93,7 @@ const EditAddressModal = () => {
         token
       );
       setShippingAddressId(res.data.id);
-      
+
       setEditSuccess("addSucess");
       setTimeout(() => {
         setEditSuccess("");
@@ -113,15 +120,14 @@ const EditAddressModal = () => {
     }
   };
   useEffect(() => {
-    if(openEditAddressModal) {
-      setValue("addressName",editAddress.name)
-      setValue("address",editAddress.address)
-      setValue("cities",editAddress.city_name)
-      setValue("zipPostalCode",editAddress.post_code)
-      setValue("check",editAddress.is_default)
+    if (openEditAddressModal) {
+      setValue("addressName", editAddress.name);
+      setValue("address", editAddress.address);
+      setValue("cities", editAddress.city_name);
+      setValue("zipPostalCode", editAddress.post_code);
+      setValue("check", editAddress.is_default);
     }
-  },[editAddress])
-
+  }, [editAddress]);
 
   return (
     <div className="2xl:container">
@@ -145,7 +151,6 @@ const EditAddressModal = () => {
                     <input
                       {...register("check")}
                       name="check"
-                     
                       className="checkbox"
                       type="checkbox"
                     />
@@ -160,6 +165,10 @@ const EditAddressModal = () => {
                 name="addressName"
                 register={register}
               />
+              <p className="text-xs text-red-900 ">
+                {errors.addressName?.message}
+              </p>
+
               <BaseInput
                 title="Address"
                 placeholder=""
@@ -167,6 +176,7 @@ const EditAddressModal = () => {
                 name="address"
                 register={register}
               />
+              <p className="text-xs text-red-900 ">{errors.address?.message}</p>
 
               <div className="grid lg:grid-cols-2 gap-3">
                 <div>
@@ -204,31 +214,50 @@ const EditAddressModal = () => {
                       );
                     }}
                   />
+                  <p className="text-xs text-red-900 ">
+                    {errors.countries?.message}
+                  </p>
                 </div>
-                <BaseInput
-                  title="City"
-                  placeholder="City"
-                  className={undefined}
-                  name="cities"
-                  register={register}
-                />
+                <div>
+
+                  <BaseInput
+                    title="City"
+                    placeholder="City"
+                    className={undefined}
+                    name="cities"
+                    register={register}
+                  />
+                  <p className="text-xs text-red-900 ">
+                    {errors.cities?.message}
+                  </p>
+                </div>
               </div>
               <div className="grid lg:grid-cols-2 gap-3">
-                <BaseInput
-                  title="House/Building No."
-                  placeholder="House/Building.."
-                  className={undefined}
-                  name="houseBuildingNo"
-                  register={register}
-                />
+                <div>
+                  <BaseInput
+                    title="House/Building No."
+                    placeholder="House/Building.."
+                    className={undefined}
+                    name="houseBuildingNo"
+                    register={register}
+                  />
+                  <p className="text-xs text-red-900 ">
+                    {errors.houseBuildingNo?.message}
+                  </p>
+                </div>
 
-                <BaseInput
-                  title="Zip / Postal Code"
-                  placeholder="Zip "
-                  className={undefined}
-                  name="zipPostalCode"
-                  register={register}
-                />
+                <div>
+                  <BaseInput
+                    title="Zip / Postal Code"
+                    placeholder="Zip "
+                    className={undefined}
+                    name="zipPostalCode"
+                    register={register}
+                  />
+                  <p className="text-xs text-red-900 ">
+                    {errors.zipPostalCode?.message}
+                  </p>
+                </div>
               </div>
               <div className="flex justify-between">
                 <BaseButton

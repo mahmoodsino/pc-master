@@ -14,7 +14,7 @@ const FillterProductsMobile = () => {
         <div
           className={`${
             showFillterProducts ? "bottom-0 " : "-bottom-full"
-          } h-[70vh] shadow-[0_0_10px_rgba(0,0,0,0.25)] overflow-y-auto z-50 fixed bg-white w-full rounded-t-2xl transition-all duration-300 ease-in-out`}
+          } h-[70vh] shadow-[0_0_5px_rgba(0,0,0,0.12)] overflow-y-auto z-50 fixed bg-white w-full rounded-t-2xl transition-all duration-300 ease-in-out`}
         >
           <div className="fixed m-3">
             <button onClick={() => setShowFillterProducts(false)}>

@@ -11,7 +11,7 @@ const OrderDetails = () => {
   }
 
   return (
-    <div className=" shadow-[0_0_10px_rgba(0,0,0,0.25)] pl-7 mb-10">
+    <div className=" shadow-[0_0_5px_rgba(0,0,0,0.12)] pl-7 mb-10">
       <h1 className="font-bold text-xl pt-5 pb-5  text-gray-950 ">
         Order Details
       </h1>
@@ -37,7 +37,7 @@ const OrderDetails = () => {
         <div className="w-[60%] space-y-2 text-sm font-medium">
           <div className="md:ml-10 flex md:flex-row sm:flex-col">
             <h1 className="w-[30%] text-gray-1100 inline-block">Fullname:</h1>
-            {useType === "guest" ? (
+            {orderDetails.first_name ===null ? (
               <span className="text-gray-950">---</span>
             ) : (
               <span className="text-gray-950">{orderDetails.first_name} {orderDetails.last_name}</span>
@@ -45,7 +45,7 @@ const OrderDetails = () => {
           </div>
           <div className="md:ml-10 flex md:flex-row sm:flex-col">
             <h1 className="w-[30%] text-gray-1100  inline-block">Email:</h1>
-            {useType === "guest" ? (
+            {orderDetails.email ===null ? (
               <span className="text-gray-950">---</span>
             ) : (
               <span className="text-gray-950">{orderDetails.email}</span>

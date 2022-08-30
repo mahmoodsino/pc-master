@@ -4,7 +4,7 @@ import {ProgressLine} from '../../../steper'
 
 const Delivered = () => {
   return (
-    <div className=' shadow-[0_0_10px_rgba(0,0,0,0.25)] '>
+    <div className=' shadow-[0_0_5px_rgba(0,0,0,0.12)] '>
         <div className='flex flex-col sm:p-4 md:p-7'>
             <div className='space-x-1 flex items-center'>
                 {truckIcon}

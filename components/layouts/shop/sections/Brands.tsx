@@ -25,7 +25,7 @@ const useBrands = () => {
       {brands.map((brand) => {
         return (
           <div className="" key={brand.id}>
-            <label  className="shopContainer flex items-center pb-1 mt-0 border-b">
+            <label  className="shopContainer flex items-center  border-b mt-0 mb-0 py-2">
               {brand.name}
               <input
                 onChange={() =>( handeBrands(brand.id))}

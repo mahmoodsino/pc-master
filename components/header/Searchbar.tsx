@@ -124,7 +124,7 @@ const Searchbar = () => {
             </div>
         }
          {activeDropDown ? (
-              <div className="bg-white absolute  z-10 top-[100%] right-10  shadow-[0_0_10px_rgba(0,0,0,0.25)]">
+              <div className="bg-white absolute  z-10 top-[100%] right-10  shadow-[0_0_5px_rgba(0,0,0,0.12)]">
                 <Dropdown />
               </div>
             ) : null}

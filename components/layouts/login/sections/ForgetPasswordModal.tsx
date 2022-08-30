@@ -52,9 +52,9 @@ const ForgetPasswordModal = () => {
           <div className="m-7">
             <form onSubmit={handleSubmit(handelForget)} className="">
                 <h1 className="text-xl font-bold ">Forget Your Password?</h1>
-                <h1 className="my-5">
+                <span className="my-5 block">
                   Enter your Email
-                </h1>
+                </span>
                 <BaseInput name="email" register={register}  type="email" placeholder="your Email" className="" />
                 <div className="flex justify-between mt-10">
                   <BaseButton onClick={() =>setForgetPasswordModal(false) }  className="border border-gray-950 px-7 py-2" title="Cancel"/>

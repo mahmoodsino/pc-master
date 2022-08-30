@@ -8,7 +8,8 @@ const handelFilterProduct = async () => {
     try {
             const res = await axios.get(`${root}/products/filters`, {
                 headers: {
-                    'branch_id': 1
+                    "branch_id": 1,
+                    "company-id": 1,
                 }
             })
             return res.data

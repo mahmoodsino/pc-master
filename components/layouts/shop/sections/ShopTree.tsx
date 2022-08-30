@@ -83,7 +83,7 @@ const ShopTreeNode = ({
         
 
         <div className=" flex justify-between  text-sm tracking-[0.03em] cursor-pointer  border-t border-b border-t-white">
-          <label  className="shopContainer flex items-center">
+          <label  className="shopContainer flex items-center mt-0 mb-0 py-2">
             {node.name}
             <input
             checked={selecterCategory.findIndex(categorey => categorey===node.id)>-1 ? true : false }

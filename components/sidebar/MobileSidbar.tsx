@@ -1,5 +1,5 @@
 import { atom, useRecoilState } from "recoil";
-import { routseWAuth } from "../header/FixedNavbar";
+import { routseWAuth, routswithout } from "../header/FixedNavbar";
 import { MobailCategoryModal } from "../layouts";
 import { BaseInput } from "../inputs";
 import { BaseButton } from "../buttons";
@@ -26,6 +26,12 @@ const MobileSidbar = () => {
   const [productsState, setProductsState] = useRecoilState(ProductsAtom);
   const [contact,setContact]=useRecoilState(ContactAtom)
   const push = useRouter().push;
+  let useType
+  if(typeof window !== "undefined"){
+
+     useType = localStorage.getItem("type" || "");
+  }
+
 
   const handelSearch = async (productToSearch: string) => {
     const res = await getProducts(productToSearch);
@@ -71,11 +77,24 @@ const MobileSidbar = () => {
               </form>
             </div>
           </div>
-          <div
+          {useType !== "user" ? 
+            <div
+              onClick={() => setShowSidbarState(false)}
+              className="text-left  text-white uppercase font-semibold mt-10"
+            >
+              {routseWAuth.map((item) => {
+                return (
+                  <Link key={uuidv4()} href={item.path}>
+                    <a className=" block border-b pl-5 py-2">{item.name}</a>
+                  </Link>
+                );
+              })}
+            </div> :
+            <div
             onClick={() => setShowSidbarState(false)}
             className="text-left  text-white uppercase font-semibold mt-10"
           >
-            {routseWAuth.map((item) => {
+            {routswithout.map((item) => {
               return (
                 <Link key={uuidv4()} href={item.path}>
                   <a className=" block border-b pl-5 py-2">{item.name}</a>
@@ -83,6 +102,8 @@ const MobileSidbar = () => {
               );
             })}
           </div>
+          
+        }
           <BaseButton
             onClick={() => (
               setOpencategoryModal(true), setShowSidbarState(false)

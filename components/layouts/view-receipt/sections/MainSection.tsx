@@ -32,6 +32,8 @@ const MainSection = () => {
     PaymentProvider[]
   >([]);
   const [paymentProvidorId, setPaymenProvidorId] = useState<number>();
+  console.log(orderDetails);
+  
 
   const router = useRouter().query;
 
@@ -42,7 +44,7 @@ const MainSection = () => {
         const res = await getOrderCratedOrder(token, +router.order);
         console.log(res);
 
-        setOrderDetails(res.data);
+        setOrderDetails(res.result);
         if (res) {
           setLoading(false);
         }
@@ -91,8 +93,11 @@ const MainSection = () => {
       });
     }
   };
+ 
 
   return (
+    <div>
+
     <div>
       <Searchbar />
       {!loading ? (
@@ -186,6 +191,9 @@ const MainSection = () => {
           <Spinner className="w-40 fill-green-950" />
         </div>
       )}
+    </div>
+
+    
     </div>
   );
 };

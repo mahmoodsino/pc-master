@@ -6,7 +6,7 @@ const ShippingAddress = () => {
   const [orderDetails, setOrderDetails] = useRecoilState(OrderDetailsAtom);
 
   return (
-    <div className=" shadow-[0_0_10px_rgba(0,0,0,0.25)] pl-7 pb-8 mb-10">
+    <div className=" shadow-[0_0_5px_rgba(0,0,0,0.12)] pl-7 pb-8 mb-10">
       <h1 className="font-bold text-xl pt-5 pb-5  text-gray-950 ">
         Shipping Address
       </h1>

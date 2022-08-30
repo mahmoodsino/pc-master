@@ -35,6 +35,13 @@ const NewArrivalProducts = () => {
       setLoading(false);
     };
     getData();
+  }, []);
+  useEffect(() => {
+    const getData = async () => {
+      const res = await getNewArraivalProducts(token);
+      setNewArrivalProducts(res.result.items);
+    };
+    getData();
   }, [wishList]);
 
   return (

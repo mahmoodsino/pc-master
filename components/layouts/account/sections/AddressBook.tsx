@@ -52,30 +52,11 @@ const AddressBook = () => {
     setEditAddress(addres);
   };
 
-  // useEffect(() => {
-  //   const getdata = async () => {
-  //     const res = await getCountries();
-  //     let modifiedResponse = res.result;
-  //     modifiedResponse.map((item: { id: number; name: string }) => {
-  //       let countreyValue = item.id.toString();
-
-  //       let countreyLabel = item.name;
-  //       let newCountriesStructur = {
-  //         label: countreyLabel,
-  //         value: countreyValue,
-  //       };
-  //       modifCountries.push(newCountriesStructur);
-  //     });
-  //     setRegisterCountry(modifCountries);
-  //   };
-  //   getdata();
-  // }, []);
-
   
 
   return (
     <div className=" sm:w-[100%] md:w-[65%]">
-      <div className="w-[100%] mr-20 text-gray-950 px-10 shadow-[0_0_10px_rgba(0,0,0,0.25)] py-5">
+      <div className="w-[100%] mr-20 text-gray-950 px-10 shadow-[0_0_5px_rgba(0,0,0,0.12)] py-5">
         <div className="flex md:flex-row sm:flex-col   sm:items-start sm:mb-5 md:mb-0 sm:justify-start md:justify-between items-center">
           <h1 className="font-bold text-xl   mb-5">Address book</h1>
           <BaseButton

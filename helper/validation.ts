@@ -27,7 +27,7 @@ export const editUpdateUserSchema = yup.object().shape({
 })
 
 export const addressBookSchema = yup.object().shape({
-  addressName: yup.string().required(""),
+  addressName: yup.string().required(),
   address: yup.string().required(),
   countries: yup.string().required(),
   cities: yup.string().required(),

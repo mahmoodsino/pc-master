@@ -5,9 +5,7 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { checkoutSchema } from "../../../../helper/validation";
 import { useRecoilState } from "recoil";
-import {
-  PayPalScriptProvider,
-} from '@paypal/react-paypal-js'
+import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import {
   getClientToken,
   getPaymentProvidor,
@@ -23,82 +21,80 @@ import { Spinner } from "../../../spinner";
 import { useRouter } from "next/router";
 import { BaseButton } from "../../../buttons";
 
-
 interface IFormInputs {
   firstName: string;
   lastName: string;
   email: string;
-  phone:number
+  phone: number;
 }
 
 interface PaymentProvider {
-  public_key:string,
-  id:number
-  name:string
+  public_key: string;
+  id: number;
+  name: string;
 }
 
 const CheckoutDetails = () => {
-  
   const [token, setToken] = useRecoilState(TokenAtom);
   const [savedOrderId, setSavedOrderId] = useState<number>(0);
   const [checkout, setCheckOut] = useState(false);
-  const [clientToken,setClientToken]=useState<string>()
-  const [firstName,setFirstName]=useState("")
-  const [lastName,setLastName]=useState("")
-  const[email,setEmail]=useState("")
+  const [clientToken, setClientToken] = useState<string>();
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
   const { push } = useRouter();
-  const [userId,setUserId]=useState<number>(0)
-  const [paymentProvidorState,setPaymentProvidorState]=useState<PaymentProvider[]>([])
-  const [loading,setLoading]=useState(false)
-  const[phone,setPhone]=useState<number>(0)
-  const[paymentProvidorId,setPaymenProvidorId]=useState<number>()
-  const[publicKey,setPublicKey]=useState<string>()
+  const [userId, setUserId] = useState<number>(0);
+  const [paymentProvidorState, setPaymentProvidorState] = useState<
+    PaymentProvider[]
+  >([]);
+  const [loading, setLoading] = useState(false);
+  const [phone, setPhone] = useState<number>(0);
+  const [paymentProvidorId, setPaymenProvidorId] = useState<number>();
+  const [publicKey, setPublicKey] = useState<string>();
 
-  const router = useRouter().query
-  
+  const router = useRouter().query;
+
   useEffect(() => {
-    const first =localStorage.getItem("first_name"||"")
-    const last =localStorage.getItem("last_name"||"")
-    const email =localStorage.getItem("email"||"")
-    const id=localStorage.getItem("id"||0)
-    setFirstName(first||"")
-    setLastName(last||"")
-    setEmail(email||"")
-    setUserId(Number(id)||0)
+    const first = localStorage.getItem("first_name" || "");
+    const last = localStorage.getItem("last_name" || "");
+    const email = localStorage.getItem("email" || "");
+    const id = localStorage.getItem("id" || 0);
+    setFirstName(first || "");
+    setLastName(last || "");
+    setEmail(email || "");
+    setUserId(Number(id) || 0);
     const getData = async () => {
-      const res = await getPaymentProvidor()
+      const res = await getPaymentProvidor();
       console.log(res);
-      setPaymentProvidorState(res.result.payment_providers)
-    }
-    getData()
-  },[])
+      setPaymentProvidorState(res.result.payment_providers);
+    };
+    getData();
+  }, []);
 
   useEffect(() => {
-    paymentProvidorState.map(providor => {
-      if(providor.name==="paypal"){
-        setPaymenProvidorId(providor.id)
-        setPublicKey(providor.public_key)
+    paymentProvidorState.map((providor) => {
+      if (providor.name === "paypal") {
+        setPaymenProvidorId(providor.id);
+        setPublicKey(providor.public_key);
       }
-    })
-  },[paymentProvidorState])
-
+    });
+  }, [paymentProvidorState]);
 
   useEffect(() => {
     const getData = async () => {
-      setLoading(true)
-      if(paymentProvidorId){
-        const res = await getClientToken(paymentProvidorId,token)
+      setLoading(true);
+      if (paymentProvidorId) {
+        const res = await getClientToken(paymentProvidorId, token);
         setClientToken(res.result.client_token);
-        if(res){
-          setLoading(false)
+        if (res) {
+          setLoading(false);
         }
       }
-    }
-    getData()
-  }, [paymentProvidorId,userId,email]);
+    };
+    getData();
+  }, [paymentProvidorId, userId, email]);
 
   console.log(router.paymentTransaction);
-  
 
   // const {
   //   control,
@@ -127,16 +123,13 @@ const CheckoutDetails = () => {
   // };
 
   return (
-    <div className="shadow-[0_0_10px_rgba(0,0,0,0.25)] sm:w-[100%] mb-10 md:w-[75%] lg:w-[55%] rounded-md">
+    <div className="shadow-[0_0_5px_rgba(0,0,0,0.12)] sm:w-[100%] mb-10 md:w-[75%] lg:w-[55%] rounded-md">
       <h1 className="text-xl font-bold py-3 bg-gray-1350 px-14 tracking-[0.03em]">
         Billing Details
       </h1>
-      {!loading&&publicKey&&clientToken ? 
-    <div>
-
-
-     
-        {/* <form onSubmit={handleSubmit(submit)}> 
+      {!loading && publicKey && clientToken ? (
+        <div>
+          {/* <form onSubmit={handleSubmit(submit)}> 
           <div className="md:mx-14 sm:mx-7 py-4 border-b mb-10">
             <BaseInput
               placeholder="FirstName"
@@ -180,51 +173,55 @@ const CheckoutDetails = () => {
           </div> */}
 
           {/* {checkout ? ( */}
-            <div className="my-10 px-14">
-
+          <div className="my-10 px-14">
             <PayPalScriptProvider
-            options={{
-              'client-id':`https://www.paypal.com/sdk/js?client-id=${publicKey}`,
-              "data-client-token":clientToken,
-              
-            }}
-          >
-            <PayPalButton
-            style={{
-              color:  'blue',
-              shape:  'pill',
-              label:  'pay',
-              height: 40
-            }}
-            
-              createOrder={async () => {
-                if(router.paymentTransaction&&paymentProvidorId){
-                  const res = await handelComletePay(token,Number(router.paymentTransaction))
-                  console.log(res,"11");
-                  return res.result.client_result.order_id
-                }
-                if(router.savedOrder&&paymentProvidorId){
-                  const res = await handelOrderPay(token,Number(router.savedOrder),paymentProvidorId)
-                  console.log(res,"22");
-                  return res.result.client_result.order_id
-                }
-                
+              options={{
+                "client-id": `https://www.paypal.com/sdk/js?client-id=${publicKey}`,
+                "data-client-token": clientToken,
+                vault: true,
               }}
-              onApprove={async ( action: any) => {
-                const order = await action.order.capture();
-              }}
-              onSuccess={async () => {
-                push({
-                  pathname: "/viewreceipt",
-                  query: { order: encodeURI(Number(router.savedOrder).toString()) },
-                });
-              }}
-              onError={(err: any) => {
-                alert("fail");
-              }}
-            />
+            >
+              <PayPalButton
+                style={{
+                  color: "blue",
+                  shape: "pill",
+                  label: "pay",
+                  height: 40,
+                }}
+                createOrder={async () => {
+                  if (router.paymentTransaction && paymentProvidorId) {
+                    const res = await handelComletePay(
+                      token,
+                      Number(router.paymentTransaction)
+                    );
+                    return res.result.client_result.order_id;
+                  }
+                  if (router.savedOrder && paymentProvidorId) {
+                    const res = await handelOrderPay(
+                      token,
+                      Number(router.savedOrder),
+                      paymentProvidorId
+                    );
+                    return res.result.client_result.order_id;
+                  }
+                }}
+                onApprove={async (action: any) => {
+                  const order = await action.order.capture();
+                }}
+                onSuccess={async () => {
+                  push({
+                    pathname: "/viewreceipt",
+                    query: {
+                      order: encodeURI(Number(router.savedOrder).toString()),
+                    },
+                  });
+                }}
+                onError={(err: any) => {
+                  alert("fail");
+                }}
+              />
             </PayPalScriptProvider>
-            </div>
+          </div>
           {/* ) : (
             <BaseButton
             type="submit"
@@ -232,13 +229,13 @@ const CheckoutDetails = () => {
             title="checkout"
             ></BaseButton>
             )} */}
-        {/* </form>  */}
-    </div>  : 
-    <div className="flex justify-center items-center">
-      <Spinner className="w-32 fill-green-950"/>
-    </div>
-    
-    }
+          {/* </form>  */}
+        </div>
+      ) : (
+        <div className="flex justify-center items-center">
+          <Spinner className="w-32 fill-green-950" />
+        </div>
+      )}
     </div>
   );
 };

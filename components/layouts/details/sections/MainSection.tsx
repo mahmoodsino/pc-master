@@ -26,6 +26,7 @@ import useModifiers from "./Modifiers";
 import ReactRating from "react-rating";
 import Reviews from "./Reviews";
 import { BaseCard } from "../../../cards";
+import MoveToCartPageModal from "./MoveToCartPageModal";
 
 let cart: items[] = [];
 
@@ -99,7 +100,7 @@ const MainSection = () => {
                       return (
                         <div
                           key={uuidv4()}
-                          className="mb-6 shadow-[0_0_10px_rgba(0,0,0,0.25)] sm:w-[90%] md-[100%] rounded-md  lg:w-[90%] py-4 px-4 "
+                          className="mb-6 shadow-[0_0_5px_rgba(0,0,0,0.12)] sm:w-[90%] md-[100%] rounded-md  lg:w-[90%] py-4 px-4 "
                         >
                           <p className="font-bold">{attribute.name}</p>
                           <span>{attribute.attribute_values.name}</span>
@@ -110,7 +111,7 @@ const MainSection = () => {
                       return (
                         <div
                           key={uuidv4()}
-                          className="mb-6 shadow-[0_0_10px_rgba(0,0,0,0.25)] sm:w-[90%] md-[100%] rounded-md  lg:w-[90%] py-4 px-4 "
+                          className="mb-6 shadow-[0_0_5px_rgba(0,0,0,0.12)] sm:w-[90%] md-[100%] rounded-md  lg:w-[90%] py-4 px-4 "
                         >
                           <p className="font-bold">{item.name}</p>
                           <span>{item.value}</span>
@@ -119,16 +120,18 @@ const MainSection = () => {
                     })}
                   </div>
                 </div>
-                <div className="">
-                  <Reviews />
-                </div>
+                {token.length > 1 && (
+                  <div className="">
+                    <Reviews />
+                  </div>
+                )}
               </div>
             </div>
             <div className="lg:w-1/2 sm:mt-28 md:px-16 lg:px-0 lg:mt-0  lg:inline-block">
               <DetailsCard />
-              <div className="mt-10  pb-5">
-                  <h1 className="text-xl mb-5 font-bold">similer products </h1>
-                </div>
+              <div className="  pb">
+                <h1 className="text-xl mb-5 font-bold">similar products </h1>
+              </div>
               <div className="grid grid-cols-2 gap-2">
                 {similarProducts?.map((item) => {
                   return (
@@ -159,7 +162,7 @@ const MainSection = () => {
                   return (
                     <div
                       key={uuidv4()}
-                      className="mb-6 shadow-[0_0_10px_rgba(0,0,0,0.25)] sm:w-[90%] md-[100%] rounded-md  lg:w-[90%] py-4 px-4 "
+                      className="mb-6 shadow-[0_0_5px_rgba(0,0,0,0.12)] sm:w-[90%] md-[100%] rounded-md  lg:w-[90%] py-4 px-4 "
                     >
                       <p className="font-bold">{attribute.name}</p>
                       <span>{attribute.attribute_values.name}</span>
@@ -170,7 +173,7 @@ const MainSection = () => {
                   return (
                     <div
                       key={uuidv4()}
-                      className="mb-6 shadow-[0_0_10px_rgba(0,0,0,0.25)] sm:w-[90%] md-[100%] rounded-md  lg:w-[90%] py-4 px-4 "
+                      className="mb-6 shadow-[0_0_5px_rgba(0,0,0,0.12)] sm:w-[90%] md-[100%] rounded-md  lg:w-[90%] py-4 px-4 "
                     >
                       <p className="font-bold">{item.name}</p>
                       <span>{item.value}</span>
@@ -180,15 +183,18 @@ const MainSection = () => {
               </div>
             </div>
           </div>
-          <div className="lg:hidden sm:block md:px-20 sm:px-5" >
-                  <Reviews />
-                </div>
+          {token.length > 1 && (
+            <div className="lg:hidden sm:block md:px-20 sm:px-5">
+              <Reviews />
+            </div>
+          )}
         </div>
       ) : (
         <div className="flex justify-center items-center ">
           <Spinner className="w-40 fill-green-950" />
         </div>
       )}
+      <MoveToCartPageModal />
     </div>
   );
 };

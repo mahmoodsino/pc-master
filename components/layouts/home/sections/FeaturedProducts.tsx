@@ -33,6 +33,14 @@ const FeaturedProducts = () => {
       setLoading(false);
     };
     getData();
+  }, []);
+
+  useEffect(() => {
+    const getData = async () => {
+      const res = await getfeaturedProducts(token);
+      setFeaturedProducts(res.result.items);
+    };
+    getData();
   }, [wishList]);
   return (
     <div>

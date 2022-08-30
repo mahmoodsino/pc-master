@@ -57,7 +57,7 @@ const CardReview = () => {
                       <Collapsible
                       key={uuidv4()}
                         trigger={
-                          <BaseButton className="flex justify-between items-center w-[100%] border">
+                          <BaseButton className="flex justify-between bg-gray-1350 items-center w-[100%] border">
                             <span className="font-semibold">{it.name}</span>
                             <div className="space-x-3">
                               <span className="font-semibold">${it.total_price}</span>

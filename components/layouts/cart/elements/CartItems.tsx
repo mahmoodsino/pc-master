@@ -107,7 +107,7 @@ const CartItems = () => {
   return (
     <div>
       <div>
-        <div className="shadow-[0_0_10px_rgba(0,0,0,0.25)] md:tracking-[0.03em] rounded-md mb-10">
+        <div className="shadow-[0_0_5px_rgba(0,0,0,0.12)] md:tracking-[0.03em] rounded-md mb-10">
           <h1 className="md:text-xl font-bold   text-center py-5 left-0 right-0 m-auto bg-gray-1350">
             Pickup or delivery from store, within 3 working days
           </h1>
@@ -156,7 +156,7 @@ const CartItems = () => {
                       <Collapsible
                       key={uuidv4()}
                         trigger={
-                          <BaseButton className="shadow-md flex justify-between items-center w-[90%] border">
+                          <BaseButton className="shadow-md flex bg-gray-1350 justify-between items-center w-[90%] border">
                             <span className="font-semibold">{it.name}</span>
                             <div className="space-x-3">
                               <span className="font-semibold">${it.total_price}</span>
