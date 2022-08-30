@@ -13,9 +13,9 @@ const CardReview = () => {
       {orderDetails.items &&
         orderDetails.items.map((item) => {
           return (
-            <div className="">
+            <div key={item.id} className="">
               <div
-                key={item.id}
+                
                 className="flex flex-row   justify-between items-center sm:w-[100%] md:w-[90%] "
               >
                 <div className="">
