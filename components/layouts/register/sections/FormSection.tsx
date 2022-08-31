@@ -6,13 +6,26 @@ import { BaseInput } from "../../../inputs";
 import Select, { StylesConfig, ActionMeta } from "react-select";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { handelRegister, optionTypeCountry } from "../../../../helper";
-import { registerCountryAtom, TokenAtom, YouHaveItemsModalAtom } from "../../../../helper/state";
+import {
+  citiesType,
+  getCitesOfState,
+  getStateOfCountry,
+  handelRegister,
+  optionTypeCountry,
+  stateType,
+} from "../../../../helper";
+import {
+  CitiesAtom,
+  registerCountryAtom,
+  StatesAtom,
+  TokenAtom,
+  YouHaveItemsModalAtom,
+} from "../../../../helper/state";
 import { atom, useRecoilState } from "recoil";
 import { useRouter } from "next/router";
 import { registerSchema } from "../../../../helper/validation";
 import YouHaveItemsModal from "../../login/sections/YouHaveItemsModal";
-
+import { SpinnerWithBack } from "../../../spinner";
 
 interface IFormInputs {
   firstName: string;
@@ -23,14 +36,23 @@ interface IFormInputs {
   houseBuildingNo: number;
   countries: string;
   cities: string;
+  states: number;
+  cityId: number;
 }
 
 const FormSection = () => {
   const [registerCountry, setRegisterCountry] =
     useRecoilState(registerCountryAtom);
   const [token, setToken] = useRecoilState(TokenAtom);
-  const [guestUsrerId,setGuestUserId]=useState<number|null>(null)
-  const[openYouHaveItemsModal,setYouHaveItemsModal]=useRecoilState(YouHaveItemsModalAtom)
+  const [guestUsrerId, setGuestUserId] = useState<number | null>(null);
+  const [openYouHaveItemsModal, setYouHaveItemsModal] = useRecoilState(
+    YouHaveItemsModalAtom
+  );
+  const [countryId, setCountryId] = useState<number | undefined>();
+  const [states, setStates] = useRecoilState(StatesAtom);
+  const [stateId, setStateId] = useState<number | undefined>();
+  const [cities, setCities] = useRecoilState(CitiesAtom);
+  const [loading,setLoading]=useState(false)
 
   const customStyles: StylesConfig<optionTypeCountry> = {
     option: (provided: ActionMeta, state: ActionMeta) => ({
@@ -58,31 +80,37 @@ const FormSection = () => {
   });
   const push = useRouter().push;
   const submitForm = async (data: IFormInputs) => {
+    console.log(data);
+    
     const res = await handelRegister(
       data.firstName,
       data.lastName,
       data.email,
       data.password,
       data.countries,
+      data.states,
+      data.cityId,
       data.cities,
       data.zipPostalCode,
       data.houseBuildingNo,
       token
     );
+    console.log(res);
+    
     if (res !== null) {
       localStorage.setItem("token", res.result.token);
       localStorage.setItem("id", res.result.user.id);
       localStorage.setItem("email", res.result.user.email);
       localStorage.setItem("first_name", res.result.user.first_name);
       localStorage.setItem("last_name", res.result.user.last_name);
-      localStorage.setItem("type", 'user');
-      
+      localStorage.setItem("type", "user");
+
       setToken(res.result.token);
-      if (res.result.guest_user_id===null){
-        push("./")
-      }else if(res.result.guest_user_id!==null){
-        setGuestUserId(res.result.guest_user_id)
-        setYouHaveItemsModal(true)
+      if (res.result.guest_user_id === null) {
+        push("./");
+      } else if (res.result.guest_user_id !== null) {
+        setGuestUserId(res.result.guest_user_id);
+        setYouHaveItemsModal(true);
       }
     }
   };
@@ -135,18 +163,144 @@ const FormSection = () => {
           </div>
         </div>
         <h1 className="text-xl font-semibold px-4 mt-10">Shipping Address</h1>
+
         <div className="grid lg:grid-cols-2 gap-4 mt-5 pb-10 border-b mb-10">
-          <div className="">
-            <div className="mb-7">
+          <div className="mb-7">
+            <label className="capitalize w-fit flex  ml-0 text-gray-950 tracking-wide text-sm font-semibold mb-2 ">
+              Country
+            </label>
+            <Controller
+              name="countries"
+              control={control}
+              render={({ field: { onChange, value, name, ref } }) => {
+                const handleSelectChange = async (
+                  selectedOption: optionTypeCountry | null
+                ) => {
+                  setLoading(true)
+                  if (selectedOption?.value !== undefined) {
+                    setCountryId(+selectedOption?.value);
+                    setStates([]);
+                    const res = await getStateOfCountry(+selectedOption?.value);
+                    let modifiedResponse = res.result;
+                    modifiedResponse.map(
+                      (item: { id: number; name: string }) => {
+                        let statesValue = item.id.toString();
+                        let StatesLabel = item.name;
+                        let newStateStructure = {
+                          label: StatesLabel,
+                          value: statesValue,
+                        };
+                        setStates((prev) => [...prev, newStateStructure]);
+                      }
+                    );
+                  }
+                  setLoading(false)
+                  onChange(selectedOption?.value);
+                };
+                return (
+                  <Select
+                    theme={(theme: ActionMeta) => ({
+                      ...theme,
+                      borderRadius: 0,
+                      colors: {
+                        ...theme.colors,
+                        primary: "gray",
+                      },
+                    })}
+                    className="w-full  "
+                    ref={ref}
+                    name={name}
+                    placeholder="Countries"
+                    options={registerCountry}
+                    onChange={handleSelectChange}
+                    isSearchable={true}
+                    styles={customStyles}
+                  />
+                );
+              }}
+            />
+            <p className="text-xs text-red-900">{errors.countries?.message}</p>
+          </div>
+          {typeof countryId === "number" && states.length > 0 ? (
+            <div>
               <label className="capitalize w-fit flex  ml-0 text-gray-950 tracking-wide text-sm font-semibold mb-2 ">
-                Country
+                States
               </label>
               <Controller
-                name="countries"
+                name="states"
                 control={control}
                 render={({ field: { onChange, value, name, ref } }) => {
                   const handleSelectChange = async (
-                    selectedOption: optionTypeCountry | null
+                    selectedOption: stateType | null
+                  ) => {
+                    setLoading(true)
+                    if (selectedOption?.value !== undefined) {
+                      setStateId(+selectedOption.value);
+                      setCities([]);
+                      const res = await getCitesOfState(+selectedOption.value);
+                      let modifiedResponse = res.result;
+                      modifiedResponse.map(
+                        (item: { id: number; name: string }) => {
+                          let cityValue = item.id.toString();
+                          let cityLabel = item.name;
+                          let newCitiesStructure = {
+                            label: cityLabel,
+                            value: cityValue,
+                          };
+                          setCities((prev) => [...prev, newCitiesStructure]);
+                        }
+                      );
+                    }
+                    setLoading(false)
+                    onChange(selectedOption?.value);
+                  };
+                  return (
+                    <Select
+                      theme={(theme: ActionMeta) => ({
+                        ...theme,
+                        borderRadius: 0,
+                        colors: {
+                          ...theme.colors,
+                          primary: "gray",
+                        },
+                      })}
+                      className="w-full  "
+                      ref={ref}
+                      name={name}
+                      placeholder="states"
+                      options={states}
+                      onChange={handleSelectChange}
+                      isSearchable={true}
+                      styles={customStyles}
+                    />
+                  );
+                }}
+              />
+            </div>
+          ) : typeof countryId === "number" && states.length === 0 ? (
+            <div>
+              <BaseInput
+                title="YourCity"
+                placeholder="City"
+                className={undefined}
+                name="cities"
+                register={register}
+              />
+
+              <p className="text-xs text-red-900">{errors.cities?.message}</p>
+            </div>
+          ) : null}
+          {typeof stateId === "number" && cities.length > 0 ? (
+            <div>
+              <label className="capitalize w-fit flex  ml-0 text-gray-950 tracking-wide text-sm font-semibold mb-2 ">
+                cities
+              </label>
+              <Controller
+                name="cityId"
+                control={control}
+                render={({ field: { onChange, value, name, ref } }) => {
+                  const handleSelectChange = async (
+                    selectedOption: stateType | null
                   ) => {
                     onChange(selectedOption?.value);
                   };
@@ -163,8 +317,8 @@ const FormSection = () => {
                       className="w-full  "
                       ref={ref}
                       name={name}
-                      placeholder="Countries"
-                      options={registerCountry}
+                      placeholder="cities"
+                      options={cities}
                       onChange={handleSelectChange}
                       isSearchable={true}
                       styles={customStyles}
@@ -172,22 +326,8 @@ const FormSection = () => {
                   );
                 }}
               />
-              <p className="text-xs text-red-900">
-                {errors.countries?.message}
-              </p>
             </div>
-            <BaseInput
-              title="Zip / Postal Code"
-              placeholder="Zip / Postal Code"
-              className={undefined}
-              name="zipPostalCode"
-              register={register}
-            />
-            <p className="text-xs text-red-900">
-              {errors.zipPostalCode?.message}
-            </p>
-          </div>
-          <div className="lg:w-[60%]">
+          ) : typeof stateId === "number" && cities.length === 0 ? (
             <div>
               <BaseInput
                 title="YourCity"
@@ -196,9 +336,10 @@ const FormSection = () => {
                 name="cities"
                 register={register}
               />
-
-              <p className="text-xs text-red-900">{errors.cities?.message}</p>
             </div>
+          ) : null}
+
+          <div className="">
             <BaseInput
               title="House/Building No."
               placeholder="Hosue building no text"
@@ -208,6 +349,18 @@ const FormSection = () => {
             />
             <p className="text-xs text-red-900">
               {errors.houseBuildingNo?.message}
+            </p>
+          </div>
+          <div>
+            <BaseInput
+              title="Zip / Postal Code"
+              placeholder="Zip / Postal Code"
+              className={undefined}
+              name="zipPostalCode"
+              register={register}
+            />
+            <p className="text-xs text-red-900">
+              {errors.zipPostalCode?.message}
             </p>
           </div>
         </div>
@@ -225,7 +378,9 @@ const FormSection = () => {
         </div>
       </form>
       <YouHaveItemsModal guest_user_id={guestUsrerId} />
-
+      {loading && 
+        <SpinnerWithBack className="w-40" />
+      }
     </div>
   );
 };

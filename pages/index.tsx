@@ -1,5 +1,6 @@
 import type { NextPage } from "next";
 import { HomeMainSection } from "../components/layouts";
+import { SpinnerWithBack } from "../components/spinner";
 
 const Home: NextPage = () => {
   return (

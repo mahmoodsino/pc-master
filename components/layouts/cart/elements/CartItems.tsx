@@ -19,7 +19,6 @@ import Collapsible from "react-collapsible";
 const CartItems = () => {
   const [carts, setCarts] = useRecoilState(FetchedCartItemsAtom);
   const [token, setToken] = useRecoilState(TokenAtom);
-  console.log(carts);
   
 
   const timerRef = useRef() as MutableRefObject<NodeJS.Timeout>;

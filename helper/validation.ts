@@ -9,7 +9,9 @@ export const registerSchema = yup.object().shape({
   zipPostalCode: yup.number().positive().integer(),
   houseBuildingNo: yup.number().positive().integer(),
   countries: yup.string().required(),
-  cities: yup.string().required(),
+  cities: yup.string().nullable(),
+  states:yup.string(),
+  cityId:yup.number()
 });
 
 
@@ -30,10 +32,12 @@ export const addressBookSchema = yup.object().shape({
   addressName: yup.string().required(),
   address: yup.string().required(),
   countries: yup.string().required(),
-  cities: yup.string().required(),
   zipPostalCode: yup.number().positive().integer(),
   houseBuildingNo: yup.number().positive().integer(),
-  check: yup.boolean()
+  check: yup.boolean(),
+  cities: yup.string().nullable(),
+  states:yup.string(),
+  cityId:yup.string()
 })
 
 

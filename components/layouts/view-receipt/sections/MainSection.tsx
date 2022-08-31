@@ -159,7 +159,7 @@ const MainSection = () => {
                 {orderDetails.status!=="PAID" && (orderDetails.payment_transaction === null ? (
                   <div className="flex justify-between mx-5 mt-3">
                     <span className="font-semibold uppercase text-gray-1150 items-center">
-                      pay for your order{" "}
+                      pay for your order
                     </span>
                     <BaseButton
                       onClick={() => handelpayForOrder()}
@@ -169,7 +169,7 @@ const MainSection = () => {
                   </div>
                 ) : orderDetails.payment_transaction?.can_completed ===
                   false ? (
-                  <span>{orderDetails.payment_transaction?.status}</span>
+                  <span className="px-5 font-bold text-lg">payment {orderDetails.payment_transaction?.status}</span>
                 ) : orderDetails.payment_transaction?.can_completed ? (
                   <div className="flex justify-between mx-5 mt-3">
                     <span className="font-semibold uppercase text-gray-1150 items-center">

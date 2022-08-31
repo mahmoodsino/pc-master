@@ -1,8 +1,10 @@
-import { MouseEvent, useEffect, useId } from "react";
+import { MouseEvent, useEffect, useId, useState } from "react";
 import { useRecoilState } from "recoil";
 import {
+  CitiesAtom,
   registerCountryAtom,
   ShippingAddressIdAtom,
+  StatesAtom,
   SuccessEdit,
   TokenAtom,
 } from "../../../../../helper/state/index";
@@ -22,10 +24,14 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { addressBookSchema } from "../../../../../helper/validation";
 
 import {
+  getCitesOfState,
+  getStateOfCountry,
   handelAddAress,
   handelUpdateAddress,
   optionTypeCountry,
+  stateType,
 } from "../../../../../helper";
+import { SpinnerWithBack } from "../../../../spinner";
 
 interface IFormInputs {
   addressName: string;
@@ -35,6 +41,8 @@ interface IFormInputs {
   zipPostalCode: number;
   houseBuildingNo: number;
   check: boolean;
+  states: number;
+  cityId: number;
 }
 const EditAddressModal = () => {
   const [openEditAddressModal, setOpenEditAddressModal] = useRecoilState(
@@ -52,6 +60,11 @@ const EditAddressModal = () => {
   const [shippingAddressId, setShippingAddressId] = useRecoilState(
     ShippingAddressIdAtom
   );
+  const [countryId, setCountryId] = useState<number | undefined>();
+  const [states, setStates] = useRecoilState(StatesAtom);
+  const [stateId, setStateId] = useState<number | undefined>();
+  const [cities, setCities] = useRecoilState(CitiesAtom);
+  const[loading,setLoading]=useState(false)
 
   const customStyles: StylesConfig<optionTypeCountry> = {
     option: (provided: ActionMeta, state: ActionMeta) => ({
@@ -80,12 +93,17 @@ const EditAddressModal = () => {
     resolver: yupResolver(addressBookSchema),
   });
 
+  console.log(errors);
+  
+
   const submitForm = async (data: IFormInputs) => {
     if (openAddNewAddressModal) {
       const res = await handelAddAress(
         data.addressName,
         data.address,
         data.countries,
+        data.states,
+        data.cityId,
         data.cities,
         data.zipPostalCode,
         data.houseBuildingNo,
@@ -106,6 +124,8 @@ const EditAddressModal = () => {
         data.addressName,
         data.address,
         data.countries,
+        data.states,
+        data.cityId,
         data.cities,
         data.zipPostalCode,
         data.houseBuildingNo,
@@ -178,7 +198,7 @@ const EditAddressModal = () => {
               />
               <p className="text-xs text-red-900 ">{errors.address?.message}</p>
 
-              <div className="grid lg:grid-cols-2 gap-3">
+              <div className="">
                 <div>
                   <label className="capitalize w-fit flex  ml-0 text-gray-950 tracking-wide text-sm font-semibold mb-2 ">
                     Country
@@ -190,6 +210,27 @@ const EditAddressModal = () => {
                       const handleSelectChange = async (
                         selectedOption: optionTypeCountry | null
                       ) => {
+                        setLoading(true)
+                        if (selectedOption?.value !== undefined) {
+                          setCountryId(+selectedOption?.value);
+                          setStates([]);
+                          const res = await getStateOfCountry(
+                            +selectedOption?.value
+                          );
+                          let modifiedResponse = res.result;
+                          modifiedResponse.map(
+                            (item: { id: number; name: string }) => {
+                              let statesValue = item.id.toString();
+                              let StatesLabel = item.name;
+                              let newStateStructure = {
+                                label: StatesLabel,
+                                value: statesValue,
+                              };
+                              setStates((prev) => [...prev, newStateStructure]);
+                            }
+                          );
+                        }
+                        setLoading(false)
                         onChange(selectedOption?.value);
                       };
                       return (
@@ -218,19 +259,127 @@ const EditAddressModal = () => {
                     {errors.countries?.message}
                   </p>
                 </div>
-                <div>
 
-                  <BaseInput
-                    title="City"
-                    placeholder="City"
-                    className={undefined}
-                    name="cities"
-                    register={register}
-                  />
-                  <p className="text-xs text-red-900 ">
-                    {errors.cities?.message}
-                  </p>
-                </div>
+                {typeof countryId === "number" && states.length > 0 ? (
+                  <div>
+                    <label className="capitalize w-fit flex  ml-0 text-gray-950 tracking-wide text-sm font-semibold mb-2 ">
+                      States
+                    </label>
+                    <Controller
+                      name="states"
+                      control={control}
+                      render={({ field: { onChange, value, name, ref } }) => {
+                        const handleSelectChange = async (
+                          selectedOption: stateType | null
+                        ) => {
+                          setLoading(true)
+                          if (selectedOption?.value !== undefined) {
+                            setStateId(+selectedOption.value);
+                            setCities([]);
+                            const res = await getCitesOfState(
+                              +selectedOption.value
+                            );
+                            let modifiedResponse = res.result;
+                            modifiedResponse.map(
+                              (item: { id: number; name: string }) => {
+                                let cityValue = item.id.toString();
+                                let cityLabel = item.name;
+                                let newCitiesStructure = {
+                                  label: cityLabel,
+                                  value: cityValue,
+                                };
+                                setCities((prev) => [
+                                  ...prev,
+                                  newCitiesStructure,
+                                ]);
+                              }
+                            );
+                          }
+                          setLoading(false)
+                          onChange(selectedOption?.value);
+                        };
+                        return (
+                          <Select
+                            theme={(theme: ActionMeta) => ({
+                              ...theme,
+                              borderRadius: 0,
+                              colors: {
+                                ...theme.colors,
+                                primary: "gray",
+                              },
+                            })}
+                            className="w-full  "
+                            ref={ref}
+                            name={name}
+                            placeholder="states"
+                            options={states}
+                            onChange={handleSelectChange}
+                            isSearchable={true}
+                            styles={customStyles}
+                          />
+                        );
+                      }}
+                    />
+                  </div>
+                ) : typeof countryId === "number" && states.length === 0 ? (
+                  <div>
+                    <BaseInput
+                      title="YourCity"
+                      placeholder="City"
+                      className={undefined}
+                      name="cities"
+                      register={register}
+                    />
+                  </div>
+                ) : null}
+                {typeof stateId === "number" && cities.length > 0 ? (
+                  <div className="">
+                    <label className="capitalize w-fit flex  ml-0 text-gray-950 tracking-wide text-sm font-semibold mb-2 ">
+                      cities
+                    </label>
+                    <Controller
+                      name="cityId"
+                      control={control}
+                      render={({ field: { onChange, value, name, ref } }) => {
+                        const handleSelectChange = async (
+                          selectedOption: stateType | null
+                        ) => {
+                          onChange(selectedOption?.value);
+                        };
+                        return (
+                          <Select
+                            theme={(theme: ActionMeta) => ({
+                              ...theme,
+                              borderRadius: 0,
+                              colors: {
+                                ...theme.colors,
+                                primary: "gray",
+                              },
+                            })}
+                            className="w-full  "
+                            ref={ref}
+                            name={name}
+                            placeholder="cities"
+                            options={cities}
+                            onChange={handleSelectChange}
+                            isSearchable={true}
+                            styles={customStyles}
+                          />
+                        );
+                      }}
+                    />
+                  </div>
+                ) : typeof stateId === "number" && cities.length === 0 ? (
+                  <div>
+                    <BaseInput
+                      title="YourCity"
+                      placeholder="City"
+                      className={undefined}
+                      name="cities"
+                      register={register}
+                    />
+                  </div>
+                ) : null}
               </div>
               <div className="grid lg:grid-cols-2 gap-3">
                 <div>
@@ -282,6 +431,7 @@ const EditAddressModal = () => {
           <div className="opacity-25 fixed inset-0 z-40 bg-black "></div>
         ) : null}
       </>
+      {loading && <SpinnerWithBack className="w-40" />}
     </div>
   );
 };

@@ -3,9 +3,9 @@ import axios from "axios"
 
 const root =process.env.NEXT_PUBLIC_ROOT
 
- const getCountries = async () => {
+ const getStateOfCountry = async (id:number) => {
     try {
-        const res = await axios.get(`${root}/all-countries`)
+        const res = await axios.get(`${root}/all-states/${id}`)
         return res.data
     } catch (error) {
         console.log(error)
@@ -14,4 +14,4 @@ const root =process.env.NEXT_PUBLIC_ROOT
 } 
 
 
-export default getCountries
+export default getStateOfCountry

@@ -5,7 +5,7 @@ import { getConfig } from "../logout/services"
 const root =process.env.NEXT_PUBLIC_ROOT
 
 
-const handelRegister = async (first_name: string, last_name: string, email: string, password: string, country_id: string, city_name: string, post_code:number, build_number:number,token?:string|null) => {
+const handelRegister = async (first_name: string, last_name: string, email: string, password: string, country_id: string,state_id:number,city_id:number, city_name: string, post_code:number, build_number:number,token?:string|null) => {
     try {
         const res = await axios.post(`${root}/user/register`, {
             first_name: first_name,
@@ -13,6 +13,8 @@ const handelRegister = async (first_name: string, last_name: string, email: stri
             email: email,
             password: password,
             country_id: country_id,
+            state_id:state_id,
+            city_id:city_id,
             city_name: city_name,
             post_code: post_code,
             build_number: build_number

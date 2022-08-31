@@ -1,0 +1,1 @@
+export {default as getCitesOfState} from "./services"
