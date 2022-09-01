@@ -176,19 +176,15 @@ const CartItems = () => {
                           </BaseButton>
                         }
                       >
-                        <div className="ml-5">
+                        <div className="ml-3 flex space-x-1 mt-2">
                           {it.modifiers.map(modi => {
                             return(
-                              <div
-                              key={uuidv4()}
-                              className="space-x-3 mt-3 bg-cover"
-                            >
                               <img
-                                className="w-20 bg-cover"
+                              key={uuidv4()}
+                                className="w-16 bg-cover flex"
                                 src={modi.image}
                                 alt="Picture of the author"
                               />
-                            </div>
                             )
                           })}
                         </div>
@@ -201,7 +197,6 @@ const CartItems = () => {
                     </h1>
                   )}
                 </div>
-
                 <div
                   className={`flex sm:justify-around  md:justify-between sm:space-x-2 md:space-x-14 border-b  mx-8 py-6 `}
                 >
