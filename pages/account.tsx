@@ -1,5 +1,5 @@
 import React from "react";
-import { AccountMainSection } from "../components/layouts";
+import { AccountMainSection } from "../components";
 import withAuth from "../helper/with-auth";
 
 const account = () => {

@@ -1,4 +1,4 @@
-import { Attributes, Brand, Company, Variation } from "../interfaces"
+import { Attributes, Brand, Company, imagesType, Variation } from "../interfaces"
 
 type ProductsType = {
     attributes:Attributes[],
@@ -7,7 +7,7 @@ type ProductsType = {
     company_id:number,
     id:number,
     display_order:number,
-    images:string[],
+    images:imagesType[]
     name:string,
     in_wishlist:boolean,
     short_description:string,

@@ -5,9 +5,10 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Image from "next/image";
 import { v4 as uuidv4 } from "uuid";
+import { imagesType } from "../../helper";
 
 interface Props {
-  img: string[];
+  img: imagesType[];
   hover: boolean;
 }
 
@@ -91,8 +92,8 @@ const ShopCarousel = ({ img, hover }: Props) => {
           return (
             <div key={uuidv4()}>
               <div className="">
-                <div className="ml-2">
-                  <Image width={150} height={150} src={item} />
+                <div className="ml-5 mt-3 ">
+                  <Image width={180} height={180} src={item?.path} />
                 </div>
               </div>
             </div>

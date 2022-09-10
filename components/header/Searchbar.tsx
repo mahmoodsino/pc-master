@@ -98,7 +98,7 @@ const Searchbar = () => {
           </div>
 
           {useType === "user" && (
-            <div
+            <BaseButton
               onClick={() => setActiveDropDown(!activeDropDown)}
               className={`space-x-2 flex   items-center cursor-pointer h-full px-2.5 ${
                 !activeDropDown ? "" : "bg-white"
@@ -109,10 +109,10 @@ const Searchbar = () => {
               ) : (
                 <PersonIcon className="w-5 text-green-950" />
               )}
-            </div>
+            </BaseButton>
           )}
           {useType === "guest" && (
-            <div
+            <BaseButton
               onClick={() => setActiveDropDown(!activeDropDown)}
               className={`space-x-2 flex   items-center cursor-pointer h-full px-2.5 ${
                 !activeDropDown ? "" : "bg-white"
@@ -123,7 +123,7 @@ const Searchbar = () => {
               ) : (
                 <PersonIcon className="w-5 text-green-950" />
               )}
-            </div>
+            </BaseButton>
           )}
           {activeDropDown ? (
             <div className="bg-white absolute  z-10 top-[100%] right-10  shadow-[0_0_5px_rgba(0,0,0,0.12)]">

@@ -10,6 +10,7 @@ import {
   deleteWishList,
   DetailsAtom,
   getWishList,
+  imagesType,
   ModifiersGroupAtom,
   OpenAddToWishListAtom,
   TokenAtom,
@@ -22,7 +23,7 @@ import { useRecoilState } from "recoil";
 import { RedHeartIcon } from "../icons";
 
 interface cardType {
-  image: string[];
+  image: imagesType[];
   price: number;
   description: string;
   id: number;
@@ -117,53 +118,57 @@ const BaseCard = ({
     <div
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      className="border mb-3 border-gray-1500 md:w-[98%] sm:w-[100%] md:h-[95%] py-2  hover:border-green-950 hover:shadow-md  md:px-7 sm:px-4"
+      className="border mb-3 border-gray-1500 md:w-[291px] sm:w-[100%] md:h-[360px] py-2  hover:border-green-950 hover:shadow-md  md:px-7 sm:px-4"
     >
       <div>
         <div
-          className={`h-[41%] duration-500 ${
+          className={`h-[220px] duration-500  border border-white ${
             hover ? "scale-105 opacity-80" : ""
           }`}
         >
           {image.length > 0 ? (
             <ShopCarousel img={image} hover={hover} />
           ) : (
-            <Image src={no_image} />
+            <div className=" mt-3 ml-3 ">
+
+              <Image width={200} height={200} src={no_image} />
+            </div>
           )}
         </div>
-        <div className=" ">
+        <div className=" flex items-center justify-start  mt-3">
           <BaseButton
             onClick={() => handelDetails(id)}
-            className="py-0.5 px-4 text-white  bg-green-950 font-bold rounded-full mt-2 "
+            className="py-0.5 px-4 text-white  bg-green-950 font-bold rounded-full "
             title="Options"
           />
         </div>
       </div>
 
       <div className="h-[30%] mt-5 ml-1">
-        <h1 className="text-lg font-bold md:leading-[24px] md:tracking-[0.055em] mb-1">
+        <span className="text-lg font-bold md:leading-[24px] md:tracking-[0.055em] mb-1">
           ${price}
-        </h1>
-        <span className="line-clamp text-sm md:leading-[19px]  md:tracking-[0.03em]">
-          {/* {description} */}
-          {name}
         </span>
-        <div className="flex justify-end my-2">
-          {in_wishlist ? (
-            <RedHeartIcon
-              onClick={() => removeFromWishList(variation)}
-              className="w-4 cursor-pointer"
-            />
-          ) : (
-            <HeartIcon
-              onClick={() =>
-                token.length > 1
-                  ? handelAddVariationToWishList(variation)
-                  : setContinueAsGuestModal(true)
-              }
-              className="w-4 cursor-pointer"
-            />
-          )}
+        <div className="flex  justify-between pt-3 ">
+          <span className="line-clamp text-sm md:leading-[19px]  md:tracking-[0.03em]">
+            {/* {description} */}
+            {name}
+          </span>
+            {in_wishlist ? (
+              <RedHeartIcon
+                onClick={() => removeFromWishList(variation)}
+                className="w-4 cursor-pointer"
+              />
+            ) : (
+              <HeartIcon
+                onClick={() =>
+                  token.length > 1
+                    ? handelAddVariationToWishList(variation)
+                    : setContinueAsGuestModal(true)
+                }
+                className="w-4 cursor-pointer"
+              />
+            )}
+
         </div>
       </div>
     </div>

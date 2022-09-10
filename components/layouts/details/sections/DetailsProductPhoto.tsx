@@ -14,20 +14,18 @@ const DetailsProductPhoto = () => {
     customPaging: function (i: number) {
       return (
         <a className="">
-          {/* {variationState.images ? (
-            <Image width={75} height={75} src={variationState.images[0]} />
-          ) : (
+          {variationState.images && variationState.images?.length!==0 ? (
+            <Image width={75} height={75} src={variationState.images[0]?.path} />
+          ) : detailsState.product.images && detailsState.product.images.length !==0 ? (
             <Image
               width={75}
               height={75}
-              src={detailsState.product.images[0]}
+              src={detailsState.product.images[i]?.path}
             />
-          )} */}
-           <Image
-              width={75}
-              height={75}
-              src={no_image}
-            /> 
+          )  :
+          <Image width={75} height={75} src={no_image} />
+          }
+          {/* <Image width={75} height={75} src={no_image} /> */}
         </a>
       );
     },
@@ -47,26 +45,26 @@ const DetailsProductPhoto = () => {
   return (
     <div className="">
       <Slider {...settings}>
-        {/* {variationState.images && variationState.images?.length > 0 ? (
+        {variationState.images && variationState.images?.length > 0 ? (
           variationState.images.map((img) => {
             return (
               <div key={uuidv4()} className="">
-                <Image width={400} height={400} src={img} />
+                <Image width={400} height={400} src={img.path} />
               </div>
             );
           })
         ) : detailsState.product.images.length > 0 ? (
           detailsState.product.images.map((img) => {
             return (
-              <div key={uuidv4()} className="">
-                <Image width={400} height={400} src={img} />
+              <div key={uuidv4()} className="md:ml-36 lg:ml-24">
+                <Image width={400} height={400} src={img.path} />
               </div>
             );
           })
         ) : (
           <Image width={400} height={400} src={no_image} />
-        )} */}
-        <div className="lg:ml-10 md:ml-40">
+        )}
+        {/* <div className="lg:ml-10 md:ml-40">
         <Image width={400} height={400} src={no_image} /> 
         </div>
         <div className="lg:ml-10 md:ml-40">
@@ -74,7 +72,7 @@ const DetailsProductPhoto = () => {
         </div>
         <div className="lg:ml-10 md:ml-40">
         <Image width={400} height={400} src={no_image} /> 
-        </div>
+        </div> */}
       </Slider>
     </div>
   );

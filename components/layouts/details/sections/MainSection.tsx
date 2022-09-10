@@ -57,6 +57,8 @@ const MainSection = () => {
     const Data = async () => {
       if (router.product) {
         const res = await getDetails(+router.product);
+        console.log(res);
+        
         setDetailState(res.result);
         if (res) {
           setLoading(true);
@@ -132,7 +134,7 @@ const MainSection = () => {
               <div className="  pb">
                 <h1 className="text-xl mb-5 font-bold">similar products </h1>
               </div>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 ">
                 {similarProducts?.map((item) => {
                   return (
                     <BaseCard

@@ -1,4 +1,5 @@
 import Attributes from "./Attributes"
+import imagesType from "./imagesType"
 
 interface Variation {
     available_quantity:number,
@@ -11,7 +12,7 @@ interface Variation {
     is_default?:number
     display_order?:number,
     expire_period?:string,
-    images?:string[],
+    images?:imagesType[],
     name?:string
     attributes?:Attributes[]
 

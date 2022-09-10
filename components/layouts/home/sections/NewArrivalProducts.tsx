@@ -19,9 +19,12 @@ const NewArrivalProducts = () => {
   const [token, setToken] = useRecoilState(TokenAtom);
   const [wishList, setWishList] = useRecoilState(WishListAtom);
   const [loading, setLoading] = useState(false);
+  const [selected, setSelected] = useState<number>();
+
 
   const setItem = async (setItem: number) => {
     setLoading(true);
+    setSelected(setItem)
     const res = await getNewArraivalProducts(token, setItem);
     setNewArrivalProducts(res.result.items);
     setLoading(false);
@@ -54,6 +57,7 @@ const NewArrivalProducts = () => {
           <Cheips
             categories={homePageState.featured_categories}
             setItem={setItem}
+            selectedItem={selected}
           />
         </div>
         <div className="lg:hidden sm:block sm:w-[95%] whitespace-nowrap overflow-x-auto">
@@ -85,8 +89,11 @@ const NewArrivalProducts = () => {
           <Spinner className="w-32 fill-green-950" />
         </div>
       )}
-      {newArrivalProducts.length === 0 && (
-        <p className="ml-3">ther are no products for that category now !</p>
+      {(newArrivalProducts.length === 0 &&!loading) && (
+        <div className="flex justify-center font-semibold">
+
+          <p className="ml-3">ther are no products for that category now !</p>
+        </div>
       )}
     </div>
   );

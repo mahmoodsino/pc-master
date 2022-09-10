@@ -27,7 +27,7 @@ const HomeTree = ({ data }: data) => {
     );
   } else
     return (
-        <ul onMouseLeave={() => setParentId(-1)} className="">
+        <ul onMouseLeave={() => setParentId(-1)} className="h-[440px] w-[230px] overflow-y-scroll overflow-x-hidden">
           {data.categories.map((tree) => (
             <TreeNode
             key={uuidv4()}
@@ -81,7 +81,7 @@ const TreeNode = ({ node, selectedParentId, setParentId }: node) => {
         </div>
         {hasChild && selectedParentId === node.id && (
           <div className=" text-white text-left ">
-            <ul className={` absolute h-[440px] w-[230px]  bg-[#303030] overflow-y-scroll overflow-x-hidden top-[0px] left-[96.5%]  z-50`}>
+            <ul className={` absolute   bg-[#303030]  top-[0px] left-[96.5%]  z-50`}>
               <HomeTree data={node} />
             </ul>
           </div>

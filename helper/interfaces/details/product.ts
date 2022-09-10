@@ -1,4 +1,4 @@
-import { Brand, Company } from "../products";
+import { Brand, Company, imagesType } from "../products";
 import custome_properties from "./custome_properties";
 
 interface product {
@@ -10,7 +10,7 @@ interface product {
     custome_properties:custome_properties[],
     description:string,
     id:number,
-    images:string[],
+    images:imagesType[],
     name:string,
     seo_description:string,
     seo_keywords:string[],

@@ -17,14 +17,15 @@ const FeaturedProducts = () => {
   const [token, setToken] = useRecoilState(TokenAtom);
   const [wishList, setWishList] = useRecoilState(WishListAtom);
   const [loading, setLoading] = useState(false);
+  const [selected, setSelected] = useState<number>();
 
   const setItem = async (setItem: number) => {
     setLoading(true);
+    setSelected(setItem);
     const res = await getfeaturedProducts(token, setItem);
     setFeaturedProducts(res.result.items);
     setLoading(false);
   };
-
   useEffect(() => {
     const getData = async () => {
       setLoading(true);
@@ -52,6 +53,7 @@ const FeaturedProducts = () => {
           <Cheips
             categories={homePageState.featured_categories}
             setItem={setItem}
+            selectedItem={selected}
           />
         </div>
         <div className="lg:hidden sm:block sm:w-[95%] whitespace-nowrap overflow-x-auto">
@@ -83,11 +85,12 @@ const FeaturedProducts = () => {
           <Spinner className="w-32 fill-green-950" />
         </div>
       )}
-      {featuredProducts.length === 0 && (
-        <p className="ml-3">ther are no products for that category now !</p>
+      {(featuredProducts.length === 0 &&!loading) && (
+        <div className="flex justify-center font-semibold pb-10">
+          <p className="ml-3">ther are no products for that category now !</p>
+        </div>
       )}
     </div>
   );
 };
-
 export default FeaturedProducts;

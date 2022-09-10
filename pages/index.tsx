@@ -1,8 +1,7 @@
 import type { NextPage } from "next";
 import { useRecoilState } from "recoil";
+import { Notification } from "../components";
 import { HomeMainSection } from "../components/layouts";
-import Notification from "../components/push-notification-layout/Notification";
-import { SpinnerWithBack } from "../components/spinner";
 import { TokenAtom } from "../helper";
 
 

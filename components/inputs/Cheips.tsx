@@ -7,6 +7,7 @@ import Slider from "react-slick";
 interface Props {
   categories: categoriesType[];
   setItem: (e: number) => void;
+  selectedItem?:number
 }
 
 function SampleNextArrow(props: any) {
@@ -62,7 +63,7 @@ function SamplePrevArrow(props: any) {
   );
 }
 
-const Cheips = ({ categories, setItem }: Props) => {
+const Cheips = ({ categories, setItem,selectedItem }: Props) => {
   const settings = {
     dots: false,
     infinite: false,
@@ -85,7 +86,7 @@ const Cheips = ({ categories, setItem }: Props) => {
             <div className="p-[5px]" key={uuidv4()}>
               <BaseButton
                 onClick={() => setItem(item.id)}
-                className="w-60  text-gray-1250 px-2 py-0.5 shadow-[0_0_4px_rgba(0,0,0,0.25)]  leading-[24px] tracking-[0.055em] font-semibold  border border-[#E5E5E5] hover:border-green-950 rounded-full"
+                className={`w-60  text-gray-1250 px-2 py-0.5 shadow-[0_0_4px_rgba(0,0,0,0.25)]  leading-[24px] tracking-[0.055em] font-semibold  border border-[#E5E5E5] hover:border-green-950 rounded-full ${item.id===selectedItem ? "border border-green-950 " : ""}`}
                 title={`${item.name}`}
               />
             </div>

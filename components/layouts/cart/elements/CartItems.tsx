@@ -155,7 +155,7 @@ const CartItems = () => {
                       <Collapsible
                       key={uuidv4()}
                         trigger={
-                          <BaseButton className="shadow-md flex bg-gray-1350 justify-between items-center w-[90%] border">
+                          <BaseButton className="shadow-md flex mt-1 bg-gray-1350 justify-between items-center w-[90%] border">
                             <span className="font-semibold">{it.name}</span>
                             <div className="space-x-3">
                               <span className="font-semibold">${it.total_price}</span>

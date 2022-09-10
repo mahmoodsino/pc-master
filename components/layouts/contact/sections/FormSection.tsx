@@ -69,7 +69,7 @@ const FormSection = () => {
                 title="Submit"
                 type='submit'
                 className={
-                  " w-full uppercase text-white bg-green-1000 py-1 rounded-sm"
+                  " w-full uppercase text-white bg-green-950 py-1 rounded-sm"
                 }
               />
               

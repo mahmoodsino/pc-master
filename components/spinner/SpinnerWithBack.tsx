@@ -10,7 +10,7 @@ const SpinnerWithBack = ({ className }: Props) => {
       <>
         <div
           role="status"
-          className="inset-0  h-fit left-0 right-0 top-0 bottom-0 mx-auto my-auto  z-50 fixed transition-all duration-300 ease-in-out"
+          className="inset-0  h-fit left-0 right-0 top-0 bottom-0 mx-auto my-auto  z-[200000] fixed transition-all duration-300 ease-in-out"
         >
           <svg
             className={className}
@@ -48,7 +48,7 @@ const SpinnerWithBack = ({ className }: Props) => {
             </circle>
           </svg>
         </div>
-        <div className="opacity-70 fixed inset-0 z-40 bg-white blur-3xl  "></div>
+        <div className="opacity-70 fixed inset-0 z-40 bg-black"></div>
       </>
     </div>
   );
