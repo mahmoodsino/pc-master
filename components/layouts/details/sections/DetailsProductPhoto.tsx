@@ -48,31 +48,23 @@ const DetailsProductPhoto = () => {
         {variationState.images && variationState.images?.length > 0 ? (
           variationState.images.map((img) => {
             return (
-              <div key={uuidv4()} className="">
-                <Image width={400} height={400} src={img.path} />
+              <div key={uuidv4()} className="product-slider-img">
+                <img  className="m-auto lg:w-[400px] md:w-[300px] sm:w-[200px] "  src={img.path} />
               </div>
             );
           })
         ) : detailsState.product.images.length > 0 ? (
           detailsState.product.images.map((img) => {
             return (
-              <div key={uuidv4()} className="md:ml-36 lg:ml-24">
-                <Image width={400} height={400} src={img.path} />
+              <div key={uuidv4()} className="product-slider-img">
+                <img  className="m-auto lg:w-[400px] md:w-[300px] sm:w-[200px] "  src={img.path} />
               </div>
             );
           })
         ) : (
           <Image width={400} height={400} src={no_image} />
         )}
-        {/* <div className="lg:ml-10 md:ml-40">
-        <Image width={400} height={400} src={no_image} /> 
-        </div>
-        <div className="lg:ml-10 md:ml-40">
-        <Image width={400} height={400} src={no_image} /> 
-        </div>
-        <div className="lg:ml-10 md:ml-40">
-        <Image width={400} height={400} src={no_image} /> 
-        </div> */}
+       
       </Slider>
     </div>
   );

@@ -55,3 +55,8 @@
     -webkit-box-orient: vertical;  
     overflow: hidden;
   }
+
+  
+.product-slider-img img {
+  object-fit: contain;
+}

@@ -8,6 +8,7 @@ import ShopSelect from "./ShopSelect";
 import {
   ActiveDropDownAtom,
   AllCartsInfo,
+  currentPageAtom,
   FetchedCartItemsAtom,
   FillterProductAtom,
   NewCartAtom,
@@ -15,11 +16,12 @@ import {
   RangeSliderAtom,
   SelectedShopCategoryAtom,
   TokenAtom,
+  totalPagesAtom,
   WishListAtom,
 } from "../../../../helper/state";
 import { useRouter } from "next/router";
 import { MutableRefObject, useEffect, useRef, useState } from "react";
-import { getProducts, shopFilterProducts } from "../../../../helper";
+import { getProducts } from "../../../../helper";
 import { Spinner } from "../../../spinner";
 import useBrands from "./Brands";
 import useRating from "./Rating";
@@ -28,13 +30,14 @@ import { AddToWishList } from "../../wishlist";
 import Link from "next/link";
 import { CartIcon, HeartIcon, PersonIcon } from "../../../icons";
 import { Dropdown } from "../../../dropdown";
+import { Pagination } from "../../../pagination";
 
 const MainSection = () => {
   const [showFillterProducts, setShowFillterProducts] =
     useRecoilState(FillterProductAtom);
   const [productsState, setProductsState] = useRecoilState(ProductsAtom);
   const [wishList, setWishList] = useRecoilState(WishListAtom);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [rangeSlider, setRangeSlider] = useRecoilState(RangeSliderAtom);
   const [selecterCategory, setSelectedCategory] = useRecoilState(
     SelectedShopCategoryAtom
@@ -43,86 +46,94 @@ const MainSection = () => {
   const { ratingState } = useRating();
   const { selectedAttribute } = useAttributes();
   const [token, setToken] = useRecoilState(TokenAtom);
-  const [inWishList, setInwishList] = useState(false);
   const [carts, setCarts] = useRecoilState(FetchedCartItemsAtom);
   const [activeDropDown, setActiveDropDown] =
     useRecoilState(ActiveDropDownAtom);
-  const [newCart, setNewCart] = useRecoilState(NewCartAtom);
-  const [allCartsInfo,setAllCartsInfo]=useRecoilState(AllCartsInfo)
-
+  const [allCartsInfo, setAllCartsInfo] = useRecoilState(AllCartsInfo);
+  const [totalPages, setTotalPages] = useRecoilState(totalPagesAtom);
+  const [currentPage, setCurrentPage] = useRecoilState(currentPageAtom);
 
   const timerRef = useRef() as MutableRefObject<NodeJS.Timeout>;
 
   const query = useRouter().query;
-  let useType
-  if(typeof window !== "undefined"){
-
-     useType = localStorage.getItem("type" || "");
+  let useType;
+  if (typeof window !== "undefined") {
+    useType = localStorage.getItem("type" || "");
   }
 
   useEffect(() => {
-    const getDAta = async () => {
+    if (typeof query.categorey !== "undefined") {
+      //@ts-ignore
+      setSelectedCategory((prev) => [...prev, +query.categorey]);
+    }
+  }, [query.categorey]);
+
+  useEffect(() => {
+    const getData = async () => {
       setLoading(true);
-      const res = await shopFilterProducts(
-        token,
-        selectBrand,
-        selecterCategory,
-        rangeSlider[0],
-        rangeSlider[1],
-        ratingState,
-        selectedAttribute
-      );
-       setProductsState(res.result.items);
-      setLoading(false);
+      const res = await getProducts({
+        token: token,
+        //@ts-ignore
+        product_name: query.search,
+        categoryId: selecterCategory,
+        AttributeValues: selectedAttribute,
+        Brands: selectBrand,
+        MinPrice: rangeSlider[0],
+        MaxPrice: rangeSlider[1],
+        page: currentPage,
+      });
+      
+      setTotalPages(res.result.pages_count);
+
+      if (res === null) {
+        alert("some thing went wrong");
+      } else {
+        setProductsState(res.result.items);
+        setLoading(false);
+      }
     };
     clearTimeout(timerRef.current);
     timerRef.current = setTimeout(() => {
-      getDAta();
-    }, 1000);
+      getData();
+    }, 500);
   }, [
+    query.search,
+    selecterCategory,
     selectBrand,
-    ratingState,
     selectedAttribute,
     rangeSlider,
-    selecterCategory,
+    currentPage,
   ]);
 
   useEffect(() => {
     const getData = async () => {
       setLoading(true);
+      const res = await getProducts({
+        token: token,
+        //@ts-ignore
+        product_name: query.search,
+        categoryId: selecterCategory,
+        AttributeValues: selectedAttribute,
+        Brands: selectBrand,
+        MinPrice: rangeSlider[0],
+        MaxPrice: rangeSlider[1],
+        page: currentPage,
+      });
+      setTotalPages(res.result.pages_count);
 
-      if (query.search) {
-        const res = await getProducts(token, query.search.toString());
-        setProductsState(res.result.items);
-        setLoading(false);
-      } else if (query.categorey) {
-        const res = await getProducts(token, "", +query.categorey);
-        setProductsState(res.result.items);
-        setLoading(false);
+      if (res === null) {
+        alert("some thing went wrong");
       } else {
-        const res = await getProducts(token);
         setProductsState(res.result.items);
         setLoading(false);
       }
     };
-    getData();
-  }, [query.search, query.categorey]);
-
-  useEffect(() => {
-    const getData = async () => {
-      if (query.search) {
-        const res = await getProducts(token, query.search.toString());
-        setProductsState(res.result.items);
-      } else if (query.categorey) {
-        const res = await getProducts(token, "", +query.categorey);
-        setProductsState(res.result.items);
-      } else {
-        const res = await getProducts(token);
-        setProductsState(res.result.items);
-      }
-    };
-    getData();
+    clearTimeout(timerRef.current);
+    timerRef.current = setTimeout(() => {
+      getData();
+    }, 500);
   }, [wishList]);
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   return (
     <div className="lg:ml-4">
@@ -131,70 +142,66 @@ const MainSection = () => {
           <Breadcrumbs />
           <div>
             <div className="flex items-center space-x-5 relative sm:hidden md:flex   mr-5 ">
-            {  useType === "user" &&
-            <div 
-              onClick={() => setActiveDropDown(!activeDropDown)}
-              className={`space-x-2 flex   items-center cursor-pointer h-full px-2.5 ${
-                !activeDropDown ? "" : "bg-white"
-              }`}
-            >
-              {!activeDropDown ? (
-                <PersonIcon className="w-5 text-black" />
-              ) : (
-                <PersonIcon className="w-5 text-green-950" />
+              {useType === "user" && (
+                <div
+                  onClick={() => setActiveDropDown(!activeDropDown)}
+                  className={`space-x-2 flex   items-center cursor-pointer h-full px-2.5 ${
+                    !activeDropDown ? "" : "bg-white"
+                  }`}
+                >
+                  {!activeDropDown ? (
+                    <PersonIcon className="w-5 text-black" />
+                  ) : (
+                    <PersonIcon className="w-5 text-green-950" />
+                  )}
+                </div>
               )}
-            </div>
-        }
-        {   useType === "guest"&&
-            <div 
-              onClick={() => setActiveDropDown(!activeDropDown)}
-              className={`space-x-2 flex   items-center cursor-pointer h-full px-2.5 ${
-                !activeDropDown ? "" : "bg-white"
-              }`}
-            >
-              {!activeDropDown ? (
-                <PersonIcon className="w-5 text-black" />
-              ) : (
-                <PersonIcon className="w-5 text-green-950" />
+              {useType === "guest" && (
+                <div
+                  onClick={() => setActiveDropDown(!activeDropDown)}
+                  className={`space-x-2 flex   items-center cursor-pointer h-full px-2.5 ${
+                    !activeDropDown ? "" : "bg-white"
+                  }`}
+                >
+                  {!activeDropDown ? (
+                    <PersonIcon className="w-5 text-black" />
+                  ) : (
+                    <PersonIcon className="w-5 text-green-950" />
+                  )}
+                </div>
               )}
-            </div>
-        }
               {activeDropDown ? (
                 <div className="bg-white absolute  z-10 top-[102%] right-[90%]  shadow-[0_0_5px_rgba(0,0,0,0.12)]">
                   <Dropdown />
                 </div>
               ) : null}
               <span className=" text-black inline-block text-xs font-semibold  ">
-              item(s):${(allCartsInfo.sub_total_price).toFixed(2)}
-            </span>
+                item(s):${allCartsInfo.sub_total_price.toFixed(2)}
+              </span>
               <div className="relative flex space-x-5">
-                  <Link href="/wishlist">
-                    <a className="w-5">
-                      <div>
-                        <div className="absolute -top-2 right-[54%]  flex items-center cursor-pointer justify-center text-white bg-red-950 rounded-full text-sm w-4 h-4 ">
-                          {wishList.length}
-                        </div>
-                        <HeartIcon className="w-6" />
+                <Link href="/wishlist">
+                  <a className="w-5">
+                    <div>
+                      <div className="absolute -top-2 right-[54%]  flex items-center cursor-pointer justify-center text-white bg-red-950 rounded-full text-sm w-4 h-4 ">
+                        {wishList.length}
                       </div>
-                    </a>
-                  </Link>
-                  <Link className="" href="/cart">
-                    <a>
-                      <div>
-                        <div className="absolute -top-2 right-[0%] cursor-pointer flex items-center justify-center text-white bg-red-950 rounded-full text-sm w-4 h-4 ">
-                          {carts.length }
-                        </div>
-
-                        <CartIcon className="text-black w-6" />
+                      <HeartIcon className="w-6" />
+                    </div>
+                  </a>
+                </Link>
+                <Link className="" href="/cart">
+                  <a>
+                    <div>
+                      <div className="absolute -top-2 right-[0%] cursor-pointer flex items-center justify-center text-white bg-red-950 rounded-full text-sm w-4 h-4 ">
+                        {carts.length}
                       </div>
-                    </a>
-                  </Link>
 
+                      <CartIcon className="text-black w-6" />
+                    </div>
+                  </a>
+                </Link>
               </div>
-              </div>
-              
-             
-            
+            </div>
           </div>
         </div>
       </div>
@@ -220,8 +227,9 @@ const MainSection = () => {
               <div className="sm:hidden md:block md:col-span-2 lg:col-span-1 relative ">
                 <FilterShop />
               </div>
-              <div className="sm:col-span-5 md:col-span-3 lg:col-span-4 md:ml-5 h-full">
+              <div className="sm:col-span-5 md:col-span-3 lg:col-span-4 md:ml-5 h-full mb-10">
                 <ShopProducts />
+                <Pagination paginate={paginate} />
               </div>
               <FillterProductsMobile />
             </div>

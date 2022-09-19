@@ -1,9 +1,4 @@
 //@ts-ignore
-import Select, { ActionMeta, StylesConfig } from "react-select";
-import { BaseInput } from "../../../inputs";
-import { useForm, Controller } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { checkoutSchema } from "../../../../helper/validation";
 import { useRecoilState } from "recoil";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import {
@@ -11,15 +6,12 @@ import {
   getPaymentProvidor,
   handelComletePay,
   handelOrderPay,
-  OrderDetailsAtom,
-  registerCountryAtom,
   TokenAtom,
 } from "../../../../helper";
 import { useEffect, useState } from "react";
 import { PayPalButton } from "react-paypal-button-v2";
 import { Spinner } from "../../../spinner";
 import { useRouter } from "next/router";
-import { BaseButton } from "../../../buttons";
 
 interface IFormInputs {
   firstName: string;

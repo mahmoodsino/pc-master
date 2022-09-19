@@ -1,16 +1,11 @@
 import HomeTree from "./HomeTree";
 import { useEffect } from "react";
 import {  useRecoilState } from "recoil";
-import  {HomePageAtom,OpenCategoryModalAtom} from "../../../../helper/state"
-import axios from "axios";
+import  {HomePageAtom} from "../../../../helper/state"
 import { getCategories } from "../../../../helper";
 
 
 const HomeCategories = () => {
-  const [openCategoryModal, setOpencategoryModal] = useRecoilState(
-    OpenCategoryModalAtom
-  );
-
     const [homePageState,setHomePageState]=useRecoilState(HomePageAtom)
   
 
@@ -35,7 +30,7 @@ const HomeCategories = () => {
             </span>
           </div>
             <div className="relative">
-              <div className="h-[440px] overflow-y-scroll overflow-x-hidden ">
+              <div className="max-h-[440px] overflow-y-scroll overflow-x-hidden ">
                 <HomeTree data={homePageState.all_categories} />
               </div>
             </div>

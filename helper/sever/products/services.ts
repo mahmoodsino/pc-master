@@ -1,72 +1,42 @@
 import axios from "axios"
 
-
 const root = process.env.NEXT_PUBLIC_ROOT
 
-const getProducts = async (token?: string, name?: string, id?: number, arrayId?: number[], orderBy?: string) => {
+interface Params {
+  token?: string,
+  categoryId?: number | number[]
+  product_name?: string
+  orderBy?: string
+  Brands?: number[]
+  AttributeValues?: { [key: number]: number[] }
+  MinPrice?: number
+  MaxPrice?: number
+  rate?: number
+  page?:number
+}
+
+const getProducts = async (params: Params) => {
   try {
-    if (name) {
-      const res = await axios.get(`${root}/products?product_name=${name ? name : ""}`, {
-        headers: {
-          "branch-id": 1,
-          "company-id": 1,
-          Authorization: `Bearer ${token}`
-        }
-      })
-      return res.data
-    } else if (id && id > 0) {
-      const res = await axios.get(`${root}/products?category=${id}`, {
-        headers: {
-          "branch-id": 1,
-          "company-id": 1,
-          Authorization: `Bearer ${token}`
-        }
-      })
-      return res.data
-    } else if (arrayId && arrayId.length > 0) {
-      const res = await axios.get(`${root}/products?category=${arrayId}`, {
-        headers: {
-          "branch-id": 1,
-          "company-id": 1,
-          Authorization: `Bearer ${token}`
-        }
-      })
-
-      return res.data
-    } else if (name && id) {
-      const res = await axios.get(`${root}/products?product_name=${name ? name : ""}&category=${id}`, {
-        headers: {
-          "branch-id": 1,
-          "company-id": 1,
-          Authorization: `Bearer ${token}`
-        }
-      })
-      return res.data
-    } else if (orderBy) {
-      const res = await axios.get(`${root}/products?${orderBy} `, {
-        headers: {
-          "branch-id": 1,
-          "company-id": 1,  
-          Authorization: `Bearer ${token}`
-        }
-      })
-      return res.data
-    }
-    else {
-
-      const res = await axios.get(`${root}/products`, {
-        headers: {
-          "branch-id": 1,
-          "company-id": 1,
-          Authorization: `Bearer ${token}`
-        },
-      })
-      return res.data
-    }
+    const res = await axios.get(`${root}/products?${params.orderBy ? params.orderBy : "OrderByNewest"}&page_size=25`, {
+      headers: {
+        "branch-id": 1,
+        "company-id": 1,
+        Authorization: `Bearer ${params.token}`
+      },
+      params: {
+        category: params.categoryId,
+        product_name: params.product_name,
+        Brand: params.Brands,
+        AttributeValues: JSON.stringify(params.AttributeValues),
+        MinPrice: params.MinPrice,
+        MaxPrice: params.MaxPrice,
+        rate: params.rate,
+        page:params.page
+      }
+    })
+    return res.data
   } catch (error) {
     console.log(error)
-    alert("some thing went wrong")
-
     return null
   }
 }

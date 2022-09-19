@@ -1,7 +1,7 @@
 import Link from "next/link";
-import React, { useEffect } from "react";
+import React from "react";
 import { useRecoilState } from "recoil";
-import { CouninueAsGuestModalAtom, DetailsAtom, DetailsType, handelRegisterAsGuest, TokenAtom } from "../../../../helper";
+import { CouninueAsGuestModalAtom, DetailsType, handelRegisterAsGuest, TokenAtom } from "../../../../helper";
 import { BaseButton } from "../../../buttons";
 import { CloseIcon } from "../../../icons";
 
@@ -16,7 +16,6 @@ const ContinueAsGuest = ({addToCart}:Props) => {
     CouninueAsGuestModalAtom
   );
   const [token, setToken] = useRecoilState(TokenAtom);
-  const [detailsState, setDetailState] = useRecoilState(DetailsAtom);
 
   
 

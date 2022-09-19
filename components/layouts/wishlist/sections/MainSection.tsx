@@ -32,6 +32,8 @@ const MainSection = () => {
   useEffect(() => {
     const getData = async () => {
       const response =await getWishList(token)
+      console.log(response);
+      
       setAllWishListInfo(response.result)
     };
     if(token.length>1) {

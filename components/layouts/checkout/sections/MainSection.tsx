@@ -1,6 +1,4 @@
-import React, { useEffect } from 'react'
-import { useRecoilState } from 'recoil'
-import { getClientToken } from '../../../../helper'
+import React from 'react'
 import Searchbar from '../../../header/Searchbar'
 import CartSummary from './CartSummary'
 import CheckoutDetails from './CheckoutDetails'

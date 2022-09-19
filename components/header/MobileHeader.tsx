@@ -1,4 +1,4 @@
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import {  ActiveDropDownAtom, FetchedCartItemsAtom, NewCartAtom, ShowSidbarAtom, WishListAtom } from "../../helper/state";
 import { goingUpAtom } from "./FixedNavbar";
 import Dropdown from "../dropdown/Dropdown";
@@ -14,11 +14,11 @@ import Image from "next/image";
 
 const MobileHeader = () => {
   const [showSidbarState, setShowSidbarState] = useRecoilState(ShowSidbarAtom);
-  const [goingUp, setGoingUp] = useRecoilState(goingUpAtom);
+  const goingUp = useRecoilValue(goingUpAtom);
   const [activeDropDown, setActiveDropDown] =
     useRecoilState(ActiveDropDownAtom);
-    const [wishList,setWishList]=useRecoilState(WishListAtom)
-    const [carts, setCarts] = useRecoilState(FetchedCartItemsAtom)
+    const wishList=useRecoilValue(WishListAtom)
+    const carts = useRecoilValue(FetchedCartItemsAtom)
 
 
     let useType

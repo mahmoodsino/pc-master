@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from "react";
+import {useEffect} from "react";
 import { useRecoilState } from "recoil";
 import { BaseButton } from "../../../../buttons";
 import { BaseInput } from "../../../../inputs";

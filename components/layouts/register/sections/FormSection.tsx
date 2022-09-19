@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import { BaseButton } from "../../../buttons";
 import { BaseInput } from "../../../inputs";
 //@ts-ignore
@@ -7,7 +6,6 @@ import Select, { StylesConfig, ActionMeta } from "react-select";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
-  citiesType,
   getCitesOfState,
   getStateOfCountry,
   handelRegister,
@@ -21,11 +19,12 @@ import {
   TokenAtom,
   YouHaveItemsModalAtom,
 } from "../../../../helper/state";
-import { atom, useRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { useRouter } from "next/router";
 import { registerSchema } from "../../../../helper/validation";
 import YouHaveItemsModal from "../../login/sections/YouHaveItemsModal";
 import { SpinnerWithBack } from "../../../spinner";
+import { useState } from "react";
 
 interface IFormInputs {
   firstName: string;

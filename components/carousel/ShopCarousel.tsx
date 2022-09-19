@@ -17,7 +17,7 @@ function SampleNextArrow(props: any) {
   return (
     <div
       className={`text-black absolute top-20 -right-4 text  h-7 w-7  rounded-full text-center cursor-pointer bg-white z-20 ${
-        hover ? "shadow-md" : "hidden"
+        hover ? "shadow-md" : "hidden opacity-0"
       }`}
       style={{ ...style }}
       onClick={onClick}
@@ -46,7 +46,7 @@ function SamplePrevArrow(props: any) {
   return (
     <div
       className={`text-black  h-7 w-7  rounded-full text-center absolute cursor-pointer bg-white top-20 z-20 -left-4 ${
-        hover ? "shadow-md" : "hidden"
+        hover ? "shadow-md" : "hidden opacity-0"
       }  `}
       style={{ ...style }}
       onClick={onClick}
@@ -90,12 +90,8 @@ const ShopCarousel = ({ img, hover }: Props) => {
       <Slider {...settings}>
         {img.map((item) => {
           return (
-            <div key={uuidv4()}>
-              <div className="">
-                <div className="ml-5 mt-3 ">
-                  <Image width={180} height={180} src={item?.path} />
-                </div>
-              </div>
+            <div className="product-slider" key={uuidv4()}>
+                  <img className="m-auto my-auto border mt-5 w-[200px] h-[150px]"  src={item?.path} />
             </div>
           );
         })}

@@ -4,7 +4,6 @@ import ShopTree from "./ShopTree";
 import {
   AttributesShopAtom,
   BrandsAtom,
-  HomePageAtom,
   OrderByAtom,
   ProductsAtom,
   RangeSliderAtom,
@@ -14,11 +13,7 @@ import { BaseButton } from "../../../buttons";
 import { BaseInput } from "../../../inputs";
 import { searchIcon } from "../../../icons/Icons";
 import { useEffect, useState } from "react";
-import {
-  categoriesType,
-  getProducts,
-  handelFilterProduct,
-} from "../../../../helper";
+import { categoriesType, handelFilterProduct } from "../../../../helper";
 import { useRouter } from "next/router";
 import useBrands from "./Brands";
 import useRating from "./Rating";
@@ -43,9 +38,6 @@ const FilterShop = () => {
   const push = useRouter().push;
 
   const handelSearch = async (productToSearch: string) => {
-    const res = await getProducts(productToSearch);
-
-    setProductsState(res.result.items);
     push({
       pathname: "/shop",
       query: { search: encodeURI(searchState) },
@@ -91,7 +83,7 @@ const FilterShop = () => {
         </div>
         <div className="ml-2 mt-10">
           <h1 className="text-lg font-bold tracking-[0.03em] text-[#7A797B]">
-            FILTERS 
+            FILTERS
           </h1>
           <div>
             <div className="my-5 pr-3 ">
@@ -109,17 +101,25 @@ const FilterShop = () => {
               </div>
             </div>
           </div>
-          
-          <h1 className="font-semibold px-5 mt-10">Categories</h1>
+          <div className={`${shopCategorey.length !== 0 ? "" : "hidden"}`}>
+            <h1 className="font-semibold px-5 mt-10">Categories</h1>
 
-          <div className=" h-[350px] overflow-y-auto pr-4 mt-3  mb-10">
-            <ShopTree data={shopCategorey} />
+            <div className="max-h-[350px] overflow-y-auto pr-4 mt-3  mb-10">
+              <ShopTree data={shopCategorey} />
+            </div>
           </div>
+          <div className={`${brands.length!==0 ? "" : "hidden"}   `}>
+            
           <h1 className="font-semibold px-5">Brands</h1>
-          <div className=" h-[350px] overflow-y-auto pr-4 mt-3 mb-10">{render}</div>
-          <h1 className="font-semibold px-5">Attributes</h1>
-          <div className="pl-5 h-[350px] overflow-y-auto pr-4 mb-10">
-            {AttributeRender}
+          <div className=" max-h-[350px] overflow-y-auto pr-4 mt-3 mb-10">
+            {render}
+          </div>
+          </div>
+          <div className={`${attributes.length !== 0 ? "" : "hidden"}`}>
+            <h1 className="font-semibold px-5">Attributes</h1>
+            <div className="pl-5 max-h-[350px] overflow-y-auto pr-4 mb-10">
+              {AttributeRender}
+            </div>
           </div>
           <h1 className="font-semibold px-5 mt-3">Rating</h1>
           <div className=" h-[350px] overflow-y-auto pr-4 mb-10">{rende}</div>

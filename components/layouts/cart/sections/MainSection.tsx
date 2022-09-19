@@ -4,10 +4,8 @@ import { useRecoilState } from "recoil";
 import {
   AllCartsInfo,
   AllWishListsInfoAtom,
-  CartItemsAtom,
   FetchedCartItemsAtom,
   getCartItems,
-  getWishList,
   NewCartAtom,
   TokenAtom,
   WishListAtom,

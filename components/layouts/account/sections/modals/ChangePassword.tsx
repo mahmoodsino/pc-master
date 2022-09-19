@@ -1,9 +1,8 @@
-import { useState } from "react";
-import {  useRecoilState } from "recoil";
+import {  useRecoilState, useRecoilValue } from "recoil";
 import {BaseButton} from "../../../../buttons";
 import {BaseInput} from "../../../../inputs";
 import { ChangePassAtom, TokenAtom } from "../../../../../helper/state/index";
-import { useForm, Controller } from "react-hook-form";
+import { useForm} from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { changePasswordSchema } from "../../../../../helper/validation";
 import { useRouter } from "next/router";
@@ -18,7 +17,7 @@ interface IFormInputs {
 const ChangePassword = () => {
   const [showChangePassword, setShowChangePassword] =
     useRecoilState(ChangePassAtom);
-  const [token, setToken] = useRecoilState(TokenAtom);
+  const token = useRecoilValue(TokenAtom);
     const {
       register,
       handleSubmit,

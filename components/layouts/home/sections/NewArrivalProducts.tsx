@@ -68,7 +68,7 @@ const NewArrivalProducts = () => {
         </div>
       </div>
       {!loading ? (
-        <div className="grid sm:grid-cols-2 lg:grid-cols-5 md:grid-cols-3 my-5   xl:mx-4 mb-10">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-2 md:grid-cols-3 my-5   xl:mx-4 mb-10">
           {newArrivalProducts?.map((item) => {
             return (
               <BaseCard

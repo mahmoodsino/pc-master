@@ -30,9 +30,7 @@ const CartSummary = () => {
     let isFound = true;
     for (const item of carts) {
       if (item.available_quantity) {
-        if (item.available_quantity === item.quantity) {
-          return (isFound = true);
-        } else if (item.available_quantity > item.quantity) {
+         if (item.available_quantity >= item.quantity) {
           return (isFound = true);
         } else if (item.available_quantity < item.quantity) {
           isFound = false;
@@ -73,7 +71,6 @@ const CartSummary = () => {
       }
     }
   };
-  console.log(allCartsInfo);
 
   return (
     <div className="shadow-[0_0_5px_rgba(0,0,0,0.12)]  md:tracking-[0.03] rounded-md mb-10">
@@ -131,18 +128,17 @@ const CartSummary = () => {
       <div className="  py-5 ">
         <div className="w-fit left-0 right-0 m-auto ">
           {!loading ? (
-            <BaseButton
-              onClick={() => createOrder()}
-              disabled={
-                checkQuantity() &&
-                selectedMethod === "DELIVERY" &&
-                shippingAddressId < 0
-                  ? true
-                  : false
-              }
-              title="Continue to checkout"
-              className="text-white disabled:bg-gray-500 disabled:cursor-not-allowed bg-green-1000 px-8 py-2 text-xl font-bold  rounded-full"
-            />
+            <div>
+              {selectedMethod === "DELIVERY" &&
+              shippingAddressId === -1 ? null : (
+                <BaseButton
+                  onClick={() => createOrder()}
+                  disabled={checkQuantity() ? false : true}
+                  title="Continue to checkout"
+                  className="text-white disabled:bg-gray-500 disabled:cursor-not-allowed bg-green-1000 px-8 py-2 text-xl font-bold  rounded-full"
+                />
+              )}
+            </div>
           ) : (
             <div className="flex justify-center items-center">
               <Spinner className="fill-green-950 w-20" />
@@ -151,7 +147,7 @@ const CartSummary = () => {
         </div>
       </div>
       <div className="flex justify-center pb-3">
-        {selectedMethod === "DELIVERY" && shippingAddressId < 0 && (
+        {selectedMethod === "DELIVERY" && shippingAddressId === -1 && (
           <span className="text-xs text-red-950">
             Please select address to checkout !
           </span>

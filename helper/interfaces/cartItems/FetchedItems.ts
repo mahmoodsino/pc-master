@@ -1,3 +1,4 @@
+import CartProductType from "../../types/CartProductType"
 import { product } from "../details"
 import { Variation } from "../products"
 import modifierGroups from "./modifierGroups"
@@ -12,7 +13,7 @@ interface FetchedItems {
     modifierGroups:modifierGroups[],
     quantity:number,
     description:string
-    product?:product,
+    product?:CartProductType,
     price?:number,
     variation?:Variation
     title?:string

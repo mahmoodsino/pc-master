@@ -1,3 +1,4 @@
+import CartProductType from "../../types/CartProductType"
 import { product } from "../details"
 import { Variation } from "../products"
 
@@ -10,7 +11,7 @@ interface items {
     quantity: number,
     title: string,
     description: string
-    product?:product,
+    product?:CartProductType,
     variation:Variation
   
 }

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import handelLogout from "../../helper/sever/users/logout/services";
 import { ActiveDropDownAtom, TokenAtom } from "../../helper/state";
 import { BaseButton } from "../buttons";
@@ -9,7 +9,7 @@ import { BaseButton } from "../buttons";
 const Dropdown = () => {
   const [activeDropDown, setActiveDropDown] =
     useRecoilState(ActiveDropDownAtom);
-  const [token, setToken] = useRecoilState(TokenAtom);
+  const token = useRecoilValue(TokenAtom);
   const push = useRouter().push;
 
   const LogoutHandel = async () => {

@@ -8,11 +8,11 @@ import { v4 as uuidv4 } from 'uuid';
 import img1 from "../../public/assets/image/img1.png";
 import Image from "next/image";
 import { ContactAtom } from "../../helper";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 
 const Navbar = () => {
   const { pathname } = useRouter();
-  const [contact,setContact]=useRecoilState(ContactAtom)
+  const contact=useRecoilValue(ContactAtom)
 
   let useType;
   if (typeof window !== "undefined") {

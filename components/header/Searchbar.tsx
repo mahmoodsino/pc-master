@@ -1,4 +1,4 @@
-import { atom, useRecoilState } from "recoil";
+import { atom, useRecoilState, useRecoilValue } from "recoil";
 import {
   ActiveDropDownAtom,
   AllCartsInfo,
@@ -16,23 +16,18 @@ import CartIcon from "../icons/CartIcon";
 import PersonIcon from "../icons/PersonIcon";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { getProducts } from "../../helper";
 
 const Searchbar = () => {
   const [activeDropDown, setActiveDropDown] =
     useRecoilState(ActiveDropDownAtom);
   const [searchState, setSearchState] = useRecoilState(SearchAtom);
-
-  const [productsState, setProductsState] = useRecoilState(ProductsAtom);
-  const [wishList, setWishList] = useRecoilState(WishListAtom);
-  const [carts, setCarts] = useRecoilState(FetchedCartItemsAtom);
-  const [allCartsInfo, setAllCartsInfo] = useRecoilState(AllCartsInfo);
+  const wishList =useRecoilValue(WishListAtom);
+  const carts=useRecoilValue(FetchedCartItemsAtom);
+  const allCartsInfo=useRecoilValue(AllCartsInfo);
 
   const push = useRouter().push;
 
-  const handelSearch = async (productToSearch: string) => {
-    const res = await getProducts(productToSearch);
-    setProductsState(res.result.items);
+  const handelSearch = async () => {
     push({
       pathname: "/shop",
       query: { search: encodeURI(searchState) },
@@ -59,7 +54,7 @@ const Searchbar = () => {
             />
 
             <BaseButton
-              onClick={() => handelSearch(searchState)}
+              onClick={() => handelSearch()}
               className="absolute right-[41.5%]  top-0 mt-2.5 mr px-0.5 py-0.5"
             >
               {searchForInputIcon}

@@ -10,7 +10,6 @@ import { deleteAddress } from "../../../../../helper";
 const ConfiermDeleteModal = () => {
   const [openDeleteModal, setOpenDeleteModal] =
     useRecoilState(OpenDeleteModalAtom);
-  const [address, setaddress] = useRecoilState(addressatom);
   const[addressTodeleteId,setAddressTodeleteId]=useRecoilState(AddresToDeleteIdAtom)
   const [editSuccess, setEditSuccess] = useRecoilState(SuccessEdit);
   const[token,setToken]=useRecoilState(TokenAtom)

@@ -3,7 +3,6 @@ import { WishListAtom, WishListItems } from "../../../../helper";
 import { BaseButton } from "../../../buttons";
 import { BlusIcon, CartIcon, MinusIcon } from "../../../icons";
 import { CloseIcon } from "../../../icons";
-import { v4 as uuidv4 } from "uuid";
 import Image from "next/image";
 import no_image from "../../../../public/assets/image/no_image.jpg";
 
@@ -44,9 +43,12 @@ const MobileWishList = ({
               </span>
               <div className="flex flex-row items-center space-x-5 ">
                 <div className="w-20 h-20 border">
-                  {item.variation?.images !== undefined &&
-                  item.variation.images.length > 0 ? (
-                    <Image src={item.variation.images[0]} alt="" />
+                  {item.product?.image?.id ? (
+                    <img
+                      className="h-20 w-20 "
+                      src={item.product?.image.path}
+                      alt=""
+                    />
                   ) : (
                     <Image src={no_image} />
                   )}

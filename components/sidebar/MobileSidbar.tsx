@@ -1,4 +1,4 @@
-import { atom, useRecoilState } from "recoil";
+import { atom, useRecoilState, useRecoilValue } from "recoil";
 import { routseWAuth, routswithout } from "../header/FixedNavbar";
 import { MobailCategoryModal } from "../layouts";
 import { BaseInput } from "../inputs";
@@ -14,7 +14,6 @@ import {
 } from "../../helper/state";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { getProducts } from "../../helper";
 import { v4 as uuidv4 } from "uuid";
 
 const MobileSidbar = () => {
@@ -23,8 +22,7 @@ const MobileSidbar = () => {
     OpenCategoryModalAtom
   );
   const [searchState, setSearchState] = useRecoilState(SearchAtom);
-  const [productsState, setProductsState] = useRecoilState(ProductsAtom);
-  const [contact,setContact]=useRecoilState(ContactAtom)
+  const contact=useRecoilValue(ContactAtom)
   const push = useRouter().push;
   let useType
   if(typeof window !== "undefined"){
@@ -34,8 +32,7 @@ const MobileSidbar = () => {
 
 
   const handelSearch = async (productToSearch: string) => {
-    const res = await getProducts(productToSearch);
-    setProductsState(res.result.items);
+    
     setShowSidbarState(false);
     push({
       pathname: "/shop",

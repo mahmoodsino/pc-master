@@ -24,7 +24,7 @@ const DetailsAtom = atom<DetailsType>({
             images: [],
             name: "",
             seo_description: '',
-            seo_keywords: [],
+            seo_keywords: "",
             seo_title: "",
             short_description: "",
             slug: "",

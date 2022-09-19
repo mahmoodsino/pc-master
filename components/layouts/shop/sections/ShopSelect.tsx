@@ -5,13 +5,19 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRecoilState } from "recoil";
 import {
+  currentPageAtom,
   getProducts,
-  handelFilterProduct,
   OrderByAtom,
   ProductsAtom,
+  RangeSliderAtom,
+  SelectedShopCategoryAtom,
   TokenAtom,
 } from "../../../../helper";
 import { orderBySchema } from "../../../../helper/validation";
+import useBrands from "./Brands";
+import useRating from "./Rating";
+import useAttributes from "./Attributes";
+import { useRouter } from "next/router";
 
 export interface optionType {
   value: string;
@@ -26,6 +32,14 @@ const ShopSelect = () => {
   const [orderByState, setOrderByState] = useRecoilState(OrderByAtom);
   const [productsState, setProductsState] = useRecoilState(ProductsAtom);
   const [token, setToken] = useRecoilState(TokenAtom);
+  const { selectBrand } = useBrands();
+  const { ratingState } = useRating();
+  const { selectedAttribute } = useAttributes();
+  const [selecterCategory, setSelectedCategory] = useRecoilState(
+    SelectedShopCategoryAtom
+  );
+  const [rangeSlider, setRangeSlider] = useRecoilState(RangeSliderAtom);
+  const [currentPage, setCurrentPage] = useRecoilState(currentPageAtom);
 
   const {
     control,
@@ -35,6 +49,9 @@ const ShopSelect = () => {
   } = useForm<IFormInputs>({
     resolver: yupResolver(orderBySchema),
   });
+
+  const query = useRouter().query;
+
 
   const customStyles: StylesConfig<optionType> = {
     option: (provided: ActionMeta, state: ActionMeta) => ({
@@ -52,24 +69,28 @@ const ShopSelect = () => {
     }),
   };
   return (
-    <div className="inline-block sm:w-[100%] md:w-[25%]  lg:w-[22%]">
+    <div className="inline-block sm:w-[100%] md:w-[25%]  lg:w-[22%] z-50">
       <form>
         <Controller
           name="orderBy"
           control={control}
-          render={({ field: {name,ref} }) => {
+          render={({ field: { name, ref } }) => {
             const handleSelectChange = async (
               selectedOption: optionType | null
             ) => {
-              const res = await getProducts(
-                token,
-                "",
-                -1,
-                [],
-                selectedOption?.label
-              );
-              console.log(res);
+              const res = await getProducts({
+                orderBy: selectedOption?.label,
+                token: token,
+                //@ts-ignore
+                product_name: query.search,
+                categoryId: selecterCategory,
+                AttributeValues: selectedAttribute,
+                Brands: selectBrand,
+                MinPrice: rangeSlider[0],
+                MaxPrice: rangeSlider[1],
+                page: currentPage,
 
+              });
               setProductsState(res.result.items);
             };
             return (
@@ -85,7 +106,7 @@ const ShopSelect = () => {
                 className="w-full  "
                 ref={ref}
                 name={name}
-                placeholder="Order By"
+                placeholder="OrderByNewest"
                 options={orderByState}
                 onChange={handleSelectChange}
                 styles={customStyles}

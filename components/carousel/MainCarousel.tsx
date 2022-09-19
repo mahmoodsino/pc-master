@@ -3,7 +3,6 @@ import React, { Component } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import Link from "next/link";
 import notebook from "/public/assets/image/notebook.png";
 import Image from "next/image";
 import { useRecoilState } from "recoil";
@@ -14,6 +13,8 @@ import { BaseButton } from "../buttons";
 
 const  Carousel = () =>{
   const [homePageState,setHomePageState]=useRecoilState(HomePageAtom)
+  console.log(homePageState);
+  
     const settings = {
       dots: true,
       infinite: true,
@@ -34,15 +35,12 @@ const  Carousel = () =>{
             return (
             <div key={uuidv4()}>
               <div
-                className="w-[100%] h-fit justify-around flex md:flex-row sm:items-center sm:flex-col  bg-cover"
+                className="w-[100%]  h-[440px] justify-around flex md:flex-row sm:items-center sm:flex-col  bg-cover"
                 style={{
                   backgroundImage: `url(/assets/image/Rectangle.png)`,
                 }}
               >
-                <div className="sm:block md:hidden">
-                  <Image src={notebook}   />
-                </div>
-                <div className="2xl:left-[500px] pb-10  text-left ml-14 mt-12">
+                <div className="2xl:left-[500px] pb-10  text-left ml-10 mt-12">
                   <h1 className="text-[22px]  font-[600]">
                    {item.description}
                   </h1>
@@ -58,16 +56,13 @@ const  Carousel = () =>{
                   </div>
                 </div>
 
-                <div className="md:block sm:hidden">
-                  <Image src={notebook} />
+                <div className="md:block sm:hidden product-slider-img">
+                <img className="w-56 h-56 product-slider-img" src={item.img}   />
                 </div>
               </div>
             </div>
             )
-
           })}
-
-          
         </Slider>
       </div>
     );

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { categoriesType } from "../../../../helper/interfaces";
 import { shopArrowIcon } from "../../../icons/Icons";
 import { v4 as uuidv4 } from "uuid";
-import { ProductsAtom, SelectedShopCategoryAtom } from "../../../../helper";
+import {  SelectedShopCategoryAtom } from "../../../../helper";
 import { useRecoilState } from "recoil";
 
 interface data {

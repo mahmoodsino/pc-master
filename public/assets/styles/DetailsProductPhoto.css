@@ -13,3 +13,33 @@
     width: 60px;
   }
   
+
+  @media screen and (max-width: 992px) {
+    .slick-dots.slick-thumb li {
+      width: 50px;
+      height: 50px; 
+      top: 40px;
+      border: 1px solid white;
+      background-color: white;
+      overflow: hidden;
+    }
+    .slick-dots.slick-thumb li.slick-active {
+      border: 1px solid black;
+      width: 50px;
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+    .slick-dots.slick-thumb li {
+      width: 40px;
+      height: 40px; 
+      top: 30px;
+      border: 1px solid white;
+      background-color: white;
+      overflow: hidden;
+    }
+    .slick-dots.slick-thumb li.slick-active {
+      border: 1px solid black;
+      width: 40px;
+    }
+  }

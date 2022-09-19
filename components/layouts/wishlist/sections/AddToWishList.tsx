@@ -1,7 +1,6 @@
 import React from "react";
 import { useRecoilState } from "recoil";
 import {
-  addToCart,
   addToWishList,
   deleteWishList,
   DetailsAtom,
@@ -55,7 +54,6 @@ const AddToWishList = () => {
         return [
           ...prev,
           {
-            ...detailsState,
             title:data.title,
             quantity: 1,
             company_id:1,

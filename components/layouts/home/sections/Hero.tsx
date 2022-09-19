@@ -41,9 +41,6 @@ const Hero = () => {
           title="Free DElivery"
           desc="From $.."
         />
-        <h1 className="text-xs text-green-950 absolute left-[25%]  top-[19PX]">
-          99%
-        </h1>
         <HomeHelp image={TextIcon} title="99% customers" desc="Feedback" />
         <HomeHelp image={RotateIcon} title="365 Days" desc="foy free return" />
         <HomeHelp image={PaymentIcon} title="payment" desc="secure system" />

@@ -2,7 +2,7 @@ import { BaseButton } from "../../../buttons";
 import { BlusIcon, TrashIcon } from "../../../icons";
 import { MinusIcon } from "../../../icons";
 import Image from "next/image";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import {
   deleteCart,
   FetchedCartItemsAtom,
@@ -13,12 +13,11 @@ import {
 import { v4 as uuidv4 } from "uuid";
 import no_image from "../../../../public/assets/image/no_image.jpg";
 import { MutableRefObject, useRef, useState } from "react";
-import { Spinner } from "../../../spinner";
 import Collapsible from "react-collapsible";
 
 const CartItems = () => {
   const [carts, setCarts] = useRecoilState(FetchedCartItemsAtom);
-  const [token, setToken] = useRecoilState(TokenAtom);
+  const token=useRecoilValue(TokenAtom);
   
 
   const timerRef = useRef() as MutableRefObject<NodeJS.Timeout>;
@@ -116,18 +115,18 @@ const CartItems = () => {
                 key={uuidv4()}
                 className={`md:px-5 ${
                   item.available_quantity &&
-                  item.quantity > item.available_quantity
+                  (item.quantity > item.available_quantity ||item.available_quantity===0)
                     ? "bg-red-100"
                     : "bg-white"
                 }`}
               >
                 <div className="flex flex-row ">
-                  <div className="w-40 ">
-                    {item.variation?.images !== undefined &&
-                    item.variation.images.length > 0 ? (
-                      <Image
-                        className=""
-                        src={item.variation.images[0]}
+                  <div className="border mt-2 product-slider-img">
+                    {item.product?.image?.id ?
+                     (
+                      <img
+                        className="h-32 w-32 "
+                        src={item.product?.image.path}
                         alt=""
                       />
                     ) : (

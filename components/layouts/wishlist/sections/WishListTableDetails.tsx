@@ -1,8 +1,5 @@
 import { useRecoilState } from "recoil";
-import {
-  WishListAtom,
-  WishListItems,
-} from "../../../../helper";
+import { WishListAtom, WishListItems } from "../../../../helper";
 import { BaseButton } from "../../../buttons";
 import { BlusIcon, CartIcon, MinusIcon } from "../../../icons";
 import { CloseIcon } from "../../../icons";
@@ -54,9 +51,12 @@ const WishListTableDetails = ({
                       </BaseButton>
 
                       <div className="w-20 h-20">
-                        {item.variation?.images !== undefined &&
-                        item.variation.images.length > 0 ? (
-                          <Image src={item.variation.images[0]} alt="" />
+                        {item.product?.image?.id ? (
+                          <img
+                            className="h-20 w-20 "
+                            src={item.product?.image.path}
+                            alt=""
+                          />
                         ) : (
                           <Image src={no_image} />
                         )}
@@ -82,23 +82,25 @@ const WishListTableDetails = ({
                   </td>
                   <td className="p-2 w-[10%]">
                     <div className="w-[88%]">
-                    <div className=" w-[129px] border sm:space-x-3 md:space-x-7 px-2 flex justify-around items-center rounded-full border-black">
-                      <BaseButton
-                        onClick={() =>  item.id && handelDecreaseWishList(item.id)}
-                        className="text-2xl h-full py-1"
-                      >
-                        <MinusIcon className="w-3.5 text-black" />
-                      </BaseButton>
-                      <span className="text-lg font-bold">{item.quantity}</span>
-                      <BaseButton
-                       
-                        onClick={() => handelincreaseWishList(item)}
-                        className="disabled:cursor-not-allowed    "
-                      >
-                        <BlusIcon className="text-black w-4 py-1" />
-                      </BaseButton>
-                    </div>
-                      
+                      <div className=" w-[129px] border sm:space-x-3 md:space-x-7 px-2 flex justify-around items-center rounded-full border-black">
+                        <BaseButton
+                          onClick={() =>
+                            item.id && handelDecreaseWishList(item.id)
+                          }
+                          className="text-2xl h-full py-1"
+                        >
+                          <MinusIcon className="w-3.5 text-black" />
+                        </BaseButton>
+                        <span className="text-lg font-bold">
+                          {item.quantity}
+                        </span>
+                        <BaseButton
+                          onClick={() => handelincreaseWishList(item)}
+                          className="disabled:cursor-not-allowed    "
+                        >
+                          <BlusIcon className="text-black w-4 py-1" />
+                        </BaseButton>
+                      </div>
                     </div>
                   </td>
                   <td className="p-2 w-[25%]">

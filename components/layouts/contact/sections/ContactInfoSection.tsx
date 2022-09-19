@@ -1,7 +1,6 @@
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import { ContactAtom, ContactType, getContactInfo } from "../../../../helper";
+import { ContactAtom} from "../../../../helper";
 import {
   FacebookIcon,
   InstagramIcon,

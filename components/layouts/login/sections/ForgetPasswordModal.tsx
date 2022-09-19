@@ -1,10 +1,9 @@
-import {  atom, useRecoilState } from "recoil";
+import {  useRecoilState } from "recoil";
 import {BaseButton} from "../../../buttons";
 import { BaseInput } from "../../../inputs";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { forgetPasswordSchema } from "../../../../helper/validation";
-import { VerificationMainSection } from "../../verificationcod";
 import { useRouter } from "next/router";
 import { forgetPasswordModalAtom, handelForgetPassword, resetPassEmailAtom } from "../../../../helper";
 

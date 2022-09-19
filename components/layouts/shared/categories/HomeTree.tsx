@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
-import { getProducts } from "../../../../helper";
 import { categoriesType } from "../../../../helper/interfaces";
 import { ProductsAtom } from "../../../../helper/state";
 import { v4 as uuidv4 } from 'uuid';

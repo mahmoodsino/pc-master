@@ -1,6 +1,5 @@
 import { useRecoilState } from "recoil";
 import {
-  addToCart,
   DetailsAtom,
   getDetails,
   getProductModifiers,
@@ -13,33 +12,24 @@ import {
 } from "../../../../helper";
 import VariationAtom from "../../../../helper/state/products/VariationAtom";
 import { Searchbar } from "../../../header";
-import { HomeCategories } from "../../shared/categories";
 import DetailsCard from "./DetailsCard";
 import DetailsProductPhoto from "./DetailsProductPhoto";
 import { v4 as uuidv4 } from "uuid";
-import useProtectPurchaseCard from "./ProtectPurchaseCard";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Spinner } from "../../../spinner";
-import Modifiers from "./Modifiers";
-import useModifiers from "./Modifiers";
-import ReactRating from "react-rating";
 import Reviews from "./Reviews";
 import { BaseCard } from "../../../cards";
 import MoveToCartPageModal from "./MoveToCartPageModal";
 
-let cart: items[] = [];
 
 const MainSection = () => {
   const [variationState, setVariationState] = useRecoilState(VariationAtom);
   const [detailsState, setDetailState] = useRecoilState(DetailsAtom);
-  const { render } = useProtectPurchaseCard();
   const [modifiers, setModifiers] = useRecoilState(ModifiersGroupAtom);
   const [loading, setLoading] = useState(false);
   const router = useRouter().query;
   const [token, setToken] = useRecoilState(TokenAtom);
-  const [newCart, setNewCart] = useRecoilState(NewCartAtom);
-  const { modifiersRender } = useModifiers();
   const [similarProducts, setSimilarProducts] = useState<ProductsType[]>([]);
 
   useEffect(() => {
@@ -78,9 +68,7 @@ const MainSection = () => {
           name="description"
           content={detailsState.product.seo_description}
         />
-        {detailsState.product.seo_keywords.map((keyword) => {
-          return <meta key={keyword} name="keywords" content={keyword} />;
-        })}
+          return <meta key={detailsState.product.seo_keywords} name="keywords" content={detailsState.product.seo_keywords} />;
       </head>
       {loading ? (
         <div>
@@ -134,7 +122,7 @@ const MainSection = () => {
               <div className="  pb">
                 <h1 className="text-xl mb-5 font-bold">similar products </h1>
               </div>
-              <div className="grid grid-cols-2 ">
+              <div className="grid grid-cols-2 gap-2 ">
                 {similarProducts?.map((item) => {
                   return (
                     <BaseCard

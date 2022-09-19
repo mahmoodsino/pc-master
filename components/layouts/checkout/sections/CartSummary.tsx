@@ -1,6 +1,6 @@
 import Collapsible from "react-collapsible";
-import { useRecoilState } from "recoil";
-import { AllCartsInfo, getOrderCratedOrder, OrderDetailsAtom, TokenAtom } from "../../../../helper";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { getOrderCratedOrder, OrderDetailsAtom, TokenAtom } from "../../../../helper";
 import { BaseButton } from "../../../buttons";
 import { CartIcon } from "../../../icons";
 import { v4 as uuidv4 } from "uuid";
@@ -11,7 +11,7 @@ import { Spinner } from "../../../spinner";
 const CartSummary = () => {
   const [orderDetails, setOrderDetails] = useRecoilState(OrderDetailsAtom);
   const[loading,setLoading]=useState(false)
-  const [token,setToken]=useRecoilState(TokenAtom)
+  const token=useRecoilValue(TokenAtom)
   const router = useRouter().query;
 
 

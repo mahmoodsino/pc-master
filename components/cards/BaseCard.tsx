@@ -19,7 +19,7 @@ import {
   WishListAtom,
 } from "../../helper";
 import { useRouter } from "next/router";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { RedHeartIcon } from "../icons";
 
 interface cardType {
@@ -42,18 +42,11 @@ const BaseCard = ({
   name
 }: cardType) => {
   const [hover, setHover] = useState(false);
-  const [detailsState, setDetailState] = useRecoilState(DetailsAtom);
-  const [modifiers, setModifiers] = useRecoilState(ModifiersGroupAtom);
-
   const [wishList, setWishList] = useRecoilState(WishListAtom);
-  const [token, setToken] = useRecoilState(TokenAtom);
-  const [ContinueAsGuestModal, setContinueAsGuestModal] = useRecoilState(
+  const token = useRecoilValue(TokenAtom);
+  const setContinueAsGuestModal = useSetRecoilState(
     CouninueAsGuestModalAtom
   );
-  const [openAddToWishList, setOpenAddToWishList] = useRecoilState(
-    OpenAddToWishListAtom
-  );
-  const [variationState, setVariationState] = useRecoilState(VariationAtom);
 
 
   const push = useRouter().push;
@@ -70,7 +63,6 @@ const BaseCard = ({
       return [
         ...prev,
         {
-          ...detailsState,
           title: "my favorait item",
           quantity: 1,
           company_id: 1,
@@ -118,12 +110,12 @@ const BaseCard = ({
     <div
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      className="border mb-3 border-gray-1500 md:w-[291px] sm:w-[100%] md:h-[360px] py-2  hover:border-green-950 hover:shadow-md  md:px-7 sm:px-4"
+      className="border mb-3 border-gray-1500 md:w-[100%] sm:w-[100%] md:h-[360px] py-2  hover:border-green-950 hover:shadow-md  md:px-7 sm:px-4"
     >
       <div>
         <div
           className={`h-[220px] duration-500  border border-white ${
-            hover ? "scale-105 opacity-80" : ""
+            hover ? "scale-105 " : ""
           }`}
         >
           {image.length > 0 ? (
@@ -149,7 +141,7 @@ const BaseCard = ({
           ${price}
         </span>
         <div className="flex  justify-between pt-3 ">
-          <span className="line-clamp text-sm md:leading-[19px]  md:tracking-[0.03em]">
+          <span className="line-clamp text-sm md:leading-[19px] block w-[80%]  md:tracking-[0.03em]">
             {/* {description} */}
             {name}
           </span>
@@ -168,7 +160,6 @@ const BaseCard = ({
                 className="w-4 cursor-pointer"
               />
             )}
-
         </div>
       </div>
     </div>

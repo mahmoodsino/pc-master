@@ -9,11 +9,7 @@ import {
   OpenAddNewAddressModalAtom,
   OpenDeleteModalAtom,
   OpenEditAddressModalAtom,
-  registerCountryAtom,
-  TokenAtom
 } from "../../../../helper/state";
-import { useEffect } from "react";
-import { getAddress, getCountries, optionTypeCountry } from "../../../../helper";
 
 export interface addressType {
   address: string;
@@ -28,7 +24,6 @@ export const addressatom = atom<addressType[]>({
   key: "addressatom2135",
   default: [],
 });
-let modifCountries: optionTypeCountry[] = [];
 
 
 const AddressBook = () => {
@@ -44,8 +39,6 @@ const AddressBook = () => {
     useRecoilState(AddresToDeleteIdAtom);
   const [openDeleteModal, setOpenDeleteModal] =
     useRecoilState(OpenDeleteModalAtom);
-  const [token, setToken] = useRecoilState(TokenAtom);
-  const [registerCountry, setRegisterCountry] = useRecoilState(registerCountryAtom);
 
   const openModalHandler = (addres: addressType) => {
     setOpenEditAddressModal(true);

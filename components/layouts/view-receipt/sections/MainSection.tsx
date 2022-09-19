@@ -4,7 +4,6 @@ import { Searchbar } from "../../../header";
 import { OrderReview } from "../../shared";
 import { ProgressLine } from "../../../steper";
 import OrderDetails from "./OrderDetails";
-import PaymentInfo from "./PaymentInfo";
 import ShippingAddress from "./ShippingAddress";
 import { useRecoilState } from "recoil";
 import {
