@@ -12,9 +12,9 @@ const Home: NextPage = () => {
       <head>
         <title>Home Page</title>
       </head>
-      {token.length>1 &&
+      {/* {token.length>1 &&
       <Notification />
-      }
+      } */}
 
       <HomeMainSection />
     </div>
