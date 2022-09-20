@@ -199,6 +199,8 @@ const CheckoutDetails = () => {
                 }}
                 onApprove={async (action: any) => {
                   const order = await action.order.capture();
+                  console.log(order);
+                  
                 }}
                 onSuccess={async () => {
                   push({

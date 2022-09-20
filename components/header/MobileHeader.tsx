@@ -29,7 +29,7 @@ const MobileHeader = () => {
 
   return (
     <div
-      className={`flex justify-between top-0 bg-white items-center w-screen ${
+      className={`flex justify-between  h-14  top-0 bg-white items-center w-screen ${
         !goingUp ? " h-14" : "downn fixed z-50 shadow-md "
       }`}
     >
@@ -43,7 +43,7 @@ const MobileHeader = () => {
       </div>
 
       <div className="flex items-center space-x-10   mr-5 sa">
-        <div className="relative flex space-x-7 ">
+        <div className="relative  flex space-x-7 ">
           <Link href="/wishlist">
             <a className="w-5">
               <div>
@@ -70,7 +70,7 @@ const MobileHeader = () => {
         {  useType === "user" &&
             <div 
               onClick={() => setActiveDropDown(!activeDropDown)}
-              className={`space-x-2 flex   items-center cursor-pointer h-full px-2.5 ${
+              className={`space-x-2 flex relative  items-center cursor-pointer h-full px-2.5 ${
                 !activeDropDown ? "" : "bg-white"
               }`}
             >
@@ -79,12 +79,17 @@ const MobileHeader = () => {
               ) : (
                 <PersonIcon className="w-5 text-green-950" />
               )}
+              {activeDropDown ? (
+                <div className="bg-white absolute  z-10 top-[100%] right-[1%]  shadow-[0_0_5px_rgba(0,0,0,0.12)]">
+                  <Dropdown />
+                </div>
+              ) : null}
             </div>
         }
         {   useType === "guest"&&
             <div 
               onClick={() => setActiveDropDown(!activeDropDown)}
-              className={`space-x-2 flex   items-center cursor-pointer h-full px-2.5 ${
+              className={`space-x-2 flex  relative items-center cursor-pointer h-full px-2.5 ${
                 !activeDropDown ? "" : "bg-white"
               }`}
             >
@@ -93,13 +98,13 @@ const MobileHeader = () => {
               ) : (
                 <PersonIcon className="w-5 text-green-950" />
               )}
+              {activeDropDown ? (
+                <div className="bg-white absolute  z-10 top-[100%] right-[1%]  shadow-[0_0_5px_rgba(0,0,0,0.12)]">
+                  <Dropdown />
+                </div>
+              ) : null}
             </div>
         }
-        {activeDropDown ? (
-          <div className="bg-white absolute  z-10 top-[100%] right-[1%]  shadow-[0_0_5px_rgba(0,0,0,0.12)]">
-            <Dropdown />
-          </div>
-        ) : null}
       </div>
     </div>
   );
