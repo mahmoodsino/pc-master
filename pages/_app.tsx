@@ -40,13 +40,6 @@ const App = ({ children }: Props) => {
     setToken(localStorage.getItem("token") || "");
   }
 
-  // useEffect(() => {
-  //   if (typeof window !== "undefined") {
-  //     setToken(localStorage.getItem("token") || "");
-  //   }
-  // },[])
-
-
 useEffect(() => {
   const getData = async () => {
     const res = await getCartItems(token);
