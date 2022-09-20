@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 import ForgetPasswordModal from "./ForgetPasswordModal";
 import { useState } from "react";
 import YouHaveItemsModal from "./YouHaveItemsModal";
+import { Spinner } from "../../../spinner";
 
 interface IFormInputs {
   email: string;
@@ -26,6 +27,7 @@ const FormSection = () => {
   const [forgerPasswordModal,setForgetPasswordModal]=useRecoilState(forgetPasswordModalAtom)
   const [guestUsrerId,setGuestUserId]=useState<number|null>(null)
   const[openYouHaveItemsModal,setYouHaveItemsModal]=useRecoilState(YouHaveItemsModalAtom)
+  const [loading,setLoading]=useState(false)
 
   
   const {
@@ -40,12 +42,14 @@ const FormSection = () => {
 
 
   const handelLog = async (data:IFormInputs) => {
-    
+    setLoading(true)
     const res = await handelLogin(data.password, data.email,token);
     if(!res.ok){
       alert(res?.message)
+      setLoading(false)
     }else{
       if (res?.token) {
+        setLoading(false)
         localStorage.setItem("token", res.token);
         localStorage.setItem("id", res.user.id);
         localStorage.setItem("email", res.user.email);
@@ -108,11 +112,15 @@ const FormSection = () => {
               </Link>
             </div>
             <div>
+              {!loading ? 
               <BaseButton
               type="submit"
                 title="Login"
                 className={undefined}
-              />
+              /> : 
+              <Spinner className="fill-green-950 w-16" />
+              
+            }
             </div>
           </div>
         </div>

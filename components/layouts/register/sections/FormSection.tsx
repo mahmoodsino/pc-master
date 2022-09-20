@@ -23,7 +23,7 @@ import { useRecoilState } from "recoil";
 import { useRouter } from "next/router";
 import { registerSchema } from "../../../../helper/validation";
 import YouHaveItemsModal from "../../login/sections/YouHaveItemsModal";
-import { SpinnerWithBack } from "../../../spinner";
+import { Spinner, SpinnerWithBack } from "../../../spinner";
 import { useState } from "react";
 
 interface IFormInputs {
@@ -51,7 +51,8 @@ const FormSection = () => {
   const [states, setStates] = useRecoilState(StatesAtom);
   const [stateId, setStateId] = useState<number | undefined>();
   const [cities, setCities] = useRecoilState(CitiesAtom);
-  const [loading,setLoading]=useState(false)
+  const [loading, setLoading] = useState(false);
+  const [regLoading, setRegLoading] = useState(false);
 
   const customStyles: StylesConfig<optionTypeCountry> = {
     option: (provided: ActionMeta, state: ActionMeta) => ({
@@ -79,8 +80,7 @@ const FormSection = () => {
   });
   const push = useRouter().push;
   const submitForm = async (data: IFormInputs) => {
-    console.log(data);
-    
+    setRegLoading(true);
     const res = await handelRegister(
       data.firstName,
       data.lastName,
@@ -96,20 +96,24 @@ const FormSection = () => {
     );
     console.log(res);
     
-    if (res !== null) {
+    if (res ===null) {
+      alert("the given data was invaled");
+      setRegLoading(false);
+    } else {
       localStorage.setItem("token", res.result.token);
       localStorage.setItem("id", res.result.user.id);
       localStorage.setItem("email", res.result.user.email);
       localStorage.setItem("first_name", res.result.user.first_name);
       localStorage.setItem("last_name", res.result.user.last_name);
       localStorage.setItem("type", "user");
-
       setToken(res.result.token);
+      setRegLoading(false);
       if (res.result.guest_user_id === null) {
         push("./");
       } else if (res.result.guest_user_id !== null) {
         setGuestUserId(res.result.guest_user_id);
         setYouHaveItemsModal(true);
+        setRegLoading(false);
       }
     }
   };
@@ -175,7 +179,7 @@ const FormSection = () => {
                 const handleSelectChange = async (
                   selectedOption: optionTypeCountry | null
                 ) => {
-                  setLoading(true)
+                  setLoading(true);
                   if (selectedOption?.value !== undefined) {
                     setCountryId(+selectedOption?.value);
                     setStates([]);
@@ -193,7 +197,7 @@ const FormSection = () => {
                       }
                     );
                   }
-                  setLoading(false)
+                  setLoading(false);
                   onChange(selectedOption?.value);
                 };
                 return (
@@ -232,7 +236,7 @@ const FormSection = () => {
                   const handleSelectChange = async (
                     selectedOption: stateType | null
                   ) => {
-                    setLoading(true)
+                    setLoading(true);
                     if (selectedOption?.value !== undefined) {
                       setStateId(+selectedOption.value);
                       setCities([]);
@@ -250,7 +254,7 @@ const FormSection = () => {
                         }
                       );
                     }
-                    setLoading(false)
+                    setLoading(false);
                     onChange(selectedOption?.value);
                   };
                   return (
@@ -372,14 +376,20 @@ const FormSection = () => {
             </Link>
           </div>
           <div>
-            <BaseButton type="submit" title="Register" className={undefined} />
+            {!regLoading ? (
+              <BaseButton
+                type="submit"
+                title="Register"
+                className={undefined}
+              />
+            ) : (
+              <Spinner className="fill-green-950 w-20" />
+            )}
           </div>
         </div>
       </form>
       <YouHaveItemsModal guest_user_id={guestUsrerId} />
-      {loading && 
-        <SpinnerWithBack className="w-40" />
-      }
+      {loading && <SpinnerWithBack className="w-40" />}
     </div>
   );
 };

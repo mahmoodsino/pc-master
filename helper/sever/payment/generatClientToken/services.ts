@@ -5,7 +5,7 @@ const getClientToken = async (payment_provider_id:number,token:string) => {
         const res = await axios.post(`${root}/orders/payments/client-token`,{
             payment_provider_id:payment_provider_id,
         },{    headers:{
-            "D-PAYMENT-AUTHORIZATION":"PK_1_tCxdXbDjnPVFgRSMeXMK&1|3107166041^aMcY4cmO0Qa1aPZiSVfK",
+            "D-PAYMENT-AUTHORIZATION":"PK_1_hotRfa92y3evEh5U9rZD&1|6945631679^WPMb8V0Ie3f6OhzXq5xK",
             Authorization: `Bearer ${token}`
         },}
         )

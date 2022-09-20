@@ -4,7 +4,7 @@ const getPaymentProvidor = async () => {
     try {
         const res = await axios.get(`${root}/payment-way/payment-providers?is_enabled=1&branch_id=1`,{
             headers:{
-                "D-PAYMENT-AUTHORIZATION":"PK_1_tCxdXbDjnPVFgRSMeXMK&1|3107166041^aMcY4cmO0Qa1aPZiSVfK"
+                "D-PAYMENT-AUTHORIZATION":"PK_1_hotRfa92y3evEh5U9rZD&1|6945631679^WPMb8V0Ie3f6OhzXq5xK"
             }
         })
         return res.data

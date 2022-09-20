@@ -57,7 +57,6 @@ const CheckoutDetails = () => {
     setUserId(Number(id) || 0);
     const getData = async () => {
       const res = await getPaymentProvidor();
-      console.log(res);
       setPaymentProvidorState(res.result.payment_providers);
     };
     getData();
@@ -72,11 +71,13 @@ const CheckoutDetails = () => {
     });
   }, [paymentProvidorState]);
 
+
   useEffect(() => {
     const getData = async () => {
       setLoading(true);
       if (paymentProvidorId) {
         const res = await getClientToken(paymentProvidorId, token);
+        console.log(res);
         setClientToken(res.result.client_token);
         if (res) {
           setLoading(false);
@@ -86,7 +87,6 @@ const CheckoutDetails = () => {
     getData();
   }, [paymentProvidorId, userId, email]);
 
-  console.log(router.paymentTransaction);
 
   // const {
   //   control,

@@ -21,8 +21,7 @@ const handelRegister = async (first_name: string, last_name: string, email: stri
         },getConfig(token))
         return res.data
     } catch (error) {
-        alert("some thing went wrong")
-        return error
+        return null
     }
 }
 
