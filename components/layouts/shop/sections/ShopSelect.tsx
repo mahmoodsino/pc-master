@@ -69,7 +69,7 @@ const ShopSelect = () => {
     }),
   };
   return (
-    <div className="inline-block sm:w-[100%] md:w-[25%]  lg:w-[22%] z-50">
+    <div className="inline-block sm:w-[100%] md:w-[25%]  lg:w-[22%] ">
       <form>
         <Controller
           name="orderBy"

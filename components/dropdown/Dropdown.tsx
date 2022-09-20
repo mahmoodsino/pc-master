@@ -26,7 +26,7 @@ const Dropdown = () => {
   const useType = localStorage.getItem("type" || "");
 
   return (
-    <div className="flex flex-col w-[170px]">
+    <div className="flex flex-col z-[100] w-[170px]">
       {useType === "user" ? (
         <div className="">
           <Link onClick={() => setActiveDropDown(false)} href="/account">
