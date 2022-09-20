@@ -1,6 +1,5 @@
 import type { NextPage } from "next";
 import { useRecoilState } from "recoil";
-import { Notification } from "../components";
 import { HomeMainSection } from "../components/layouts";
 import { TokenAtom } from "../helper";
 
@@ -12,10 +11,6 @@ const Home: NextPage = () => {
       <head>
         <title>Home Page</title>
       </head>
-      {token.length>1 &&
-      <Notification />
-      }
-
       <HomeMainSection />
     </div>
   );
