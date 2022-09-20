@@ -7,7 +7,6 @@ import { MobileSidbar } from "../components/sidebar";
 import {  MutableRefObject, ReactNode, useEffect, useRef } from "react";
 import { ActiveDropDownAtom, AllCartsInfo, AllWishListsInfoAtom,  FetchedCartItemsAtom, getAddress, getCartItems, getCountries, getWishList, OpenAddNewAddressModalAtom, OpenEditAddressModalAtom, optionTypeCountry, registerCountryAtom, TokenAtom, WishListAtom } from "../helper";
 import { addressatom } from "../components/layouts/account/sections/AddressBook";
-import Notification from "../components/push-notification-layout/Notification";
 
 
 interface Props {
