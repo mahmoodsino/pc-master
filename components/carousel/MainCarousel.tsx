@@ -13,8 +13,6 @@ import { BaseButton } from "../buttons";
 
 const  Carousel = () =>{
   const [homePageState,setHomePageState]=useRecoilState(HomePageAtom)
-  console.log(homePageState);
-  
     const settings = {
       dots: true,
       infinite: true,

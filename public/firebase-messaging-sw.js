@@ -3,12 +3,12 @@ importScripts('https://www.gstatic.com/firebasejs/8.2.0/firebase-messaging.js');
 
 // Initialize the Firebase app in the service worker by passing the generated config
 const firebaseConfig = {
-    apiKey: "AIzaSyDzE2-28oVjdqGzGHKzmGpDRtlZyYsyNl0",
-    authDomain: "pc-master-pro.firebaseapp.com",
-    projectId: "pc-master-pro",
-    storageBucket: "pc-master-pro.appspot.com",
-    messagingSenderId: "458601990093",
-    appId: "1:458601990093:web:95c0b51441b27135bbe684"
+  apiKey: "AIzaSyCBclhkoWrm3Us8HA6A0Mu-e4WvCBi7WwI",
+  authDomain: "pcmaster-43d91.firebaseapp.com",
+  projectId: "pcmaster-43d91",
+  storageBucket: "pcmaster-43d91.appspot.com",
+  messagingSenderId: "389910024616",
+  appId: "1:389910024616:web:be919d96dbd0ab69e40d9d"
 };
 
 firebase.initializeApp(firebaseConfig);

@@ -22,6 +22,7 @@ const Notification = () => {
     }
   }, [notification])
 
+
   requestForToken();
 
   onMessageListener()
