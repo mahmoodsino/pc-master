@@ -21,12 +21,15 @@ const NewArrivalProducts = () => {
   const [loading, setLoading] = useState(false);
   const [selected, setSelected] = useState<number>();
 
-
   const setItem = async (setItem: number) => {
     setLoading(true);
-    setSelected(setItem)
+    setSelected(setItem);
     const res = await getNewArraivalProducts(token, setItem);
-    setNewArrivalProducts(res.result.items);
+    if (res === null) {
+      alert("some thing went wrong");
+    } else {
+      setNewArrivalProducts(res.result.items);
+    }
     setLoading(false);
   };
 
@@ -34,7 +37,11 @@ const NewArrivalProducts = () => {
     const getData = async () => {
       setLoading(true);
       const res = await getNewArraivalProducts(token);
-      setNewArrivalProducts(res.result.items);
+      if (res === null) {
+        alert("some thing went wrong");
+      } else {
+        setNewArrivalProducts(res.result.items);
+      }
       setLoading(false);
     };
     getData();
@@ -42,7 +49,11 @@ const NewArrivalProducts = () => {
   useEffect(() => {
     const getData = async () => {
       const res = await getNewArraivalProducts(token);
-      setNewArrivalProducts(res.result.items);
+      if (res === null) {
+        alert("some thing went wrong");
+      } else {
+        setNewArrivalProducts(res.result.items);
+      }
     };
     getData();
   }, [wishList]);
@@ -89,9 +100,8 @@ const NewArrivalProducts = () => {
           <Spinner className="w-32 fill-green-950" />
         </div>
       )}
-      {(newArrivalProducts.length === 0 &&!loading) && (
+      {newArrivalProducts.length === 0 && !loading && (
         <div className="flex justify-center font-semibold">
-
           <p className="ml-3">ther are no products for that category now !</p>
         </div>
       )}

@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import {
   addToCart,
   AllCartsInfo,
+  CouninueAsGuestModalAtom,
   deleteWishList,
   DetailsAtom,
   DetailsType,
@@ -28,6 +29,7 @@ import {
 } from "../../../icons";
 import { Spinner } from "../../../spinner";
 import { AddToWishList } from "../../wishlist";
+import ContinueAsGuest from "./ContinueAsGuest";
 import useModifiers from "./Modifiers";
 import { MoveToCartPageModalAtom } from "./MoveToCartPageModal";
 import useProtectPurchaseCard, { modifiersIdAtom } from "./ProtectPurchaseCard";
@@ -40,7 +42,9 @@ const DetailsCard = () => {
     OpenAddToWishListAtom
   );
   const [wishList, setWishList] = useRecoilState(WishListAtom);
-  
+  const [ContinueAsGuestModal, setContinueAsGuestModal] = useRecoilState(
+    CouninueAsGuestModalAtom
+  );
   const [names, setNames] = useState<any>({});
   const [isChange, setIsChange] = useState<boolean>(true);
   const [selectedAttributes, setSelectedAttributes] = useState<number[]>([]);
@@ -63,6 +67,8 @@ const DetailsCard = () => {
   const [allCartsInfo,setAllCartsInfo]=useRecoilState(AllCartsInfo)
   const [MoveToCartPageModalState,setMoveToCartPageModalState]=useRecoilState(MoveToCartPageModalAtom)
 
+
+
   useEffect(() => {
     if(modifiersId!==0){
       setAllModifiers([])
@@ -77,6 +83,8 @@ const DetailsCard = () => {
       })
     }
   },[modifiersIdforModifiers,modifiersId])
+
+ 
 
   const handleAddToCart = async (clickedItem: DetailsType) => {
     setNewCart((prev) => {
@@ -447,7 +455,8 @@ const DetailsCard = () => {
                 disabled={variationState.available_quantity < 1 ? true : false}
                 onClick={() =>
                   token.length > 1
-                    &&finallAddtoCart()
+                    ? finallAddtoCart()
+                    : setContinueAsGuestModal(true)
                 }
                 className={`text-white bg-green-950 tracking-[0.095em] px-3 py-1 rounded-full disabled:cursor-not-allowed disabled:bg-gray-500`}
               >
@@ -467,7 +476,8 @@ const DetailsCard = () => {
                   <BaseButton
                     onClick={() =>
                       token.length > 1
-                        && setOpenAddToWishList(true)
+                        ? setOpenAddToWishList(true)
+                        : setContinueAsGuestModal(true)
                     }
                     className=" bg-gray-400 px-3 py-1 rounded-full text-white"
                   >
@@ -548,6 +558,7 @@ const DetailsCard = () => {
         {modifiersRender}
       </div>
       <AddToWishList />
+      <ContinueAsGuest />
     </div>
   );
 };

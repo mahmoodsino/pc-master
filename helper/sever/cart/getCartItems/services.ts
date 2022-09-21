@@ -12,7 +12,6 @@ const getCartItems = async (token: string) => {
         return res.data
     } catch (error) {
         console.log(error)
-        alert("some thing went wrong")
         return null
     }
 }

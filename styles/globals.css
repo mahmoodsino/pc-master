@@ -60,3 +60,33 @@
 .product-slider-img img {
   object-fit: contain;
 }
+
+
+.befor{
+  font-family: sans-serif;
+  text-align: center;
+  font-size: 16px;
+  position: relative;
+}
+
+.befor:before {
+  content: "";
+  display: block;
+  width: 180px;
+  height: 2px;
+  background: gray;
+  left: 120%;
+  top: 50%;
+  position: absolute;
+}
+
+.befor:after {
+  content: "";
+  display: block;
+  width: 180px;
+  height: 2px;
+  background: gray;
+  right: 120%;
+  top: 50%;
+  position: absolute;
+}

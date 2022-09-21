@@ -1,10 +1,15 @@
-import { atom, useRecoilState, useRecoilValue } from "recoil";
+import {
+  useRecoilState,
+  useRecoilValue,
+  useSetRecoilState,
+} from "recoil";
 import {
   ActiveDropDownAtom,
   AllCartsInfo,
+  CouninueAsGuestModalAtom,
   FetchedCartItemsAtom,
-  ProductsAtom,
   SearchAtom,
+  TokenAtom,
   WishListAtom,
 } from "../../helper/state";
 import BaseInput from "../inputs/BaseInput";
@@ -14,18 +19,27 @@ import Dropdown from "../dropdown/Dropdown";
 import HeartIcon from "../icons/HeartIcon";
 import CartIcon from "../icons/CartIcon";
 import PersonIcon from "../icons/PersonIcon";
-import Link from "next/link";
 import { useRouter } from "next/router";
 
 const Searchbar = () => {
   const [activeDropDown, setActiveDropDown] =
     useRecoilState(ActiveDropDownAtom);
   const [searchState, setSearchState] = useRecoilState(SearchAtom);
-  const wishList =useRecoilValue(WishListAtom);
-  const carts=useRecoilValue(FetchedCartItemsAtom);
-  const allCartsInfo=useRecoilValue(AllCartsInfo);
+  const wishList = useRecoilValue(WishListAtom);
+  const carts = useRecoilValue(FetchedCartItemsAtom);
+  const allCartsInfo = useRecoilValue(AllCartsInfo);
+  const [token, setToken] = useRecoilState(TokenAtom);
+  const setContinueAsGuestModal = useSetRecoilState(CouninueAsGuestModalAtom);
 
   const push = useRouter().push;
+
+  const handelGoToCart = () => {
+    push("/cart");
+  };
+
+  const handelGoToWishList = () => {
+    push("/wishlist");
+  };
 
   const handelSearch = async () => {
     push({
@@ -65,25 +79,35 @@ const Searchbar = () => {
         <div className="  px-10 flex flex-row justify-end items-center w-[40%] ">
           <div className="flex relative  flex-row">
             <div className="flex w-fit mr-10">
-              <Link href="/wishlist">
-                <a className=" w-5">
-                  <div className="absolute -top-1 right-[70%]  flex items-center cursor-pointer justify-center text-white bg-red-950 rounded-full text-sm w-4 h-4 ">
-                    {wishList.length}
-                  </div>
-                  <HeartIcon className="w-6 text-white" />
-                </a>
-              </Link>
+              <BaseButton
+                onClick={() =>
+                  token.length > 1
+                    ? handelGoToWishList()
+                    : setContinueAsGuestModal(true)
+                }
+                className="w-5"
+              >
+                <div className="absolute -top-1 right-[70%]  flex items-center cursor-pointer justify-center text-white bg-red-950 rounded-full text-sm w-4 h-4 ">
+                  {wishList.length}
+                </div>
+                <HeartIcon className="w-6 text-white" />
+              </BaseButton>
             </div>
 
             <div className=" flex w-fit">
-              <Link className="" href="/cart">
-                <a>
-                  <div className="absolute -top-1 right-[9%] cursor-pointer flex items-center justify-center text-white bg-red-950 rounded-full text-sm w-4 h-4 ">
-                    {carts.length}
-                  </div>
-                  <CartIcon className="text-white w-6 mr-5" />
-                </a>
-              </Link>
+              <BaseButton
+                onClick={() =>
+                  token.length > 1
+                    ? handelGoToCart()
+                    : setContinueAsGuestModal(true)
+                }
+                className=" "
+              >
+                <div className="absolute -top-1 right-[9%] cursor-pointer flex items-center justify-center text-white bg-red-950 rounded-full text-sm w-4 h-4 ">
+                  {carts.length}
+                </div>
+                <CartIcon className="text-white w-6 mr-5" />
+              </BaseButton>
             </div>
           </div>
           <div className="w-[35%] ">

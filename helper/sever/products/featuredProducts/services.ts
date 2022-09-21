@@ -32,8 +32,6 @@ const getfeaturedProducts = async (token: string, id?: number) => {
 
     } catch (error) {
         console.log(error)
-        alert("some thing went wrong")
-
         return null
     }
 }

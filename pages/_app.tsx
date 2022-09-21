@@ -4,13 +4,7 @@ import { RecoilRoot, useRecoilState } from "recoil";
 import { FixedNavbar, Navbar } from "../components/header";
 import { Footer } from "../components/fotter";
 import { MobileSidbar } from "../components/sidebar";
-import {
-  MutableRefObject,
-  ReactNode,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { MutableRefObject, ReactNode, useEffect, useRef } from "react";
 import {
   ActiveDropDownAtom,
   AllCartsInfo,
@@ -20,7 +14,6 @@ import {
   getCartItems,
   getCountries,
   getWishList,
-  handelRegisterAsGuest,
   OpenAddNewAddressModalAtom,
   OpenEditAddressModalAtom,
   optionTypeCountry,
@@ -60,28 +53,21 @@ const App = ({ children }: Props) => {
   if (typeof window !== "undefined") {
     setToken(localStorage.getItem("token") || "");
   }
-  useEffect(() => {
-    const Data = async () => {
-      const res = await handelRegisterAsGuest();
-      if (res.result.token) {
-        localStorage.setItem("token", res.result.token.access_token);
-        localStorage.setItem("id", res.result.user.id);
-        localStorage.setItem("email", res.result.user.email);
-        localStorage.setItem("type", res.result.user.type);
-        setToken(res.result.token.access_token);
-      }
-    };
-    if (token.length === 0) {
-      Data();
-    }
-  }, []);
 
   useEffect(() => {
     const getData = async () => {
       const res = await getCartItems(token);
-      setAllCartsInfo(res.result);
+      if (res === null) {
+        alert("some thing went wrong");
+      } else {
+        setAllCartsInfo(res.result);
+      }
       const response = await getWishList(token);
-      setAllWishListInfo(response.result);
+      if (response === null) {
+        alert("some thing went wrong");
+      } else {
+        setAllWishListInfo(response.result);
+      }
     };
     if (token.length > 1) {
       clearTimeout(timerRef.current);
@@ -94,9 +80,17 @@ const App = ({ children }: Props) => {
   useEffect(() => {
     const getData = async () => {
       const res = await getCartItems(token);
-      setCarts(res.result.items);
+      if (res === null) {
+        alert("some thing went wrong");
+      } else {
+        setCarts(res.result.items);
+      }
       const response = await getWishList(token);
-      setWishList(response.result.items);
+      if (response === null) {
+        alert("some thing went wrong");
+      } else {
+        setWishList(response.result.items);
+      }
     };
     if (token.length > 1) {
       clearTimeout(timerRef.current);
@@ -130,7 +124,11 @@ const App = ({ children }: Props) => {
   useEffect(() => {
     const getData = async () => {
       const res = await getAddress(token);
-      setaddress(res.result);
+      if (res === null) {
+        alert("some thing went wrong");
+      } else {
+        setaddress(res.result);
+      }
     };
     if (token.length > 1) {
       getData();
@@ -141,7 +139,7 @@ const App = ({ children }: Props) => {
       onClick={() => (activeDropDown ? setActiveDropDown(false) : null)}
       className="font-newFont min-h-[60vh]"
     >
-      <div>{children}</div>
+      {children}
     </div>
   );
 };

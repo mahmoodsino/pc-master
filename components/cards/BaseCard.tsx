@@ -6,9 +6,13 @@ import HeartIcon from "../icons/HeartIcon";
 import no_image from "../../public/assets/image/no_image.jpg";
 import {
   addToWishList,
+  CouninueAsGuestModalAtom,
   deleteWishList,
+  DetailsAtom,
   getWishList,
   imagesType,
+  ModifiersGroupAtom,
+  OpenAddToWishListAtom,
   TokenAtom,
   Variation,
   VariationAtom,
@@ -40,7 +44,9 @@ const BaseCard = ({
   const [hover, setHover] = useState(false);
   const [wishList, setWishList] = useRecoilState(WishListAtom);
   const token = useRecoilValue(TokenAtom);
-  
+  const setContinueAsGuestModal = useSetRecoilState(
+    CouninueAsGuestModalAtom
+  );
 
 
   const push = useRouter().push;
@@ -148,7 +154,8 @@ const BaseCard = ({
               <HeartIcon
                 onClick={() =>
                   token.length > 1
-                    && handelAddVariationToWishList(variation)
+                    ? handelAddVariationToWishList(variation)
+                    : setContinueAsGuestModal(true)
                 }
                 className="w-4 cursor-pointer"
               />

@@ -23,14 +23,22 @@ const FeaturedProducts = () => {
     setLoading(true);
     setSelected(setItem);
     const res = await getfeaturedProducts(token, setItem);
-    setFeaturedProducts(res.result.items);
+    if(res===null){
+      alert("some thing went wrong")
+    }else{
+      setFeaturedProducts(res.result.items);
+    }
     setLoading(false);
   };
   useEffect(() => {
     const getData = async () => {
       setLoading(true);
       const res = await getfeaturedProducts(token);
-      setFeaturedProducts(res.result.items);
+      if(res===null){
+        alert("some thing went wrong")
+      }else{
+        setFeaturedProducts(res.result.items);
+      }
       setLoading(false);
     };
     getData();
@@ -39,7 +47,11 @@ const FeaturedProducts = () => {
   useEffect(() => {
     const getData = async () => {
       const res = await getfeaturedProducts(token);
-      setFeaturedProducts(res.result.items);
+      if(res===null){
+        alert("some thing went wrong")
+      }else{
+        setFeaturedProducts(res.result.items);
+      }
     };
     getData();
   }, [wishList]);

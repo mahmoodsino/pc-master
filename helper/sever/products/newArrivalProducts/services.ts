@@ -26,10 +26,6 @@ const getNewArraivalProducts = async (token:string,id?: number) => {
             })
             return res.data
         }
-
-
-
-
     } catch (error) {
         console.log(error)
         return null

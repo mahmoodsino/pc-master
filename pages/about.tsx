@@ -8,7 +8,6 @@ const About = () => {
         <title>aboute us</title>
       </head>
       <AboutUsMainSection/>
-      
     </div>
   )
 }
