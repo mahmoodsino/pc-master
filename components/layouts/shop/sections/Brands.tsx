@@ -20,6 +20,8 @@ const useBrands = () => {
 
   return {
     selectBrand,
+    setSelectBrand,
+    
     render:(
     <div className=" flex flex-col justify-between  text-sm tracking-[0.03em] cursor-pointer ">
       {brands.map((brand) => {

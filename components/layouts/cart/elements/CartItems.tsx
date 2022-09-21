@@ -17,8 +17,7 @@ import Collapsible from "react-collapsible";
 
 const CartItems = () => {
   const [carts, setCarts] = useRecoilState(FetchedCartItemsAtom);
-  const token=useRecoilValue(TokenAtom);
-  
+  const token = useRecoilValue(TokenAtom);
 
   const timerRef = useRef() as MutableRefObject<NodeJS.Timeout>;
 
@@ -115,17 +114,17 @@ const CartItems = () => {
                 key={uuidv4()}
                 className={`md:px-5 ${
                   item.available_quantity &&
-                  (item.quantity > item.available_quantity ||item.available_quantity===0)
+                  (item.quantity > item.available_quantity ||
+                    item.available_quantity === 0)
                     ? "bg-red-100"
                     : "bg-white"
                 }`}
               >
                 <div className="flex flex-row ">
-                  <div className="border mt-2 product-slider-img">
-                    {item.product?.image?.id ?
-                     (
+                  <div className="border mt-2 rounded-full product-slider-img mr-2">
+                    {item.product?.image?.id ? (
                       <img
-                        className="h-32 w-32 "
+                        className="h-32 product-slider-img w-32 rounded-full"
                         src={item.product?.image.path}
                         alt=""
                       />
@@ -133,7 +132,7 @@ const CartItems = () => {
                       <Image src={no_image} />
                     )}
                   </div>
-                  <div className="flex flex-col justify-center">
+                  <div className="flex flex-col space-y-2 mt-2 justify-center">
                     <div className="flex sm:flex-col md:flex-row justify-between sm:mr-4 md:mr-7">
                       <h1 className="inline-block  text-sm ">
                         {item.description}
@@ -142,7 +141,7 @@ const CartItems = () => {
                         ${item.variation?.price}
                       </span>
                     </div>
-                    <h1 className="text-sm  mt-3 mb-6">{item.product?.name}</h1>
+                    <h1 className="text-sm">{item.product?.name}</h1>
                     <span className="text-sm text-red-1000 ">
                       Only {item.available_quantity} left
                     </span>
@@ -152,12 +151,14 @@ const CartItems = () => {
                   {item.modifierGroups.map((it) => {
                     return (
                       <Collapsible
-                      key={uuidv4()}
+                        key={uuidv4()}
                         trigger={
                           <BaseButton className="shadow-md flex mt-1 bg-gray-1350 justify-between items-center w-[90%] border">
                             <span className="font-semibold">{it.name}</span>
                             <div className="space-x-3">
-                              <span className="font-semibold">${it.total_price}</span>
+                              <span className="font-semibold">
+                                ${it.total_price}
+                              </span>
                               <svg
                                 data-accordion-icon
                                 className={`w-6 h-6 inline-block  `}
@@ -176,15 +177,15 @@ const CartItems = () => {
                         }
                       >
                         <div className="ml-3 flex space-x-1 mt-2">
-                          {it.modifiers.map(modi => {
-                            return(
+                          {it.modifiers.map((modi) => {
+                            return (
                               <img
-                              key={uuidv4()}
+                                key={uuidv4()}
                                 className="w-16 bg-cover flex"
                                 src={modi.image}
                                 alt="Picture of the author"
                               />
-                            )
+                            );
                           })}
                         </div>
                       </Collapsible>

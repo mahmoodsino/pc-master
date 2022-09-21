@@ -21,6 +21,7 @@ const useRating = () => {
 
   return {
     ratingState,
+    setRatingState,
     rende:(
     <div className="">
       <label  className="shopContainer flex items-center">

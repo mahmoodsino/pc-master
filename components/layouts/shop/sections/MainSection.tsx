@@ -11,7 +11,6 @@ import {
   currentPageAtom,
   FetchedCartItemsAtom,
   FillterProductAtom,
-  NewCartAtom,
   ProductsAtom,
   RangeSliderAtom,
   SelectedShopCategoryAtom,
@@ -42,9 +41,9 @@ const MainSection = () => {
   const [selecterCategory, setSelectedCategory] = useRecoilState(
     SelectedShopCategoryAtom
   );
-  const { selectBrand } = useBrands();
-  const { ratingState } = useRating();
-  const { selectedAttribute } = useAttributes();
+  const { selectBrand, setSelectBrand } = useBrands();
+  const { ratingState, setRatingState } = useRating();
+  const { selectedAttribute, setSelectedAttribute } = useAttributes();
   const [token, setToken] = useRecoilState(TokenAtom);
   const [carts, setCarts] = useRecoilState(FetchedCartItemsAtom);
   const [activeDropDown, setActiveDropDown] =
@@ -69,6 +68,20 @@ const MainSection = () => {
   }, [query.categorey]);
 
   useEffect(() => {
+    const leave = () => {
+      setSelectedCategory([]);
+      setSelectBrand([]);
+      setSelectedAttribute({});
+      setCurrentPage(1);
+      setRatingState(0);
+      setRangeSlider([0, 5000]);
+    };
+    return () => {
+      leave();
+    };
+  }, []);
+
+  useEffect(() => {
     const getData = async () => {
       setLoading(true);
       const res = await getProducts({
@@ -81,12 +94,14 @@ const MainSection = () => {
         MinPrice: rangeSlider[0],
         MaxPrice: rangeSlider[1],
         page: currentPage,
+        rate: ratingState,
       });
-      
+
       setTotalPages(res.result.pages_count);
 
       if (res === null) {
         alert("some thing went wrong");
+        setLoading(false);
       } else {
         setProductsState(res.result.items);
         setLoading(false);
@@ -103,11 +118,11 @@ const MainSection = () => {
     selectedAttribute,
     rangeSlider,
     currentPage,
+    ratingState,
   ]);
 
   useEffect(() => {
     const getData = async () => {
-      setLoading(true);
       const res = await getProducts({
         token: token,
         //@ts-ignore
@@ -123,6 +138,7 @@ const MainSection = () => {
 
       if (res === null) {
         alert("some thing went wrong");
+        setLoading(false);
       } else {
         setProductsState(res.result.items);
         setLoading(false);

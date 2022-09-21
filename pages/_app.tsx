@@ -53,7 +53,7 @@ useEffect(() => {
       getData();
     }, 1000);
   }
-}, [wishList,token]);
+}, []);
 
 useEffect(() => {
   const getData = async () => {
@@ -68,7 +68,7 @@ useEffect(() => {
         getData();
       }, 1000);
   }
-}, [token]);
+}, []);
 
 
 useEffect(() => {
