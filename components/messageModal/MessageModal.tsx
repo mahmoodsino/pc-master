@@ -2,15 +2,15 @@ import React from "react";
 import { useRecoilState } from "recoil";
 import { OpenMessageModalAtom } from "../../helper";
 import { CloseIcon } from "../icons";
-
 interface Props {
     message : string
 }
-
 const MessageModal = ({message}:Props) => {
-  const [openMessageModal, setOpenMassegModal] =
-    useRecoilState(OpenMessageModalAtom);
+  const [openMessageModal, setOpenMassegModal] =useRecoilState(OpenMessageModalAtom);
+
+
   return (
+
     <div className="2xl:container">
       <>
         <div
@@ -30,7 +30,7 @@ const MessageModal = ({message}:Props) => {
         ) : null}
       </>
     </div>
+
   );
 };
-
 export default MessageModal;
