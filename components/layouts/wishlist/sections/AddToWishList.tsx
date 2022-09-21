@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useRecoilState } from "recoil";
 import {
   addToWishList,
@@ -15,6 +15,7 @@ import { BaseButton } from "../../../buttons";
 import { BaseInput } from "../../../inputs";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { Spinner } from "../../../spinner";
 
 interface IFormInputs {
   title: string;
@@ -28,6 +29,7 @@ const AddToWishList = () => {
   const [detailsState, setDetailState] = useRecoilState(DetailsAtom);
   const [wishList, setWishList] = useRecoilState(WishListAtom);
   const [token, setToken] = useRecoilState(TokenAtom);
+  const [loading, setLoading] = useState(false);
 
   const {
     register,
@@ -38,6 +40,7 @@ const AddToWishList = () => {
   });
 
   const handleaddToWishList = async (data: IFormInputs) => {
+    setLoading(true);
     setWishList((prev) => {
       const isItemInWishList = prev.find(
         (item) =>
@@ -54,14 +57,14 @@ const AddToWishList = () => {
         return [
           ...prev,
           {
-            title:data.title,
+            title: data.title,
             quantity: 1,
-            company_id:1,
+            company_id: 1,
             product_id: detailsState.product.id,
             branch_id: 1,
-            description:"item",
+            description: "item",
             variation_id: variationState.id,
-            variation:variationState
+            variation: variationState,
           },
         ];
       }
@@ -69,25 +72,29 @@ const AddToWishList = () => {
     const isItemInWishList = wishList.findIndex(
       (item) => item.variation_id === variationState.id
     );
-    if(isItemInWishList<0){
-      const res = await addToWishList(token,detailsState.product.id,variationState.id,1,1,1,data.title,data.title)
-    setOpenAddToWishList(false);
-      
-      
+    if (isItemInWishList < 0) {
+      const res = await addToWishList(
+        token,
+        detailsState.product.id,
+        variationState.id,
+        1,
+        1,
+        1,
+        data.title,
+        data.title
+      );
+      setOpenAddToWishList(false);
+      setLoading(false)
     }
-    if(isItemInWishList>=0){
-      const id = wishList[isItemInWishList].id
-      if(id){
-        const res =await deleteWishList(token,id)
-    setOpenAddToWishList(false);
-        
+    if (isItemInWishList >= 0) {
+      const id = wishList[isItemInWishList].id;
+      if (id) {
+        const res = await deleteWishList(token, id);
+        setOpenAddToWishList(false);
       }
-
     }
-
     const response = await getWishList(token);
     setWishList(response.result.items);
-
   };
 
   return (
@@ -116,14 +123,15 @@ const AddToWishList = () => {
                   onClick={() => setOpenAddToWishList(false)}
                   type="button"
                 />
-
-  
-                  <BaseButton
-                    className=""
-                    title="Add To WishList"
-                    type="submit"
-                  />
+                {!loading  ? 
+                <BaseButton
+                  className=""
+                  title="Add To WishList"
+                  type="submit"
+                /> : 
+                <Spinner className="w-10 fill-green-950" />
                 
+              }
               </div>
             </form>
           </div>

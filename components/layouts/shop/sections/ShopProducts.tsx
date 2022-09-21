@@ -1,9 +1,7 @@
 import { useRecoilState } from "recoil";
-import { currentPageAtom, ProductsAtom, totalPagesAtom, WishListAtom } from "../../../../helper/state";
+import {  ProductsAtom} from "../../../../helper/state";
 import { BaseCard } from "../../../cards";
 import { v4 as uuidv4 } from 'uuid';
-import ContinueAsGuest from "../../details/sections/ContinueAsGuest";
-import { Pagination } from "../../../pagination";
 
 
 
@@ -25,7 +23,6 @@ const ShopProducts = () => {
 
 
       
-      <ContinueAsGuest  />
 
     </div>
   );

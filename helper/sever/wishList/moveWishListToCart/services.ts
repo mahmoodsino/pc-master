@@ -14,8 +14,6 @@ const handelMoveWishListToCart = async (token: string,id:number) => {
         return res.data
     } catch (error) {
         console.log(error)
-        alert("some thing went wrong")
-
         return null
     }
 }

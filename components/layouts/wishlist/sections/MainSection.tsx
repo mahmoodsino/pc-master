@@ -7,6 +7,7 @@ import {
   deleteWishList,
   getWishList,
   handelMoveWishListToCart,
+  OpenMessageModalAtom,
   TokenAtom,
   updateWishList,
   WishListAtom,
@@ -14,6 +15,7 @@ import {
 } from "../../../../helper";
 import { Breadcrumbs } from "../../../breadcrumbs";
 import { Searchbar } from "../../../header";
+import { MessageModal } from "../../../messageModal";
 import { Spinner } from "../../../spinner";
 import MobileWishList from "./MobileWishList";
 import WishListTableDetails from "./WishListTableDetails";
@@ -25,14 +27,15 @@ const MainSection = () => {
   const [token, setToken] = useRecoilState(TokenAtom);
   const [loading, setLoading] = useState(false);
   const timerRef = useRef() as MutableRefObject<NodeJS.Timeout>;
+  const [openMessageModal, setOpenMassegModal] =
+    useRecoilState(OpenMessageModalAtom);
+    const [wrongMessage,setWrrongMessage]=useState("")
 
   const { push } = useRouter();
 
   useEffect(() => {
     const getData = async () => {
       const response = await getWishList(token);
-      console.log(response);
-
       setAllWishListInfo(response.result);
     };
     if (token.length > 1) {
@@ -140,9 +143,9 @@ const MainSection = () => {
 
   const moveWishListToCart = async (id: number) => {
     const res = await handelMoveWishListToCart(token, id);
-    console.log(res);
     if (res === null) {
-      alert("there is no available quantity");
+      setWrrongMessage("there is no available quantity");
+      setOpenMassegModal(true)
     }
 
     push("./cart");
@@ -197,6 +200,7 @@ const MainSection = () => {
           <Spinner className="h-40 w-40 fill-green-950" />
         </div>
       )}
+      <MessageModal message={wrongMessage} />
     </div>
   );
 };

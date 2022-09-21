@@ -77,7 +77,6 @@ const CheckoutDetails = () => {
       setLoading(true);
       if (paymentProvidorId) {
         const res = await getClientToken(paymentProvidorId, token);
-        console.log(res);
         setClientToken(res.result.client_token);
         if (res) {
           setLoading(false);
@@ -199,8 +198,6 @@ const CheckoutDetails = () => {
                 }}
                 onApprove={async (action: any) => {
                   const order = await action.order.capture();
-                  console.log(order);
-                  
                 }}
                 onSuccess={async () => {
                   push({

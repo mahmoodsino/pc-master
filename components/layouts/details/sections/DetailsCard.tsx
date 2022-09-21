@@ -4,7 +4,6 @@ import { v4 as uuidv4 } from "uuid";
 import {
   addToCart,
   AllCartsInfo,
-  CouninueAsGuestModalAtom,
   deleteWishList,
   DetailsAtom,
   DetailsType,
@@ -29,7 +28,6 @@ import {
 } from "../../../icons";
 import { Spinner } from "../../../spinner";
 import { AddToWishList } from "../../wishlist";
-import ContinueAsGuest from "./ContinueAsGuest";
 import useModifiers from "./Modifiers";
 import { MoveToCartPageModalAtom } from "./MoveToCartPageModal";
 import useProtectPurchaseCard, { modifiersIdAtom } from "./ProtectPurchaseCard";
@@ -42,9 +40,7 @@ const DetailsCard = () => {
     OpenAddToWishListAtom
   );
   const [wishList, setWishList] = useRecoilState(WishListAtom);
-  const [ContinueAsGuestModal, setContinueAsGuestModal] = useRecoilState(
-    CouninueAsGuestModalAtom
-  );
+  
   const [names, setNames] = useState<any>({});
   const [isChange, setIsChange] = useState<boolean>(true);
   const [selectedAttributes, setSelectedAttributes] = useState<number[]>([]);
@@ -67,9 +63,6 @@ const DetailsCard = () => {
   const [allCartsInfo,setAllCartsInfo]=useRecoilState(AllCartsInfo)
   const [MoveToCartPageModalState,setMoveToCartPageModalState]=useRecoilState(MoveToCartPageModalAtom)
 
-
-
-
   useEffect(() => {
     if(modifiersId!==0){
       setAllModifiers([])
@@ -84,8 +77,6 @@ const DetailsCard = () => {
       })
     }
   },[modifiersIdforModifiers,modifiersId])
-
- 
 
   const handleAddToCart = async (clickedItem: DetailsType) => {
     setNewCart((prev) => {
@@ -437,8 +428,8 @@ const DetailsCard = () => {
   };
 
   return (
-    <div className="shadow-[0_0_5px_rgba(0,0,0,0.12)] rounded-md pb-14  tracking-[0.03em] mb-8">
-      <div className="mx-5 space-y-4 border-b pt-5   pb-10">
+    <div className={`shadow-[0_0_5px_rgba(0,0,0,0.12)] rounded-md tracking-[0.03em] mb-8 ${selectedAttributes.length !== 0 && "pb-14"}`}>
+      <div className={`mx-5 space-y-4  pt-5   pb-10 ${selectedAttributes.length!==0 && "border-b"}`}>
         <h1 className=" text-xl font-bold text-[#7A7A7A]">
           {detailsState.product.name}
         </h1>
@@ -456,8 +447,7 @@ const DetailsCard = () => {
                 disabled={variationState.available_quantity < 1 ? true : false}
                 onClick={() =>
                   token.length > 1
-                    ? finallAddtoCart()
-                    : setContinueAsGuestModal(true)
+                    &&finallAddtoCart()
                 }
                 className={`text-white bg-green-950 tracking-[0.095em] px-3 py-1 rounded-full disabled:cursor-not-allowed disabled:bg-gray-500`}
               >
@@ -477,8 +467,7 @@ const DetailsCard = () => {
                   <BaseButton
                     onClick={() =>
                       token.length > 1
-                        ? setOpenAddToWishList(true)
-                        : setContinueAsGuestModal(true)
+                        && setOpenAddToWishList(true)
                     }
                     className=" bg-gray-400 px-3 py-1 rounded-full text-white"
                   >
@@ -517,7 +506,7 @@ const DetailsCard = () => {
           </div>
         )}
       </div>
-      <div className="ml-4">
+      <div className={`ml-4`}>
         {Object.keys(names).map((key) => {
           const values = names[key];
           return (
@@ -559,7 +548,6 @@ const DetailsCard = () => {
         {modifiersRender}
       </div>
       <AddToWishList />
-      <ContinueAsGuest />
     </div>
   );
 };

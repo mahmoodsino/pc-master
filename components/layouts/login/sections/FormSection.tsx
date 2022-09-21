@@ -106,7 +106,7 @@ const FormSection = () => {
           </div>
           <div className="flex flex-row justify-between px-2 mt-5">
             <div className="text-sm mb-10">
-              <h1 className="text-[#B7B7B7] ">Don’t have an account?</h1>
+              <span className="text-[#B7B7B7] ">Don’t have an account?</span>
               <Link href="/register">
                 <a className="border-b border-b-black">Register</a>
               </Link>

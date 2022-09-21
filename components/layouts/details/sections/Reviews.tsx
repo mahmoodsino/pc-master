@@ -6,9 +6,11 @@ import {
   DetailsAtom,
   getReviews,
   handelDeleteReview,
+  OpenMessageModalAtom,
   TokenAtom,
 } from "../../../../helper";
 import { BaseButton } from "../../../buttons";
+import { MessageModal } from "../../../messageModal";
 import { Spinner } from "../../../spinner";
 import WriteReviewModal, {
   OpenUpdateReviewModalAtom,
@@ -48,6 +50,9 @@ const Reviews = () => {
   );
   const [loading, setLoading] = useState(false);
   const [checkLoading, setCheckLoading] = useState(false);
+  const [openMessageModal, setOpenMassegModal] =
+    useRecoilState(OpenMessageModalAtom);
+    const [wrongMessage,setWrongMessage]=useState("")
 
   useEffect(() => {
     // setUserReview({} as reviewsType);
@@ -73,7 +78,8 @@ const Reviews = () => {
     }
     if (res.name === "AxiosError") {
       if (res.response.status === 400) {
-        alert(res.response.data.message);
+        setWrongMessage(res.response.data.message);
+        setOpenMassegModal(true)
       } else {
         alert("some thing went wrong !!");
       }
@@ -92,11 +98,11 @@ const Reviews = () => {
     setRewiew(res.result.items);
   };
   return (
-    <div>
+    <div className="mt-5">
       {!loading ? (
         <div>
           <div>
-            <p className="text-xl font-semibold">Customer reviews & ratings</p>
+            <p className="text-xl font-bold">Customer reviews & ratings</p>
             <div className="font-bold text-gray-950 mt-5">
               <span className="text-7xl ">{detailsState.product.avg_rate}</span>
               <span>out of</span>
@@ -209,6 +215,7 @@ const Reviews = () => {
       ) : (
         <Spinner className="fill-green-950 w-20" />
       )}
+      <MessageModal message={wrongMessage} />
     </div>
   );
 };

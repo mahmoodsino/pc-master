@@ -93,7 +93,6 @@ const EditAddressModal = () => {
     resolver: yupResolver(addressBookSchema),
   });
 
-  console.log(errors);
   
 
   const submitForm = async (data: IFormInputs) => {

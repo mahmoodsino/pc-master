@@ -21,34 +21,23 @@ import { Spinner } from "../../../spinner";
 import Reviews from "./Reviews";
 import { BaseCard } from "../../../cards";
 import MoveToCartPageModal from "./MoveToCartPageModal";
+import SimilarProducts from "./SimilarProducts";
 
 
 const MainSection = () => {
   const [variationState, setVariationState] = useRecoilState(VariationAtom);
   const [detailsState, setDetailState] = useRecoilState(DetailsAtom);
   const [modifiers, setModifiers] = useRecoilState(ModifiersGroupAtom);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const router = useRouter().query;
   const [token, setToken] = useRecoilState(TokenAtom);
-  const [similarProducts, setSimilarProducts] = useState<ProductsType[]>([]);
 
-  useEffect(() => {
-    const getData = async () => {
-      const res = await getSimilarProducts(token, detailsState.product.id);
-      setSimilarProducts(res.result);
-    };
-    if (detailsState.product.id > 0) {
-      getData();
-    }
-  }, [detailsState]);
 
   useEffect(() => {
     setLoading(false);
     const Data = async () => {
       if (router.product) {
         const res = await getDetails(+router.product);
-        console.log(res);
-        
         setDetailState(res.result);
         if (res) {
           setLoading(true);
@@ -79,12 +68,12 @@ const MainSection = () => {
             <div className="lg:w-1/2 lg:inline-block">
               <DetailsProductPhoto />
               <div className="  mr-5 relative top-20 lg:block sm:hidden">
-                <div className="mt-10 border-b-2 pb-5">
-                  <h1 className="text-xl mb-5 font-bold">Product details</h1>
+                <div  className={`mt-10 border-b-2 pb-5 ${detailsState.product.description===null && "hidden"}`}>
+                  <span className="text-xl mb-5 font-bold block">Product details</span>
                   <span className="">{detailsState.product.description}</span>
                 </div>
-                <div className="mt-5">
-                  <h1 className="text-xl font-bold mb-10">Specifications</h1>
+                <div className={`mt-5 ${detailsState.product.custome_properties.length===0 && variationState.attributes?.length===0 && "hidden"}`}>
+                  <span className="text-xl block font-bold mb-10">Specifications</span>
                   <div className="grid  xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-2 pb-5">
                     {variationState.attributes?.map((attribute) => {
                       return (
@@ -119,34 +108,16 @@ const MainSection = () => {
             </div>
             <div className="lg:w-1/2 sm:mt-28 md:px-16 lg:px-0 lg:mt-0  lg:inline-block">
               <DetailsCard />
-              <div className="  pb">
-                <h1 className="text-xl mb-5 font-bold">similar products </h1>
-              </div>
-              <div className="grid grid-cols-2 gap-2 ">
-                {similarProducts?.map((item) => {
-                  return (
-                    <BaseCard
-                      name={item.name}
-                      key={uuidv4()}
-                      image={item.images}
-                      price={item.variation.price}
-                      description={item.short_description}
-                      id={item.id}
-                      variation={item.variation}
-                      in_wishlist={item.in_wishlist}
-                    />
-                  );
-                })}
-              </div>
+              <SimilarProducts />
             </div>
           </div>
           <div className="sm:block lg:hidden  tracking-[0.03em] my-10 sm:mx-5 md:px-12">
-            <div className="mt-10 border-b-2 pb-5">
-              <h1 className="text-xl mb-5 font-bold">Product details</h1>
+            <div className={`mt-10 border-b-2 pb-5 ${detailsState.product.description===null && "hidden"}`}>
+              <span className="text-xl mb-5 font-bold block">Product details</span>
               <span className="">{detailsState.product.description}</span>
             </div>
-            <div className="mt-5">
-              <h1 className="text-xl mb-10">Specifications</h1>
+            <div className={`mt-5 ${detailsState.product.custome_properties.length===0 && variationState.attributes?.length===0 && "hidden"} `}>
+              <span className="text-xl block mb-10">Specifications</span>
               <div className="grid  xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-2 pb-5">
                 {variationState.attributes?.map((attribute) => {
                   return (

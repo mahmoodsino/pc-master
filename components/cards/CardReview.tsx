@@ -8,7 +8,6 @@ import { v4 as uuidv4 } from "uuid";
 
 const CardReview = () => {
   const [orderDetails, setOrderDetails] = useRecoilState(OrderDetailsAtom);
-  console.log(orderDetails);
 
   return (
     <div>

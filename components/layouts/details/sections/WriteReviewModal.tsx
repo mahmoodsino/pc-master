@@ -68,8 +68,6 @@ const WriteReviewModal = ({ rated, text, id }: Props) => {
     if (OpenUpdateReviewModalAtom && id) {
       setLoading(true);
       const res = await handelUpdateReview(token, id, rate, writeReview);
-      console.log(res);
-      
       setUserReview(res.result);
       if (userReview.id > 0) {
         setLoading(false);

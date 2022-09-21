@@ -26,7 +26,7 @@ const HomeTree = ({ data }: data) => {
     );
   } else
     return (
-        <ul onMouseLeave={() => setParentId(-1)} className="h-[440px] w-[230px] overflow-y-scroll overflow-x-hidden">
+        <ul onMouseLeave={() => setParentId(-1)} className="h-[440px] w-[230px] overflow-y-auto overflow-x-hidden ">
           {data.categories.map((tree) => (
             <TreeNode
             key={uuidv4()}
@@ -70,17 +70,13 @@ const TreeNode = ({ node, selectedParentId, setParentId }: node) => {
           selectedParentId === node.id ? setParentId(-1) : null
         )}
       >
-        {/* {hasChild && (
-          <div
-            className={`${selectedParentId === node.id ? "active" : ""}`}
-          ></div>
-        )} */}
-        <div onClick={() => handelSearch(node.id)} className="bg-[#303030] rounded-sm hover:bg-[#303030]/80 block  py-3 text-sm px-3  tracking-[0.03em] cursor-pointer   border-b border-t-white">
+      
+        <div onClick={() => handelSearch(node.id)} className="bg-[#303030] rounded-sm hover:bg-gray-1450 block  py-3 text-sm px-3  tracking-[0.03em] cursor-pointer   border-b border-t-white">
           {node.name}
         </div>
         {hasChild && selectedParentId === node.id && (
           <div className=" text-white text-left ">
-            <ul className={` absolute   bg-[#303030]  top-[0px] left-[96.5%]  z-50`}>
+            <ul className={` absolute top-[0px] left-[96.5%]  z-50`}>
               <HomeTree data={node} />
             </ul>
           </div>

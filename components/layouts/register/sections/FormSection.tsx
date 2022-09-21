@@ -94,8 +94,6 @@ const FormSection = () => {
       data.houseBuildingNo,
       token
     );
-    console.log(res);
-    
     if (res ===null) {
       alert("the given data was invaled");
       setRegLoading(false);
@@ -121,7 +119,7 @@ const FormSection = () => {
   return (
     <div>
       <form onSubmit={handleSubmit(submitForm)}>
-        <h1 className="text-xl font-semibold px-4">Contact</h1>
+        <h1 className="text-xl font-semibold ">Contact</h1>
         <div className="grid sm:grid-cols-1 gap-4 md:grid-cols-2 mt-5 pb-10 border-b">
           <div className="">
             <BaseInput
@@ -165,7 +163,7 @@ const FormSection = () => {
             <p className="text-xs text-red-900">{errors.password?.message}</p>
           </div>
         </div>
-        <h1 className="text-xl font-semibold px-4 mt-10">Shipping Address</h1>
+        <h1 className="text-xl font-semibold  mt-10">Shipping Address</h1>
 
         <div className="grid lg:grid-cols-2 gap-4 mt-5 pb-10 border-b mb-10">
           <div className="mb-7">
@@ -370,7 +368,7 @@ const FormSection = () => {
 
         <div className="flex flex-row justify-between px-2">
           <div className="text-[14px] mb-10">
-            <h1 className="text-[#B7B7B7] ">Already have an account?</h1>
+            <span className="text-[#B7B7B7] ">Already have an account?</span>
             <Link href="/login">
               <a className="border-b border-b-black">log in</a>
             </Link>

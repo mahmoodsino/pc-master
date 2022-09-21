@@ -11,10 +11,6 @@ const MainSection = () => {
         <Breadcrumbs />
       </div>
       <Title2 title="Log In" />
-
-      <div className="text-center mb-10 text-xl font-bold">
-        <span>Login</span>
-      </div>
       <div>
         <FormSection/>
       </div>

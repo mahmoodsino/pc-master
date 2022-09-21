@@ -31,8 +31,6 @@ const MainSection = () => {
     PaymentProvider[]
   >([]);
   const [paymentProvidorId, setPaymenProvidorId] = useState<number>();
-  console.log(orderDetails);
-  
 
   const router = useRouter().query;
 
@@ -41,7 +39,6 @@ const MainSection = () => {
       setLoading(true);
       if (router.order) {
         const res = await getOrderCratedOrder(token, +router.order);
-        console.log(res);
 
         setOrderDetails(res.result);
         if (res) {
@@ -55,7 +52,6 @@ const MainSection = () => {
   useEffect(() => {
     const getData = async () => {
       const res = await getPaymentProvidor();
-      console.log(res);
       setPaymentProvidorState(res.result.payment_providers);
     };
     getData();

@@ -1,4 +1,3 @@
-import ContinueAsGuest from '../../details/sections/ContinueAsGuest'
 import Hero from './Hero'
 import Products from './HomeProducts'
 
@@ -8,7 +7,6 @@ const MainSection = () => {
     <div>
       <Hero />
       <Products/>
-      <ContinueAsGuest  />
 
     </div>
   )

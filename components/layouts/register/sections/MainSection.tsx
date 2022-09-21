@@ -13,9 +13,7 @@ const MainSection = () => {
       <div>
         <Title2 title="Register" />
 
-        <div className="text-center mb-10 text-xl font-bold">
-          <span>Register</span>
-        </div>
+        
         <div className="lg:px-[17%] md:px-[7%] sm:px-[4%]">
           <FormSection />
 

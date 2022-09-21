@@ -20,8 +20,6 @@ const CartSummary = () => {
       setLoading(true);
       if (router.savedOrder) {
         const res = await getOrderCratedOrder(token, +router.savedOrder);
-        console.log(res);
-
         setOrderDetails(res.result);
         if (res) {
           setLoading(false);

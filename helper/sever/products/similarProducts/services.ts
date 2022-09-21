@@ -8,7 +8,7 @@ const getSimilarProducts = async (token:string,id: number) => {
     try {
             const res = await axios.get(`${root}/products/${id}/similar`, {
                 headers: {
-                    "branch_id": 1,
+                    "branch-id": 1,
                     "company-id": 1,
                     Authorization: `Bearer ${token}`
                 }
