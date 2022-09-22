@@ -22,6 +22,7 @@ import {
   WishListAtom,
 } from "../helper";
 import { addressatom } from "../components/layouts/account/sections/AddressBook";
+import ContinueAsGuest from "../components/layouts/details/sections/ContinueAsGuest";
 
 interface Props {
   children: ReactNode;
@@ -103,20 +104,24 @@ const App = ({ children }: Props) => {
   useEffect(() => {
     const getdata = async () => {
       const res = await getCountries();
-      let modifiedResponse = res.result;
-      modifiedResponse.map((item: { id: number; name: string }) => {
-        let countreyValue = item.id.toString();
-
-        let countreyLabel = item.name;
-        let newCountriesStructur = {
-          label: countreyLabel,
-          value: countreyValue,
-        };
-        if (modifCountries.length < 250) {
-          modifCountries.push(newCountriesStructur);
-        }
-      });
-      setRegisterCountry(modifCountries);
+      if(res === null){
+        alert("some thing went wrong")
+      }else{
+        let modifiedResponse = res.result;
+        modifiedResponse.map((item: { id: number; name: string }) => {
+          let countreyValue = item.id.toString();
+  
+          let countreyLabel = item.name;
+          let newCountriesStructur = {
+            label: countreyLabel,
+            value: countreyValue,
+          };
+          if (modifCountries.length < 250) {
+            modifCountries.push(newCountriesStructur);
+          }
+        });
+        setRegisterCountry(modifCountries);
+      }
     };
     getdata();
   }, []);
@@ -140,6 +145,8 @@ const App = ({ children }: Props) => {
       className="font-newFont min-h-[60vh]"
     >
       {children}
+      <ContinueAsGuest />
+
     </div>
   );
 };

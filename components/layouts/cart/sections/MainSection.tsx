@@ -41,7 +41,11 @@ const MainSection = () => {
     setNewCart([]);
     const getData = async () => {
       const res = await getCartItems(token);
-      setAllCartsInfo(res.result);
+      if(res===null){
+        alert("some thing went wrong")
+      }else{
+        setAllCartsInfo(res.result);
+      }
     };
     if (token.length > 1) {
       clearTimeout(timerRef.current);
@@ -57,10 +61,12 @@ const MainSection = () => {
     setLoading(true);
     const getData = async () => {
       const res = await getCartItems(token);
-      setCarts(res.result.items);
-      if (res) {
-        setLoading(false);
+      if(res===null){
+        alert("some thing went wrong")
+      }else{
+        setCarts(res.result.items);
       }
+        setLoading(false);
     };
     if (token.length > 1) {
       clearTimeout(timerRef.current);

@@ -6,7 +6,7 @@ const MyAccountOptions = () => {
   const [btnAccount, setBtnAccount] = useRecoilState(ActiveBtnAccount);
 
   return (
-    <div className="bg-white  sm:justify-around px-5 flex  sm:flex-row  lg:flex-col sm:w-[100%] lg:w-[22%]  h-fit shadow-[0_0_5px_rgba(0,0,0,0.12)] lg:py-6 ">
+    <div className="bg-white     flex  flex-col sm:w-[100%] md:w-[65%]   lg:w-[22%]   h-fit shadow-[0_0_5px_rgba(0,0,0,0.12)] lg:py-6 ">
       <BaseButton 
         onClick={() => setBtnAccount("myProfile")}
         className={`py-3 flex whitespace-nowrap lg:pl-3 px-2  border border-white ${

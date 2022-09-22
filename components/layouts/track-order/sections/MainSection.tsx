@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil'
 import { getOrder,  OrderAtom, TokenAtom } from '../../../../helper'
@@ -18,7 +19,6 @@ const MainSection = () => {
     const getData= async ()=>{
       setLoading(true)
       const res = await getOrder(token)
-      
       setOrderState(res.result)
 
       if(res){
@@ -39,11 +39,19 @@ const MainSection = () => {
         <Title2 title="Track Orders" />
       </div>
       <div className="">
-        <div className="scrollbar-thin scrollbar-thumb-green-950 scrollbar-track-gray-1250  overflow-y-scroll left-0 right-0 m-auto sm:w-[100%] md:w-[80%] lg:w-[60%] h-[400px] overflow-auto shadow-[0_0_5px_rgba(0,0,0,0.12)] sm:px-2 md:px-5 text-gray-1050">
+        <div className="   left-0 right-0 m-auto py-5 sm:w-[100%] md:w-[80%] lg:w-[60%]  overflow-auto shadow-[0_0_5px_rgba(0,0,0,0.12)] sm:px-2 md:px-5 text-gray-1050">
           {!loading ? 
         <div>
-            <h1 className="font-bold text-xl pt-5 pb-5  ">My Orders</h1>
-            <Orders/>
+            <span className="font-bold block text-xl pt-5   ">My Orders</span>
+            {orderState.length !==0 ? 
+            <Orders/> : 
+            <div>
+            <span>there are no order yet start </span>
+            <Link href="/shop" >
+              <a className='font-bold hover:text-green-950 duration-300'>shopping</a>
+            </Link>
+            </div>
+            }
         </div>  :
         <div className='flex justify-center items-center'>
           <Spinner className='w-32 fill-green-950 mt-20'/>

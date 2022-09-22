@@ -94,7 +94,11 @@ const AddToWishList = () => {
       }
     }
     const response = await getWishList(token);
-    setWishList(response.result.items);
+    if(response===null){
+      alert("some thing went wrong")
+    }else{
+      setWishList(response.result.items);
+    }
   };
 
   return (
@@ -118,7 +122,7 @@ const AddToWishList = () => {
 
               <div className="flex justify-between items-center">
                 <BaseButton
-                  className="px-4 py-2 border border-black  rounded-sm "
+                  className="md:px-4 sm:px-2 py-2 border border-black  rounded-sm "
                   title="Cancel"
                   onClick={() => setOpenAddToWishList(false)}
                   type="button"

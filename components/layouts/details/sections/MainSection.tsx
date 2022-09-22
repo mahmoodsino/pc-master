@@ -111,7 +111,7 @@ const MainSection = () => {
               <SimilarProducts />
             </div>
           </div>
-          <div className="sm:block lg:hidden  tracking-[0.03em] my-10 sm:mx-5 md:px-12">
+          <div className="sm:block lg:hidden  tracking-[0.03em] my-10 ">
             <div className={`mt-10 border-b-2 pb-5 ${detailsState.product.description===null && "hidden"}`}>
               <span className="text-xl mb-5 font-bold block">Product details</span>
               <span className="">{detailsState.product.description}</span>

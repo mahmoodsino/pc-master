@@ -382,14 +382,21 @@ const DetailsCard = () => {
       }
     });
     const response = await getCartItems(token);
-    setCarts(response.result.items);
+    if(response===null){
+      alert("some thing went wrong")
+    }else{
+      setCarts(response.result.items);
+    }
     const res = await getCartItems(token);
-    setAllCartsInfo(res.result)
+    if(res===null){
+      alert("some thing went wrong")
+    }else{
+      setAllCartsInfo(res.result)
+    }
     if(res){
       setLoading(false)
     }
     if(response){
-
       setMoveToCartPageModalState(true)
     }
   };
@@ -432,7 +439,11 @@ const DetailsCard = () => {
       }
     }
     const response = await getWishList(token);
-    setWishList(response.result.items);
+    if(response===null){
+      alert("some thing went wrong")
+    }else{
+      setWishList(response.result.items);
+    }
   };
 
   return (
@@ -449,7 +460,7 @@ const DetailsCard = () => {
         </span>
         {CartButton(variationState.id)}
         {variationState.id > 0 && (
-          <div className="flex  items-center space-x-4">
+          <div className="flex sm:flex-col md:flex-row sm:justify-center md:justify-start sm:space-y-3 md:space-y-0 items-center md:space-x-4">
             {!loading ? 
               <BaseButton
                 disabled={variationState.available_quantity < 1 ? true : false}
@@ -458,7 +469,7 @@ const DetailsCard = () => {
                     ? finallAddtoCart()
                     : setContinueAsGuestModal(true)
                 }
-                className={`text-white bg-green-950 tracking-[0.095em] px-3 py-1 rounded-full disabled:cursor-not-allowed disabled:bg-gray-500`}
+                className={`text-white whitespace-nowrap  bg-green-950 tracking-[0.095em] px-3 py-1 rounded-full disabled:cursor-not-allowed disabled:bg-gray-500`}
               >
                 <CartIcon className="w-[19px] mb-0.5 mr-2 fill-white inline-block" />
                 Add To Cart
@@ -479,7 +490,7 @@ const DetailsCard = () => {
                         ? setOpenAddToWishList(true)
                         : setContinueAsGuestModal(true)
                     }
-                    className=" bg-gray-400 px-3 py-1 rounded-full text-white"
+                    className=" bg-gray-400 whitespace-nowrap  px-3 py-1 rounded-full text-white"
                   >
                     <HeartIcon className="w-4 mr-1 fill-white mb-0.5 cursor-pointer inline-block " />
                     Add to Wishlist
@@ -491,7 +502,7 @@ const DetailsCard = () => {
                         onClick={() =>
                           variationState && removeFromWishList(variationState)
                         }
-                        className=" bg-gray-400 px-3 py-1 rounded-full text-white"
+                        className=" bg-gray-400 whitespace-nowrap px-3 py-1 rounded-full text-white"
                       >
                         <RedHeartIcon className="w-4 mr-1 fill-white mb-0.5 cursor-pointer inline-block " />
                         Add to Wishlist
@@ -499,7 +510,7 @@ const DetailsCard = () => {
                     ) : (
                       <BaseButton
                         onClick={() => setOpenAddToWishList(true)}
-                        className=" bg-gray-400 px-3 py-1 rounded-full text-white"
+                        className=" bg-gray-400 px-3 py-1 whitespace-nowrap rounded-full text-white"
                       >
                         <HeartIcon className="w-4 mr-1 fill-white mb-0.5 cursor-pointer inline-block " />
                         Add to Wishlist
@@ -558,7 +569,6 @@ const DetailsCard = () => {
         {modifiersRender}
       </div>
       <AddToWishList />
-      <ContinueAsGuest />
     </div>
   );
 };

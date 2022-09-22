@@ -30,6 +30,7 @@ import Link from "next/link";
 import { CartIcon, HeartIcon, PersonIcon } from "../../../icons";
 import { Dropdown } from "../../../dropdown";
 import { Pagination } from "../../../pagination";
+import ContinueAsGuest from "../../details/sections/ContinueAsGuest";
 
 const MainSection = () => {
   const [showFillterProducts, setShowFillterProducts] =
@@ -153,8 +154,8 @@ const MainSection = () => {
 
   return (
     <div className="lg:ml-4">
-      <div className="sm:ml-4 md:ml-0">
-        <div className="flex justify-between">
+      <div className=" md:ml-0">
+        <div className="flex justify-between sm:px-1">
           <Breadcrumbs />
           <div>
             <div className="flex items-center space-x-5 relative sm:hidden md:flex   mr-5 ">
@@ -192,7 +193,7 @@ const MainSection = () => {
                 </div>
               ) : null}
               <span className=" text-black inline-block text-xs font-semibold  ">
-                item(s):${allCartsInfo.sub_total_price.toFixed(2)}
+                ${allCartsInfo.sub_total_price.toFixed(2)}
               </span>
               <div className="relative flex space-x-5">
                 <Link href="/wishlist">
@@ -224,7 +225,7 @@ const MainSection = () => {
       {!loading ? (
         <div>
           <div className=" mt-10">
-            <div className="flex md:flex-row  md:space-x-10 items-end lg:tracking-[0.08em] sm:justify-between md:justify-end mx-3 mb-7 text-gray-1250">
+            <div className="flex md:flex-row sm:px-1  md:space-x-10 items-end lg:tracking-[0.08em] sm:justify-between md:justify-end md:mx-3 mb-7 text-gray-1250">
               <div className="sm:block md:hidden">
                 <BaseButton
                   onClick={() => setShowFillterProducts(true)}

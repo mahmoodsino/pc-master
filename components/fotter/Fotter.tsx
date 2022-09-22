@@ -28,7 +28,11 @@ const Footer = () => {
   useEffect(() => {
     const getData = async () => {
       const res = await getContactInfo();
-      setContact(res);
+      if(res===null){
+        alert("some thing went wrong")
+      }else{
+        setContact(res);
+      }
     };
     getData();
   }, []);

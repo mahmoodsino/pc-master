@@ -12,7 +12,7 @@ const GREATDEALS = () => {
         <span className="text-3xl sm:hidden md:block ml-[48%] mt-[5%] w-fit h-fit px-2 py-1 bg-red-700 rounded-full tracking-[0.2em]  text-white ">
           Clearance
         </span>
-        <h1 className="md:ml-[10%] md:mb-[2%] left-0 right-0 sm:m-auto   text-white sm:text-[55px] md:text-[64px] z-10  tracking-[0.055em] ">
+        <h1 className="md:ml-[10%] whitespace-nowrap sm:text-4xl md:mb-[2%] left-0 right-0 sm:m-auto   text-white sm:text-[55px] md:text-[64px] z-10  tracking-[0.055em] ">
           Great Deals
         </h1>
       </div>

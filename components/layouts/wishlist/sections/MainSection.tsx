@@ -36,7 +36,11 @@ const MainSection = () => {
   useEffect(() => {
     const getData = async () => {
       const response = await getWishList(token);
-      setAllWishListInfo(response.result);
+      if(response===null){
+        alert("some thing went wrong")
+      }else{
+        setWishList(response.result.items);
+      }
     };
     if (token.length > 1) {
       getData();
@@ -47,7 +51,11 @@ const MainSection = () => {
     const getData = async () => {
       setLoading(true);
       const response = await getWishList(token);
-      setWishList(response.result.items);
+      if(response===null){
+        alert("some thing went wrong")
+      }else{
+        setWishList(response.result.items);
+      }
       setLoading(false);
     };
     if (token.length > 1) {

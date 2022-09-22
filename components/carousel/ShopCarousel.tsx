@@ -90,8 +90,8 @@ const ShopCarousel = ({ img, hover }: Props) => {
       <Slider {...settings}>
         {img.map((item) => {
           return (
-            <div className="product-slider" key={uuidv4()}>
-                  <img className="m-auto my-auto border mt-5 w-[200px] h-[150px]"  src={item?.path} />
+            <div className="product-slider-img px-1" key={uuidv4()}>
+                  <img className="m-auto product-slider-img my-auto  mt-5 w-[200px] h-[150px]"  src={item?.path} />
             </div>
           );
         })}

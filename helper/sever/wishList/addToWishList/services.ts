@@ -19,8 +19,6 @@ const addToWishList = async (token: string, product_id: number, variation_id: nu
         return res.data
     } catch (error) {
         console.log(error)
-        alert("some thing went wrong")
-
         return null
     }
 }

@@ -40,7 +40,7 @@ function SamplePrevArrow(props: any) {
   const { className, style, onClick } = props;
   return (
     <div
-      className={`text-black absolute -top-2 left-0   h-16 w-10  text-center  cursor-pointer bg-white  z-20    `}
+      className={`text-black absolute -top-2 -left-6   h-16 w-10  text-center  cursor-pointer bg-white  z-20    `}
       style={{
         ...style,
         background: "linear-gradient(89deg,white , #ff000000)",

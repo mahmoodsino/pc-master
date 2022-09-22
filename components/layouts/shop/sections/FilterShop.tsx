@@ -71,7 +71,7 @@ const FilterShop = () => {
             value={searchState}
             type="search"
             className={
-              "border-2 box-border pl-3  sm:w-[100%] md:w-[100%]  h-10 outline-none rounded-sm focus:border-black"
+              "border-2 box-border pl-3  sm:w-[100%] md:w-[100%]  h-10 outline-none  "
             }
           />
           <BaseButton
@@ -82,9 +82,9 @@ const FilterShop = () => {
           </BaseButton>
         </div>
         <div className="ml-2 mt-10">
-          <h1 className="text-lg font-bold tracking-[0.03em] text-[#7A797B]">
+          <span className="text-lg block font-bold tracking-[0.03em] text-[#7A797B]">
             FILTERS
-          </h1>
+          </span>
           <div>
             <div className="my-5 pr-3 ">
               <MultiRangeSlider
@@ -95,9 +95,9 @@ const FilterShop = () => {
                 handleChange={handleChange}
               />
               <div className="pt-1 flex flex-wrap flex-row justify-between ">
-                <h1 className="pt-3 inline-block text-[#B2ACB6] tracking-[0.03em]">
+                <span className="pt-3 inline-block text-[#B2ACB6] tracking-[0.03em]">
                   Price:${rangeSlider[0]} - ${rangeSlider[1]}
-                </h1>
+                </span>
               </div>
             </div>
           </div>

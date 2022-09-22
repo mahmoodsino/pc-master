@@ -61,12 +61,12 @@ const MobileSidbar = () => {
                   value={searchState}
                   type="search"
                   className={
-                    "bg-white pr-12 border border-gray-1700  w-full h-[40px] px-5 rounded-md text-sm focus:outline-none focus:border-green-950"
+                    "bg-white pr-12 border border-gray-1700  w-full h-[30px] px-5 rounded-md text-sm focus:outline-none focus:border-green-950"
                   }
                 />
 
                 <BaseButton
-                  className="absolute  right-[2%] top-2"
+                  className="absolute  right-[2%] top-1"
                   onClick={() => handelSearch(searchState)}
                 >
                   {searchForInputIcon}

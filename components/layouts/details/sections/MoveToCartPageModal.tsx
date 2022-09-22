@@ -29,7 +29,7 @@ const MoveToCartPageModal = () => {
           <span className="block font-semibold">
             You have added new item to the cart!!
           </span>
-          <div className="flex justify-between mt-5">
+          <div className="flex sm:flex-col md:flex-row sm:space-y-3 md:space-y-0  justify-between mt-5">
             <BaseButton
               onClick={() => setMoveToCartPageModalState(false)}
               title="continue shoping"

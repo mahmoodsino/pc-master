@@ -121,10 +121,10 @@ const CartItems = () => {
                 }`}
               >
                 <div className="flex flex-row ">
-                  <div className="border mt-2 rounded-full product-slider-img mr-2">
+                  <div className=" mt-2  product-slider-img mr-2">
                     {item.product?.image?.id ? (
                       <img
-                        className="h-32 product-slider-img w-32 rounded-full"
+                        className="h-32 product-slider-img w-32 "
                         src={item.product?.image.path}
                         alt=""
                       />

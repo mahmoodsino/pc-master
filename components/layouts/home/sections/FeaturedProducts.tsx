@@ -68,7 +68,7 @@ const FeaturedProducts = () => {
             selectedItem={selected}
           />
         </div>
-        <div className="lg:hidden sm:block sm:w-[95%] whitespace-nowrap overflow-x-auto">
+        <div className="lg:hidden sm:block sm:w-[100%] whitespace-nowrap overflow-x-auto">
           <MobaiChips
             categories={homePageState.featured_categories}
             setItem={setItem}

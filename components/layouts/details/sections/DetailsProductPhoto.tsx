@@ -49,7 +49,7 @@ const DetailsProductPhoto = () => {
           variationState.images.map((img) => {
             return (
               <div key={uuidv4()} className="product-slider-img">
-                <img  className="m-auto lg:w-[400px] md:w-[300px] sm:w-[200px] "  src={img.path} />
+                <img  className="m-auto lg:w-[400px] md:w-[350px] sm:w-[260px] "  src={img.path} />
               </div>
             );
           })
@@ -57,7 +57,7 @@ const DetailsProductPhoto = () => {
           detailsState.product.images.map((img) => {
             return (
               <div key={uuidv4()} className="product-slider-img">
-                <img  className="m-auto lg:w-[400px] md:w-[300px] sm:w-[200px] "  src={img.path} />
+                <img  className="m-auto lg:w-[400px] md:w-[350px] px-2 sm:w-[250px] "  src={img.path} />
               </div>
             );
           })

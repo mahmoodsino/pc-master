@@ -112,7 +112,7 @@ const Searchbar = () => {
           </div>
           <div className="w-[35%] ">
             <span className="  inline-block text-white  w- text-xs font-medium  ">
-              item(s):${allCartsInfo.sub_total_price.toFixed(2)}
+              ${allCartsInfo.sub_total_price.toFixed(2)}
             </span>
           </div>
 

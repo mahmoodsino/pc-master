@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import { useRecoilState } from "recoil";
 import {
   CouninueAsGuestModalAtom,
@@ -11,6 +11,7 @@ import { BaseButton } from "../../../buttons";
 import { CloseIcon } from "../../../icons";
 import img1 from "../../../../public/assets/image/img1.png";
 import Image from "next/image";
+import { Spinner } from "../../../spinner";
 
 interface Props {
   addToCart?: (clickedItem: DetailsType) => void;
@@ -21,8 +22,10 @@ const ContinueAsGuest = ({ addToCart }: Props) => {
     CouninueAsGuestModalAtom
   );
   const [token, setToken] = useRecoilState(TokenAtom);
+  const [loading,setLoading]=useState(false)
 
   const handelGuest = async () => {
+    setLoading(true)
     const res = await handelRegisterAsGuest();
     if (res.result.token) {
       localStorage.setItem("token", res.result.token.access_token);
@@ -31,6 +34,7 @@ const ContinueAsGuest = ({ addToCart }: Props) => {
       localStorage.setItem("type", res.result.user.type);
       setToken(res.result.token.access_token);
       setContinueAsGuestModal(false);
+      setLoading(false)
       window.location.reload();
     }
   };
@@ -79,13 +83,16 @@ const ContinueAsGuest = ({ addToCart }: Props) => {
               <span className="befor">OR</span>
             </div>
             <div className="px-10">
-
+            {!loading ? 
             <BaseButton
               onClick={() => handelGuest()}
               className="block px-2 font-semibold mt-2  py-2 w-full bg-gray-100 hover:-translate-y-1 duration-300 ease-in-out "
             >
               Countinue as a guest
-            </BaseButton>
+            </BaseButton> : 
+            <Spinner className="w-12 " />
+            
+          }
             </div>
           </div>
         </div>

@@ -21,7 +21,6 @@ const addToCart = async (token: string,type:number,product_id:number,variation_i
         return res.data
     } catch (error) {
         console.log(error)
-        alert("some thing went wrong")
         return null
     }
 }

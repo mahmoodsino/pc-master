@@ -16,7 +16,6 @@ const updateCart = async (token: string,id:number,quantity:number,description:st
     } catch (error) {
         console.log(error)
         alert("some thing went wrong")
-
         return null
     }
 }

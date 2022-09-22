@@ -10,19 +10,11 @@ import MyProfile from './MyProfile';
 import PaymentMethod from './PaymentMethod';
 import { SuccessEdit,ActiveBtnAccount } from '../../../../helper/state';
 
-
-
-
 export type profile = {
     FirstName: string;
     LastName: string;
     Email: string;
   };
-  
- 
-  
-
-  
 
 const MainSection = () => {
     const [editSuccess, setEditSuccess] = useRecoilState(SuccessEdit);
@@ -30,7 +22,7 @@ const MainSection = () => {
   return (
     <div>
       <Searchbar />
-      <div className="md:ml-10 mt-5">
+      <div className="md:ml-10 md:mt-5">
         <Breadcrumbs />
       </div>
       <div className="flex items-center justify-center">
@@ -50,11 +42,11 @@ const MainSection = () => {
             Address deleted successfully
           </div>
         ) : (
-          <div className="h-20"></div>
+          <div></div>
         )}
       </div>
       <Title2 title="MY Account" />
-      <div className="lg:px-10 flex sm:flex-col lg:flex-row sm:justify-center sm:items-center sm:space-y-10 lg:justify-around mt-7  lg:mr-20">
+      <div className="lg:px-10 flex sm:flex-col lg:flex-row sm:justify-start sm:items-center sm:space-y-10 lg:justify-around mt-7  lg:mr-20">
         <MyAccountOptions />
         {btnAccount === "myProfile" ? (
           <MyProfile />

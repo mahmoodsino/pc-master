@@ -8,7 +8,7 @@ interface Props {
 }
 const Cheips = ({ categories,setItem }: Props) => {
   return (
-    <ul className="space-x-3 flex items-center justify-center p-[5px]  sm:w-[100vw]  md:w-fit">
+    <ul className="space-x-3 flex items-center justify-start py-[5px]  sm:w-[100vw]  md:w-fit">
       {categories.map((item) => {
         return (
           <li key={uuidv4()}>

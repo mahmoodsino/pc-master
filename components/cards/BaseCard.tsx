@@ -29,7 +29,7 @@ interface cardType {
   id: number;
   variation: Variation;
   in_wishlist: boolean;
-  name:string
+  name: string;
 }
 
 const BaseCard = ({
@@ -39,15 +39,12 @@ const BaseCard = ({
   id,
   variation,
   in_wishlist,
-  name
+  name,
 }: cardType) => {
   const [hover, setHover] = useState(false);
   const [wishList, setWishList] = useRecoilState(WishListAtom);
   const token = useRecoilValue(TokenAtom);
-  const setContinueAsGuestModal = useSetRecoilState(
-    CouninueAsGuestModalAtom
-  );
-
+  const setContinueAsGuestModal = useSetRecoilState(CouninueAsGuestModalAtom);
 
   const push = useRouter().push;
 
@@ -85,10 +82,13 @@ const BaseCard = ({
       "my favorait item",
       "my favorait item"
     );
-    if(res){
-
+    if (res) {
       const response = await getWishList(token);
-      setWishList(response.result.items);
+      if(response===null){
+        alert("some thing went wrong")
+      }else{
+        setWishList(response.result.items);
+      }
     }
   };
 
@@ -103,18 +103,22 @@ const BaseCard = ({
       }
     }
     const response = await getWishList(token);
-    setWishList(response.result.items);
+    if(response===null){
+      alert("some thing went wrong")
+    }else{
+      setWishList(response.result.items);
+    }
   };
 
   return (
     <div
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      className="border mb-3 border-gray-1500 md:w-[100%] sm:w-[100%] md:h-[360px] py-2  hover:border-green-950 hover:shadow-md  md:px-7 sm:px-4"
+      className="border mb-3 border-gray-1500 md:w-[100%]  sm:w-[100%] md:h-[320px]   hover:border-green-950 hover:shadow-md  md:px-7 sm:px-1"
     >
       <div>
         <div
-          className={`h-[220px] duration-500  border border-white ${
+          className={`h-[180px] duration-500  border border-white ${
             hover ? "scale-105 " : ""
           }`}
         >
@@ -122,44 +126,50 @@ const BaseCard = ({
             <ShopCarousel img={image} hover={hover} />
           ) : (
             <div className=" mt-3 ml-3 ">
-
               <Image width={200} height={200} src={no_image} />
             </div>
           )}
         </div>
-        <div className=" flex items-center justify-start  mt-3">
+        <div className="sm:hidden md:flex items-center justify-start  mt-3">
           <BaseButton
             onClick={() => handelDetails(id)}
             className="py-0.5 px-4 text-white  bg-green-950 font-bold rounded-full "
             title="Options"
           />
         </div>
+        <BaseButton onClick={() => handelDetails(id)} className="sm:block font-medium md:hidden mt-1 text-left">
+          <span className="md:hidden sm:block ">
+            <span className="line-clamp222">{name}</span>
+          </span>
+        </BaseButton>
       </div>
 
-      <div className="h-[30%] mt-5 ml-1">
-        <span className="text-lg font-bold md:leading-[24px] md:tracking-[0.055em] mb-1">
+      <div className=" h-[30%] md:mt-5 ml-1">
+        <span className="text-lg font-bold sm:hidden md:block md:leading-[24px] md:tracking-[0.055em] mb-1">
           ${price}
         </span>
-        <div className="flex  justify-between pt-3 ">
-          <span className="line-clamp text-sm md:leading-[19px] block w-[80%]  md:tracking-[0.03em]">
-            {/* {description} */}
-            {name}
+        <div className="flex items-center justify-between pt-3 mr-4 ">
+          <span className=" sm:hidden text-sm md:leading-[19px]  h-fit md:block w-[80%]  md:tracking-[0.03em]">
+            <span className="line-clamp">{name}</span>
           </span>
-            {in_wishlist ? (
-              <RedHeartIcon
-                onClick={() => removeFromWishList(variation)}
-                className="w-4 cursor-pointer"
-              />
-            ) : (
-              <HeartIcon
-                onClick={() =>
-                  token.length > 1
-                    ? handelAddVariationToWishList(variation)
-                    : setContinueAsGuestModal(true)
-                }
-                className="w-4 cursor-pointer"
-              />
-            )}
+          <span className="text-lg sm:block md:hidden font-bold md:leading-[24px] md:tracking-[0.055em] mb-1">
+            ${price}
+          </span>
+          {in_wishlist ? (
+            <RedHeartIcon
+              onClick={() => removeFromWishList(variation)}
+              className="w-5 cursor-pointer"
+            />
+          ) : (
+            <HeartIcon
+              onClick={() =>
+                token.length > 1
+                  ? handelAddVariationToWishList(variation)
+                  : setContinueAsGuestModal(true)
+              }
+              className="w-5 cursor-pointer"
+            />
+          )}
         </div>
       </div>
     </div>

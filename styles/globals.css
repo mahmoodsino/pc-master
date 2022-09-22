@@ -50,10 +50,21 @@
   }
 
   .line-clamp {
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;  
     overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    -webkit-box-pack: end;
+  }
+
+  .line-clamp222 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    -webkit-box-pack: end;
   }
 
   
@@ -89,4 +100,29 @@
   right: 120%;
   top: 50%;
   position: absolute;
+}
+
+
+@media screen and (max-width: 600px) {
+  .befor:before {
+    content: "";
+    display: block;
+    width: 100px;
+    height: 2px;
+    background: gray;
+    left: 120%;
+    top: 50%;
+    position: absolute;
+  }
+  
+  .befor:after {
+    content: "";
+    display: block;
+    width: 100px;
+    height: 2px;
+    background: gray;
+    right: 120%;
+    top: 50%;
+    position: absolute;
+}
 }

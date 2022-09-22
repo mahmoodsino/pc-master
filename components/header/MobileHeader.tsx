@@ -1,16 +1,16 @@
-import { useRecoilState, useRecoilValue } from "recoil";
-import {  ActiveDropDownAtom, FetchedCartItemsAtom, NewCartAtom, ShowSidbarAtom, WishListAtom } from "../../helper/state";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import {  ActiveDropDownAtom, CouninueAsGuestModalAtom, FetchedCartItemsAtom, NewCartAtom, ShowSidbarAtom, TokenAtom, WishListAtom } from "../../helper/state";
 import { goingUpAtom } from "./FixedNavbar";
 import Dropdown from "../dropdown/Dropdown";
 import { burgerIcon } from "../icons/Icons";
 import HeartIcon from "../icons/HeartIcon";
 import CartIcon from "../icons/CartIcon";
 import PersonIcon from "../icons/PersonIcon";
-import ArrowIcon from "../icons/ArrowIcon";
 import Link from "next/link";
-
 import img1 from "../../public/assets/image/img1.png";
 import Image from "next/image";
+import { useRouter } from "next/router";
+import { BaseButton } from "../buttons";
 
 const MobileHeader = () => {
   const [showSidbarState, setShowSidbarState] = useRecoilState(ShowSidbarAtom);
@@ -19,7 +19,18 @@ const MobileHeader = () => {
     useRecoilState(ActiveDropDownAtom);
     const wishList=useRecoilValue(WishListAtom)
     const carts = useRecoilValue(FetchedCartItemsAtom)
+    const setContinueAsGuestModal = useSetRecoilState(CouninueAsGuestModalAtom);
+    const [token, setToken] = useRecoilState(TokenAtom);
 
+  const {push} = useRouter()
+
+    const handelGoToCart = () => {
+      push("/cart");
+    };
+  
+    const handelGoToWishList = () => {
+      push("/wishlist");
+    };
 
     let useType
   if(typeof window !== "undefined"){
@@ -44,18 +55,23 @@ const MobileHeader = () => {
 
       <div className="flex items-center space-x-10   mr-5 sa">
         <div className="relative  flex space-x-7 ">
-          <Link href="/wishlist">
-            <a className="w-5">
+          <BaseButton onClick={() =>
+                  token.length > 1
+                    ? handelGoToWishList()
+                    : setContinueAsGuestModal(true)
+                } className="w-5">
               <div>
                 <div className="absolute -top-0 right-[60%]  flex items-center cursor-pointer justify-center text-white bg-red-950 rounded-full text-sm w-4 h-4 ">
                   {wishList.length}
                 </div>
                 <HeartIcon className="w-6" />
               </div>
-            </a>
-          </Link>
-          <Link className="" href="/cart">
-            <a>
+          </BaseButton>
+          <BaseButton onClick={() =>
+                  token.length > 1
+                    ? handelGoToCart()
+                    : setContinueAsGuestModal(true)
+                } className=" " >
               <div>
                 <div className="absolute -top-0 -right-[5%] cursor-pointer flex items-center justify-center text-white bg-red-950 rounded-full text-sm w-4 h-4 ">
                   {carts.length}
@@ -63,8 +79,7 @@ const MobileHeader = () => {
 
                 <CartIcon className="text-black w-6" />
               </div>
-            </a>
-          </Link>
+          </BaseButton>
         </div>
         
         {  useType === "user" &&

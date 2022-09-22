@@ -19,11 +19,7 @@ const handelAddAress = async (name:string,address:string,country_id:string,state
         }, getConfig(token))
         return res.data
     } catch (error) {
-        // alert(error.response.data.errors.email)
-
         console.log(error)
-        alert("some thing went wrong")
-
         return null
     }
 }

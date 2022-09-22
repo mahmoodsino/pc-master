@@ -8,7 +8,6 @@ const MainSection = () => {
     <div>
       <Hero />
       <Products/>
-      <ContinueAsGuest  />
 
     </div>
   )
