@@ -38,6 +38,7 @@ const MainSection = () => {
     const Data = async () => {
       if (router.product) {
         const res = await getDetails(+router.product);
+        console.log(res);
         setDetailState(res.result);
         if (res) {
           setLoading(true);

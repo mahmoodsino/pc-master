@@ -26,7 +26,6 @@ const NewArrivalProducts = () => {
     setSelected(setItem);
     const res = await getNewArraivalProducts(token, setItem);
     if (res === null) {
-      alert("some thing went wrong");
     } else {
       setNewArrivalProducts(res.result.items);
     }
@@ -38,7 +37,6 @@ const NewArrivalProducts = () => {
       setLoading(true);
       const res = await getNewArraivalProducts(token);
       if (res === null) {
-        alert("some thing went wrong");
       } else {
         setNewArrivalProducts(res.result.items);
       }
@@ -50,7 +48,6 @@ const NewArrivalProducts = () => {
     const getData = async () => {
       const res = await getNewArraivalProducts(token);
       if (res === null) {
-        alert("some thing went wrong");
       } else {
         setNewArrivalProducts(res.result.items);
       }

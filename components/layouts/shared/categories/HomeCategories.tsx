@@ -11,7 +11,6 @@ const HomeCategories = () => {
     const getdata = async () => {
       const res = await getCategories();
       if (res === null) {
-        alert("some thing went wrong");
       } else {
         setHomePageState(res.result);
       }

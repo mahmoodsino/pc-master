@@ -85,7 +85,6 @@ const BaseCard = ({
     if (res) {
       const response = await getWishList(token);
       if(response===null){
-        alert("some thing went wrong")
       }else{
         setWishList(response.result.items);
       }
@@ -104,7 +103,6 @@ const BaseCard = ({
     }
     const response = await getWishList(token);
     if(response===null){
-      alert("some thing went wrong")
     }else{
       setWishList(response.result.items);
     }
@@ -125,8 +123,8 @@ const BaseCard = ({
           {image.length > 0 ? (
             <ShopCarousel img={image} hover={hover} />
           ) : (
-            <div className=" mt-3 ml-3 ">
-              <Image width={200} height={200} src={no_image} />
+            <div className=" mt-3 ml-3 product-slider-img">
+              <Image width={200} height={150} src={no_image} />
             </div>
           )}
         </div>

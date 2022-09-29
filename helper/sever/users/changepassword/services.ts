@@ -14,8 +14,6 @@ const handelChangePassword = async (token:string,password:string,new_password:st
         return res.data
     } catch (error) {
         console.log(error)
-        alert("some thing went wrong")
-
         return error
     }
 }

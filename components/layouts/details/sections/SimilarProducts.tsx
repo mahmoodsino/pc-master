@@ -8,12 +8,26 @@ import {
   WishListAtom,
 } from "../../../../helper";
 import { BaseCard } from "../../../cards";
+import { Spinner } from "../../../spinner";
 
 const SimilarProducts = () => {
   const [similarProducts, setSimilarProducts] = useState<ProductsType[]>([]);
   const [detailsState, setDetailState] = useRecoilState(DetailsAtom);
   const [token, setToken] = useRecoilState(TokenAtom);
   const [wishList, setWishList] = useRecoilState(WishListAtom);
+  const [loading,setLoading]=useState(false)
+
+  useEffect(() => {
+    const getData = async () => {
+      setLoading(true)
+      const res = await getSimilarProducts(token, detailsState.product.id);
+      setSimilarProducts(res.result);
+    };
+    if (detailsState.product.id > 0) {
+      getData();
+    }
+    setLoading(false)
+  }, [detailsState, wishList]);
 
   useEffect(() => {
     const getData = async () => {
@@ -23,28 +37,31 @@ const SimilarProducts = () => {
     if (detailsState.product.id > 0) {
       getData();
     }
-  }, [detailsState, wishList]);
+  }, [wishList]);
   return (
     <div>
       <div className="  pb">
         <span className="text-xl block mb-5 font-bold">Similar Products </span>
       </div>
-      <div className="grid grid-cols-2 gap-2 ">
-        {similarProducts?.map((item, i) => {
-          return (
-            <BaseCard
-              name={item.name}
-              key={i}
-              image={item.images}
-              price={item.variation.price}
-              description={item.short_description}
-              id={item.id}
-              variation={item.variation}
-              in_wishlist={item.in_wishlist}
-            />
-          );
-        })}
-      </div>
+      {!loading ? 
+        <div className="grid grid-cols-2 gap-2 ">
+          {similarProducts?.map((item, i) => {
+            return (
+              <BaseCard
+                name={item.name}
+                key={i}
+                image={item.images}
+                price={item.variation.price}
+                description={item.short_description}
+                id={item.id}
+                variation={item.variation}
+                in_wishlist={item.in_wishlist}
+              />
+            );
+          })}
+        </div> : 
+        <Spinner  className="w-32 fill-green-950"/>
+      }
     </div>
   );
 };

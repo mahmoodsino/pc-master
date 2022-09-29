@@ -14,8 +14,6 @@ const handelUpdateUser = async (first_name:string, last_name:string, email:strin
         return res.data
     } catch (error) {
         console.log(error)
-        alert("some thing went wrong")
-
         return null
     }
 }

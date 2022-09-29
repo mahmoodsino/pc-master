@@ -24,7 +24,6 @@ const FeaturedProducts = () => {
     setSelected(setItem);
     const res = await getfeaturedProducts(token, setItem);
     if(res===null){
-      alert("some thing went wrong")
     }else{
       setFeaturedProducts(res.result.items);
     }
@@ -35,7 +34,6 @@ const FeaturedProducts = () => {
       setLoading(true);
       const res = await getfeaturedProducts(token);
       if(res===null){
-        alert("some thing went wrong")
       }else{
         setFeaturedProducts(res.result.items);
       }
@@ -48,7 +46,6 @@ const FeaturedProducts = () => {
     const getData = async () => {
       const res = await getfeaturedProducts(token);
       if(res===null){
-        alert("some thing went wrong")
       }else{
         setFeaturedProducts(res.result.items);
       }

@@ -52,7 +52,8 @@ const Reviews = () => {
   const [checkLoading, setCheckLoading] = useState(false);
   const [openMessageModal, setOpenMassegModal] =
     useRecoilState(OpenMessageModalAtom);
-    const [wrongMessage,setWrongMessage]=useState("")
+  const [wrongMessage, setWrongMessage] = useState("");
+  const [delLoadind, setDelLoading] = useState(false);
 
   useEffect(() => {
     // setUserReview({} as reviewsType);
@@ -79,15 +80,15 @@ const Reviews = () => {
     if (res.name === "AxiosError") {
       if (res.response.status === 400) {
         setWrongMessage(res.response.data.message);
-        setOpenMassegModal(true)
+        setOpenMassegModal(true);
       } else {
-        alert("some thing went wrong !!");
       }
     } else {
       setOpenWriteReviewModal(true);
     }
   };
   const deleteReview = async (id: number) => {
+    setDelLoading(true);
     const response = await handelDeleteReview(token, id);
     const res = await getReviews(token, detailsState.product.id);
     if (res.result.user_review) {
@@ -96,6 +97,7 @@ const Reviews = () => {
       setUserReview({} as reviewsType);
     }
     setRewiew(res.result.items);
+    setDelLoading(false);
   };
   return (
     <div className="mt-5">
@@ -112,11 +114,13 @@ const Reviews = () => {
               <ReactStars value={detailsState.product.avg_rate} edit={false} />
               <span className="text-xs"> ({review.length} review)</span>
             </div>
-            {userReview.id === undefined &&  
-            <div>
+            {userReview.id === undefined && (
+              <div>
                 {!checkLoading ? (
                   <BaseButton
-                    onClick={() => handalcheckReviewable(detailsState.product.id)}
+                    onClick={() =>
+                      handalcheckReviewable(detailsState.product.id)
+                    }
                     className="bg-green-950 text-white rounded-full px-4 py-1 mt-2 "
                     title="write review"
                   />
@@ -125,16 +129,16 @@ const Reviews = () => {
                     <Spinner className="w-7" />
                   </div>
                 )}
-            </div>
-            }
+              </div>
+            )}
 
-            {userReview.id !== undefined && 
-             <BaseButton
-             onClick={()  => setOpenUpdateReviewModal(true)}
-             className="bg-green-950 text-white rounded-full px-4 py-1 mt-2 "
-             title="Edit review"
-           />
-            }
+            {userReview.id !== undefined && (
+              <BaseButton
+                onClick={() => setOpenUpdateReviewModal(true)}
+                className="bg-green-950 text-white rounded-full px-4 py-1 mt-2 "
+                title="Edit review"
+              />
+            )}
 
             <div className="grid grid-cols-2 mt-10 gap-2">
               {userReview.id !== undefined && (
@@ -160,16 +164,19 @@ const Reviews = () => {
                             d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"
                           />
                         </svg>
-
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="currentColor"
-                          onClick={() => deleteReview(userReview.id)}
-                          className="text-red-950 bi bi-trash-fill cursor-pointer w-4"
-                          viewBox="0 0 16 16"
-                        >
-                          <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z" />
-                        </svg>
+                        {!delLoadind ? (
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor"
+                            onClick={() => deleteReview(userReview.id)}
+                            className="text-red-950 bi bi-trash-fill cursor-pointer w-4"
+                            viewBox="0 0 16 16"
+                          >
+                            <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z" />
+                          </svg>
+                        ) : (
+                          <Spinner className="fill-green-950 w-4" />
+                        )}
                       </div>
                     </div>
                   </div>

@@ -20,8 +20,6 @@ const handelUpdateAddress = async (id:number|string,name:string,address:string,c
         return res.data
     } catch (error) {
         console.log(error)
-        alert("some thing went wrong")
-
         return null
     }
 }

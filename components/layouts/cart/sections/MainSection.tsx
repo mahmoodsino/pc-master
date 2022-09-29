@@ -42,7 +42,6 @@ const MainSection = () => {
     const getData = async () => {
       const res = await getCartItems(token);
       if(res===null){
-        alert("some thing went wrong")
       }else{
         setAllCartsInfo(res.result);
       }
@@ -62,7 +61,6 @@ const MainSection = () => {
     const getData = async () => {
       const res = await getCartItems(token);
       if(res===null){
-        alert("some thing went wrong")
       }else{
         setCarts(res.result.items);
       }

@@ -13,8 +13,6 @@ const handelSendMessage = async (name:string,email:string,message:string) => {
         return res.data
     } catch (error) {
         console.log(error)
-        alert("some thing went wrong")
-
         return null
     }
 }

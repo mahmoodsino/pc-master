@@ -29,7 +29,6 @@ const Footer = () => {
     const getData = async () => {
       const res = await getContactInfo();
       if(res===null){
-        alert("some thing went wrong")
       }else{
         setContact(res);
       }

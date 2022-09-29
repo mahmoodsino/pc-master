@@ -101,7 +101,6 @@ const MainSection = () => {
       setTotalPages(res.result.pages_count);
 
       if (res === null) {
-        alert("some thing went wrong");
         setLoading(false);
       } else {
         setProductsState(res.result.items);
@@ -138,7 +137,6 @@ const MainSection = () => {
       setTotalPages(res.result.pages_count);
 
       if (res === null) {
-        alert("some thing went wrong");
         setLoading(false);
       } else {
         setProductsState(res.result.items);

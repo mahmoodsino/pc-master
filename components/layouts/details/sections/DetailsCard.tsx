@@ -161,6 +161,7 @@ const DetailsCard = () => {
   };
 
   useEffect(() => {
+    let index :number
     const newNames = names;
     for (let i = 0; i < detailsState.variations.length; i++) {
       const attributes = detailsState?.variations[i]?.attributes;
@@ -168,28 +169,27 @@ const DetailsCard = () => {
         for (let j = 0; j < attributes.length; j++) {
           const attribute = attributes[j];
           const Parent_id: number = attribute.id;
-
           let attribute_value = {
             id: attribute.attribute_values.id,
             name: attribute.attribute_values.name,
             parent_id: Parent_id,
           };
           if (newNames[`${attribute.name}`]) {
-            newNames[`${attribute.name}`].map((item: any) => {
-              if (item.name !== attribute.attribute_values.name) {
-                newNames[`${attribute.name}`].push(attribute_value);
-              }
-            });
+            const value =newNames[attribute.name]
+            index =value.findIndex((val : any) => val.id === attribute_value.id)
+            if(index<0){
+              newNames[`${attribute.name}`].push(attribute_value);
+            }
           } else {
             newNames[`${attribute.name}`] = [attribute_value];
           }
         }
     }
-
     setNames(newNames);
-
     setIsChange(false);
   }, [detailsState]);
+
+  
 
   useEffect(() => {
     setNewCart([]);
@@ -214,6 +214,7 @@ const DetailsCard = () => {
     });
     setAttributeValueNumber(attributeValueNumber);
   }, [detailsState]);
+  
 
   useEffect(() => {
     setSelectedAttributes([]);
@@ -256,6 +257,7 @@ const DetailsCard = () => {
     variationState,
     attributeToSetVAriation,
   ]);
+  
 
   useEffect(() => {
     detailsState.variations.map((variation) => {
@@ -308,7 +310,10 @@ const DetailsCard = () => {
   //for button
 
   const CartButton = (id: number) => {
-    if (variationState.available_quantity === 0) {
+    if(variationState.available_quantity===null){
+      return <p className="text-sm block text-red-950 h-[24px]">this product is not available now !!</p>;
+    }
+    else if (variationState.available_quantity === 0) {
       return <p className="text-sm block text-red-950 h-[24px]">this product is not available now !!</p>;
     } else {
       let indexcart: number;
@@ -383,13 +388,11 @@ const DetailsCard = () => {
     });
     const response = await getCartItems(token);
     if(response===null){
-      alert("some thing went wrong")
     }else{
       setCarts(response.result.items);
     }
     const res = await getCartItems(token);
     if(res===null){
-      alert("some thing went wrong")
     }else{
       setAllCartsInfo(res.result)
     }
@@ -411,6 +414,7 @@ const DetailsCard = () => {
     });
     return isfound;
   };
+  
 
   const handelHeart = (id: number) => {
     let isFound = false;
@@ -440,7 +444,6 @@ const DetailsCard = () => {
     }
     const response = await getWishList(token);
     if(response===null){
-      alert("some thing went wrong")
     }else{
       setWishList(response.result.items);
     }
@@ -463,7 +466,7 @@ const DetailsCard = () => {
           <div className="flex sm:flex-col md:flex-row sm:justify-center md:justify-start sm:space-y-3 md:space-y-0 items-center md:space-x-4">
             {!loading ? 
               <BaseButton
-                disabled={variationState.available_quantity < 1 ? true : false}
+                disabled={variationState.available_quantity < 1 || variationState.available_quantity===null ? true : false}
                 onClick={() =>
                   token.length > 1
                     ? finallAddtoCart()
@@ -545,10 +548,14 @@ const DetailsCard = () => {
                           selectedAttributes.findIndex(
                             (item: number) => item === value.id
                           ) > -1
-                            ? " text-green-950 bg-[#19cb3529] font-semibold"
-                            : "text-[#aaa] bg-[#f8f8f8] font-semibold"
+                            && " text-green-950 bg-[#19cb3529] font-semibold"
+                            // : "text-[#aaa] bg-[#f8f8f8] font-semibold"
                         } 
-                        ${getbg(value.id) ? "" : ""}
+                        ${getbg(value.id) &&selectedAttributes.findIndex(
+                          (item: number) => item === value.id
+                        ) === -1 ? "bg-blue-200 text-blue-500 font-semibold" : selectedAttributes.findIndex(
+                          (item: number) => item === value.id
+                        ) === -1 && "bg-[#f8f8f8] text-[#aaa]"}
                           mt-2 rounded-md cursor-pointer px-3 py-0.5    hover:border-black`}
                       >
                         {value.name}

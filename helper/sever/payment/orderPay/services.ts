@@ -10,8 +10,6 @@ const handelOrderPay = async (token:string,order_id: number, payment_provider_id
         return res.data
     } catch (error) {
         console.log(error)
-        alert("some thing went wrong")
-
         return null
     }
 }

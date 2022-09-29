@@ -95,7 +95,6 @@ const AddToWishList = () => {
     }
     const response = await getWishList(token);
     if(response===null){
-      alert("some thing went wrong")
     }else{
       setWishList(response.result.items);
     }

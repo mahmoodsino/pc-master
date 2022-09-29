@@ -59,13 +59,11 @@ const App = ({ children }: Props) => {
     const getData = async () => {
       const res = await getCartItems(token);
       if (res === null) {
-        alert("some thing went wrong");
       } else {
         setAllCartsInfo(res.result);
       }
       const response = await getWishList(token);
       if (response === null) {
-        alert("some thing went wrong");
       } else {
         setAllWishListInfo(response.result);
       }
@@ -82,13 +80,11 @@ const App = ({ children }: Props) => {
     const getData = async () => {
       const res = await getCartItems(token);
       if (res === null) {
-        alert("some thing went wrong");
       } else {
         setCarts(res.result.items);
       }
       const response = await getWishList(token);
       if (response === null) {
-        alert("some thing went wrong");
       } else {
         setWishList(response.result.items);
       }
@@ -105,7 +101,6 @@ const App = ({ children }: Props) => {
     const getdata = async () => {
       const res = await getCountries();
       if(res === null){
-        alert("some thing went wrong")
       }else{
         let modifiedResponse = res.result;
         modifiedResponse.map((item: { id: number; name: string }) => {
@@ -130,7 +125,6 @@ const App = ({ children }: Props) => {
     const getData = async () => {
       const res = await getAddress(token);
       if (res === null) {
-        alert("some thing went wrong");
       } else {
         setaddress(res.result);
       }

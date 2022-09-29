@@ -15,8 +15,6 @@ const updateWishList = async (token: string,id:number,quantity:number,descriptio
         return res.data
     } catch (error) {
         console.log(error)
-        alert("some thing went wrong")
-
         return null
     }
 }

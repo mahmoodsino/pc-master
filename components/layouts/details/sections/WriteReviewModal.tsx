@@ -52,20 +52,25 @@ const WriteReviewModal = ({ rated, text, id }: Props) => {
   }, [id]);
 
   const handelSubmit = async () => {
+    setLoading(true)
     if (openWriteReviewModal) {
+      
       const res = await handelWriteReview(
         token,
         detailsState.product.id,
         rate,
         writeReview
       );
+      if(res){
+        setLoading(false)
+      }
       setUserReview(res.result);
       if (userReview.id > 0) {
         setLoading(false);
       }
       setOpenWriteReviewModal(false);
     }
-    if (OpenUpdateReviewModalAtom && id) {
+    if (openUbdateReviewModal && id) {
       setLoading(true);
       const res = await handelUpdateReview(token, id, rate, writeReview);
       setUserReview(res.result);
@@ -103,7 +108,7 @@ const WriteReviewModal = ({ rated, text, id }: Props) => {
                   <textarea
                     aria-setsize={50}
                     name="review"
-                    className="w-full h-20 border pl-3 resize-none"
+                    className="w-full h-20 border pl-3 resize-none outline-none"
                     placeholder="write your review"
                     title="write review "
                     value={writeReview}

@@ -11,7 +11,6 @@ const handelUpdateReview = async (token: string, id: number,rate:number,text:str
         return res.data
     } catch (error) {
         console.log(error)
-        alert("some thing went wrong")
         return null
     }
 }

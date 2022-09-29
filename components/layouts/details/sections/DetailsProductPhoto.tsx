@@ -17,7 +17,8 @@ const DetailsProductPhoto = () => {
           {variationState.images && variationState.images?.length!==0 ? (
             <Image width={75} height={75} src={variationState.images[0]?.path} />
           ) : detailsState.product.images && detailsState.product.images.length !==0 ? (
-            <Image
+            <img
+            className="w-[75px] h-[75px]"
               width={75}
               height={75}
               src={detailsState.product.images[i]?.path}
