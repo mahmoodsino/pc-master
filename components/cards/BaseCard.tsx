@@ -112,7 +112,7 @@ const BaseCard = ({
     <div
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      className="border mb-3 border-gray-1500 md:w-[100%]  sm:w-[100%] md:h-[320px]   hover:border-green-950 hover:shadow-md  md:px-7 sm:px-1"
+      className="border mb-3 border-gray-1500 md:w-[100%]  sm:w-[100%] md:h-[320px] sm:h-[100%]   hover:border-green-950 hover:shadow-md  md:px-7 sm:px-1"
     >
       <div>
         <div
@@ -142,7 +142,7 @@ const BaseCard = ({
         </BaseButton>
       </div>
 
-      <div className=" h-[40%] md:mt-5 ml-1">
+      <div className=" h-[40%] md:mt-5 sm:mt-5 ml-1 ">
         <span className="text-lg font-bold sm:hidden md:block md:leading-[24px] md:tracking-[0.055em] mb-1">
           ${price}
         </span>
