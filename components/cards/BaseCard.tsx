@@ -135,7 +135,7 @@ const BaseCard = ({
             title="Options"
           />
         </div>
-        <BaseButton onClick={() => handelDetails(id)} className="sm:block font-medium md:hidden mt-1 text-left">
+        <BaseButton onClick={() => handelDetails(id)} className="sm:block h-4 font-medium md:hidden mt-1 text-left">
           <span className="md:hidden sm:block ">
             <span className="line-clamp222">{name}</span>
           </span>
