@@ -123,7 +123,7 @@ const BaseCard = ({
           {image.length > 0 ? (
             <ShopCarousel img={image} hover={hover} />
           ) : (
-            <div className=" mt-3 ml-3 product-slider-img">
+            <div className=" mt-5  product-slider-img">
               <Image width={200} height={150} src={no_image} />
             </div>
           )}

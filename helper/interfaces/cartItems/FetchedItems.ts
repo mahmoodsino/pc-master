@@ -5,6 +5,7 @@ import modifierGroups from "./modifierGroups"
 interface FetchedItems {
     type:number
     id?:number,
+    actual_quantity:number
     available_quantity:number,
     product_id:number,
     variation_id:number,

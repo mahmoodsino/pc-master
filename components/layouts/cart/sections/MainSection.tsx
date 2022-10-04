@@ -41,6 +41,8 @@ const MainSection = () => {
     setNewCart([]);
     const getData = async () => {
       const res = await getCartItems(token);
+      console.log(res);
+      
       if(res===null){
       }else{
         setAllCartsInfo(res.result);

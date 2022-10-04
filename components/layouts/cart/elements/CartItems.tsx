@@ -27,7 +27,7 @@ const CartItems = () => {
       if (isItemInCarts) {
         return prev.map((item) =>
           item.id === clickedItem.id
-            ? { ...item, quantity: item.quantity + 1 }
+            ? { ...item, quantity: item.quantity + 1,actual_quantity:item.actual_quantity+1 }
             : item
         );
       }
@@ -68,10 +68,10 @@ const CartItems = () => {
           if (reomve) return ack;
           if (
             item.available_quantity &&
-            item.quantity > item.available_quantity
+            item.actual_quantity > item.available_quantity
           )
-            return [...ack, { ...item, quantity: item.available_quantity}];
-          return [...ack, { ...item, quantity: item.quantity - 1 }];
+            return [...ack, { ...item, quantity: item.available_quantity,actual_quantity:item.available_quantity}];
+          return [...ack, { ...item, quantity: item.quantity - 1,actual_quantity:item.actual_quantity-1 }];
         } else {
           return [...ack, item];
         }
@@ -121,13 +121,13 @@ const CartItems = () => {
                 } ${
                   item.in_stock === 1 &&
                   item.product?.tracking_type === 2 &&
-                  item.quantity > item.available_quantity
+                  item.actual_quantity > item.available_quantity
                     ? "bg-red-100"
                     : "bg-white"
                 }   ${
                   item.in_stock === 1 &&
                   item.product?.tracking_type === 3 &&
-                  item.quantity > item.available_quantity
+                  item.actual_quantity > item.available_quantity
                     ? "bg-red-100"
                     : "bg-white"
                 }`}
@@ -154,7 +154,8 @@ const CartItems = () => {
                       </span>
                     </div>
                     <span className="text-sm">{item.product?.name}</span>
-                    {item.in_stock===1 && (item.product?.tracking_type===2 || item.product?.tracking_type===3) 
+                    {(item.in_stock===1 && (item.product?.tracking_type===2 || item.product?.tracking_type===3))
+                     && item.quantity >= item.actual_quantity
                     &&
                     <span className="text-sm text-red-1000 ">
                       Only {item.available_quantity} left
@@ -206,7 +207,7 @@ const CartItems = () => {
                       </Collapsible>
                     );
                   })}
-                  {item.quantity === item.available_quantity && (
+                  {item.actual_quantity === item.available_quantity && (
                     <h1 className="text-red-950 text-xs ">
                       you cant add more of this product
                     </h1>
@@ -234,15 +235,29 @@ const CartItems = () => {
                       <MinusIcon className="w-3.5 text-black" />
                     </BaseButton>
                     <span className="text-lg font-bold">{item.quantity}</span>
+                     {item.in_stock===1 && item.product?.tracking_type===1 &&
                     <BaseButton
+                      // disabled={
+                      //   item.actual_quantity === item.available_quantity ? true : false
+                      // }
+                      onClick={() => handleAddToCart(item)}
+                      className="disabled:cursor-not-allowed  h-full"
+                    >
+                      <BlusIcon className="text-black w-4 " />
+                    </BaseButton>
+                     } {
+                      item.in_stock===1 && (item.product?.tracking_type===2 || item.product?.tracking_type===3) &&
+                       <BaseButton
                       disabled={
-                        item.quantity === item.available_quantity ? true : false
+                        item.actual_quantity === item.available_quantity ? true : false
                       }
                       onClick={() => handleAddToCart(item)}
                       className="disabled:cursor-not-allowed  h-full"
                     >
                       <BlusIcon className="text-black w-4 " />
                     </BaseButton>
+                     }
+
                   </div>
                 </div>
               </div>
