@@ -28,6 +28,7 @@ const DetailsAtom = atom<DetailsType>({
             seo_title: "",
             short_description: "",
             slug: "",
+            tracking_type:0
         },
         variations: []
     }

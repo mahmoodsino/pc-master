@@ -70,7 +70,7 @@ const CartItems = () => {
             item.available_quantity &&
             item.quantity > item.available_quantity
           )
-            return [...ack, { ...item, quantity: item.available_quantity - 1 }];
+            return [...ack, { ...item, quantity: item.available_quantity}];
           return [...ack, { ...item, quantity: item.quantity - 1 }];
         } else {
           return [...ack, item];
@@ -113,9 +113,21 @@ const CartItems = () => {
               <div
                 key={uuidv4()}
                 className={`md:px-5 ${
-                  item.available_quantity &&
-                  (item.quantity > item.available_quantity ||
-                    item.available_quantity === 0)
+                  item.in_stock < 1
+                    ? "bg-red-100"
+                    : item.in_stock === 1 &&
+                      item.product?.tracking_type === 1 &&
+                      "bg-white"
+                } ${
+                  item.in_stock === 1 &&
+                  item.product?.tracking_type === 2 &&
+                  item.quantity > item.available_quantity
+                    ? "bg-red-100"
+                    : "bg-white"
+                }   ${
+                  item.in_stock === 1 &&
+                  item.product?.tracking_type === 3 &&
+                  item.quantity > item.available_quantity
                     ? "bg-red-100"
                     : "bg-white"
                 }`}
@@ -141,10 +153,13 @@ const CartItems = () => {
                         ${item.variation?.price}
                       </span>
                     </div>
-                    <h1 className="text-sm">{item.product?.name}</h1>
+                    <span className="text-sm">{item.product?.name}</span>
+                    {item.in_stock===1 && (item.product?.tracking_type===2 || item.product?.tracking_type===3) 
+                    &&
                     <span className="text-sm text-red-1000 ">
                       Only {item.available_quantity} left
                     </span>
+                    }
                   </div>
                 </div>
                 <div className="whitespace-nowrap ml-8  mr-10 w-full">
@@ -198,7 +213,7 @@ const CartItems = () => {
                   )}
                 </div>
                 <div
-                  className={`flex sm:justify-around  md:justify-between sm:space-x-2 md:space-x-14 border-b  mx-8 py-6 `}
+                  className={`flex sm:justify-around items-center md:justify-between sm:space-x-2 md:space-x-14 border-b  mx-8 py-6 `}
                 >
                   <BaseButton
                     onClick={() =>
@@ -209,10 +224,8 @@ const CartItems = () => {
                     <TrashIcon className=" inline-block w-4 " />
                     Remove
                   </BaseButton>
-                  {/* <BaseButton
-                    title="Save for later"
-                    className="underline text-sm tracking-[0.05em]"
-                  /> */}
+                  {item.in_stock>1 && <span className="text-sm text-red-400">this item is out of stock</span>}
+                 
                   <div className=" w-[129px] border sm:space-x-3 md:space-x-7 px-2 flex justify-around items-center rounded-full border-black">
                     <BaseButton
                       onClick={() => item.id && handleRemoveFromCart(item.id)}

@@ -17,6 +17,8 @@ interface product {
     seo_title:string,
     short_description:string,
     slug:string
+    tracking_type:number
+
 }
 
 export default product;

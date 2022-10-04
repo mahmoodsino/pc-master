@@ -14,6 +14,7 @@ type CartProductType = {
     short_description:string
     slug:string
     variation:Variation
+    tracking_type:number
 } 
 
 export default CartProductType

@@ -60,6 +60,8 @@ const MainSection = () => {
     setLoading(true);
     const getData = async () => {
       const res = await getCartItems(token);
+      console.log(res);
+      
       if(res===null){
       }else{
         setCarts(res.result.items);
