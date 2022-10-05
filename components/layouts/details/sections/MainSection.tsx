@@ -154,7 +154,10 @@ const MainSection = () => {
               <Reviews />
             </div>
           )}
+          <div className="lg:hidden sm:block md:px-20 sm:px-5">
                 <Availablity />
+
+          </div>
 
         </div>
       ) : (
