@@ -56,9 +56,10 @@ const Navbar = () => {
                 </svg>
               </button>
               <ul className="absolute shadow-[0_0_5px_rgba(0,0,0,0.12)] hidden text-gray-700 pt-1 group-hover:block">
-                {barnches.map((branch) => {
+                {barnches.map((branch,i) => {
                   return (
                     <button
+                    key={i}
                       onClick={() => branchSelect(branch)}
                       className="w-44"
                     >

@@ -52,10 +52,10 @@ const Availablity = () => {
                   </tr>
                 </thead> */}
                 <tbody>
-                  {instockInfo.map((stock) => {
+                  {instockInfo.map((stock,i) => {
                     if (variationState.id === stock.variation_id) {
                       return (
-                        <tr className="border-b w-[50%]">
+                        <tr key={i} className="border-b w-[50%]">
                           <td className="text-sm text-gray-900 font-light   whitespace-nowrap border-r">
                             <div className="grid grid-cols-2">
                               <div className="border-r block h-full py-4 ">
@@ -89,7 +89,7 @@ const Availablity = () => {
                     }
                     if (stock.variation_id === null) {
                       return (
-                        <tr className="border-b w-[50%]">
+                        <tr key={i} className="border-b w-[50%]">
                           <td className="text-sm text-gray-900 font-light   whitespace-nowrap border-r">
                             <div className="grid grid-cols-2">
                               <div className="border-r block h-full py-4 ">
