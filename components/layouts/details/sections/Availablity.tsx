@@ -88,6 +88,7 @@ const Availablity = () => {
                       );
                     }
                     if (stock.variation_id === null) {
+                      
                       return (
                         <tr key={i} className="border-b w-[50%]">
                           <td className="text-sm text-gray-900 font-light   whitespace-nowrap border-r">
