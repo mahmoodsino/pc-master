@@ -7,6 +7,7 @@ import {
   FetchedCartItemsAtom,
   getCartItems,
   NewCartAtom,
+  SelectedBranchAtom,
   TokenAtom,
   WishListAtom,
 } from "../../../../helper";
@@ -35,12 +36,13 @@ const MainSection = () => {
     SelectDelivaryTypeAtom
   );
   const timerRef = useRef() as MutableRefObject<NodeJS.Timeout>;
+  const [selectedBranch,setSelectedBranch]=useRecoilState(SelectedBranchAtom)
 
 
   useEffect(() => {
     setNewCart([]);
     const getData = async () => {
-      const res = await getCartItems(token);
+      const res = await getCartItems(token,selectedBranch.id);
       console.log(res);
       
       if(res===null){
@@ -61,7 +63,7 @@ const MainSection = () => {
   useEffect(() => {
     setLoading(true);
     const getData = async () => {
-      const res = await getCartItems(token);
+      const res = await getCartItems(token,selectedBranch.id);
       console.log(res);
       
       if(res===null){
