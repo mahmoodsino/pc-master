@@ -5,6 +5,7 @@ import {
   AllCartsInfo,
   FetchedCartItemsAtom,
   handelCrateOrder,
+  SelectedBranchAtom,
   ShippingAddressIdAtom,
   TokenAtom,
 } from "../../../../helper";
@@ -23,6 +24,7 @@ const CartSummary = () => {
   const [token, setToken] = useRecoilState(TokenAtom);
   const [savedOrderId, setSavedOrderId] = useState<number>();
   const [loading, setLoading] = useState(false);
+  const [selectedBranch,setSelectedBranch]=useRecoilState(SelectedBranchAtom)
 
   const { push } = useRouter();
 
@@ -43,11 +45,10 @@ const CartSummary = () => {
     }
     return isFound;
   };
-
   const createOrder = async () => {
     if (selectedMethod === "PICKUP") {
       setLoading(true);
-      const res = await handelCrateOrder(token, selectedMethod);
+      const res = await handelCrateOrder({branchId:selectedBranch.id,shipping_method:selectedMethod,token:token});
 
       setSavedOrderId(res.result.saved_order_id);
       push({
@@ -60,9 +61,8 @@ const CartSummary = () => {
     } else {
       setLoading(true);
       const res = await handelCrateOrder(
-        token,
-        selectedMethod,
-        shippingAddressId
+        // 
+        {branchId:selectedBranch.id,shipping_method:selectedMethod,token:token,address_id:shippingAddressId}
       );
       setSavedOrderId(res.result.saved_order_id);
       push({

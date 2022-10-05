@@ -8,6 +8,7 @@ import {
   ModifiersGroupAtom,
   NewCartAtom,
   ProductsType,
+  SelectedBranchAtom,
   TokenAtom,
 } from "../../../../helper";
 import VariationAtom from "../../../../helper/state/products/VariationAtom";
@@ -22,6 +23,7 @@ import Reviews from "./Reviews";
 import { BaseCard } from "../../../cards";
 import MoveToCartPageModal from "./MoveToCartPageModal";
 import SimilarProducts from "./SimilarProducts";
+import Availablity from "./Availablity";
 
 
 const MainSection = () => {
@@ -31,19 +33,20 @@ const MainSection = () => {
   const [loading, setLoading] = useState(true);
   const router = useRouter().query;
   const [token, setToken] = useRecoilState(TokenAtom);
+  const [selectedBranch,setSelectedBranch]=useRecoilState(SelectedBranchAtom)
 
 
   useEffect(() => {
     setLoading(false);
     const Data = async () => {
       if (router.product) {
-        const res = await getDetails(+router.product);
+        const res = await getDetails(+router.product,selectedBranch.id);
         console.log(res);
         setDetailState(res.result);
         if (res) {
           setLoading(true);
         }
-        const respones = await getProductModifiers(+router.product);
+        const respones = await getProductModifiers(+router.product,selectedBranch.id);
         setModifiers(respones.result);
       }
     };
@@ -105,6 +108,7 @@ const MainSection = () => {
                     <Reviews />
                   </div>
                 )}
+                <Availablity />
               </div>
             </div>
             <div className="lg:w-1/2 sm:mt-28 md:px-16 lg:px-0 lg:mt-0  lg:inline-block">

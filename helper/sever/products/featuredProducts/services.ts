@@ -4,12 +4,12 @@ import axios from "axios"
 const root = process.env.NEXT_PUBLIC_ROOT
 
 
-const getfeaturedProducts = async (token: string, id?: number) => {
+const getfeaturedProducts = async (token: string,branchId:number, id?: number) => {
     try {
         if (id) {
             const res = await axios.get(`${root}/products?page_size=5&is_featured=1&category=${id}`, {
                 headers: {
-                    "branch-id": 1,
+                    "branch-id": branchId,
                     "company-id": 1,
                     Authorization: `Bearer ${token}`
                 }
@@ -19,7 +19,7 @@ const getfeaturedProducts = async (token: string, id?: number) => {
 
             const res = await axios.get(`${root}/products?page_size=5&is_featured=1`, {
                 headers: {
-                    "branch-id": 1,
+                    "branch-id": branchId,
                     "company-id": 1,
                     Authorization: `Bearer ${token}`
                 }

@@ -7,6 +7,7 @@ import {
   deleteCart,
   FetchedCartItemsAtom,
   FetchedItems,
+  SelectedBranchAtom,
   TokenAtom,
   updateCart,
 } from "../../../../helper";
@@ -18,6 +19,8 @@ import Collapsible from "react-collapsible";
 const CartItems = () => {
   const [carts, setCarts] = useRecoilState(FetchedCartItemsAtom);
   const token = useRecoilValue(TokenAtom);
+  const [selectedBranch,setSelectedBranch]=useRecoilState(SelectedBranchAtom)
+  
 
   const timerRef = useRef() as MutableRefObject<NodeJS.Timeout>;
 
@@ -38,7 +41,7 @@ const CartItems = () => {
           type: 1,
           quantity: 1,
           product_id: clickedItem.product_id,
-          branch_id: 1,
+          branch_id: selectedBranch.id,
           description: "",
           modifierGroups: [],
           variation_id: clickedItem.variation_id,

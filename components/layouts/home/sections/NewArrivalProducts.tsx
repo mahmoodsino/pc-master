@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import {
   HomePageAtom,
+  SelectedBranchAtom,
   TokenAtom,
   WishListAtom,
 } from "../../../../helper/state";
@@ -20,11 +21,12 @@ const NewArrivalProducts = () => {
   const [wishList, setWishList] = useRecoilState(WishListAtom);
   const [loading, setLoading] = useState(false);
   const [selected, setSelected] = useState<number>();
+  const [selectedBranch,setSelectedBranch]=useRecoilState(SelectedBranchAtom)
 
   const setItem = async (setItem: number) => {
     setLoading(true);
     setSelected(setItem);
-    const res = await getNewArraivalProducts(token, setItem);
+    const res = await getNewArraivalProducts(token, selectedBranch.id,setItem);
     if (res === null) {
     } else {
       setNewArrivalProducts(res.result.items);
@@ -35,7 +37,7 @@ const NewArrivalProducts = () => {
   useEffect(() => {
     const getData = async () => {
       setLoading(true);
-      const res = await getNewArraivalProducts(token);
+      const res = await getNewArraivalProducts(token,selectedBranch.id);
       if (res === null) {
       } else {
         setNewArrivalProducts(res.result.items);
@@ -43,17 +45,17 @@ const NewArrivalProducts = () => {
       setLoading(false);
     };
     getData();
-  }, []);
+  }, [selectedBranch]);
   useEffect(() => {
     const getData = async () => {
-      const res = await getNewArraivalProducts(token);
+      const res = await getNewArraivalProducts(token,selectedBranch.id);
       if (res === null) {
       } else {
         setNewArrivalProducts(res.result.items);
       }
     };
     getData();
-  }, [wishList]);
+  }, [wishList,selectedBranch]);
 
   return (
     <div>

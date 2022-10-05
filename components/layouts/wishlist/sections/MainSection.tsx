@@ -8,6 +8,7 @@ import {
   getWishList,
   handelMoveWishListToCart,
   OpenMessageModalAtom,
+  SelectedBranchAtom,
   TokenAtom,
   updateWishList,
   WishListAtom,
@@ -30,6 +31,7 @@ const MainSection = () => {
   const [openMessageModal, setOpenMassegModal] =
     useRecoilState(OpenMessageModalAtom);
     const [wrongMessage,setWrrongMessage]=useState("")
+    const [selectedBranch,setSelectedBranch]=useRecoilState(SelectedBranchAtom)
 
   const { push } = useRouter();
 
@@ -82,7 +84,7 @@ const MainSection = () => {
           ...clickedItem,
           quantity: 1,
           product_id: clickedItem.product_id,
-          branch_id: 1,
+          branch_id: selectedBranch.id,
           description: "",
           variation_id: clickedItem.variation_id,
           company_id: 1,

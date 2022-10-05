@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import {
   HomePageAtom,
+  SelectedBranchAtom,
   TokenAtom,
   WishListAtom,
 } from "../../../../helper/state";
@@ -18,11 +19,13 @@ const FeaturedProducts = () => {
   const [wishList, setWishList] = useRecoilState(WishListAtom);
   const [loading, setLoading] = useState(false);
   const [selected, setSelected] = useState<number>();
+  const [selectedBranch,setSelectedBranch]=useRecoilState(SelectedBranchAtom)
+
 
   const setItem = async (setItem: number) => {
     setLoading(true);
     setSelected(setItem);
-    const res = await getfeaturedProducts(token, setItem);
+    const res = await getfeaturedProducts(token, selectedBranch.id,setItem);
     if(res===null){
     }else{
       setFeaturedProducts(res.result.items);
@@ -32,7 +35,7 @@ const FeaturedProducts = () => {
   useEffect(() => {
     const getData = async () => {
       setLoading(true);
-      const res = await getfeaturedProducts(token);
+      const res = await getfeaturedProducts(token,selectedBranch.id);
       if(res===null){
       }else{
         setFeaturedProducts(res.result.items);
@@ -40,18 +43,18 @@ const FeaturedProducts = () => {
       setLoading(false);
     };
     getData();
-  }, []);
+  }, [selectedBranch]);
 
   useEffect(() => {
     const getData = async () => {
-      const res = await getfeaturedProducts(token);
+      const res = await getfeaturedProducts(token,selectedBranch.id);
       if(res===null){
       }else{
         setFeaturedProducts(res.result.items);
       }
     };
     getData();
-  }, [wishList]);
+  }, [wishList,selectedBranch]);
   return (
     <div>
       <div className="flex sm:flex-col space-y-3 lg:flex-row items-center sm:justify-start lg:justify-between my-10 pt-10">

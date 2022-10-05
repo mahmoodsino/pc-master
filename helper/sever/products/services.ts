@@ -13,13 +13,14 @@ interface Params {
   MaxPrice?: number
   rate?: number
   page?:number
+  branchId:number
 }
 
 const getProducts = async (params: Params) => {
   try {
     const res = await axios.get(`${root}/products?${params.orderBy ? params.orderBy : "OrderByNewest"}&page_size=25`, {
       headers: {
-        "branch-id": 1,
+        "branch-id": params.branchId,
         "company-id": 1,
         Authorization: `Bearer ${params.token}`
       },

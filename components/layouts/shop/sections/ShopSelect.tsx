@@ -10,6 +10,7 @@ import {
   OrderByAtom,
   ProductsAtom,
   RangeSliderAtom,
+  SelectedBranchAtom,
   SelectedShopCategoryAtom,
   TokenAtom,
 } from "../../../../helper";
@@ -40,6 +41,8 @@ const ShopSelect = () => {
   );
   const [rangeSlider, setRangeSlider] = useRecoilState(RangeSliderAtom);
   const [currentPage, setCurrentPage] = useRecoilState(currentPageAtom);
+  const [selectedBranch,setSelectedBranch]=useRecoilState(SelectedBranchAtom)
+  
 
   const {
     control,
@@ -89,6 +92,7 @@ const ShopSelect = () => {
                 MinPrice: rangeSlider[0],
                 MaxPrice: rangeSlider[1],
                 page: currentPage,
+                branchId:selectedBranch.id
 
               });
               setProductsState(res.result.items);

@@ -13,6 +13,7 @@ import {
   FillterProductAtom,
   ProductsAtom,
   RangeSliderAtom,
+  SelectedBranchAtom,
   SelectedShopCategoryAtom,
   TokenAtom,
   totalPagesAtom,
@@ -52,6 +53,7 @@ const MainSection = () => {
   const [allCartsInfo, setAllCartsInfo] = useRecoilState(AllCartsInfo);
   const [totalPages, setTotalPages] = useRecoilState(totalPagesAtom);
   const [currentPage, setCurrentPage] = useRecoilState(currentPageAtom);
+  const [selectedBranch,setSelectedBranch]=useRecoilState(SelectedBranchAtom)
 
   const timerRef = useRef() as MutableRefObject<NodeJS.Timeout>;
 
@@ -67,6 +69,8 @@ const MainSection = () => {
       setSelectedCategory((prev) => [...prev, +query.categorey]);
     }
   }, [query.categorey]);
+
+  
 
   useEffect(() => {
     const leave = () => {
@@ -96,6 +100,7 @@ const MainSection = () => {
         MaxPrice: rangeSlider[1],
         page: currentPage,
         rate: ratingState,
+        branchId:selectedBranch.id
       });
 
       setTotalPages(res.result.pages_count);
@@ -119,6 +124,7 @@ const MainSection = () => {
     rangeSlider,
     currentPage,
     ratingState,
+    selectedBranch
   ]);
 
   useEffect(() => {
@@ -133,6 +139,7 @@ const MainSection = () => {
         MinPrice: rangeSlider[0],
         MaxPrice: rangeSlider[1],
         page: currentPage,
+        branchId:selectedBranch.id
       });
       setTotalPages(res.result.pages_count);
 

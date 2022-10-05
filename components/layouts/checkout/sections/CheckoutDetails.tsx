@@ -6,6 +6,7 @@ import {
   getPaymentProvidor,
   handelComletePay,
   handelOrderPay,
+  SelectedBranchAtom,
   TokenAtom,
 } from "../../../../helper";
 import { useEffect, useState } from "react";
@@ -43,6 +44,7 @@ const CheckoutDetails = () => {
   const [phone, setPhone] = useState<number>(0);
   const [paymentProvidorId, setPaymenProvidorId] = useState<number>();
   const [publicKey, setPublicKey] = useState<string>();
+  const [selectedBranch,setSelectedBranch]=useRecoilState(SelectedBranchAtom)
 
   const router = useRouter().query;
 
@@ -56,7 +58,7 @@ const CheckoutDetails = () => {
     setEmail(email || "");
     setUserId(Number(id) || 0);
     const getData = async () => {
-      const res = await getPaymentProvidor();
+      const res = await getPaymentProvidor(selectedBranch.id);
       setPaymentProvidorState(res.result.payment_providers);
     };
     getData();

@@ -4,12 +4,12 @@ import axios from "axios"
 const root = process.env.NEXT_PUBLIC_ROOT
 
 
-const getNewArraivalProducts = async (token:string,id?: number) => {
+const getNewArraivalProducts = async (token:string,branchId:number,id?: number) => {
     try {
         if (id) {
             const res = await axios.get(`${root}/products?page_size=5&orderbynewest&category=${id}`, {
                 headers: {
-                    "branch-id": 1,
+                    "branch-id": branchId,
                     "company-id": 1,
                     Authorization: `Bearer ${token}`
                 }
@@ -19,7 +19,7 @@ const getNewArraivalProducts = async (token:string,id?: number) => {
 
             const res = await axios.get(`${root}/products?page_size=5&orderbynewest`, {
                 headers: {
-                    "branch-id": 1,
+                    "branch-id": branchId,
                     "company-id": 1,
                     Authorization: `Bearer ${token}`
                 }

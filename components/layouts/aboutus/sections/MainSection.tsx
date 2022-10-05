@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { getAbouUsInfo, getWorkingHours } from "../../../../helper";
+import { useRecoilState } from "recoil";
+import { getAbouUsInfo, getWorkingHours, SelectedBranchAtom } from "../../../../helper";
 
 const MainSection = () => {
   const [aboutus, setAboutus] = useState("");
@@ -26,12 +27,13 @@ const MainSection = () => {
     wednesday_close: "",
     wednesday_open: "",
   });
+  const [selectedBranch,setSelectedBranch]=useRecoilState(SelectedBranchAtom)
 
   useEffect(() => {
     const getData = async () => {
       const res = await getAbouUsInfo();
       setAboutus(res.data);
-      const response = await getWorkingHours();
+      const response = await getWorkingHours(selectedBranch.id);
       setWorkHours(response);
     };
     getData();

@@ -13,6 +13,7 @@ import {
   imagesType,
   ModifiersGroupAtom,
   OpenAddToWishListAtom,
+  SelectedBranchAtom,
   TokenAtom,
   Variation,
   VariationAtom,
@@ -45,6 +46,8 @@ const BaseCard = ({
   const [wishList, setWishList] = useRecoilState(WishListAtom);
   const token = useRecoilValue(TokenAtom);
   const setContinueAsGuestModal = useSetRecoilState(CouninueAsGuestModalAtom);
+  const [selectedBranch,setSelectedBranch]=useRecoilState(SelectedBranchAtom)
+
 
   const push = useRouter().push;
 
@@ -64,7 +67,7 @@ const BaseCard = ({
           quantity: 1,
           company_id: 1,
           product_id: id,
-          branch_id: 1,
+          branch_id: selectedBranch.id,
           description: "item",
           variation_id: clikedItem.id,
           variation: clikedItem,

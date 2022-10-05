@@ -1,0 +1,1 @@
+export {default as getInstockInfo} from "./services"

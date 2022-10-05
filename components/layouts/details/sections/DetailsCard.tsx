@@ -14,6 +14,7 @@ import {
   items,
   NewCartAtom,
   OpenAddToWishListAtom,
+  SelectedBranchAtom,
   TokenAtom,
   Variation,
   VariationAtom,
@@ -67,6 +68,7 @@ const DetailsCard = () => {
   const [allCartsInfo, setAllCartsInfo] = useRecoilState(AllCartsInfo);
   const [MoveToCartPageModalState, setMoveToCartPageModalState] =
     useRecoilState(MoveToCartPageModalAtom);
+    const [selectedBranch,setSelectedBranch]=useRecoilState(SelectedBranchAtom)
 
   useEffect(() => {
     if (modifiersId !== 0) {
@@ -120,7 +122,7 @@ const DetailsCard = () => {
           type: 1,
           quantity: 1,
           product_id: clickedItem.product.id,
-          branch_id: 1,
+          branch_id: selectedBranch.id,
           description: "item",
           modifierGroups: allModifires,
           variation_id: variationState.id,
@@ -138,7 +140,7 @@ const DetailsCard = () => {
             type: 1,
             quantity: 1,
             product_id: detailsState.product.id,
-            branch_id: 1,
+            branch_id: selectedBranch.id,
             description: "item",
             modifierGroups: allModifires,
             variation_id: variationState.id,
@@ -152,7 +154,7 @@ const DetailsCard = () => {
               type: 1,
               quantity: 1,
               product_id: detailsState.product.id,
-              branch_id: 1,
+              branch_id: selectedBranch.id,
               description: "item",
               modifierGroups: allModifires,
               variation_id: variationState.id,
@@ -519,12 +521,12 @@ const DetailsCard = () => {
         );
       }
     });
-    const response = await getCartItems(token);
+    const response = await getCartItems(token,selectedBranch.id);
     if (response === null) {
     } else {
       setCarts(response.result.items);
     }
-    const res = await getCartItems(token);
+    const res = await getCartItems(token,selectedBranch.id);
     if (res === null) {
     } else {
       setAllCartsInfo(res.result);

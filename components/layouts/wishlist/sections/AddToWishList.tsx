@@ -6,6 +6,7 @@ import {
   DetailsAtom,
   getWishList,
   OpenAddToWishListAtom,
+  SelectedBranchAtom,
   TokenAtom,
   VariationAtom,
   WishListAtom,
@@ -30,6 +31,7 @@ const AddToWishList = () => {
   const [wishList, setWishList] = useRecoilState(WishListAtom);
   const [token, setToken] = useRecoilState(TokenAtom);
   const [loading, setLoading] = useState(false);
+  const [selectedBranch,setSelectedBranch]=useRecoilState(SelectedBranchAtom)
 
   const {
     register,
@@ -61,7 +63,7 @@ const AddToWishList = () => {
             quantity: 1,
             company_id: 1,
             product_id: detailsState.product.id,
-            branch_id: 1,
+            branch_id: selectedBranch.id,
             description: "item",
             variation_id: variationState.id,
             variation: variationState,

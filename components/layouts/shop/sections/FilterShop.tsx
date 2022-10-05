@@ -8,6 +8,7 @@ import {
   ProductsAtom,
   RangeSliderAtom,
   SearchAtom,
+  SelectedBranchAtom,
 } from "../../../../helper/state";
 import { BaseButton } from "../../../buttons";
 import { BaseInput } from "../../../inputs";
@@ -30,6 +31,7 @@ const FilterShop = () => {
   const { render } = useBrands();
   const { rende } = useRating();
   const { AttributeRender } = useAttributes();
+  const [selectedBranch,setSelectedBranch]=useRecoilState(SelectedBranchAtom)
 
   const handleChange = (value: number[]) => {
     setRangeSlider(value);
@@ -46,7 +48,7 @@ const FilterShop = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const res = await handelFilterProduct();
+      const res = await handelFilterProduct(selectedBranch.id);
       setBrands(res.result.brands);
       setAttributes(res.result.attributes);
       const modifieOrderBy: string[] = [...res.result.order_by_clauses];
@@ -59,7 +61,7 @@ const FilterShop = () => {
     };
 
     getData();
-  }, []);
+  }, [selectedBranch]);
 
   return (
     <div className="mt-7 md:pl-10 lg:pl-0">

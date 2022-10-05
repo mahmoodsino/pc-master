@@ -10,6 +10,7 @@ import {
   getOrderCratedOrder,
   getPaymentProvidor,
   OrderDetailsAtom,
+  SelectedBranchAtom,
   TokenAtom,
 } from "../../../../helper";
 import { useRouter } from "next/router";
@@ -31,6 +32,7 @@ const MainSection = () => {
     PaymentProvider[]
   >([]);
   const [paymentProvidorId, setPaymenProvidorId] = useState<number>();
+  const [selectedBranch,setSelectedBranch]=useRecoilState(SelectedBranchAtom)
 
   const router = useRouter().query;
 
@@ -51,7 +53,7 @@ const MainSection = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const res = await getPaymentProvidor();
+      const res = await getPaymentProvidor(selectedBranch.id);
       setPaymentProvidorState(res.result.payment_providers);
     };
     getData();

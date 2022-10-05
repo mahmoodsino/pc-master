@@ -9,8 +9,10 @@ import {
   ActiveDropDownAtom,
   AllCartsInfo,
   AllWishListsInfoAtom,
+  BranchesAtom,
   FetchedCartItemsAtom,
   getAddress,
+  getBranches,
   getCartItems,
   getCountries,
   getWishList,
@@ -18,6 +20,7 @@ import {
   OpenEditAddressModalAtom,
   optionTypeCountry,
   registerCountryAtom,
+  SelectedBranchAtom,
   TokenAtom,
   WishListAtom,
 } from "../helper";
@@ -50,14 +53,46 @@ const App = ({ children }: Props) => {
     OpenAddNewAddressModalAtom
   );
   const timerRef = useRef() as MutableRefObject<NodeJS.Timeout>;
+  const [barnches,setBranches]=useRecoilState(BranchesAtom)
+  const [selectedBranch,setSelectedBranch]=useRecoilState(SelectedBranchAtom)
 
   if (typeof window !== "undefined") {
     setToken(localStorage.getItem("token") || "");
   }
 
+console.log(selectedBranch);
+
+
+  useEffect(() => {
+      const getData = async () => {
+        const res = await getBranches()
+        if(res===null){
+
+        }else {
+          setBranches(res.result.branches);
+        }
+        
+      }
+      getData()
+  },[])
+
+  useEffect(() => {
+    const ba =localStorage.getItem("branch");
+    if(ba){
+      const branch =JSON.parse(ba)
+      setSelectedBranch(branch)
+    }else{
+      setSelectedBranch(barnches[0])
+    }
+  },[barnches])
+
+
+
+
+
   useEffect(() => {
     const getData = async () => {
-      const res = await getCartItems(token);
+      const res = await getCartItems(token,selectedBranch.id);
       if (res === null) {
       } else {
         setAllCartsInfo(res.result);
@@ -68,7 +103,7 @@ const App = ({ children }: Props) => {
         setAllWishListInfo(response.result);
       }
     };
-    if (token.length > 1) {
+    if (token.length > 1&&selectedBranch.id) {
       clearTimeout(timerRef.current);
       timerRef.current = setTimeout(() => {
         getData();
@@ -78,7 +113,7 @@ const App = ({ children }: Props) => {
 
   useEffect(() => {
     const getData = async () => {
-      const res = await getCartItems(token);
+      const res = await getCartItems(token,selectedBranch.id);
       if (res === null) {
       } else {
         setCarts(res.result.items);
@@ -89,7 +124,7 @@ const App = ({ children }: Props) => {
         setWishList(response.result.items);
       }
     };
-    if (token.length > 1) {
+    if (token.length > 1&&selectedBranch.id) {
       clearTimeout(timerRef.current);
       timerRef.current = setTimeout(() => {
         getData();

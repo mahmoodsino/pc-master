@@ -4,6 +4,7 @@ import {
   DetailsAtom,
   getSimilarProducts,
   ProductsType,
+  SelectedBranchAtom,
   TokenAtom,
   WishListAtom,
 } from "../../../../helper";
@@ -16,11 +17,12 @@ const SimilarProducts = () => {
   const [token, setToken] = useRecoilState(TokenAtom);
   const [wishList, setWishList] = useRecoilState(WishListAtom);
   const [loading,setLoading]=useState(false)
+  const [selectedBranch,setSelectedBranch]=useRecoilState(SelectedBranchAtom)
 
   useEffect(() => {
     const getData = async () => {
       setLoading(true)
-      const res = await getSimilarProducts(token, detailsState.product.id);
+      const res = await getSimilarProducts(token, detailsState.product.id,selectedBranch.id);
       setSimilarProducts(res.result);
     };
     if (detailsState.product.id > 0) {
@@ -31,7 +33,7 @@ const SimilarProducts = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const res = await getSimilarProducts(token, detailsState.product.id);
+      const res = await getSimilarProducts(token, detailsState.product.id,selectedBranch.id);
       setSimilarProducts(res.result);
     };
     if (detailsState.product.id > 0) {
