@@ -154,6 +154,8 @@ const MainSection = () => {
               <Reviews />
             </div>
           )}
+                <Availablity />
+
         </div>
       ) : (
         <div className="flex justify-center items-center ">
