@@ -46,7 +46,7 @@ const SimilarProducts = () => {
         <span className="text-xl block mb-5 font-bold">Similar Products </span>
       </div>
       {!loading ? 
-        <div className="grid grid-cols-3 gap-1 ">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-1 ">
           {similarProducts?.map((item, i) => {
             return (
               <BaseCard

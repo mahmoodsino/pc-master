@@ -2,7 +2,6 @@ import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { useRecoilState } from "recoil";
 import {
-  BranchesAtom,
   getInstockInfo,
   InStockInfoAtom,
   VariationAtom,
@@ -10,7 +9,6 @@ import {
 import { RightSignIcon } from "../../../icons";
 
 const Availablity = () => {
-  const [barnches, setBranches] = useRecoilState(BranchesAtom);
   const [instockInfo, setInstockInfo] = useRecoilState(InStockInfoAtom);
   const router = useRouter().query;
   const [variationState, setVariationState] = useRecoilState(VariationAtom);
@@ -19,8 +17,6 @@ const Availablity = () => {
     const getData = async () => {
       if (router.product) {
         const res = await getInstockInfo(+router.product);
-        console.log(res);
-
         setInstockInfo(res.result);
       }
     };
@@ -37,22 +33,8 @@ const Availablity = () => {
           <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">
             <div className="overflow-hidden">
               <table className="min-w-full border text-center">
-                {/* <thead className="border-b">
-                  <tr>
-                    {barnches.map((branch) => {
-                      return (
-                        <th
-                          scope="col"
-                          className="text-sm font-medium text-gray-900 px-6 py-4 border-r w-[50%]"
-                        >
-                          {branch.name}
-                        </th>
-                      );
-                    })}
-                  </tr>
-                </thead> */}
                 <tbody>
-                  {instockInfo.map((stock,i) => {
+                  {instockInfo.map((stock, i) => {
                     if (variationState.id === stock.variation_id) {
                       return (
                         <tr key={i} className="border-b w-[50%]">
@@ -88,7 +70,6 @@ const Availablity = () => {
                       );
                     }
                     if (stock.variation_id === null) {
-                      
                       return (
                         <tr key={i} className="border-b w-[50%]">
                           <td className="text-sm text-gray-900 font-light   whitespace-nowrap border-r">

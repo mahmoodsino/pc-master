@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { useRecoilState } from "recoil";
 import {
   CouninueAsGuestModalAtom,
-  DetailsType,
   handelRegisterAsGuest,
   TokenAtom,
 } from "../../../../helper";
@@ -13,11 +12,8 @@ import img1 from "../../../../public/assets/image/img1.png";
 import Image from "next/image";
 import { Spinner } from "../../../spinner";
 
-interface Props {
-  addToCart?: (clickedItem: DetailsType) => void;
-}
 
-const ContinueAsGuest = ({ addToCart }: Props) => {
+const ContinueAsGuest = () => {
   const [ContinueAsGuestModal, setContinueAsGuestModal] = useRecoilState(
     CouninueAsGuestModalAtom
   );

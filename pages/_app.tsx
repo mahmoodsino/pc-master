@@ -182,7 +182,7 @@ console.log(selectedBranch);
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <div>
+    <div className="">
       <RecoilRoot>
         <App>
           <div className="md:block sm:hidden">

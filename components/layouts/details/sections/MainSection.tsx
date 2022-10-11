@@ -3,11 +3,7 @@ import {
   DetailsAtom,
   getDetails,
   getProductModifiers,
-  getSimilarProducts,
-  items,
   ModifiersGroupAtom,
-  NewCartAtom,
-  ProductsType,
   SelectedBranchAtom,
   TokenAtom,
 } from "../../../../helper";
@@ -20,11 +16,9 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Spinner } from "../../../spinner";
 import Reviews from "./Reviews";
-import { BaseCard } from "../../../cards";
 import MoveToCartPageModal from "./MoveToCartPageModal";
 import SimilarProducts from "./SimilarProducts";
 import Availablity from "./Availablity";
-
 
 const MainSection = () => {
   const [variationState, setVariationState] = useRecoilState(VariationAtom);
@@ -33,20 +27,22 @@ const MainSection = () => {
   const [loading, setLoading] = useState(true);
   const router = useRouter().query;
   const [token, setToken] = useRecoilState(TokenAtom);
-  const [selectedBranch,setSelectedBranch]=useRecoilState(SelectedBranchAtom)
-
+  const [selectedBranch, setSelectedBranch] =
+    useRecoilState(SelectedBranchAtom);
 
   useEffect(() => {
     setLoading(false);
     const Data = async () => {
       if (router.product) {
-        const res = await getDetails(+router.product,selectedBranch.id);
-        console.log(res);
+        const res = await getDetails(+router.product, selectedBranch.id);
         setDetailState(res.result);
         if (res) {
           setLoading(true);
         }
-        const respones = await getProductModifiers(+router.product,selectedBranch.id);
+        const respones = await getProductModifiers(
+          +router.product,
+          selectedBranch.id
+        );
         setModifiers(respones.result);
       }
     };
@@ -61,7 +57,13 @@ const MainSection = () => {
           name="description"
           content={detailsState.product.seo_description}
         />
-          return <meta key={detailsState.product.seo_keywords} name="keywords" content={detailsState.product.seo_keywords} />;
+        return{" "}
+        <meta
+          key={detailsState.product.seo_keywords}
+          name="keywords"
+          content={detailsState.product.seo_keywords}
+        />
+        ;
       </head>
       {loading ? (
         <div>
@@ -72,12 +74,26 @@ const MainSection = () => {
             <div className="lg:w-1/2 lg:inline-block">
               <DetailsProductPhoto />
               <div className="  mr-5 relative top-20 lg:block sm:hidden">
-                <div  className={`mt-10 border-b-2 pb-5 ${detailsState.product.description===null && "hidden"}`}>
-                  <span className="text-xl mb-5 font-bold block">Product details</span>
+                <div
+                  className={`mt-10 border-b-2 pb-5 ${
+                    detailsState.product.description === null && "hidden"
+                  }`}
+                >
+                  <span className="text-xl mb-5 font-bold block">
+                    Product details
+                  </span>
                   <span className="">{detailsState.product.description}</span>
                 </div>
-                <div className={`mt-5 ${detailsState.product.custome_properties.length===0 && variationState.attributes?.length===0 && "hidden"}`}>
-                  <span className="text-xl block font-bold mb-10">Specifications</span>
+                <div
+                  className={`mt-5 ${
+                    detailsState.product.custome_properties.length === 0 &&
+                    variationState.attributes?.length === 0 &&
+                    "hidden"
+                  }`}
+                >
+                  <span className="text-xl block font-bold mb-10">
+                    Specifications
+                  </span>
                   <div className="grid  xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-2 pb-5">
                     {variationState.attributes?.map((attribute) => {
                       return (
@@ -117,11 +133,23 @@ const MainSection = () => {
             </div>
           </div>
           <div className="sm:block lg:hidden  tracking-[0.03em] my-10 ">
-            <div className={`mt-10 border-b-2 pb-5 ${detailsState.product.description===null && "hidden"}`}>
-              <span className="text-xl mb-5 font-bold block">Product details</span>
+            <div
+              className={`mt-10 border-b-2 pb-5 ${
+                detailsState.product.description === null && "hidden"
+              }`}
+            >
+              <span className="text-xl mb-5 font-bold block">
+                Product details
+              </span>
               <span className="">{detailsState.product.description}</span>
             </div>
-            <div className={`mt-5 ${detailsState.product.custome_properties.length===0 && variationState.attributes?.length===0 && "hidden"} `}>
+            <div
+              className={`mt-5 ${
+                detailsState.product.custome_properties.length === 0 &&
+                variationState.attributes?.length === 0 &&
+                "hidden"
+              } `}
+            >
               <span className="text-xl block mb-10">Specifications</span>
               <div className="grid  xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-2 pb-5">
                 {variationState.attributes?.map((attribute) => {
@@ -155,10 +183,8 @@ const MainSection = () => {
             </div>
           )}
           <div className="lg:hidden sm:block md:px-20 sm:px-5">
-                <Availablity />
-
+            <Availablity />
           </div>
-
         </div>
       ) : (
         <div className="flex justify-center items-center ">

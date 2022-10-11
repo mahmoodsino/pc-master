@@ -104,14 +104,14 @@ const useModifiers = () => {
                   checked={modifiersIdforModifiers.length === 0 ? true : false}
                 />
                 <span className="design"></span>
-                <span className="value">no package</span>
+                <span className="value sm:text-xs md:text-base">no package</span>
               </label>
               {modifierswithoutWarranty.map((modefier) => {
                 return (
                   <div
                     onClick={() => addModifiers(modefier)}
                     key={uuidv4()}
-                    className={`cursor-pointer w-[80%] border hover:-translate-y-0.5 hover:shadow-sm duration-300 my-2 ${
+                    className={`cursor-pointer sm:w-[100%] md:w-[90%] border hover:-translate-y-0.5 hover:shadow-sm duration-300 md:my-2 ${
                       modifiersIdforModifiers.findIndex(
                         (item) => item === modefier.id
                       ) > -1
@@ -132,22 +132,22 @@ const useModifiers = () => {
                         }
                       />
                       <span className="design"></span>
-                      <span className="value">{modefier.name}</span>
-                      <p className="ml-10">
-                        {" "}
+                      <span className="value sm:text-xs md:text-base">{modefier.name}</span>
+                      <p className="ml-10 whitespace-nowrap sm:text-xs md:text-base">
                         with price of ${modefier.total_price}
                       </p>
                     </label>
-                    <div className="flex ">
+                    <div className="flex ml-10">
                       {modefier.modifiers.map((item) => {
                         if (item.image) {
                           return (
                             <div
                               key={uuidv4()}
-                              className="flex justify-around bg-cover"
+                              className="flex justify-around bg-cover "
                             >
                               <img
-                                className="w-20 bg-cover"
+                              style={{objectFit:"cover"}}
+                                className="w-20  ml-2 pb-2 "
                                 src={item.image}
                                 alt="Picture of the author"
                               />
