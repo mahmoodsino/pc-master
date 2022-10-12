@@ -19,15 +19,15 @@ const FeaturedProducts = () => {
   const [wishList, setWishList] = useRecoilState(WishListAtom);
   const [loading, setLoading] = useState(false);
   const [selected, setSelected] = useState<number>();
-  const [selectedBranch,setSelectedBranch]=useRecoilState(SelectedBranchAtom)
-
+  const [selectedBranch, setSelectedBranch] =
+    useRecoilState(SelectedBranchAtom);
 
   const setItem = async (setItem: number) => {
     setLoading(true);
     setSelected(setItem);
-    const res = await getfeaturedProducts(token, selectedBranch.id,setItem);
-    if(res===null){
-    }else{
+    const res = await getfeaturedProducts(token, selectedBranch?.id, setItem);
+    if (res === null) {
+    } else {
       setFeaturedProducts(res.result.items);
     }
     setLoading(false);
@@ -35,26 +35,31 @@ const FeaturedProducts = () => {
   useEffect(() => {
     const getData = async () => {
       setLoading(true);
-      const res = await getfeaturedProducts(token,selectedBranch.id);
-      if(res===null){
-      }else{
+      const res = await getfeaturedProducts(token, selectedBranch?.id);
+      if (res === null) {
+      } else {
         setFeaturedProducts(res.result.items);
       }
+
       setLoading(false);
     };
-    getData();
+    if (selectedBranch?.id > 0) {
+      getData();
+    }
   }, [selectedBranch]);
 
   useEffect(() => {
     const getData = async () => {
-      const res = await getfeaturedProducts(token,selectedBranch.id);
-      if(res===null){
-      }else{
+      const res = await getfeaturedProducts(token, selectedBranch?.id);
+      if (res === null) {
+      } else {
         setFeaturedProducts(res.result.items);
       }
     };
-    getData();
-  }, [wishList,selectedBranch]);
+    if (selectedBranch?.id > 0) {
+      getData();
+    }
+  }, [wishList, selectedBranch]);
   return (
     <div>
       <div className="flex sm:flex-col space-y-3 lg:flex-row items-center sm:justify-start lg:justify-between my-10 pt-10">
@@ -76,7 +81,7 @@ const FeaturedProducts = () => {
         </div>
       </div>
       {!loading ? (
-        <div className="grid sm:grid-cols-2 lg:grid-cols-5 md:grid-cols-3 my-5 xl:mx-4  mb-10">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-5 md:grid-cols-3 my-5 gap-2 xl:mx-4  mb-10">
           {featuredProducts.map((item) => {
             return (
               <BaseCard
@@ -97,7 +102,7 @@ const FeaturedProducts = () => {
           <Spinner className="w-32 fill-green-950" />
         </div>
       )}
-      {(featuredProducts.length === 0 &&!loading) && (
+      {featuredProducts.length === 0 && !loading && (
         <div className="flex justify-center font-semibold pb-10">
           <p className="ml-3">ther are no products for that category now !</p>
         </div>

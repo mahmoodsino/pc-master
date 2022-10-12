@@ -59,12 +59,17 @@ const Reviews = () => {
     // setUserReview({} as reviewsType);
     const getData = async () => {
       const res = await getReviews(token, detailsState.product.id);
-      if (res.result.user_review) {
-        setUserReview(res.result.user_review);
-      } else {
-        setUserReview({} as reviewsType);
+      if(res===null){
+        
+      }else{
+        if (res.result.user_review) {
+          setUserReview(res.result.user_review);
+        } else {
+          setUserReview({} as reviewsType);
+        }
+        setRewiew(res.result.items);
+
       }
-      setRewiew(res.result.items);
     };
     if (token.length > 1) {
       getData();
@@ -222,7 +227,6 @@ const Reviews = () => {
       ) : (
         <Spinner className="fill-green-950 w-20" />
       )}
-      <MessageModal message={wrongMessage} />
     </div>
   );
 };

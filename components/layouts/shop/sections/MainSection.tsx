@@ -103,14 +103,13 @@ const MainSection = () => {
         branchId:selectedBranch.id
       });
 
-      setTotalPages(res.result.pages_count);
+      if(res===null){
 
-      if (res === null) {
-        setLoading(false);
-      } else {
+      }else{
+        setTotalPages(res.result.pages_count);
         setProductsState(res.result.items);
-        setLoading(false);
       }
+        setLoading(false);
     };
     clearTimeout(timerRef.current);
     timerRef.current = setTimeout(() => {
@@ -141,14 +140,13 @@ const MainSection = () => {
         page: currentPage,
         branchId:selectedBranch.id
       });
-      setTotalPages(res.result.pages_count);
+      if(res===null){
 
-      if (res === null) {
-        setLoading(false);
-      } else {
+      }else{
+        setTotalPages(res.result.pages_count);
         setProductsState(res.result.items);
-        setLoading(false);
       }
+        setLoading(false);
     };
     clearTimeout(timerRef.current);
     timerRef.current = setTimeout(() => {
@@ -240,7 +238,7 @@ const MainSection = () => {
               </div>
               <div className="flex md:flex-row sm:flex-col md:space-x-5 items-center md:justify-end sm:w-fit md:w-full">
                 <span className="sm:text-sm sm:mb-5 md:mb-0">
-                  Showing 1-12 of 23 results
+                  Showing 1-25 of {totalPages*25} results
                 </span>
                 <ShopSelect />
               </div>

@@ -19,6 +19,7 @@ import Reviews from "./Reviews";
 import MoveToCartPageModal from "./MoveToCartPageModal";
 import SimilarProducts from "./SimilarProducts";
 import Availablity from "./Availablity";
+import {toast} from "react-toastify"
 
 const MainSection = () => {
   const [variationState, setVariationState] = useRecoilState(VariationAtom);
@@ -35,7 +36,11 @@ const MainSection = () => {
     const Data = async () => {
       if (router.product) {
         const res = await getDetails(+router.product, selectedBranch.id);
-        setDetailState(res.result);
+        if(res===null){
+          toast.error("some thing went wrong")
+        }else{
+          setDetailState(res.result);
+        }
         if (res) {
           setLoading(true);
         }
@@ -43,7 +48,12 @@ const MainSection = () => {
           +router.product,
           selectedBranch.id
         );
-        setModifiers(respones.result);
+        if(respones===null){
+          toast.error("some thing went wrong")
+
+        }else{
+          setModifiers(respones.result);
+        }
       }
     };
     Data();

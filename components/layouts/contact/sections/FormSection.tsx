@@ -24,11 +24,12 @@ const FormSection = () => {
 
   const submitForm = async (data:IFormInputs) =>{
     const res = await handelSendMessage(data.name,data.email,data.message)
-    if(res.message){
+    if(res===null){
+
+    }else{
       alert(res.message)
+
     }
-    
-    
     
   }
   

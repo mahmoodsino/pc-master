@@ -7,6 +7,7 @@ import {
   VariationAtom,
 } from "../../../../helper";
 import { RightSignIcon } from "../../../icons";
+import {toast} from "react-toastify"
 
 const Availablity = () => {
   const [instockInfo, setInstockInfo] = useRecoilState(InStockInfoAtom);
@@ -17,7 +18,11 @@ const Availablity = () => {
     const getData = async () => {
       if (router.product) {
         const res = await getInstockInfo(+router.product);
-        setInstockInfo(res.result);
+        if(res===null){
+          toast.error("some thing went wrong")
+        }else{
+          setInstockInfo(res.result);
+        }
       }
     };
     getData();

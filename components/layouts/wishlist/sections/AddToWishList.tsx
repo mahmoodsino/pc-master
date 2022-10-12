@@ -4,8 +4,10 @@ import {
   addToWishList,
   deleteWishList,
   DetailsAtom,
+  ErroreMessageAtom,
   getWishList,
   OpenAddToWishListAtom,
+  OpenMessageModalAtom,
   SelectedBranchAtom,
   TokenAtom,
   VariationAtom,
@@ -17,6 +19,7 @@ import { BaseInput } from "../../../inputs";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Spinner } from "../../../spinner";
+import { toast } from "react-toastify";
 
 interface IFormInputs {
   title: string;
@@ -32,6 +35,10 @@ const AddToWishList = () => {
   const [token, setToken] = useRecoilState(TokenAtom);
   const [loading, setLoading] = useState(false);
   const [selectedBranch,setSelectedBranch]=useRecoilState(SelectedBranchAtom)
+  const [openMessageModal, setOpenMassegModal] =
+  useRecoilState(OpenMessageModalAtom);
+  const [wrongMessage,setWrrongMessage]=useRecoilState(ErroreMessageAtom)
+
 
   const {
     register,
@@ -85,18 +92,29 @@ const AddToWishList = () => {
         data.title,
         data.title
       );
-      setOpenAddToWishList(false);
-      setLoading(false)
+      if(res === null){
+        setWrrongMessage("wrong");
+        setOpenMassegModal(true)
+      }else {
+        setOpenAddToWishList(false);
+        setLoading(false)
+      }
     }
     if (isItemInWishList >= 0) {
       const id = wishList[isItemInWishList].id;
       if (id) {
         const res = await deleteWishList(token, id);
-        setOpenAddToWishList(false);
+        if(res===null){
+          setWrrongMessage("wrong");
+        setOpenMassegModal(true)
+        }else{
+          setOpenAddToWishList(false);
+        }
       }
     }
     const response = await getWishList(token);
     if(response===null){
+      toast.error("some think wrong happend ")
     }else{
       setWishList(response.result.items);
     }

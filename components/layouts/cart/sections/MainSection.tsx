@@ -19,6 +19,7 @@ import { CartItems } from "../elements";
 import CartSummary from "./CartSummary";
 import { OpenSelectAddressAtom } from "./SelectAddAddress";
 import { SelectDelivaryTypeAtom } from "./SelectDelivaryType";
+import {toast} from "react-toastify"
 
 const MainSection = () => {
   const [carts, setCarts] = useRecoilState(FetchedCartItemsAtom);
@@ -43,9 +44,8 @@ const MainSection = () => {
     setNewCart([]);
     const getData = async () => {
       const res = await getCartItems(token,selectedBranch.id);
-      console.log(res);
-      
       if(res===null){
+        toast.error("wrong")
       }else{
         setAllCartsInfo(res.result);
       }
@@ -64,9 +64,9 @@ const MainSection = () => {
     setLoading(true);
     const getData = async () => {
       const res = await getCartItems(token,selectedBranch.id);
-      console.log(res);
-      
       if(res===null){
+        toast.error("wrong")
+
       }else{
         setCarts(res.result.items);
       }
@@ -135,6 +135,7 @@ const MainSection = () => {
         )}
       </div>
       <EditAddressModal />
+
     </div>
   );
 };

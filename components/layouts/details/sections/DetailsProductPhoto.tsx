@@ -26,7 +26,6 @@ const DetailsProductPhoto = () => {
           )  :
           <Image width={75} height={75} src={no_image} />
           }
-          {/* <Image width={75} height={75} src={no_image} /> */}
         </a>
       );
     },

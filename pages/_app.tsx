@@ -10,6 +10,7 @@ import {
   AllCartsInfo,
   AllWishListsInfoAtom,
   BranchesAtom,
+  ErroreMessageAtom,
   FetchedCartItemsAtom,
   getAddress,
   getBranches,
@@ -26,6 +27,9 @@ import {
 } from "../helper";
 import { addressatom } from "../components/layouts/account/sections/AddressBook";
 import ContinueAsGuest from "../components/layouts/details/sections/ContinueAsGuest";
+import {ToastContainer} from "react-toastify"
+import 'react-toastify/dist/ReactToastify.css';
+import { MessageModal } from "../components";
 
 interface Props {
   children: ReactNode;
@@ -55,12 +59,13 @@ const App = ({ children }: Props) => {
   const timerRef = useRef() as MutableRefObject<NodeJS.Timeout>;
   const [barnches,setBranches]=useRecoilState(BranchesAtom)
   const [selectedBranch,setSelectedBranch]=useRecoilState(SelectedBranchAtom)
+  const [wrongMessage,setWrrongMessage]=useRecoilState(ErroreMessageAtom)
+  console.log(wrongMessage);
+  
 
   if (typeof window !== "undefined") {
     setToken(localStorage.getItem("token") || "");
   }
-
-console.log(selectedBranch);
 
 
   useEffect(() => {
@@ -71,7 +76,6 @@ console.log(selectedBranch);
         }else {
           setBranches(res.result.branches);
         }
-        
       }
       getData()
   },[])
@@ -92,7 +96,7 @@ console.log(selectedBranch);
 
   useEffect(() => {
     const getData = async () => {
-      const res = await getCartItems(token,selectedBranch.id);
+      const res = await getCartItems(token,selectedBranch?.id);
       if (res === null) {
       } else {
         setAllCartsInfo(res.result);
@@ -113,7 +117,7 @@ console.log(selectedBranch);
 
   useEffect(() => {
     const getData = async () => {
-      const res = await getCartItems(token,selectedBranch.id);
+      const res = await getCartItems(token,selectedBranch?.id);
       if (res === null) {
       } else {
         setCarts(res.result.items);
@@ -124,13 +128,13 @@ console.log(selectedBranch);
         setWishList(response.result.items);
       }
     };
-    if (token.length > 1&&selectedBranch.id) {
+    if (token.length > 1&&selectedBranch?.id) {
       clearTimeout(timerRef.current);
       timerRef.current = setTimeout(() => {
         getData();
       }, 1000);
     }
-  }, [token]);
+  }, [token,selectedBranch]);
 
   useEffect(() => {
     const getdata = async () => {
@@ -175,12 +179,14 @@ console.log(selectedBranch);
     >
       {children}
       <ContinueAsGuest />
+      <MessageModal message={wrongMessage} />
 
     </div>
   );
 };
 
 function MyApp({ Component, pageProps }: AppProps) {
+
   return (
     <div className="">
       <RecoilRoot>
@@ -195,6 +201,9 @@ function MyApp({ Component, pageProps }: AppProps) {
           </div>
           <Footer />
         </App>
+
+        <ToastContainer />
+
       </RecoilRoot>
     </div>
   );

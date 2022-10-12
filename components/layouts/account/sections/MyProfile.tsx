@@ -32,7 +32,11 @@ const MyProfile = () => {
       const getdata = async () => {
 
         const res = await getUser(token)
-        setUserInfo(res.data)
+        if(res===null){
+
+        }else{
+          setUserInfo(res.data)
+        }
       }
       if(userType==="user"){
 

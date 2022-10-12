@@ -1,12 +1,14 @@
 import {  useRecoilState, useRecoilValue } from "recoil";
 import {BaseButton} from "../../../../buttons";
 import {BaseInput} from "../../../../inputs";
-import { ChangePassAtom, TokenAtom } from "../../../../../helper/state/index";
+import { ChangePassAtom, ErroreMessageAtom, OpenMessageModalAtom, TokenAtom } from "../../../../../helper/state/index";
 import { useForm} from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { changePasswordSchema } from "../../../../../helper/validation";
 import { useRouter } from "next/router";
 import { handelChangePassword } from "../../../../../helper";
+import { MessageModal } from "../../../../messageModal";
+import { useState } from "react";
 
 
 interface IFormInputs {
@@ -18,6 +20,9 @@ const ChangePassword = () => {
   const [showChangePassword, setShowChangePassword] =
     useRecoilState(ChangePassAtom);
   const token = useRecoilValue(TokenAtom);
+  const [openMessageModal, setOpenMassegModal] =
+  useRecoilState(OpenMessageModalAtom);
+  const [wrongMessage,setWrrongMessage]=useRecoilState(ErroreMessageAtom)
     const {
       register,
       handleSubmit,
@@ -33,7 +38,7 @@ const ChangePassword = () => {
       
         const res = await handelChangePassword(token,data.password,data.newpassword,data.confpassword)
         if(res?.response?.data?.message){
-          alert(res?.response?.data?.message)
+          setWrrongMessage(res?.response?.data?.message)
         }else{
           setShowChangePassword(false)
           push("./")

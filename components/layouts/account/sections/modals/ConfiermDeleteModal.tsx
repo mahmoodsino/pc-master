@@ -22,8 +22,11 @@ const ConfiermDeleteModal = () => {
 
   const deletAddressHandler = async () => {
     const res = await deleteAddress(token,addressTodeleteId)
-    
-    setEditSuccess("deleteSusecc")
+    if(res===null){
+
+    }else{
+      setEditSuccess("deleteSusecc")
+    }
       setTimeout(() => {
         setEditSuccess("");
       }, 500);

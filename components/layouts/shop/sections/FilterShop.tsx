@@ -49,15 +49,20 @@ const FilterShop = () => {
   useEffect(() => {
     const getData = async () => {
       const res = await handelFilterProduct(selectedBranch.id);
-      setBrands(res.result.brands);
-      setAttributes(res.result.attributes);
-      const modifieOrderBy: string[] = [...res.result.order_by_clauses];
-      const result = modifieOrderBy.map((item, index) => ({
-        label: item,
-        value: index,
-      }));
-      setOrderByState(result);
-      setShopCategory(res.result.categories);
+      if(res===null){
+
+      }else{
+        setBrands(res.result.brands);
+        setAttributes(res.result.attributes);
+        const modifieOrderBy: string[] = [...res.result.order_by_clauses];
+        const result = modifieOrderBy.map((item, index) => ({
+          label: item,
+          value: index,
+        }));
+        setOrderByState(result);
+        setShopCategory(res.result.categories);
+
+      }
     };
 
     getData();

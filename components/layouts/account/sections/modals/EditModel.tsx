@@ -12,6 +12,7 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { editUpdateUserSchema } from "../../../../../helper/validation";
 import { useRouter } from "next/router";
+import {toast} from "react-toastify"
 
 type User = {
   userInfo: UserInterface ;
@@ -51,9 +52,13 @@ const {
   
   const handelEdit = async (data: IFormInputs) => {
     const res = await handelUpdateUser(data.firstName,data.lastName,data.email,token)
-    setEditSuccess("EditModel");
-    setShowEditModel(false);
-
+    if(res===null){
+      toast.error("some thing went wrong")
+    }else{
+      setEditSuccess("EditModel");
+      setShowEditModel(false);
+    }
+    
     setTimeout(() => {
       setEditSuccess("");
     }, 500);

@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { PayPalButton } from "react-paypal-button-v2";
 import { Spinner } from "../../../spinner";
 import { useRouter } from "next/router";
+import {toast} from "react-toastify"
 
 interface IFormInputs {
   firstName: string;
@@ -59,7 +60,11 @@ const CheckoutDetails = () => {
     setUserId(Number(id) || 0);
     const getData = async () => {
       const res = await getPaymentProvidor(selectedBranch.id);
-      setPaymentProvidorState(res.result.payment_providers);
+      if(res===null){
+        toast.error("some thing went wrong")
+      }else{
+        setPaymentProvidorState(res.result.payment_providers);
+      }
     };
     getData();
   }, []);
@@ -79,7 +84,11 @@ const CheckoutDetails = () => {
       setLoading(true);
       if (paymentProvidorId) {
         const res = await getClientToken(paymentProvidorId, token);
-        setClientToken(res.result.client_token);
+        if(res===null){
+            toast.error("some thing went wrong")
+        }else{
+          setClientToken(res.result.client_token);
+        }
         if (res) {
           setLoading(false);
         }

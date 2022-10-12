@@ -8,20 +8,20 @@ import {
   addToWishList,
   CouninueAsGuestModalAtom,
   deleteWishList,
-  DetailsAtom,
+  ErroreMessageAtom,
   getWishList,
   imagesType,
-  ModifiersGroupAtom,
-  OpenAddToWishListAtom,
+  OpenMessageModalAtom,
   SelectedBranchAtom,
   TokenAtom,
   Variation,
-  VariationAtom,
   WishListAtom,
 } from "../../helper";
 import { useRouter } from "next/router";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { RedHeartIcon } from "../icons";
+import {toast} from "react-toastify"
+import { MessageModal } from "../messageModal";
 
 interface cardType {
   image: imagesType[];
@@ -47,7 +47,9 @@ const BaseCard = ({
   const token = useRecoilValue(TokenAtom);
   const setContinueAsGuestModal = useSetRecoilState(CouninueAsGuestModalAtom);
   const [selectedBranch,setSelectedBranch]=useRecoilState(SelectedBranchAtom)
-
+  const [openMessageModal, setOpenMassegModal] =
+  useRecoilState(OpenMessageModalAtom);
+  const [wrongMessage,setWrrongMessage]=useRecoilState(ErroreMessageAtom)
 
   const push = useRouter().push;
 
@@ -59,6 +61,7 @@ const BaseCard = ({
   };
 
   const handelAddVariationToWishList = async (clikedItem: Variation) => {
+    
     setWishList((prev) => {
       return [
         ...prev,
@@ -85,9 +88,15 @@ const BaseCard = ({
       "my favorait item",
       "my favorait item"
     );
-    if (res) {
+    if(res===null){
+      setWrrongMessage("some thing went wrong");
+      setOpenMassegModal(true)
+    }
+
+    else{
       const response = await getWishList(token);
       if(response===null){
+        toast.error("some thing went wrong")
       }else{
         setWishList(response.result.items);
       }
@@ -102,6 +111,11 @@ const BaseCard = ({
       const id = wishList[index].id;
       if (id) {
         const res = await deleteWishList(token, id);
+        if(res===null){
+          setWrrongMessage("some thing went wrong");
+          setOpenMassegModal(true)
+        }
+        
       }
     }
     const response = await getWishList(token);
@@ -173,6 +187,7 @@ const BaseCard = ({
           )}
         </div>
       </div>
+
     </div>
   );
 };

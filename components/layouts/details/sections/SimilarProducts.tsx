@@ -23,7 +23,11 @@ const SimilarProducts = () => {
     const getData = async () => {
       setLoading(true)
       const res = await getSimilarProducts(token, detailsState.product.id,selectedBranch.id);
-      setSimilarProducts(res.result);
+      if(res===null){
+        
+      }else{
+        setSimilarProducts(res.result);
+      }
     };
     if (detailsState.product.id > 0) {
       getData();
@@ -34,7 +38,11 @@ const SimilarProducts = () => {
   useEffect(() => {
     const getData = async () => {
       const res = await getSimilarProducts(token, detailsState.product.id,selectedBranch.id);
-      setSimilarProducts(res.result);
+      if(res===null){
+
+      }else{
+        setSimilarProducts(res.result);
+      }
     };
     if (detailsState.product.id > 0) {
       getData();

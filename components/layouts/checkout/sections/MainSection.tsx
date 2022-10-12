@@ -5,16 +5,6 @@ import CheckoutDetails from './CheckoutDetails'
 
 const MainSection = () => {
 
-// useEffect(() => {
-//   const getData = async () => {
-//     const res = await getClientToken()
-    
-//     setClientToken(res.result.client_token);
-    
-//   }
-//   getData()
-// }, []);
-
 
   return (
     <div   className="lg:px-10 2xl:px-24 lg:ml-4 2xl:container mt-10">
@@ -26,10 +16,6 @@ const MainSection = () => {
         
         <CartSummary />
       </div>
-      {/* {clientToken && (
-
-      <App/>
-      )} */}
     </div>
   )
 }

@@ -45,10 +45,10 @@ const Footer = () => {
           <div className="absolute top-12">
             <Image src={img1} />
           </div>
-          <h1 className="text-lg text-white ml-10">
+          <span className="text-lg block text-white ml-10">
             Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sunt,
             velit.
-          </h1>
+          </span>
 
           <div className="md:ml-5 sm:mr-16 text-white font-light">
             <div className="ml-9 mt-8 flex space-x-3">

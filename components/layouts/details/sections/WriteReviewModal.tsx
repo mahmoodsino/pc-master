@@ -3,13 +3,16 @@ import { atom, useRecoilState } from "recoil";
 import { BaseButton } from "../../../buttons";
 import {
   DetailsAtom,
+  ErroreMessageAtom,
   handelUpdateReview,
   handelWriteReview,
+  OpenMessageModalAtom,
   TokenAtom,
 } from "../../../../helper";
 import { userReviewAtom } from "./Reviews";
 import { Spinner } from "../../../spinner";
 import ReactStars from "react-stars";
+import { MessageModal } from "../../../messageModal";
 
 export const OpenWriteReviewModalAtom = atom({
   key: "OpenWriteReviewModalAtom",
@@ -39,6 +42,10 @@ const WriteReviewModal = ({ rated, text, id }: Props) => {
   const [detailsState, setDetailState] = useRecoilState(DetailsAtom);
   const [userReview, setUserReview] = useRecoilState(userReviewAtom);
   const [loading, setLoading] = useState(false);
+  const [openMessageModal, setOpenMassegModal] =
+  useRecoilState(OpenMessageModalAtom);
+  const [wrongMessage,setWrrongMessage]=useRecoilState(ErroreMessageAtom)
+
 
   useEffect(() => {
     setRate(0);
@@ -61,6 +68,10 @@ const WriteReviewModal = ({ rated, text, id }: Props) => {
         rate,
         writeReview
       );
+      if(res===null){
+        setWrrongMessage("some thing went wrong");
+        setOpenMassegModal(true)
+      }
       if(res){
         setLoading(false)
       }
@@ -73,9 +84,14 @@ const WriteReviewModal = ({ rated, text, id }: Props) => {
     if (openUbdateReviewModal && id) {
       setLoading(true);
       const res = await handelUpdateReview(token, id, rate, writeReview);
-      setUserReview(res.result);
-      if (userReview.id > 0) {
-        setLoading(false);
+      if(res===null){
+
+      }else{
+        setUserReview(res.result);
+        if (userReview.id > 0) {
+          setLoading(false);
+        }
+
       }
       setOpenUpdateReviewModal(false);
     }

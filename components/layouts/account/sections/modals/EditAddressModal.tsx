@@ -32,6 +32,7 @@ import {
   stateType,
 } from "../../../../../helper";
 import { SpinnerWithBack } from "../../../../spinner";
+import {toast} from "react-toastify"
 
 interface IFormInputs {
   addressName: string;
@@ -109,9 +110,12 @@ const EditAddressModal = () => {
         data.check,
         token
       );
-      setShippingAddressId(res.data.id);
-
-      setEditSuccess("addSucess");
+      if(res===null){
+          toast.error("some thing went wrong")
+      }else{
+        setShippingAddressId(res.data.id);
+        setEditSuccess("addSucess");
+      }
       setTimeout(() => {
         setEditSuccess("");
       }, 500);
@@ -131,7 +135,12 @@ const EditAddressModal = () => {
         data.check,
         token
       );
-      setEditSuccess("EditSucsess");
+      if(res===null){
+        toast.error("some thing went wrong")
+
+      }else{
+        setEditSuccess("EditSucsess");
+      }
       setTimeout(() => {
         setEditSuccess("");
       }, 500);

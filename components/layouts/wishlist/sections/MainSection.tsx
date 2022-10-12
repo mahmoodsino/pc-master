@@ -5,6 +5,7 @@ import { useRecoilState } from "recoil";
 import {
   AllWishListsInfoAtom,
   deleteWishList,
+  ErroreMessageAtom,
   getWishList,
   handelMoveWishListToCart,
   OpenMessageModalAtom,
@@ -20,6 +21,7 @@ import { MessageModal } from "../../../messageModal";
 import { Spinner } from "../../../spinner";
 import MobileWishList from "./MobileWishList";
 import WishListTableDetails from "./WishListTableDetails";
+import { toast } from "react-toastify";
 
 const MainSection = () => {
   const [allWishListsInfo, setAllWishListInfo] =
@@ -30,7 +32,7 @@ const MainSection = () => {
   const timerRef = useRef() as MutableRefObject<NodeJS.Timeout>;
   const [openMessageModal, setOpenMassegModal] =
     useRecoilState(OpenMessageModalAtom);
-    const [wrongMessage,setWrrongMessage]=useState("")
+    const [wrongMessage,setWrrongMessage]=useRecoilState(ErroreMessageAtom)
     const [selectedBranch,setSelectedBranch]=useRecoilState(SelectedBranchAtom)
 
   const { push } = useRouter();
@@ -39,6 +41,7 @@ const MainSection = () => {
     const getData = async () => {
       const response = await getWishList(token);
       if(response===null){
+        toast.error("some thing wrong happend")
       }else{
         setWishList(response.result.items);
       }
@@ -53,6 +56,7 @@ const MainSection = () => {
       setLoading(true);
       const response = await getWishList(token);
       if(response===null){
+        toast.error("some thing wrong happend")
       }else{
         setWishList(response.result.items);
       }
@@ -111,6 +115,10 @@ const MainSection = () => {
             "item",
             clickedItem.title
           );
+          if(res===null){
+            setWrrongMessage("wrong");
+        setOpenMassegModal(true)
+          }
         }
       }, 1000);
     }
@@ -143,9 +151,17 @@ const MainSection = () => {
           "item",
           title
         );
+        if(res===null){
+          setWrrongMessage("wrong");
+        setOpenMassegModal(true)
+        }
       }, 1000);
     } else if (itemQuantity === 1 || remove) {
       const res = await deleteWishList(token, id);
+      if(res===null){
+        setWrrongMessage("wrong");
+        setOpenMassegModal(true)
+      }
     }
   };
 
@@ -208,7 +224,6 @@ const MainSection = () => {
           <Spinner className="h-40 w-40 fill-green-950" />
         </div>
       )}
-      <MessageModal message={wrongMessage} />
     </div>
   );
 };

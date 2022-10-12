@@ -8,12 +8,14 @@ import {
   deleteWishList,
   DetailsAtom,
   DetailsType,
+  ErroreMessageAtom,
   FetchedCartItemsAtom,
   getCartItems,
   getWishList,
   items,
   NewCartAtom,
   OpenAddToWishListAtom,
+  OpenMessageModalAtom,
   SelectedBranchAtom,
   TokenAtom,
   Variation,
@@ -28,6 +30,7 @@ import {
   MinusIcon,
   RedHeartIcon,
 } from "../../../icons";
+import { MessageModal } from "../../../messageModal";
 import { Spinner } from "../../../spinner";
 import { AddToWishList } from "../../wishlist";
 import useModifiers from "./Modifiers";
@@ -68,7 +71,11 @@ const DetailsCard = () => {
   const [allCartsInfo, setAllCartsInfo] = useRecoilState(AllCartsInfo);
   const [MoveToCartPageModalState, setMoveToCartPageModalState] =
     useRecoilState(MoveToCartPageModalAtom);
-    const [selectedBranch,setSelectedBranch]=useRecoilState(SelectedBranchAtom)
+  const [selectedBranch, setSelectedBranch] =
+    useRecoilState(SelectedBranchAtom);
+    const [openMessageModal, setOpenMassegModal] =
+  useRecoilState(OpenMessageModalAtom);
+  const [wrongMessage,setWrrongMessage]=useRecoilState(ErroreMessageAtom)
 
   useEffect(() => {
     if (modifiersId !== 0) {
@@ -178,7 +185,6 @@ const DetailsCard = () => {
       }, [] as items[])
     );
   };
-
 
   useEffect(() => {
     let index: number;
@@ -519,24 +525,23 @@ const DetailsCard = () => {
           item.quantity,
           "item"
         );
+        if(res===null){
+          setWrrongMessage("some thing went wrong");
+          setOpenMassegModal(true)
+        }else {
+          setMoveToCartPageModalState(true);
+        }
       }
     });
-    const response = await getCartItems(token,selectedBranch.id);
+    const response = await getCartItems(token, selectedBranch.id);
     if (response === null) {
     } else {
+      setAllCartsInfo(response.result);
       setCarts(response.result.items);
+
     }
-    const res = await getCartItems(token,selectedBranch.id);
-    if (res === null) {
-    } else {
-      setAllCartsInfo(res.result);
-    }
-    if (res) {
-      setLoading(false);
-    }
-    if (response) {
-      setMoveToCartPageModalState(true);
-    }
+    
+    setLoading(false);
   };
 
   const getbg = (id: number) => {
@@ -570,9 +575,11 @@ const DetailsCard = () => {
       const id = wishList[index].id;
       if (id) {
         const res = await deleteWishList(token, id);
-        if (res) {
-          setRemoveLoading(false);
+        if(res===null){
+          setWrrongMessage("some thing went wrong");
+          setOpenMassegModal(true)
         }
+          setRemoveLoading(false);
       }
     }
     const response = await getWishList(token);

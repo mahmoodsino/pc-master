@@ -3,8 +3,10 @@ import React, { useEffect, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import {
   AllCartsInfo,
+  ErroreMessageAtom,
   FetchedCartItemsAtom,
   handelCrateOrder,
+  OpenMessageModalAtom,
   SelectedBranchAtom,
   ShippingAddressIdAtom,
   TokenAtom,
@@ -13,6 +15,8 @@ import { BaseButton } from "../../../buttons";
 import { Spinner } from "../../../spinner";
 import SelectAddAddress from "./SelectAddAddress";
 import SelectDelivaryType, { selctedMethodAtom } from "./SelectDelivaryType";
+import { toast } from "react-toastify";
+import { MessageModal } from "../../../messageModal";
 
 const CartSummary = () => {
   const [allCartsInfo, setAllCartsInfo] = useRecoilState(AllCartsInfo);
@@ -25,7 +29,9 @@ const CartSummary = () => {
   const [savedOrderId, setSavedOrderId] = useState<number>();
   const [loading, setLoading] = useState(false);
   const [selectedBranch,setSelectedBranch]=useRecoilState(SelectedBranchAtom)
-
+  const [openMessageModal, setOpenMassegModal] =
+  useRecoilState(OpenMessageModalAtom);
+  const [wrongMessage,setWrrongMessage]=useRecoilState(ErroreMessageAtom)
   const { push } = useRouter();
 
   const checkQuantity = () => {
@@ -49,13 +55,17 @@ const CartSummary = () => {
     if (selectedMethod === "PICKUP") {
       setLoading(true);
       const res = await handelCrateOrder({branchId:selectedBranch.id,shipping_method:selectedMethod,token:token});
+      if(res===null){
+        setWrrongMessage("some thing went wrong");
+        setOpenMassegModal(true)
+        setLoading(false);
 
-      setSavedOrderId(res.result.saved_order_id);
-      push({
-        pathname: "/checkout",
-        query: { savedOrder: encodeURI(res.result.saved_order_id) },
-      });
-      if (res) {
+      }else{
+        setSavedOrderId(res.result.saved_order_id);
+        push({
+          pathname: "/checkout",
+          query: { savedOrder: encodeURI(res.result.saved_order_id) },
+        });
         setLoading(false);
       }
     } else {
@@ -64,13 +74,18 @@ const CartSummary = () => {
         // 
         {branchId:selectedBranch.id,shipping_method:selectedMethod,token:token,address_id:shippingAddressId}
       );
-      setSavedOrderId(res.result.saved_order_id);
-      push({
-        pathname: "/checkout",
-        query: { savedOrder: encodeURI(res.result.saved_order_id) },
-      });
-      if (res) {
+      if(res===null){
+        setWrrongMessage("some thing went wrong");
+        setOpenMassegModal(true)
         setLoading(false);
+      }else{
+        setSavedOrderId(res.result.saved_order_id);
+        push({
+          pathname: "/checkout",
+          query: { savedOrder: encodeURI(res.result.saved_order_id) },
+        });
+        setLoading(false);
+
       }
     }
   };

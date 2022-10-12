@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Spinner } from "../../../spinner";
+import {toast} from "react-toastify"
 
 const CartSummary = () => {
   const [orderDetails, setOrderDetails] = useRecoilState(OrderDetailsAtom);
@@ -20,7 +21,11 @@ const CartSummary = () => {
       setLoading(true);
       if (router.savedOrder) {
         const res = await getOrderCratedOrder(token, +router.savedOrder);
-        setOrderDetails(res.result);
+        if(res===null){
+          toast.error("some thing went wrong")
+        }else{
+          setOrderDetails(res.result);
+        }
         if (res) {
           setLoading(false);
         }

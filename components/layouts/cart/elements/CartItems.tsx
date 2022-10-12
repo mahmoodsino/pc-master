@@ -5,8 +5,10 @@ import Image from "next/image";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
   deleteCart,
+  ErroreMessageAtom,
   FetchedCartItemsAtom,
   FetchedItems,
+  OpenMessageModalAtom,
   SelectedBranchAtom,
   TokenAtom,
   updateCart,
@@ -20,7 +22,9 @@ const CartItems = () => {
   const [carts, setCarts] = useRecoilState(FetchedCartItemsAtom);
   const token = useRecoilValue(TokenAtom);
   const [selectedBranch,setSelectedBranch]=useRecoilState(SelectedBranchAtom)
-  
+  const [openMessageModal, setOpenMassegModal] =
+  useRecoilState(OpenMessageModalAtom);
+  const [wrongMessage,setWrrongMessage]=useRecoilState(ErroreMessageAtom)
 
   const timerRef = useRef() as MutableRefObject<NodeJS.Timeout>;
 
@@ -58,6 +62,10 @@ const CartItems = () => {
       timerRef.current = setTimeout(async () => {
         if (id) {
           const res = await updateCart(token, id, newQuantity, "item");
+          if(res === null){
+            setWrrongMessage("some thing went wrong");
+        setOpenMassegModal(true)
+          }
         }
       }, 1000);
     }
@@ -90,6 +98,10 @@ const CartItems = () => {
       clearTimeout(timerRef.current);
       timerRef.current = setTimeout(async () => {
         const res = await updateCart(token, id, itemQuantity, "item");
+        if(res === null){
+          setWrrongMessage("some thing went wrong");
+      setOpenMassegModal(true)
+        }
       }, 1000);
     }
     if (itemQuantity > 1 && !reomve) {
@@ -98,9 +110,17 @@ const CartItems = () => {
 
       timerRef.current = setTimeout(async () => {
         const res = await updateCart(token, id, itemQuantity, "item");
+        if(res === null){
+          setWrrongMessage("some thing went wrong");
+      setOpenMassegModal(true)
+        }
       }, 1000);
     } else if (itemQuantity === 1 || reomve) {
       const res = await deleteCart(token, id);
+      if(res === null){
+        setWrrongMessage("some thing went wrong");
+    setOpenMassegModal(true)
+      }
     }
   };
 

@@ -32,9 +32,17 @@ const MainSection = () => {
   useEffect(() => {
     const getData = async () => {
       const res = await getAbouUsInfo();
-      setAboutus(res.data);
+      if(res===null){
+
+      }else{
+        setAboutus(res.data);
+      }
       const response = await getWorkingHours(selectedBranch.id);
-      setWorkHours(response);
+      if(res===null){
+
+      }else{
+        setWorkHours(response);
+      }
     };
     getData();
   }, []);

@@ -26,7 +26,7 @@ const NewArrivalProducts = () => {
   const setItem = async (setItem: number) => {
     setLoading(true);
     setSelected(setItem);
-    const res = await getNewArraivalProducts(token, selectedBranch.id,setItem);
+    const res = await getNewArraivalProducts(token, selectedBranch?.id,setItem);
     if (res === null) {
     } else {
       setNewArrivalProducts(res.result.items);
@@ -37,25 +37,34 @@ const NewArrivalProducts = () => {
   useEffect(() => {
     const getData = async () => {
       setLoading(true);
-      const res = await getNewArraivalProducts(token,selectedBranch.id);
-      if (res === null) {
-      } else {
-        setNewArrivalProducts(res.result.items);
-      }
+        const res = await getNewArraivalProducts(token,selectedBranch?.id);
+        if (res === null) {
+        } else {
+          setNewArrivalProducts(res.result.items);
+        }
+
       setLoading(false);
     };
-    getData();
+    if(selectedBranch?.id>0){
+      getData();
+
+    }
   }, [selectedBranch]);
   useEffect(() => {
     const getData = async () => {
-      const res = await getNewArraivalProducts(token,selectedBranch.id);
-      if (res === null) {
-      } else {
-        setNewArrivalProducts(res.result.items);
+      if(selectedBranch?.id){
+        const res = await getNewArraivalProducts(token,selectedBranch?.id);
+        if (res === null) {
+        } else {
+          setNewArrivalProducts(res.result.items);
+        }
+
       }
     };
-    getData();
-  }, [wishList,selectedBranch]);
+    if(selectedBranch?.id>0){
+      getData();
+
+    }  }, [wishList,selectedBranch]);
 
   return (
     <div>
