@@ -6,11 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 
 const ShopProducts = () => {
-
   const [productsState,setProductsState]=useRecoilState(ProductsAtom)
-  
-
-
   return (
     <div className="grid sm:grid-cols-2 lg:grid-cols-4 my-5 gap-2  lg:mx-10 xl:mx-10 mb-10">
       {productsState.map((item) => {
@@ -20,10 +16,6 @@ const ShopProducts = () => {
           </div>
         );
       })}
-
-
-      
-
     </div>
   );
 };

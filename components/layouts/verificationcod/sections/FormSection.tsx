@@ -7,6 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { verficationCodeSchema } from "../../../../helper/validation";
 import { useRouter } from "next/router";
 import { handelResetPassword, resetPassEmailAtom, VereficationcodeAtom } from "../../../../helper";
+import { toast } from "react-toastify";
 
 interface IFormInputs {
   verfication: number;
@@ -33,7 +34,7 @@ const FormSection = () => {
       setVereficationCode(data.verfication)
       push("./resetpassword")
     }else{
-      alert(res.message)
+      toast.error(res.message)
     }
   };
 

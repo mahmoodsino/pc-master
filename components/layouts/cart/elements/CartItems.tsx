@@ -155,11 +155,11 @@ const CartItems = () => {
                     : "bg-white"
                 }`}
               >
-                <div className="flex flex-row ">
+                <div className="md:flex flex-row ">
                   <div className=" mt-2  product-slider-img mr-2">
                     {item.product?.image?.id ? (
                       <img
-                        className="h-32 product-slider-img w-32 "
+                        className="md:h-32 sm: sm:w-[90%] top-0 left-0 right-0 bottom-0 m-auto product-slider-img w-32 "
                         src={item.product?.image.path}
                         alt=""
                       />
@@ -167,7 +167,7 @@ const CartItems = () => {
                       <Image src={no_image} />
                     )}
                   </div>
-                  <div className="flex flex-col space-y-2 mt-2 justify-center">
+                  <div className="flex flex-col sm:mx-4 md:mx-0 space-y-2 mt-2 justify-center">
                     <div className="flex sm:flex-col md:flex-row justify-between sm:mr-4 md:mr-7">
                       <h1 className="inline-block  text-sm ">
                         {item.description}
@@ -253,7 +253,7 @@ const CartItems = () => {
                   <div className=" w-[129px] border sm:space-x-3 md:space-x-7 px-2 flex justify-around items-center rounded-full border-black">
                     <BaseButton
                       onClick={() => item.id && handleRemoveFromCart(item.id)}
-                      className="text-2xl  h-full"
+                      className="text-2xl  py-2  h-full"
                     >
                       <MinusIcon className="w-3.5 text-black" />
                     </BaseButton>
@@ -264,7 +264,7 @@ const CartItems = () => {
                       //   item.actual_quantity === item.available_quantity ? true : false
                       // }
                       onClick={() => handleAddToCart(item)}
-                      className="disabled:cursor-not-allowed  h-full"
+                      className="disabled:cursor-not-allowed h-full py-0.5"
                     >
                       <BlusIcon className="text-black w-4 " />
                     </BaseButton>
@@ -275,7 +275,7 @@ const CartItems = () => {
                         item.actual_quantity === item.available_quantity ? true : false
                       }
                       onClick={() => handleAddToCart(item)}
-                      className="disabled:cursor-not-allowed  h-full"
+                      className="disabled:cursor-not-allowed py-0.5 h-full"
                     >
                       <BlusIcon className="text-black w-4 " />
                     </BaseButton>

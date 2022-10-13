@@ -71,7 +71,7 @@ const {
       <>
         <div
           className={`${
-            showEditModel ? "top-0 " : "-top-[200%]"
+            showEditModel ? "top-0 " : "-top-[200%] invisible"
           } inset-0 sm:w-[95%] bg-white md:w-[60%] rounded-xl lg:w-[40%] w-[50vw] h-fit left-0 right-0 top-0 bottom-0 mx-auto my-auto shadow-lg z-50 fixed transition-all duration-300 ease-in-out`}
         >
           <div className=" sm:px-5 md:px-16 py-10">

@@ -14,11 +14,8 @@ interface Props {
 
 const YouHaveItemsModal = ({ guest_user_id }: Props) => {
   const [token, setToken] = useRecoilState(TokenAtom);
-
   const [openYouHaveItemsModal, setYouHaveItemsModal] = useRecoilState(
-    YouHaveItemsModalAtom
-  );
-
+    YouHaveItemsModalAtom);
   const push = useRouter().push;
 
   const handelItemsGuestTouser = async (guest_user_id: number) => {

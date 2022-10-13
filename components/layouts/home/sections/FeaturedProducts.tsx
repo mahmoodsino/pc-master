@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import {
+  ErroreMessageAtom,
   HomePageAtom,
+  OpenMessageModalAtom,
   SelectedBranchAtom,
   TokenAtom,
   WishListAtom,
@@ -11,6 +13,7 @@ import { Cheips, MobaiChips } from "../../../inputs";
 import { v4 as uuidv4 } from "uuid";
 import { getfeaturedProducts, ProductsType } from "../../../../helper";
 import { Spinner } from "../../../spinner";
+import {toast} from "react-toastify"
 
 const FeaturedProducts = () => {
   const [homePageState, setHomePageState] = useRecoilState(HomePageAtom);
@@ -21,12 +24,17 @@ const FeaturedProducts = () => {
   const [selected, setSelected] = useState<number>();
   const [selectedBranch, setSelectedBranch] =
     useRecoilState(SelectedBranchAtom);
+    const [openMessageModal, setOpenMassegModal] =
+    useRecoilState(OpenMessageModalAtom);
+    const [wrongMessage,setWrrongMessage]=useRecoilState(ErroreMessageAtom)
 
   const setItem = async (setItem: number) => {
     setLoading(true);
     setSelected(setItem);
     const res = await getfeaturedProducts(token, selectedBranch?.id, setItem);
     if (res === null) {
+      setWrrongMessage("some thing went wrong");
+      setOpenMassegModal(true)
     } else {
       setFeaturedProducts(res.result.items);
     }
@@ -37,6 +45,8 @@ const FeaturedProducts = () => {
       setLoading(true);
       const res = await getfeaturedProducts(token, selectedBranch?.id);
       if (res === null) {
+      toast.error("some thing went wrong")
+
       } else {
         setFeaturedProducts(res.result.items);
       }
@@ -52,6 +62,8 @@ const FeaturedProducts = () => {
     const getData = async () => {
       const res = await getfeaturedProducts(token, selectedBranch?.id);
       if (res === null) {
+      toast.error("some thing went wrong")
+        
       } else {
         setFeaturedProducts(res.result.items);
       }
@@ -77,6 +89,8 @@ const FeaturedProducts = () => {
           <MobaiChips
             categories={homePageState.featured_categories}
             setItem={setItem}
+            selectedItem={selected}
+
           />
         </div>
       </div>

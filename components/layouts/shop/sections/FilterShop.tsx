@@ -19,6 +19,7 @@ import { useRouter } from "next/router";
 import useBrands from "./Brands";
 import useRating from "./Rating";
 import useAttributes from "./Attributes";
+import { toast } from "react-toastify";
 
 const FilterShop = () => {
   const [searchState, setSearchState] = useRecoilState(SearchAtom);
@@ -50,7 +51,7 @@ const FilterShop = () => {
     const getData = async () => {
       const res = await handelFilterProduct(selectedBranch.id);
       if(res===null){
-
+        toast.error("some thing went wrong")
       }else{
         setBrands(res.result.brands);
         setAttributes(res.result.attributes);

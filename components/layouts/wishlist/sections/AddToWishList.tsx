@@ -93,7 +93,7 @@ const AddToWishList = () => {
         data.title
       );
       if(res === null){
-        setWrrongMessage("wrong");
+        setWrrongMessage("some thing went wrong");
         setOpenMassegModal(true)
       }else {
         setOpenAddToWishList(false);
@@ -105,7 +105,7 @@ const AddToWishList = () => {
       if (id) {
         const res = await deleteWishList(token, id);
         if(res===null){
-          setWrrongMessage("wrong");
+          setWrrongMessage("some thing went wrong");
         setOpenMassegModal(true)
         }else{
           setOpenAddToWishList(false);

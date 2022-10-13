@@ -31,7 +31,7 @@ import Link from "next/link";
 import { CartIcon, HeartIcon, PersonIcon } from "../../../icons";
 import { Dropdown } from "../../../dropdown";
 import { Pagination } from "../../../pagination";
-import ContinueAsGuest from "../../details/sections/ContinueAsGuest";
+import { toast } from "react-toastify";
 
 const MainSection = () => {
   const [showFillterProducts, setShowFillterProducts] =
@@ -104,7 +104,7 @@ const MainSection = () => {
       });
 
       if(res===null){
-
+        toast.error("some thing went wrong")
       }else{
         setTotalPages(res.result.pages_count);
         setProductsState(res.result.items);
@@ -141,7 +141,7 @@ const MainSection = () => {
         branchId:selectedBranch.id
       });
       if(res===null){
-
+        toast.error("some thing went wrong")
       }else{
         setTotalPages(res.result.pages_count);
         setProductsState(res.result.items);

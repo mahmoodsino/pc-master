@@ -9,12 +9,14 @@ import {
   ShowSidbarAtom,
   OpenCategoryModalAtom,
   SearchAtom,
-  ProductsAtom,
   ContactAtom,
+  BranchesAtom,
+  SelectedBranchAtom,
 } from "../../helper/state";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { v4 as uuidv4 } from "uuid";
+import { BranchsType } from "../../helper";
 
 const MobileSidbar = () => {
   const [showSidbarState, setShowSidbarState] = useRecoilState(ShowSidbarAtom);
@@ -23,6 +25,9 @@ const MobileSidbar = () => {
   );
   const [searchState, setSearchState] = useRecoilState(SearchAtom);
   const contact=useRecoilValue(ContactAtom)
+  const [barnches, setBranches] = useRecoilState(BranchesAtom);
+  const [selectedBranch, setSelectedBranch] =
+    useRecoilState(SelectedBranchAtom);
   const push = useRouter().push;
   let useType
   if(typeof window !== "undefined"){
@@ -31,7 +36,7 @@ const MobileSidbar = () => {
   }
 
 
-  const handelSearch = async (productToSearch: string) => {
+  const handelSearch = async () => {
     
     setShowSidbarState(false);
     push({
@@ -40,20 +45,31 @@ const MobileSidbar = () => {
     });
   };
 
+  const branchSelect = (branch: BranchsType) => {
+    localStorage.setItem("branch", JSON.stringify(branch));
+    setSelectedBranch(branch);
+    window.location.href = "/";
+  };
+
+
   return (
     <div>
       <>
         <div
           className={` ${
             showSidbarState ? "left-0 " : "-left-full"
-          } top-0 left-0 w-[50vw] bg-gray-1700 shadow-lg z-50 fixed h-[100vh] overflow-y-auto transition-all duration-300 ease-in-out`}
+          } top-0 left-0 w-[60vw]  bg-gray-1700 shadow-lg z-50 fixed h-[100vh]  transition-all duration-300 ease-in-out`}
         >
-          <div className="flex justify-around my-5">
+          <div className="overflow-y-auto h-[100%]">
+
+          <div className=" mb-5 pr-2">
+            <div className="flex justify-end my-2">
             <BaseButton className=" " onClick={() => setShowSidbarState(false)}>
               <CloseIcon className="w-6 text-white" />
             </BaseButton>
+            </div>
 
-            <div className="  relative w-[75%] ">
+            <div className="  relative w-[100%] pl-3">
               <form>
                 <BaseInput
                   placeholder="Search"
@@ -67,34 +83,66 @@ const MobileSidbar = () => {
 
                 <BaseButton
                   className="absolute  right-[2%] top-1"
-                  onClick={() => handelSearch(searchState)}
+                  onClick={() => handelSearch()}
                 >
                   {searchForInputIcon}
                 </BaseButton>
               </form>
             </div>
           </div>
+          <div className="text-white  mx-3">
+                  <span className="font-bold">Selected branch</span>
+                  <div className="group z-50  inline-block  relative w-[100%]">
+              <button className="bg-white text-xs w-[100%] px-2 text-gray-700 font-semibold py-2  rounded flex justify-between  items-center">
+                <span className="mr-1 whitespace-nowrap">
+                  {selectedBranch?.name}
+                </span>
+                <svg
+                  className="fill-current h-4 w-4"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                >
+                  <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                </svg>
+              </button>
+              <ul className="absolute hidden text-xs text-gray-700 pt-1 group-hover:block">
+                {barnches.map((branch,i) => {
+                  return (
+                    <button
+                    key={i}
+                      onClick={() => branchSelect(branch)}
+                      className="w-[100%]"
+                    >
+                      <li className="rounded-t whitespace-nowrap bg-white hover:bg-gray-400 py-2  block whitespace-no-wrap">
+                        {branch.name}
+                      </li>
+                    </button>
+                  );
+                })}
+              </ul>
+            </div>
+          </div>
           {useType !== "user" ? 
             <div
               onClick={() => setShowSidbarState(false)}
-              className="text-left  text-white uppercase font-semibold mt-10"
+              className="text-left   text-white uppercase font-semibold mt-5 overflow-y-auto"
             >
               {routseWAuth.map((item) => {
                 return (
                   <Link key={uuidv4()} href={item.path}>
-                    <a className=" block border-b pl-5 py-2">{item.name}</a>
+                    <a className=" block border-b pl-3 py-2">{item.name}</a>
                   </Link>
                 );
               })}
             </div> :
             <div
             onClick={() => setShowSidbarState(false)}
-            className="text-left  text-white uppercase font-semibold mt-10"
+            className="text-left  text-white uppercase font-semibold mt-10 overflow-y-auto"
           >
             {routswithout.map((item) => {
               return (
                 <Link key={uuidv4()} href={item.path}>
-                  <a className=" block border-b pl-5 py-2">{item.name}</a>
+                  <a className=" block border-b pl-3 py-2">{item.name}</a>
                 </Link>
               );
             })}
@@ -105,35 +153,34 @@ const MobileSidbar = () => {
             onClick={() => (
               setOpencategoryModal(true), setShowSidbarState(false)
             )}
-            className="uppercase text-white font-semibold py-2 px-5"
+            className="uppercase text-white font-semibold py-2 px-3"
           >
             Categories
           </BaseButton>
           <MobailCategoryModal />
           <div className="flex flex-col justify-end  ml-2 mt-10">
             <div className="flex  justify-between">
-              <div className="text-white font-salsa text-sm">Follow US :</div>
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center justify-around  w-full pb-10">
                 <Link href={contact.insta_link}>
                   <a>
-
-                <InstagramIcon className="w-4 text-white" />
+                <InstagramIcon className="w-9 text-white" />
                   </a>
                 </Link>
                 <Link href={contact.fb_link}>
                   <a>
 
-                <FacebookIcon className="w-3 text-white" />
+                <FacebookIcon className="w-5 text-white" />
                   </a>
                 </Link>
                 <Link href={contact.lin_link}>
                   <a>
 
-                <LinkedInIcon className="w-5 text-white" />
+                <LinkedInIcon className="w-8 text-white" />
                   </a>
                 </Link>
               </div>
             </div>
+          </div>
           </div>
         </div>
       </>

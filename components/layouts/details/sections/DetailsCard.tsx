@@ -476,7 +476,7 @@ const DetailsCard = () => {
           );
           if (indexcart >= 0) {
             return (
-              <div className="flex items-center space-x-3">
+              <div className="flex md:flex-row sm:flex-col sm:space-y-2 md:space-y-0 items-center space-x-3">
                 <div className="flex  sapce-x-2   ">
                   <BaseButton
                     //@ts-ignore

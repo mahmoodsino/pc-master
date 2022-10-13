@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useRecoilState } from "recoil";
 import handelLogin from "../../../../helper/sever/users/login/services";
-import { forgetPasswordModalAtom, TokenAtom, YouHaveItemsModalAtom } from "../../../../helper/state";
+import { ErroreMessageAtom, forgetPasswordModalAtom, OpenMessageModalAtom, TokenAtom, YouHaveItemsModalAtom } from "../../../../helper/state";
 import { BaseButton } from "../../../buttons";
 import { BaseInput } from "../../../inputs";
 import { useForm } from "react-hook-form";
@@ -12,6 +12,8 @@ import ForgetPasswordModal from "./ForgetPasswordModal";
 import { useState } from "react";
 import YouHaveItemsModal from "./YouHaveItemsModal";
 import { Spinner } from "../../../spinner";
+import {toast} from "react-toastify"
+
 
 interface IFormInputs {
   email: string;
@@ -28,7 +30,9 @@ const FormSection = () => {
   const [guestUsrerId,setGuestUserId]=useState<number|null>(null)
   const[openYouHaveItemsModal,setYouHaveItemsModal]=useRecoilState(YouHaveItemsModalAtom)
   const [loading,setLoading]=useState(false)
-
+  const [openMessageModal, setOpenMassegModal] =
+  useRecoilState(OpenMessageModalAtom);
+  const [wrongMessage,setWrrongMessage]=useRecoilState(ErroreMessageAtom)
   
   const {
     register,
@@ -45,7 +49,8 @@ const FormSection = () => {
     setLoading(true)
     const res = await handelLogin(data.password, data.email,token);
     if(!res.ok){
-      alert(res?.message)
+      setWrrongMessage(res?.message)
+      setOpenMassegModal(true)
       setLoading(false)
     }else{
       if (res?.token) {

@@ -27,7 +27,7 @@ import {
 } from "../helper";
 import { addressatom } from "../components/layouts/account/sections/AddressBook";
 import ContinueAsGuest from "../components/layouts/details/sections/ContinueAsGuest";
-import {ToastContainer} from "react-toastify"
+import {toast, ToastContainer} from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css';
 import { MessageModal } from "../components";
 
@@ -72,7 +72,7 @@ const App = ({ children }: Props) => {
       const getData = async () => {
         const res = await getBranches()
         if(res===null){
-
+          toast.error("some thing went wrong")
         }else {
           setBranches(res.result.branches);
         }

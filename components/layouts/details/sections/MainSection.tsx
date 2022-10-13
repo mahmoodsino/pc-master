@@ -137,9 +137,11 @@ const MainSection = () => {
                 <Availablity />
               </div>
             </div>
-            <div className="lg:w-1/2 sm:mt-28 md:px-16 lg:px-0 lg:mt-0  lg:inline-block">
+            <div className="lg:w-1/2 sm:mt-28 md:px-2 lg:px-0 lg:mt-0  lg:inline-block">
               <DetailsCard />
+              <div className="lg:block sm:hidden">
               <SimilarProducts />
+              </div>
             </div>
           </div>
           <div className="sm:block lg:hidden  tracking-[0.03em] my-10 ">
@@ -188,12 +190,15 @@ const MainSection = () => {
             </div>
           </div>
           {token.length > 1 && (
-            <div className="lg:hidden sm:block md:px-20 sm:px-5">
+            <div className="lg:hidden sm:block md:px-2 sm:px-5">
               <Reviews />
             </div>
           )}
-          <div className="lg:hidden sm:block md:px-20 sm:px-5">
+          <div className="lg:hidden sm:block md:px-2 sm:px-1">
             <Availablity />
+            <div className="lg:hidden sm:block">
+              <SimilarProducts />
+              </div>
           </div>
         </div>
       ) : (

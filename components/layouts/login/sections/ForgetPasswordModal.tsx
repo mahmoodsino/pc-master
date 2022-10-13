@@ -5,7 +5,8 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { forgetPasswordSchema } from "../../../../helper/validation";
 import { useRouter } from "next/router";
-import { forgetPasswordModalAtom, handelForgetPassword, resetPassEmailAtom } from "../../../../helper";
+import { ErroreMessageAtom, forgetPasswordModalAtom, handelForgetPassword, OpenMessageModalAtom, resetPassEmailAtom } from "../../../../helper";
+import {toast} from "react-toastify"
 
 interface IFormInputs {
   email:string
@@ -17,6 +18,9 @@ interface IFormInputs {
 const ForgetPasswordModal = () => {
   const [forgerPasswordModal,setForgetPasswordModal]=useRecoilState(forgetPasswordModalAtom)
   const [resetPassEmail,setResetPassEmail]=useRecoilState(resetPassEmailAtom)
+  const [openMessageModal, setOpenMassegModal] =
+  useRecoilState(OpenMessageModalAtom);
+  const [wrongMessage,setWrrongMessage]=useRecoilState(ErroreMessageAtom)
 
   const {
     register,
@@ -34,7 +38,7 @@ const ForgetPasswordModal = () => {
       setResetPassEmail(data.email)
       setForgetPasswordModal(false)
       push("/verificationcode")
-      alert(res.message)
+      toast.success(res.message)
     }
   }
 

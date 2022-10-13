@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import React from 'react'
 import { useForm } from 'react-hook-form';
 import { useRecoilState } from 'recoil';
-import { resetPassEmailAtom, VereficationcodeAtom } from '../../../../helper';
+import { ErroreMessageAtom, OpenMessageModalAtom, resetPassEmailAtom, VereficationcodeAtom } from '../../../../helper';
 import handelnewPassword from '../../../../helper/sever/users/login/resetpassword/services';
 import { resetpasswordschema } from '../../../../helper/validation';
 import { BaseButton } from '../../../buttons'
@@ -19,6 +19,9 @@ const FormSection = () => {
   const [resetPassEmail, setResetPassEmail] =
     useRecoilState(resetPassEmailAtom);
     const [vereficationCode,setVereficationCode]=useRecoilState(VereficationcodeAtom)
+    const [openMessageModal, setOpenMassegModal] =
+    useRecoilState(OpenMessageModalAtom);
+    const [wrongMessage,setWrrongMessage]=useRecoilState(ErroreMessageAtom)
 
   const {
     register,
@@ -32,10 +35,15 @@ const FormSection = () => {
   const handelpassword = async (data:IFormInputs) => {
     if(data.confirmnewpassword===data.newpassword){
       const res = await handelnewPassword (resetPassEmail,vereficationCode,data.newpassword)
+      if(res===null){
+        setWrrongMessage("some thing went wrong")
+        setOpenMassegModal(true)
+      }
       push("/login")
       
     }else{
-      alert("Passwords do not match")
+      setWrrongMessage("Passwords do not match")
+      setOpenMassegModal(true)
     }
   }
   return (

@@ -32,7 +32,7 @@ const CardReview = () => {
                         <Image src={no_image} alt="" />
                       )}
                     </div>
-                    <div className="flex  flex-col w-64 md:text-sm space-y-0.5 sm:text-[13px] text-gray-1050 ml-2">
+                    <div className="flex  flex-col  md:w-64 md:text-sm space-y-0.5 sm:text-[13px] text-gray-1050 ml-2">
                       <span className="font-semibold block ">
                         {item.variation?.name}
                       </span>
@@ -49,7 +49,7 @@ const CardReview = () => {
                   </div>
                 </div>
                 <div>
-                  <h1 className="md:text-xl font-medium">${item.price}</h1>
+                  <span className="md:text-xl font-medium">${item.price}</span>
                 </div>
               </div>
               <div className="pb-5">

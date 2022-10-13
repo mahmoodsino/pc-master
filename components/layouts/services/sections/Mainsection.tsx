@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { useEffect } from "react";
+import { toast } from "react-toastify";
 import { useRecoilState } from "recoil";
 import { getServiesInfo, ServiesAtom } from "../../../../helper";
 import {
@@ -18,8 +19,12 @@ const Mainsection = () => {
   useEffect(() => {
     const getData = async () => {
       const res = await getServiesInfo();
+      if(res===null){
+        toast.error("some thing went wrong")
+      }else{
+        setServicesState(res.result);
+      }
 
-      setServicesState(res.result);
     };
     getData();
   }, []);

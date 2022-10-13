@@ -51,7 +51,7 @@ const ChangePassword = () => {
       <>
         <div
           className={`${
-            showChangePassword ? "left-0 " : "-left-[200%]"
+            showChangePassword ? "left-0 " : "-left-[200%] invisible"
           } inset-0 sm:w-[95%] rounded-xl bg-white md:w-[60%] lg:w-[40%] w-[50vw] h-fit left-0 right-0 top-0 bottom-0 mx-auto my-auto shadow-lg z-50 fixed transition-all duration-300 ease-in-out`}
         >
           <div className=" sm:px-5 md:px-16 py-10">

@@ -17,7 +17,6 @@ import {
 } from "../../../../helper";
 import { Breadcrumbs } from "../../../breadcrumbs";
 import { Searchbar } from "../../../header";
-import { MessageModal } from "../../../messageModal";
 import { Spinner } from "../../../spinner";
 import MobileWishList from "./MobileWishList";
 import WishListTableDetails from "./WishListTableDetails";
@@ -152,14 +151,14 @@ const MainSection = () => {
           title
         );
         if(res===null){
-          setWrrongMessage("wrong");
+          setWrrongMessage("some thing went wrong");
         setOpenMassegModal(true)
         }
       }, 1000);
     } else if (itemQuantity === 1 || remove) {
       const res = await deleteWishList(token, id);
       if(res===null){
-        setWrrongMessage("wrong");
+        setWrrongMessage("some thing went wrong");
         setOpenMassegModal(true)
       }
     }

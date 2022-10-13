@@ -12,7 +12,6 @@ const useRating = () => {
     if(ratingState===ratingNumber){
       setRatingState(-1)
     }else{
-
       setRatingState(ratingNumber)
     }
     

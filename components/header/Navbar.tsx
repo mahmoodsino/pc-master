@@ -43,7 +43,7 @@ const Navbar = () => {
             <span className=" mr-3">Selected Branch</span>
 
             <div className="group z-50  inline-block  relative ml-3">
-              <button className="bg-white shadow-[0_0_5px_rgba(0,0,0,0.12)] w-44 text-gray-700 font-semibold py-2  rounded flex justify-between px-3 items-center">
+              <button className="bg-white shadow-[0_0_5px_rgba(0,0,0,0.12)] w-48 text-gray-700 font-semibold py-2  rounded flex justify-between px-3 items-center">
                 <span className="mr-1 whitespace-nowrap">
                   {selectedBranch?.name}
                 </span>
@@ -61,7 +61,7 @@ const Navbar = () => {
                     <button
                     key={i}
                       onClick={() => branchSelect(branch)}
-                      className="w-44"
+                      className="w-48"
                     >
                       <li className="rounded-t bg-white hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap">
                         {branch.name}

@@ -14,6 +14,8 @@ import {
 } from "../../../../helper";
 import {
   CitiesAtom,
+  ErroreMessageAtom,
+  OpenMessageModalAtom,
   registerCountryAtom,
   StatesAtom,
   TokenAtom,
@@ -25,6 +27,7 @@ import { registerSchema } from "../../../../helper/validation";
 import YouHaveItemsModal from "../../login/sections/YouHaveItemsModal";
 import { Spinner, SpinnerWithBack } from "../../../spinner";
 import { useState } from "react";
+import {toast} from "react-toastify";
 
 interface IFormInputs {
   firstName: string;
@@ -53,6 +56,9 @@ const FormSection = () => {
   const [cities, setCities] = useRecoilState(CitiesAtom);
   const [loading, setLoading] = useState(false);
   const [regLoading, setRegLoading] = useState(false);
+  const [openMessageModal, setOpenMassegModal] =
+  useRecoilState(OpenMessageModalAtom);
+  const [wrongMessage,setWrrongMessage]=useRecoilState(ErroreMessageAtom)
 
   const customStyles: StylesConfig<optionTypeCountry> = {
     option: (provided: ActionMeta, state: ActionMeta) => ({
@@ -95,7 +101,8 @@ const FormSection = () => {
       token
     );
     if (res ===null) {
-      alert("the given data was invaled");
+      setWrrongMessage("the given data was invaled");
+      setOpenMassegModal(true)
       setRegLoading(false);
     } else {
       localStorage.setItem("token", res.result.token);

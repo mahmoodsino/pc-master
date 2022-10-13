@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
 import { useRecoilState } from 'recoil'
 import { getOrder,  OrderAtom, TokenAtom } from '../../../../helper'
 import { Breadcrumbs } from '../../../breadcrumbs' 
@@ -19,8 +20,11 @@ const MainSection = () => {
     const getData= async ()=>{
       setLoading(true)
       const res = await getOrder(token)
-      setOrderState(res.result)
-
+      if(res===null){
+        toast.error("some thing went wrong")
+      }else{
+        setOrderState(res.result)
+      }
       if(res){
         setLoading(false)
       }

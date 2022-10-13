@@ -6,7 +6,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useRecoilState } from "recoil";
 import {
   currentPageAtom,
+  ErroreMessageAtom,
   getProducts,
+  OpenMessageModalAtom,
   OrderByAtom,
   ProductsAtom,
   RangeSliderAtom,
@@ -42,7 +44,9 @@ const ShopSelect = () => {
   const [rangeSlider, setRangeSlider] = useRecoilState(RangeSliderAtom);
   const [currentPage, setCurrentPage] = useRecoilState(currentPageAtom);
   const [selectedBranch,setSelectedBranch]=useRecoilState(SelectedBranchAtom)
-  
+  const [openMessageModal, setOpenMassegModal] =
+  useRecoilState(OpenMessageModalAtom);
+  const [wrongMessage,setWrrongMessage]=useRecoilState(ErroreMessageAtom)
 
   const {
     control,
@@ -95,7 +99,12 @@ const ShopSelect = () => {
                 branchId:selectedBranch.id
 
               });
-              setProductsState(res.result.items);
+              if(res===null){
+                setWrrongMessage("some thing went wrong");
+      setOpenMassegModal(true)
+              }else{
+                setProductsState(res.result.items);
+              }
             };
             return (
               <Select

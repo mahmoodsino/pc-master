@@ -16,6 +16,7 @@ import {
 import { useRouter } from "next/router";
 import { Spinner } from "../../../spinner";
 import { BaseButton } from "../../../buttons";
+import { toast } from "react-toastify";
 
 interface PaymentProvider {
   public_key: string;
@@ -41,11 +42,12 @@ const MainSection = () => {
       setLoading(true);
       if (router.order) {
         const res = await getOrderCratedOrder(token, +router.order);
-
-        setOrderDetails(res.result);
-        if (res) {
-          setLoading(false);
+        if(res===null){
+          toast.error("some thing went wrong")
+        }else{
+          setOrderDetails(res.result);
         }
+          setLoading(false);
       }
     };
     getData();
@@ -54,7 +56,11 @@ const MainSection = () => {
   useEffect(() => {
     const getData = async () => {
       const res = await getPaymentProvidor(selectedBranch.id);
-      setPaymentProvidorState(res.result.payment_providers);
+      if(res===null){
+        toast.error("some thing went wrong")
+      }else{
+        setPaymentProvidorState(res.result.payment_providers);
+      }
     };
     getData();
   }, []);
@@ -103,7 +109,7 @@ const MainSection = () => {
             <Breadcrumbs />
           </div>
           <div className="mt-10">
-            <div className="py-3 flex flex-row justify-between items-center md:px-10">
+            <div className="py-3 flex sm:flex-col md:flex-row justify-between items-center md:px-10">
               <span className="md:text-[19px] sm:text-[15px] font-bold whitespace-nowrap">
                 #{orderDetails.number}
               </span>
