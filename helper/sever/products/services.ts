@@ -1,4 +1,4 @@
-import axios from "axios"
+import apiWorker from "../axios"
 
 const root = process.env.NEXT_PUBLIC_ROOT
 
@@ -18,7 +18,7 @@ interface Params {
 
 const getProducts = async (params: Params) => {
   try {
-    const res = await axios.get(`${root}/products?${params.orderBy ? params.orderBy : "OrderByNewest"}&page_size=25`, {
+    const res = await apiWorker.get(`${root}/products?${params.orderBy ? params.orderBy : "OrderByNewest"}&page_size=25`, {
       headers: {
         "branch-id": params.branchId,
         "company-id": 1,

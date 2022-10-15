@@ -54,21 +54,70 @@ const MainSection = () => {
   const [totalPages, setTotalPages] = useRecoilState(totalPagesAtom);
   const [currentPage, setCurrentPage] = useRecoilState(currentPageAtom);
   const [selectedBranch,setSelectedBranch]=useRecoilState(SelectedBranchAtom)
+  const [filterQuery,setFilterQuery]=useState({})
 
   const timerRef = useRef() as MutableRefObject<NodeJS.Timeout>;
 
-  const query = useRouter().query;
+  let {query} = useRouter();
   let useType;
   if (typeof window !== "undefined") {
     useType = localStorage.getItem("type" || "");
   }
 
-  useEffect(() => {
-    if (typeof query.categorey !== "undefined") {
-      //@ts-ignore
-      setSelectedCategory((prev) => [...prev, +query.categorey]);
-    }
-  }, [query.categorey]);
+  // useEffect(() => {
+  //   setSelectedCategory([])
+  //   if (typeof (query.categorey) !== "undefined") {
+  //     const num =(query.categorey).split("-")
+  //     num.map(nu => {
+  //       console.log(+nu);
+  //       setSelectedCategory((prev) => [...prev, +nu]);
+  //     })
+  //     if(+query.categorey==0){
+  //       setSelectedCategory([])
+  //     }
+  //   }
+    
+  // }, [query.categorey]);
+
+
+  // useEffect(() => {
+  //   setSelectBrand([])
+  //   if (typeof (query.brand) !== "undefined") {
+  //     const num =(query.brand).split("-")
+  //     num.map(nu => {
+  //       console.log(+nu);
+  //       setSelectBrand((prev) => [...prev, +nu]);
+  //     })
+  //     if(+query.brand==0){
+  //       setSelectBrand([])
+  //     }
+  //   }
+  // }, [query.brand]);
+
+// useEffect (() => {
+//   if(query.rate){
+//     setRatingState(+query.rate)
+//   }
+
+// },[query.rate])  
+
+// useEffect(() => {
+//   if(query.page){
+//     setCurrentPage(+query.page)
+//   }
+
+// },[query.page])
+
+
+// useEffect(() => {
+//   setFilterQuery({
+//     categorey:query.categorey,
+//     brand:query.brand
+//   })
+//   query=filterQuery
+//   console.log(query);
+  
+// },[query])
 
   
 
@@ -100,7 +149,7 @@ const MainSection = () => {
         MaxPrice: rangeSlider[1],
         page: currentPage,
         rate: ratingState,
-        branchId:selectedBranch.id
+        branchId:selectedBranch?.id
       });
 
       if(res===null){
@@ -138,7 +187,7 @@ const MainSection = () => {
         MinPrice: rangeSlider[0],
         MaxPrice: rangeSlider[1],
         page: currentPage,
-        branchId:selectedBranch.id
+        branchId:selectedBranch?.id
       });
       if(res===null){
         toast.error("some thing went wrong")

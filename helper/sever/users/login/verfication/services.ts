@@ -1,11 +1,12 @@
 import axios from "axios"
+import apiWorker from "../../../axios"
 
 
 const root =process.env.NEXT_PUBLIC_ROOT
 
 const handelResetPassword = async (email:string,reset_code:number) => {
     try {
-        const res = await axios.post(`${root}/user/reset` , {
+        const res = await apiWorker.post(`${root}/user/reset` , {
             email: email,
             reset_code:reset_code
           })

@@ -13,7 +13,7 @@ import { Cheips, MobaiChips } from "../../../inputs";
 import { v4 as uuidv4 } from "uuid";
 import { getNewArraivalProducts, ProductsType } from "../../../../helper";
 import { Spinner } from "../../../spinner";
-import {toast} from "react-toastify"
+import { toast } from "react-toastify";
 
 const NewArrivalProducts = () => {
   const [newArrivalProducts, setNewArrivalProducts] = useState<ProductsType[]>(
@@ -24,18 +24,23 @@ const NewArrivalProducts = () => {
   const [wishList, setWishList] = useRecoilState(WishListAtom);
   const [loading, setLoading] = useState(false);
   const [selected, setSelected] = useState<number>();
-  const [selectedBranch,setSelectedBranch]=useRecoilState(SelectedBranchAtom)
+  const [selectedBranch, setSelectedBranch] =
+    useRecoilState(SelectedBranchAtom);
   const [openMessageModal, setOpenMassegModal] =
-  useRecoilState(OpenMessageModalAtom);
-  const [wrongMessage,setWrrongMessage]=useRecoilState(ErroreMessageAtom)
+    useRecoilState(OpenMessageModalAtom);
+  const [wrongMessage, setWrrongMessage] = useRecoilState(ErroreMessageAtom);
 
   const setItem = async (setItem: number) => {
     setLoading(true);
     setSelected(setItem);
-    const res = await getNewArraivalProducts(token, selectedBranch?.id,setItem);
+    const res = await getNewArraivalProducts(
+      token,
+      selectedBranch?.id,
+      setItem
+    );
     if (res === null) {
       setWrrongMessage("some thing went wrong");
-      setOpenMassegModal(true)
+      setOpenMassegModal(true);
     } else {
       setNewArrivalProducts(res.result.items);
     }
@@ -45,38 +50,34 @@ const NewArrivalProducts = () => {
   useEffect(() => {
     const getData = async () => {
       setLoading(true);
-        const res = await getNewArraivalProducts(token,selectedBranch?.id);
-        if (res === null) {
-      toast.error("some thing went wrong")
-
-        } else {
-          setNewArrivalProducts(res.result.items);
-        }
+      const res = await getNewArraivalProducts(token, selectedBranch?.id);
+      if (res === null) {
+        toast.error("some thing went wrong");
+      } else {
+        setNewArrivalProducts(res.result.items);
+      }
 
       setLoading(false);
     };
-    if(selectedBranch?.id>0){
+    if (selectedBranch?.id > 0) {
       getData();
-
     }
   }, [selectedBranch]);
   useEffect(() => {
     const getData = async () => {
-      if(selectedBranch?.id){
-        const res = await getNewArraivalProducts(token,selectedBranch?.id);
+      if (selectedBranch?.id) {
+        const res = await getNewArraivalProducts(token, selectedBranch?.id);
         if (res === null) {
-      toast.error("some thing went wrong")
-
+          toast.error("some thing went wrong");
         } else {
           setNewArrivalProducts(res.result.items);
         }
-
       }
     };
-    if(selectedBranch?.id>0){
+    if (selectedBranch?.id > 0 && token.length > 0) {
       getData();
-
-    }  }, [wishList,selectedBranch]);
+    }
+  }, [wishList]);
 
   return (
     <div>
@@ -96,7 +97,6 @@ const NewArrivalProducts = () => {
             categories={homePageState.featured_categories}
             setItem={setItem}
             selectedItem={selected}
-
           />
         </div>
       </div>

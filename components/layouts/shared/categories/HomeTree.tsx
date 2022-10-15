@@ -58,7 +58,7 @@ const TreeNode = ({ node, selectedParentId, setParentId }: node) => {
     
     push({
       pathname: '/shop',
-      query: { categorey: encodeURI(`${categoreyID}`) },
+      query: { categorey:categoreyID},
   });
   };
   return (

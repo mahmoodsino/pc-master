@@ -1,10 +1,10 @@
 
-import axios from "axios"
+import apiWorker from "../../../axios"
 import { getConfig } from "../../../users/logout/services"
 const root = process.env.NEXT_PUBLIC_PAY
 const handelWriteReview = async (token: string, id: number,rate:number,text:string) => {
     try {
-        const res = await axios.post(`${root}/reviews`, {
+        const res = await apiWorker.post(`${root}/reviews`, {
             rate: rate,
             text: text,
             product_id: id

@@ -1,4 +1,4 @@
-import axios from "axios"
+import apiWorker from "../../axios"
 
 
 const root = process.env.NEXT_PUBLIC_ROOT
@@ -6,7 +6,7 @@ const root = process.env.NEXT_PUBLIC_ROOT
 
 const handelFilterProduct = async (branchId:number) => {
     try {
-            const res = await axios.get(`${root}/products/filters`, {
+            const res = await apiWorker.get(`${root}/products/filters`, {
                 headers: {
                     "branch_id": branchId,
                     "company-id": 1,

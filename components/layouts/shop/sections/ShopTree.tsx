@@ -2,14 +2,14 @@ import { useState } from "react";
 import { categoriesType } from "../../../../helper/interfaces";
 import { shopArrowIcon } from "../../../icons/Icons";
 import { v4 as uuidv4 } from "uuid";
-import {  SelectedShopCategoryAtom } from "../../../../helper";
+import { SelectedShopCategoryAtom } from "../../../../helper";
 import { useRecoilState } from "recoil";
+import { useRouter } from "next/router";
 
 interface data {
   data: categoriesType[] | categoriesType;
-
 }
-
+export let cat :number[] =[]
 
 
 const ShopTree = ({ data }: data) => {
@@ -50,43 +50,55 @@ interface node {
   node: categoriesType;
   ShopselectedParentId: number;
   setShopParentId: (value: number) => void;
-
 }
-
-
 
 const ShopTreeNode = ({
   node,
   ShopselectedParentId,
   setShopParentId,
 }: node) => {
-  const [selecterCategory,setSelectedCategory]=useRecoilState(SelectedShopCategoryAtom)
+  const [selecterCategory, setSelectedCategory] = useRecoilState(
+    SelectedShopCategoryAtom
+  );
+  const { push } = useRouter();
 
   const hasChild = node.categories?.length > 0 ? true : false;
 
   const handelSearch = async (categoreyID: number) => {
-    const index = selecterCategory.findIndex((category) => category === categoreyID);
+    const index = selecterCategory.findIndex(
+      (category) => category === categoreyID
+    );
     if (index < 0) {
-      setSelectedCategory(prev => [...prev,categoreyID])
+      cat=[...cat,categoreyID]
+      setSelectedCategory((prev) => [...prev, categoreyID]);
     } else if (index >= 0) {
-      setSelectedCategory(prev => prev.filter(item => item!==categoreyID))
+      cat=cat.filter((item) => item !== categoreyID)
+      setSelectedCategory((prev) =>
+        prev.filter((item) => item !== categoreyID)
+      );
     }
 
-   
+    let stringwithhyphen=cat.map(element=>element).join("-")    
+    push({
+      pathname: "/shop",
+      query: { categorey:stringwithhyphen},
+    });
   };
-
-
 
   return (
     <li className=" relative ">
       <div className="">
-        
-
         <div className=" flex justify-between  text-sm tracking-[0.03em] cursor-pointer  border-t border-b border-t-white">
-          <label  className="shopContainer flex items-center mt-0 mb-0 py-2">
+          <label className="shopContainer flex items-center mt-0 mb-0 py-2">
             {node.name}
             <input
-            checked={selecterCategory.findIndex(categorey => categorey===node.id)>-1 ? true : false }
+              checked={
+                selecterCategory.findIndex(
+                  (categorey) => categorey === node.id
+                ) > -1
+                  ? true
+                  : false
+              }
               onChange={() => handelSearch(node.id)}
               className="checkbox"
               type="checkbox"
@@ -109,7 +121,7 @@ const ShopTreeNode = ({
         {hasChild && ShopselectedParentId === node.id && (
           <div className=" ">
             <ul className="px-3 z-50">
-              <ShopTree  data={node} />
+              <ShopTree data={node} />
             </ul>
           </div>
         )}

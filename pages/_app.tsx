@@ -60,9 +60,6 @@ const App = ({ children }: Props) => {
   const [barnches,setBranches]=useRecoilState(BranchesAtom)
   const [selectedBranch,setSelectedBranch]=useRecoilState(SelectedBranchAtom)
   const [wrongMessage,setWrrongMessage]=useRecoilState(ErroreMessageAtom)
-  console.log(wrongMessage);
-  
-
   if (typeof window !== "undefined") {
     setToken(localStorage.getItem("token") || "");
   }

@@ -1,19 +1,31 @@
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useRecoilState } from "recoil";
 import { BrandsAtom, selectBrandAtom } from "../../../../helper";
 
 
-
+let bran :number[] = []
 const useBrands = () => {
   const [brands, setBrands] = useRecoilState(BrandsAtom);
   const [selectBrand,setSelectBrand]=useRecoilState(selectBrandAtom)
+  const{push}=useRouter()
+  
+
+
   const handeBrands =async (id: number) => {
     const index = selectBrand.findIndex((brand) => brand === id);
     if (index < 0) {
+      bran=[...bran,id]
       setSelectBrand(prev => [...prev,id])
     } else if (index >= 0) {
+      bran=bran.filter((item) => item !== id)
       setSelectBrand(prev => prev.filter(item => item!==id))
     }
+    let stringwithhyphen=bran.map(element=>element).join("-")    
+    push({
+      pathname: "/shop",
+      query: { brand:stringwithhyphen},
+    });
 
   };
   

@@ -1,4 +1,5 @@
 import axios from "axios"
+import apiWorker from "../../axios"
 import { getConfig } from "../../users/logout/services"
 const root = process.env.NEXT_PUBLIC_PAY
 
@@ -11,7 +12,7 @@ interface Params {
 
 const handelCrateOrder = async (params:Params) => {
     try {
-        const res = await axios.post(`${root}/orders`, {
+        const res = await apiWorker.post(`${root}/orders`, {
             description: "hello",
             branch_id:params.branchId,
             shipping_method:params.shipping_method,

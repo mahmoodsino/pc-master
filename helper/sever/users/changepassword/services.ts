@@ -1,4 +1,5 @@
 import axios from "axios"
+import apiWorker from "../../axios"
 import { getConfig } from "../logout/services"
 
 
@@ -6,7 +7,7 @@ const root =process.env.NEXT_PUBLIC_ROOT
 
 const handelChangePassword = async (token:string,password:string,new_password:string,conf_password:string) => {
     try {
-        const res = await axios.post(`${root}/user/change-password`, {
+        const res = await apiWorker.post(`${root}/user/change-password`, {
                     password: password,
                     new_password: new_password,
                     conf_password: conf_password

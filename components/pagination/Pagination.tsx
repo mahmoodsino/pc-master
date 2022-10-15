@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useRecoilState } from "recoil";
 import {  currentPageAtom, totalPagesAtom } from "../../helper";
 import Pagination from "react-js-pagination";
+import { useRouter } from "next/router";
 
 interface Props {
   paginate: (num: number) => void;
@@ -10,7 +11,13 @@ interface Props {
 const Paginations = ({ paginate }: Props) => {
   const [totalPages, setTotalPages] = useRecoilState(totalPagesAtom);
   const [currentPage, setCurrentPage] = useRecoilState(currentPageAtom);
-  
+  const {push}=useRouter()
+
+  useEffect(() => {
+    // push({
+    //   query: { page:currentPage},
+    // });
+  },[currentPage])
 
 
   return (

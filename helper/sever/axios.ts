@@ -1,107 +1,43 @@
-import axios, { AxiosRequestConfig, AxiosRequestHeaders } from "axios";
+import axios from "axios";
 
 
+const root = process.env.NEXT_PUBLIC_BASE
 
-const rootApi = process.env.NEXT_PUBLIC_BASE;
-export const config = (token: string | null) => {
-    const config: AxiosRequestConfig = {
-        headers: {
-            'Content-Type': 'application/json',
-            "branch-id": 1,
-            "company-id": 1,
-            Accept: 'application/json',
-            'X-Requested-With': 'XMLHttpRequest',
-            Authorization: `Bearer ${token}`
-        },
-    };
-    return config;
-};
-export const baseGetApi = async <T>(path: string, token: string|null, params?:string) => {
-    let joinPath: string = path;
-    try {
-        const response = await axios.get(
-            `${rootApi}${joinPath}${params}`,
-            config(token),
-        );
-        return response.data;
-    } catch (error) {
-        return error;
+const apiWorker = axios.create();
+
+apiWorker.interceptors.request.use(function (config: any) {
+  config.headers.branch_id = 1;
+  config.headers.company = 1;
+  return config;
+});
+
+apiWorker.interceptors.response.use(
+  function (response) {
+    if (response.data && response.data.ok == false) {
+      //error
     }
+    return response;
+  },
+  function (error) {
+    if (error.response.status == 401) {
+      localStorage.removeItem("email")
+      localStorage.removeItem("type")
+      localStorage.removeItem("id")
+      localStorage.removeItem("token")
+      window.location.reload();
+    }
+
+    return Promise.reject(error);
+  }
+);
+
+export const getApiOptions = (path = null) => {
+  return {
+    root: `${root}${path}`,
+    options: {
+      headers: {},
+    },
+  };
 };
-// export const basePostApi = async <T>({
-//     paths,
-//     data,
-//     headers,
-// }: any) => {
-//     let joinPath: string = "";
-//     paths.map((path) => {
-//         joinPath += `/${path}`;
-//     });
-//     try {
-//         const response = await axios.get(
-//             `${rootApi}${joinPath}`,
-//             headers
-//                 ? {
-//                     headers: headers,
-//                     data: data,
-//                 }
-//                 : {
-//                     ...config(),
-//                     data: data,
-//                 }
-//         );
-//         return response;
-//     } catch (error) {
-//         return error;
-//     }
-// };
-// export const baseUpdateApi = async <T>({
-//     paths,
-//     data,
-//     headers,
-// }: any) => {
-//     let joinPath: string = "";
-//     paths.map((path) => {
-//         joinPath += `/${path}`;
-//     });
-//     try {
-//         const response = await axios.get(
-//             `${rootApi}${joinPath}`,
-//             headers
-//                 ? {
-//                     headers: headers,
-//                     data: data,
-//                 }
-//                 : {
-//                     ...config(),
-//                     data: data,
-//                 }
-//         );
-//         return response;
-//     } catch (error) {
-//         return error;
-//     }
-// };
-// export const baseDeleteApi = async <T>({
-//     paths,
-//     headers,
-// }: any) => {
-//     let joinPath: string = "";
-//     paths.map((path) => {
-//         joinPath += `/${path}`;
-//     });
-//     try {
-//         const response = await axios.get(
-//             `${rootApi}${joinPath}`,
-//             headers
-//                 ? {
-//                     ...config(),
-//                     headers,
-//                 }
-//                 : config()
-//         );
-//         return response;
-//     } catch (error) {
-//         return error;
-//     }
-// }
+
+export default apiWorker;

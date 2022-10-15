@@ -1,20 +1,27 @@
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useRecoilState } from "recoil";
 import { RatingAtom } from "../../../../helper";
 import { StarIcon } from "../../../icons";
 
 
-
+let rat : number
 const useRating = () => {
   const [ratingState,setRatingState]=useRecoilState(RatingAtom)
+  const{push}=useRouter()
 
   const handelRating = (ratingNumber: number) => {
     if(ratingState===ratingNumber){
       setRatingState(-1)
+      rat=-1
     }else{
       setRatingState(ratingNumber)
+      rat=ratingNumber
     }
-    
+    push({
+      // pathname: "/shop",
+      query: { rate:rat},
+    });
     
   };
 

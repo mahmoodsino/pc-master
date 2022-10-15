@@ -1,10 +1,10 @@
-import axios from "axios"
+import apiWorker from "../../axios"
 
 const root = process.env.NEXT_PUBLIC_ROOT
 
 const handelSendMessage = async (name:string,email:string,message:string) => {
     try {
-        const res = await axios.post(`${root}/send-message`, {
+        const res = await apiWorker.post(`${root}/send-message`, {
             company_id: 1,
             name:name ,
             email: email,

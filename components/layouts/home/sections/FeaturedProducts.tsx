@@ -13,7 +13,7 @@ import { Cheips, MobaiChips } from "../../../inputs";
 import { v4 as uuidv4 } from "uuid";
 import { getfeaturedProducts, ProductsType } from "../../../../helper";
 import { Spinner } from "../../../spinner";
-import {toast} from "react-toastify"
+import { toast } from "react-toastify";
 
 const FeaturedProducts = () => {
   const [homePageState, setHomePageState] = useRecoilState(HomePageAtom);
@@ -24,9 +24,9 @@ const FeaturedProducts = () => {
   const [selected, setSelected] = useState<number>();
   const [selectedBranch, setSelectedBranch] =
     useRecoilState(SelectedBranchAtom);
-    const [openMessageModal, setOpenMassegModal] =
+  const [openMessageModal, setOpenMassegModal] =
     useRecoilState(OpenMessageModalAtom);
-    const [wrongMessage,setWrrongMessage]=useRecoilState(ErroreMessageAtom)
+  const [wrongMessage, setWrrongMessage] = useRecoilState(ErroreMessageAtom);
 
   const setItem = async (setItem: number) => {
     setLoading(true);
@@ -34,7 +34,7 @@ const FeaturedProducts = () => {
     const res = await getfeaturedProducts(token, selectedBranch?.id, setItem);
     if (res === null) {
       setWrrongMessage("some thing went wrong");
-      setOpenMassegModal(true)
+      setOpenMassegModal(true);
     } else {
       setFeaturedProducts(res.result.items);
     }
@@ -45,8 +45,7 @@ const FeaturedProducts = () => {
       setLoading(true);
       const res = await getfeaturedProducts(token, selectedBranch?.id);
       if (res === null) {
-      toast.error("some thing went wrong")
-
+        toast.error("some thing went wrong");
       } else {
         setFeaturedProducts(res.result.items);
       }
@@ -62,16 +61,15 @@ const FeaturedProducts = () => {
     const getData = async () => {
       const res = await getfeaturedProducts(token, selectedBranch?.id);
       if (res === null) {
-      toast.error("some thing went wrong")
-        
+        toast.error("some thing went wrong");
       } else {
         setFeaturedProducts(res.result.items);
       }
     };
-    if (selectedBranch?.id > 0) {
+    if (selectedBranch?.id > 0 && token.length > 0) {
       getData();
     }
-  }, [wishList, selectedBranch]);
+  }, [wishList]);
   return (
     <div>
       <div className="flex sm:flex-col space-y-3 lg:flex-row items-center sm:justify-start lg:justify-between my-10 pt-10">
@@ -90,7 +88,6 @@ const FeaturedProducts = () => {
             categories={homePageState.featured_categories}
             setItem={setItem}
             selectedItem={selected}
-
           />
         </div>
       </div>
