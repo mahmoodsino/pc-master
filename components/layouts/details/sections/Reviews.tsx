@@ -10,7 +10,6 @@ import {
   TokenAtom,
 } from "../../../../helper";
 import { BaseButton } from "../../../buttons";
-import { MessageModal } from "../../../messageModal";
 import { Spinner } from "../../../spinner";
 import WriteReviewModal, {
   OpenUpdateReviewModalAtom,
@@ -48,7 +47,6 @@ const Reviews = () => {
   const [openUbdateReviewModal, setOpenUpdateReviewModal] = useRecoilState(
     OpenUpdateReviewModalAtom
   );
-  const [loading, setLoading] = useState(false);
   const [checkLoading, setCheckLoading] = useState(false);
   const [openMessageModal, setOpenMassegModal] =
     useRecoilState(OpenMessageModalAtom);
@@ -106,7 +104,7 @@ const Reviews = () => {
   };
   return (
     <div className="mt-5">
-      {!loading ? (
+     
         <div>
           <div>
             <p className="text-xl font-bold">Customer reviews & ratings</p>
@@ -224,9 +222,6 @@ const Reviews = () => {
             <WriteReviewModal />
           )}
         </div>
-      ) : (
-        <Spinner className="fill-green-950 w-20" />
-      )}
     </div>
   );
 };

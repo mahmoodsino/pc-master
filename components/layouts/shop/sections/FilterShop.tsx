@@ -20,27 +20,36 @@ import useBrands from "./Brands";
 import useRating from "./Rating";
 import useAttributes from "./Attributes";
 import { toast } from "react-toastify";
+import { FiltersQueryAtom } from "./MainSection";
+
+
 
 const FilterShop = () => {
   const [searchState, setSearchState] = useRecoilState(SearchAtom);
-  const [productsState, setProductsState] = useRecoilState(ProductsAtom);
   const [orderByState, setOrderByState] = useRecoilState(OrderByAtom);
   const [shopCategorey, setShopCategory] = useState<categoriesType[]>([]);
   const [brands, setBrands] = useRecoilState(BrandsAtom);
   const [attributes, setAttributes] = useRecoilState(AttributesShopAtom);
-  const [rangeSlider, setRangeSlider] = useRecoilState(RangeSliderAtom);
+  // const [rangeSlider, setRangeSlider] = useRecoilState(RangeSliderAtom);
   const { render } = useBrands();
   const { rende } = useRating();
   const { AttributeRender } = useAttributes();
   const [selectedBranch,setSelectedBranch]=useRecoilState(SelectedBranchAtom)
+  const [queryFilters,setQueryFilters]=useRecoilState(FiltersQueryAtom)
 
   const handleChange = (value: number[]) => {
-    setRangeSlider(value);
+    setQueryFilters(prev=>{
+      return(
+        {
+          ...prev,minPrice:value[0],maxPrice:value[1]
+        }
+      )
+    })
   };
 
   const push = useRouter().push;
 
-  const handelSearch = async (productToSearch: string) => {
+  const handelSearch = async () => {
     push({
       pathname: "/shop",
       query: { search: encodeURI(searchState) },
@@ -49,7 +58,7 @@ const FilterShop = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const res = await handelFilterProduct(selectedBranch.id);
+      const res = await handelFilterProduct(selectedBranch?.id);
       if(res===null){
         toast.error("some thing went wrong")
       }else{
@@ -83,7 +92,7 @@ const FilterShop = () => {
             }
           />
           <BaseButton
-            onClick={() => handelSearch(searchState)}
+            onClick={() => handelSearch()}
             className="md:w-[19%] sm:w-[50px] h-10 bg-green-950 hover:bg-green-950/90 inline-block rounded-r-md"
           >
             {searchIcon}
@@ -96,15 +105,15 @@ const FilterShop = () => {
           <div>
             <div className="my-5 pr-3 ">
               <MultiRangeSlider
-                from={rangeSlider[0]}
-                to={rangeSlider[1]}
+                from={queryFilters.minPrice}
+                to={queryFilters.maxPrice}
                 lower={0}
                 higher={5000}
                 handleChange={handleChange}
               />
               <div className="pt-1 flex flex-wrap flex-row justify-between ">
                 <span className="pt-3 inline-block text-[#B2ACB6] tracking-[0.03em]">
-                  Price:${rangeSlider[0]} - ${rangeSlider[1]}
+                  Price:${queryFilters.minPrice} - ${queryFilters.maxPrice}
                 </span>
               </div>
             </div>

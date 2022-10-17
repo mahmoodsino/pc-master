@@ -21,6 +21,7 @@ import useBrands from "./Brands";
 import useRating from "./Rating";
 import useAttributes from "./Attributes";
 import { useRouter } from "next/router";
+import { FiltersQueryAtom } from "./MainSection";
 
 export interface optionType {
   value: string;
@@ -35,18 +36,17 @@ const ShopSelect = () => {
   const [orderByState, setOrderByState] = useRecoilState(OrderByAtom);
   const [productsState, setProductsState] = useRecoilState(ProductsAtom);
   const [token, setToken] = useRecoilState(TokenAtom);
-  const { selectBrand } = useBrands();
-  const { ratingState } = useRating();
-  const { selectedAttribute } = useAttributes();
+  // const { selectedAttribute } = useAttributes();
   const [selecterCategory, setSelectedCategory] = useRecoilState(
     SelectedShopCategoryAtom
   );
-  const [rangeSlider, setRangeSlider] = useRecoilState(RangeSliderAtom);
-  const [currentPage, setCurrentPage] = useRecoilState(currentPageAtom);
+  // const [rangeSlider, setRangeSlider] = useRecoilState(RangeSliderAtom);
+  // const [currentPage, setCurrentPage] = useRecoilState(currentPageAtom);
   const [selectedBranch,setSelectedBranch]=useRecoilState(SelectedBranchAtom)
   const [openMessageModal, setOpenMassegModal] =
   useRecoilState(OpenMessageModalAtom);
   const [wrongMessage,setWrrongMessage]=useRecoilState(ErroreMessageAtom)
+  const [queryFilters,setQueryFilters]=useRecoilState(FiltersQueryAtom)
 
   const {
     control,
@@ -91,12 +91,12 @@ const ShopSelect = () => {
                 //@ts-ignore
                 product_name: query.search,
                 categoryId: selecterCategory,
-                AttributeValues: selectedAttribute,
-                Brands: selectBrand,
-                MinPrice: rangeSlider[0],
-                MaxPrice: rangeSlider[1],
-                page: currentPage,
-                branchId:selectedBranch.id
+                AttributeValues: queryFilters.SelectedAttribute,
+                Brands: queryFilters.SelectedBrands,
+                MinPrice: queryFilters.minPrice,
+                MaxPrice: queryFilters.maxPrice,
+                page: queryFilters.page,
+                branchId:selectedBranch?.id
 
               });
               if(res===null){

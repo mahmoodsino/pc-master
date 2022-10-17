@@ -3,31 +3,38 @@ import React, { useState } from "react";
 import { useRecoilState } from "recoil";
 import { RatingAtom } from "../../../../helper";
 import { StarIcon } from "../../../icons";
+import { FiltersQueryAtom } from "./MainSection";
 
 
-let rat : number
 const useRating = () => {
-  const [ratingState,setRatingState]=useRecoilState(RatingAtom)
+  // const [ratingState,setRatingState]=useRecoilState(RatingAtom)
   const{push}=useRouter()
+  const [queryFilters,setQueryFilters]=useRecoilState(FiltersQueryAtom)
+
 
   const handelRating = (ratingNumber: number) => {
-    if(ratingState===ratingNumber){
-      setRatingState(-1)
-      rat=-1
+    if(queryFilters.rating===ratingNumber){
+      // setRatingState(0)
+      setQueryFilters(prev => {
+        return(
+          {...prev , rating:0}
+        )
+      })
     }else{
-      setRatingState(ratingNumber)
-      rat=ratingNumber
+      // setRatingState(ratingNumber)
+      setQueryFilters(prev=>{
+        return(
+          {
+            ...prev,rating:ratingNumber
+          }
+        )
+      })
     }
-    push({
-      // pathname: "/shop",
-      query: { rate:rat},
-    });
-    
   };
 
   return {
-    ratingState,
-    setRatingState,
+    // ratingState,
+    // setRatingState,
     rende:(
     <div className="">
       <label  className="shopContainer flex items-center">
@@ -38,7 +45,7 @@ const useRating = () => {
         <StarIcon className="w-5 h-5 text-yellow-400" />
         <input
           onChange={() => handelRating(5)}
-          checked={ratingState===5 ? true : false}
+          checked={queryFilters.rating===5 ? true : false}
           className="checkbox"
           type="checkbox"
         />
@@ -53,7 +60,7 @@ const useRating = () => {
         <StarIcon className="w-5 h-5 tex text-gray-300" />
         <input
           onChange={() => handelRating(4)}
-          checked={ratingState===4 ? true : false}
+          checked={queryFilters.rating===4 ? true : false}
 
           className="checkbox"
           type="checkbox"
@@ -68,7 +75,7 @@ const useRating = () => {
         <StarIcon className="w-5 h-5 tex text-gray-300" />
         <input
           onChange={() => handelRating(3)}
-          checked={ratingState===3 ? true : false}
+          checked={queryFilters.rating===3 ? true : false}
 
           className="checkbox"
           type="checkbox"
@@ -83,7 +90,7 @@ const useRating = () => {
         <StarIcon className="w-5 h-5 tex text-gray-300" />
         <input
           onChange={() => handelRating(2)}
-          checked={ratingState===2 ? true : false}
+          checked={queryFilters.rating===2 ? true : false}
 
           className="checkbox"
           type="checkbox"
@@ -98,7 +105,7 @@ const useRating = () => {
         <StarIcon className="w-5 h-5 tex text-gray-300" />
         <input
           onChange={() => handelRating(1)}
-          checked={ratingState===1 ? true : false}
+          checked={queryFilters.rating===1 ? true : false}
 
           className="checkbox"
           type="checkbox"

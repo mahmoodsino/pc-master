@@ -5,11 +5,12 @@ import { v4 as uuidv4 } from "uuid";
 import { SelectedShopCategoryAtom } from "../../../../helper";
 import { useRecoilState } from "recoil";
 import { useRouter } from "next/router";
+import { FiltersQueryAtom } from "./MainSection";
 
 interface data {
   data: categoriesType[] | categoriesType;
 }
-export let cat :number[] =[]
+export let selCategory :number[] =[]
 
 
 const ShopTree = ({ data }: data) => {
@@ -57,32 +58,38 @@ const ShopTreeNode = ({
   ShopselectedParentId,
   setShopParentId,
 }: node) => {
-  const [selecterCategory, setSelectedCategory] = useRecoilState(
-    SelectedShopCategoryAtom
-  );
+  // const [selecterCategory, setSelectedCategory] = useRecoilState(
+  //   SelectedShopCategoryAtom
+  // );
+  const [queryFilters,setQueryFilters]=useRecoilState(FiltersQueryAtom)
+
   const { push } = useRouter();
 
   const hasChild = node.categories?.length > 0 ? true : false;
 
   const handelSearch = async (categoreyID: number) => {
-    const index = selecterCategory.findIndex(
+    const index = selCategory.findIndex(
       (category) => category === categoreyID
     );
     if (index < 0) {
-      cat=[...cat,categoreyID]
-      setSelectedCategory((prev) => [...prev, categoreyID]);
+      selCategory=[...selCategory,categoreyID]
+      // setSelectedCategory((prev) => [...prev, categoreyID]);
     } else if (index >= 0) {
-      cat=cat.filter((item) => item !== categoreyID)
-      setSelectedCategory((prev) =>
-        prev.filter((item) => item !== categoreyID)
-      );
+      selCategory=selCategory.filter((item) => item !== categoreyID)
+      // setSelectedCategory((prev) =>
+      //   prev.filter((item) => item !== categoreyID)
+      // );
     }
 
-    let stringwithhyphen=cat.map(element=>element).join("-")    
-    push({
-      pathname: "/shop",
-      query: { categorey:stringwithhyphen},
-    });
+    // let stringwithhyphen=cat.map(element=>element).join("-")
+    setQueryFilters(prev=>{
+      return(
+        {
+          ...prev , SelectedCategories:selCategory
+        }
+      )
+    })    
+   
   };
 
   return (
@@ -93,7 +100,7 @@ const ShopTreeNode = ({
             {node.name}
             <input
               checked={
-                selecterCategory.findIndex(
+                selCategory.findIndex(
                   (categorey) => categorey === node.id
                 ) > -1
                   ? true

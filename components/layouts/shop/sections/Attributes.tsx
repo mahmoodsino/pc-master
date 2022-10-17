@@ -7,13 +7,19 @@ import {
 } from "../../../../helper";
 import { BaseButton } from "../../../buttons";
 import { totherightArrowIcon } from "../../../icons/Icons";
+import { FiltersQueryAtom } from "./MainSection";
+
+let seleAttribute: { [key: number]: number[] } = {} as {
+  [key: number]: number[];
+};
 
 const useAttributes = () => {
   const [attributes, setAttributes] = useRecoilState(AttributesShopAtom);
   const [val, setVal] = useState<number>();
-  const [selectedAttribute, setSelectedAttribute] = useRecoilState(
-    SelectedAttributeAtom
-  );
+  // const [selectedAttribute, setSelectedAttribute] = useRecoilState(
+  //   SelectedAttributeAtom
+  // );
+  const [queryFilters, setQueryFilters] = useRecoilState(FiltersQueryAtom);
 
   const activeHandler = (attribute: AttributesShopType) => {
     if (attribute.attribute_values.length > 0) {
@@ -25,39 +31,51 @@ const useAttributes = () => {
   };
 
   const handelValues = (attributeId: number, attValueID: number) => {
-    const index = Object.keys(selectedAttribute).findIndex(
+    const index = Object.keys(seleAttribute).findIndex(
       (attribute) => +attribute === attributeId
     );
     if (index < 0) {
-      setSelectedAttribute({
-        ...selectedAttribute,
-        [attributeId]: [attValueID],
-      });
+      seleAttribute = { ...seleAttribute, [attributeId]: [attValueID] };
+      // setSelectedAttribute({
+      //   ...selectedAttribute,
+      //   [attributeId]: [attValueID],
+      // });
     } else if (index >= 0) {
-      Object.keys(selectedAttribute).map((key) => {
-        const values = [...selectedAttribute[+attributeId]];
+      Object.keys(seleAttribute).map((key) => {
+        const values = [...seleAttribute[+attributeId]];
 
         const valueIndex = values.findIndex((value) => value === attValueID);
         if (valueIndex < 0) {
           if (+key === attributeId) {
             values.push(attValueID);
-            setSelectedAttribute({ ...selectedAttribute, [key]: [...values] });
+            // setSelectedAttribute({ ...selectedAttribute, [key]: [...values] });
+            seleAttribute = { ...seleAttribute, [key]: [...values] };
           }
         } else if (valueIndex >= 0) {
           if (+key === attributeId) {
             values.splice(valueIndex, 1);
-            setSelectedAttribute({ ...selectedAttribute, [key]: [...values] });
+            // setSelectedAttribute({ ...selectedAttribute, [key]: [...values] });
+            seleAttribute = { ...seleAttribute, [key]: [...values] };
           }
         }
       });
     }
+
+    const keys = Object.keys(seleAttribute);
+    let newSelected: { [key: number]: number[] } = {};
+    keys.filter((key) => {
+      const value = seleAttribute[+key];
+      if (value.length !== 0) newSelected[+key] = value;
+    });
+    seleAttribute = newSelected;
+    setQueryFilters((prev) => {
+      return { ...prev, SelectedAttribute: seleAttribute };
+    });
   };
 
-  
-
   return {
-    selectedAttribute,
-    setSelectedAttribute,
+    // selectedAttribute,
+    // setSelectedAttribute,
     AttributeRender: (
       <div>
         {attributes.map((attribute) => {

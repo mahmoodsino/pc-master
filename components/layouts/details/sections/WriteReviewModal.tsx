@@ -12,7 +12,6 @@ import {
 import { userReviewAtom } from "./Reviews";
 import { Spinner } from "../../../spinner";
 import ReactStars from "react-stars";
-import { MessageModal } from "../../../messageModal";
 
 export const OpenWriteReviewModalAtom = atom({
   key: "OpenWriteReviewModalAtom",

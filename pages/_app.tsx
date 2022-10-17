@@ -104,7 +104,7 @@ const App = ({ children }: Props) => {
         setAllWishListInfo(response.result);
       }
     };
-    if (token.length > 1&&selectedBranch.id) {
+    if (token.length > 1&&selectedBranch?.id) {
       clearTimeout(timerRef.current);
       timerRef.current = setTimeout(() => {
         getData();

@@ -2,37 +2,42 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useRecoilState } from "recoil";
 import { BrandsAtom, selectBrandAtom } from "../../../../helper";
+import { FiltersQueryAtom } from "./MainSection";
 
 
-let bran :number[] = []
+let SleBran :number[] = []
 const useBrands = () => {
   const [brands, setBrands] = useRecoilState(BrandsAtom);
-  const [selectBrand,setSelectBrand]=useRecoilState(selectBrandAtom)
+  // const [selectBrand,setSelectBrand]=useRecoilState(selectBrandAtom)
   const{push}=useRouter()
+  const [queryFilters,setQueryFilters]=useRecoilState(FiltersQueryAtom)
   
 
 
   const handeBrands =async (id: number) => {
-    const index = selectBrand.findIndex((brand) => brand === id);
+    const index = SleBran.findIndex((brand) => brand === id);
     if (index < 0) {
-      bran=[...bran,id]
-      setSelectBrand(prev => [...prev,id])
+      SleBran=[...SleBran,id]
+      // setSelectBrand(prev => [...prev,id])
     } else if (index >= 0) {
-      bran=bran.filter((item) => item !== id)
-      setSelectBrand(prev => prev.filter(item => item!==id))
+      SleBran=SleBran.filter((item) => item !== id)
+      // setSelectBrand(prev => prev.filter(item => item!==id))
     }
-    let stringwithhyphen=bran.map(element=>element).join("-")    
-    push({
-      pathname: "/shop",
-      query: { brand:stringwithhyphen},
-    });
+    // let stringwithhyphen=bran.map(element=>element).join("-")    
+    setQueryFilters(prev => {
+      return(
+        {
+          ...prev,SelectedBrands:SleBran
+        }
+      )
+    })
 
   };
   
 
   return {
-    selectBrand,
-    setSelectBrand,
+    // selectBrand,
+    // setSelectBrand,
     
     render:(
     <div className=" flex flex-col justify-between  text-sm tracking-[0.03em] cursor-pointer ">
@@ -43,7 +48,7 @@ const useBrands = () => {
               {brand.name}
               <input
                 onChange={() =>( handeBrands(brand.id))}
-                checked={selectBrand.findIndex(bran => bran===brand.id)>-1 ? true : false }
+                checked={SleBran.findIndex(bran => bran===brand.id)>-1 ? true : false }
                 className="checkbox"
                 type="checkbox"
               />

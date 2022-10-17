@@ -13,10 +13,9 @@ import {
 } from "../../../../helper";
 import { BaseButton } from "../../../buttons";
 import { Spinner } from "../../../spinner";
+import { CartLoading } from "../elements/CartItems";
 import SelectAddAddress from "./SelectAddAddress";
 import SelectDelivaryType, { selctedMethodAtom } from "./SelectDelivaryType";
-import { toast } from "react-toastify";
-import { MessageModal } from "../../../messageModal";
 
 const CartSummary = () => {
   const [allCartsInfo, setAllCartsInfo] = useRecoilState(AllCartsInfo);
@@ -33,6 +32,8 @@ const CartSummary = () => {
   useRecoilState(OpenMessageModalAtom);
   const [wrongMessage,setWrrongMessage]=useRecoilState(ErroreMessageAtom)
   const { push } = useRouter();
+  const [loadingCart, setLoadingCart] = useRecoilState(CartLoading)
+
 
   const checkQuantity = () => {
     let isFound = true;
@@ -54,7 +55,7 @@ const CartSummary = () => {
   const createOrder = async () => {
     if (selectedMethod === "PICKUP") {
       setLoading(true);
-      const res = await handelCrateOrder({branchId:selectedBranch.id,shipping_method:selectedMethod,token:token});
+      const res = await handelCrateOrder({branchId:selectedBranch?.id,shipping_method:selectedMethod,token:token});
       if(res===null){
         setWrrongMessage("some thing went wrong");
         setOpenMassegModal(true)
@@ -72,7 +73,7 @@ const CartSummary = () => {
       setLoading(true);
       const res = await handelCrateOrder(
         // 
-        {branchId:selectedBranch.id,shipping_method:selectedMethod,token:token,address_id:shippingAddressId}
+        {branchId:selectedBranch?.id,shipping_method:selectedMethod,token:token,address_id:shippingAddressId}
       );
       if(res===null){
         setWrrongMessage("some thing went wrong");
@@ -91,7 +92,7 @@ const CartSummary = () => {
   };
 
   return (
-    <div className="shadow-[0_0_5px_rgba(0,0,0,0.12)]  md:tracking-[0.03] rounded-md mb-10">
+    <div className={`shadow-[0_0_5px_rgba(0,0,0,0.12)]  md:tracking-[0.03] rounded-md mb-10 ${loadingCart && "pointer-events-none"}`}>
       <h1 className="md:text-xl font-bold   text-center py-5 left-0 right-0 m-auto bg-gray-1350">
         Order Summary
       </h1>

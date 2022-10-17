@@ -55,7 +55,7 @@ const MainSection = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const res = await getPaymentProvidor(selectedBranch.id);
+      const res = await getPaymentProvidor(selectedBranch?.id);
       if(res===null){
         toast.error("some thing went wrong")
       }else{

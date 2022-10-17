@@ -37,7 +37,7 @@ const MainSection = () => {
       }else{
         setAboutus(res.data);
       }
-      const response = await getWorkingHours(selectedBranch.id);
+      const response = await getWorkingHours(selectedBranch?.id);
       if(res===null){
 
       }else{

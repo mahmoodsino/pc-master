@@ -70,7 +70,7 @@ const AddToWishList = () => {
             quantity: 1,
             company_id: 1,
             product_id: detailsState.product.id,
-            branch_id: selectedBranch.id,
+            branch_id: selectedBranch?.id,
             description: "item",
             variation_id: variationState.id,
             variation: variationState,

@@ -1,4 +1,4 @@
-import { useRecoilState } from "recoil";
+import { atom, useRecoilState } from "recoil";
 import { Breadcrumbs } from "../../../breadcrumbs";
 import { BaseButton } from "../../../buttons";
 import FillterProductsMobile from "./FillterProductsMobile";
@@ -8,13 +8,10 @@ import ShopSelect from "./ShopSelect";
 import {
   ActiveDropDownAtom,
   AllCartsInfo,
-  currentPageAtom,
   FetchedCartItemsAtom,
   FillterProductAtom,
   ProductsAtom,
-  RangeSliderAtom,
   SelectedBranchAtom,
-  SelectedShopCategoryAtom,
   TokenAtom,
   totalPagesAtom,
   WishListAtom,
@@ -23,15 +20,37 @@ import { useRouter } from "next/router";
 import { MutableRefObject, useEffect, useRef, useState } from "react";
 import { getProducts } from "../../../../helper";
 import { Spinner } from "../../../spinner";
-import useBrands from "./Brands";
-import useRating from "./Rating";
-import useAttributes from "./Attributes";
 import { AddToWishList } from "../../wishlist";
 import Link from "next/link";
 import { CartIcon, HeartIcon, PersonIcon } from "../../../icons";
 import { Dropdown } from "../../../dropdown";
 import { Pagination } from "../../../pagination";
-import { toast } from "react-toastify";
+
+
+interface FiltersType {
+  SelectedBrands:number[],
+  SelectedCategories:number[],
+  page:number,
+  rating:number,
+  minPrice:number,
+  maxPrice:number,
+  SelectedAttribute:{[key: number]: number[]},
+  search:string | string[] | undefined
+}
+
+export const FiltersQueryAtom = atom<FiltersType>({
+  key:"FiltersQueryAtom",
+  default:{
+    minPrice:0,
+    maxPrice:5000,
+    SelectedBrands:[],
+    SelectedCategories:[],
+    page:1,
+    rating:0,
+    SelectedAttribute:{} as {[key: number]: number[]},
+    search:""
+  }
+})
 
 const MainSection = () => {
   const [showFillterProducts, setShowFillterProducts] =
@@ -39,96 +58,87 @@ const MainSection = () => {
   const [productsState, setProductsState] = useRecoilState(ProductsAtom);
   const [wishList, setWishList] = useRecoilState(WishListAtom);
   const [loading, setLoading] = useState(true);
-  const [rangeSlider, setRangeSlider] = useRecoilState(RangeSliderAtom);
-  const [selecterCategory, setSelectedCategory] = useRecoilState(
-    SelectedShopCategoryAtom
-  );
-  const { selectBrand, setSelectBrand } = useBrands();
-  const { ratingState, setRatingState } = useRating();
-  const { selectedAttribute, setSelectedAttribute } = useAttributes();
   const [token, setToken] = useRecoilState(TokenAtom);
   const [carts, setCarts] = useRecoilState(FetchedCartItemsAtom);
   const [activeDropDown, setActiveDropDown] =
     useRecoilState(ActiveDropDownAtom);
   const [allCartsInfo, setAllCartsInfo] = useRecoilState(AllCartsInfo);
   const [totalPages, setTotalPages] = useRecoilState(totalPagesAtom);
-  const [currentPage, setCurrentPage] = useRecoilState(currentPageAtom);
-  const [selectedBranch,setSelectedBranch]=useRecoilState(SelectedBranchAtom)
-  const [filterQuery,setFilterQuery]=useState({})
+  const [selectedBranch, setSelectedBranch] =
+    useRecoilState(SelectedBranchAtom);
+  const [queryFilters,setQueryFilters]=useRecoilState(FiltersQueryAtom)
 
   const timerRef = useRef() as MutableRefObject<NodeJS.Timeout>;
 
-  let {query} = useRouter();
+  const query = useRouter().query;
   let useType;
   if (typeof window !== "undefined") {
     useType = localStorage.getItem("type" || "");
   }
-
-  // useEffect(() => {
-  //   setSelectedCategory([])
-  //   if (typeof (query.categorey) !== "undefined") {
-  //     const num =(query.categorey).split("-")
-  //     num.map(nu => {
-  //       console.log(+nu);
-  //       setSelectedCategory((prev) => [...prev, +nu]);
-  //     })
-  //     if(+query.categorey==0){
-  //       setSelectedCategory([])
-  //     }
-  //   }
+  
+  useEffect(() =>{
+    console.log(queryFilters);
     
-  // }, [query.categorey]);
+  },[queryFilters])
 
+  useEffect(() => {
+    if (typeof query.categorey !== "undefined") {
+      setQueryFilters(prev => {
+        return(
+          {
+            //@ts-ignore
+            ...prev,SelectedCategories:[+query.categorey]
+          }
+        )
+      })
+    }
+    if (typeof query.search !== "undefined") {
+      setQueryFilters(prev => {
+        return(
+          {
+            //@ts-ignore
+            ...prev,search:query.search
+          }
+        )
+      })
+    }
+  }, [query.categorey,query.search]);
 
   // useEffect(() => {
-  //   setSelectBrand([])
-  //   if (typeof (query.brand) !== "undefined") {
-  //     const num =(query.brand).split("-")
-  //     num.map(nu => {
-  //       console.log(+nu);
-  //       setSelectBrand((prev) => [...prev, +nu]);
-  //     })
-  //     if(+query.brand==0){
-  //       setSelectBrand([])
-  //     }
+  //     let queryCategories = selecterCategory.map((element) => element).join("-");
+  //     let queryBrands = selectBrand.map((element) => element).join("-");
+  //   if(
+  //     !asPath.includes("page")||
+  //     !asPath.includes("rate")||
+  //     !asPath.includes("categorey")||
+  //     !asPath.includes("brand")||
+  //     !asPath.includes("minprice")||
+  //     !asPath.includes("maxprice")||
+  //     !asPath.includes("search")
+  //   ){
+  //     push({
+  //       query: {
+  //         page: 1,
+  //         rate: 0,
+  //         categorey: [],
+  //         brand: [],
+  //         minprice: 0,
+  //         maxprice:5000,
+  //         search: "",
+  //       },
+  //     });
   //   }
-  // }, [query.brand]);
 
-// useEffect (() => {
-//   if(query.rate){
-//     setRatingState(+query.rate)
-//   }
-
-// },[query.rate])  
-
-// useEffect(() => {
-//   if(query.page){
-//     setCurrentPage(+query.page)
-//   }
-
-// },[query.page])
-
-
-// useEffect(() => {
-//   setFilterQuery({
-//     categorey:query.categorey,
-//     brand:query.brand
-//   })
-//   query=filterQuery
-//   console.log(query);
-  
-// },[query])
-
-  
+  // },[])
 
   useEffect(() => {
     const leave = () => {
-      setSelectedCategory([]);
-      setSelectBrand([]);
-      setSelectedAttribute({});
-      setCurrentPage(1);
-      setRatingState(0);
-      setRangeSlider([0, 5000]);
+      // setSelectedCategory([]);
+      // setSelectBrand([]);
+      // setSelectedAttribute({});
+      // setCurrentPage(1);
+      // setRatingState(0);
+      // setRangeSlider([0, 5000]);
     };
     return () => {
       leave();
@@ -142,37 +152,30 @@ const MainSection = () => {
         token: token,
         //@ts-ignore
         product_name: query.search,
-        categoryId: selecterCategory,
-        AttributeValues: selectedAttribute,
-        Brands: selectBrand,
-        MinPrice: rangeSlider[0],
-        MaxPrice: rangeSlider[1],
-        page: currentPage,
-        rate: ratingState,
-        branchId:selectedBranch?.id
+        categoryId: queryFilters.SelectedCategories,
+        AttributeValues: queryFilters.SelectedAttribute,
+        Brands: queryFilters.SelectedBrands,
+        MinPrice: queryFilters.minPrice,
+        MaxPrice: queryFilters.maxPrice,
+        page: queryFilters.page,
+        rate: queryFilters.rating,
+        branchId: selectedBranch?.id,
       });
 
-      if(res===null){
-        toast.error("some thing went wrong")
-      }else{
+      if (res === null) {
+      } else {
         setTotalPages(res.result.pages_count);
         setProductsState(res.result.items);
       }
-        setLoading(false);
+      setLoading(false);
     };
     clearTimeout(timerRef.current);
     timerRef.current = setTimeout(() => {
       getData();
     }, 500);
   }, [
-    query.search,
-    selecterCategory,
-    selectBrand,
-    selectedAttribute,
-    rangeSlider,
-    currentPage,
-    ratingState,
-    selectedBranch
+    queryFilters,
+    selectedBranch,
   ]);
 
   useEffect(() => {
@@ -181,28 +184,31 @@ const MainSection = () => {
         token: token,
         //@ts-ignore
         product_name: query.search,
-        categoryId: selecterCategory,
-        AttributeValues: selectedAttribute,
-        Brands: selectBrand,
-        MinPrice: rangeSlider[0],
-        MaxPrice: rangeSlider[1],
-        page: currentPage,
-        branchId:selectedBranch?.id
+        categoryId: queryFilters.SelectedCategories,
+        AttributeValues: queryFilters.SelectedAttribute,
+        Brands: queryFilters.SelectedBrands,
+        MinPrice: queryFilters.minPrice,
+        MaxPrice: queryFilters.maxPrice,
+        page: queryFilters.page,
+        branchId: selectedBranch?.id,
       });
-      if(res===null){
-        toast.error("some thing went wrong")
-      }else{
+      if (res === null) {
+      } else {
         setTotalPages(res.result.pages_count);
         setProductsState(res.result.items);
       }
-        setLoading(false);
+      setLoading(false);
     };
     clearTimeout(timerRef.current);
     timerRef.current = setTimeout(() => {
       getData();
     }, 500);
   }, [wishList]);
-  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+  const paginate = (pageNumber: number) => setQueryFilters(prev => {
+    return(
+      {...prev , page:pageNumber}
+    )
+  }) 
 
   return (
     <div className="lg:ml-4">
@@ -287,7 +293,7 @@ const MainSection = () => {
               </div>
               <div className="flex md:flex-row sm:flex-col md:space-x-5 items-center md:justify-end sm:w-fit md:w-full">
                 <span className="sm:text-sm sm:mb-5 md:mb-0">
-                  Showing 1-25 of {totalPages*25} results
+                  Showing 1-25 of {totalPages * 25} results
                 </span>
                 <ShopSelect />
               </div>

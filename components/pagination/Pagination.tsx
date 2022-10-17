@@ -3,6 +3,7 @@ import { useRecoilState } from "recoil";
 import {  currentPageAtom, totalPagesAtom } from "../../helper";
 import Pagination from "react-js-pagination";
 import { useRouter } from "next/router";
+import { FiltersQueryAtom } from "../layouts/shop/sections/MainSection";
 
 interface Props {
   paginate: (num: number) => void;
@@ -10,15 +11,10 @@ interface Props {
 
 const Paginations = ({ paginate }: Props) => {
   const [totalPages, setTotalPages] = useRecoilState(totalPagesAtom);
-  const [currentPage, setCurrentPage] = useRecoilState(currentPageAtom);
-  const {push}=useRouter()
+  // const [currentPage, setCurrentPage] = useRecoilState(currentPageAtom);
+  const [queryFilters,setQueryFilters]=useRecoilState(FiltersQueryAtom)
 
-  useEffect(() => {
-    // push({
-    //   query: { page:currentPage},
-    // });
-  },[currentPage])
-
+ 
 
   return (
     <div className=" mt-10  ">
@@ -28,7 +24,7 @@ const Paginations = ({ paginate }: Props) => {
         activeClass="bg-green-950 text-white"
         itemClassFirst="border  "
         itemClassPrev="border "
-        activePage={currentPage}
+        activePage={queryFilters.page}
         itemsCountPerPage={25}
         totalItemsCount={25 * totalPages}
         pageRangeDisplayed={5}

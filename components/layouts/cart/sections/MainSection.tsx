@@ -41,34 +41,14 @@ const MainSection = () => {
 
 
   useEffect(() => {
-    setNewCart([]);
-    const getData = async () => {
-      const res = await getCartItems(token,selectedBranch.id);
-      if(res===null){
-        toast.error("wrong")
-      }else{
-        setAllCartsInfo(res.result);
-      }
-    };
-    if (token.length > 1) {
-      clearTimeout(timerRef.current);
-      timerRef.current=setTimeout(() => {
-        getData();
-        
-      }, 1000);
-
-    }
-  }, [carts]);
-
-  useEffect(() => {
     setLoading(true);
     const getData = async () => {
-      const res = await getCartItems(token,selectedBranch.id);
+      const res = await getCartItems(token,selectedBranch?.id);
       if(res===null){
         toast.error("wrong")
-
       }else{
         setCarts(res.result.items);
+        setAllCartsInfo(res.result);
       }
         setLoading(false);
     };
@@ -76,9 +56,7 @@ const MainSection = () => {
       clearTimeout(timerRef.current);
       timerRef.current=setTimeout(() => {
         getData();
-        
       }, 1000);
-
     }
   }, []);
 

@@ -35,7 +35,7 @@ const MainSection = () => {
     setLoading(false);
     const Data = async () => {
       if (router.product) {
-        const res = await getDetails(+router.product, selectedBranch.id);
+        const res = await getDetails(+router.product, selectedBranch?.id);
         if(res===null){
           toast.error("some thing went wrong")
         }else{
@@ -46,7 +46,7 @@ const MainSection = () => {
         }
         const respones = await getProductModifiers(
           +router.product,
-          selectedBranch.id
+          selectedBranch?.id
         );
         if(respones===null){
           toast.error("some thing went wrong")

@@ -30,7 +30,6 @@ import {
   MinusIcon,
   RedHeartIcon,
 } from "../../../icons";
-import { MessageModal } from "../../../messageModal";
 import { Spinner } from "../../../spinner";
 import { AddToWishList } from "../../wishlist";
 import useModifiers from "./Modifiers";
@@ -129,7 +128,7 @@ const DetailsCard = () => {
           type: 1,
           quantity: 1,
           product_id: clickedItem.product.id,
-          branch_id: selectedBranch.id,
+          branch_id: selectedBranch?.id,
           description: "item",
           modifierGroups: allModifires,
           variation_id: variationState.id,
@@ -147,7 +146,7 @@ const DetailsCard = () => {
             type: 1,
             quantity: 1,
             product_id: detailsState.product.id,
-            branch_id: selectedBranch.id,
+            branch_id: selectedBranch?.id,
             description: "item",
             modifierGroups: allModifires,
             variation_id: variationState.id,
@@ -161,7 +160,7 @@ const DetailsCard = () => {
               type: 1,
               quantity: 1,
               product_id: detailsState.product.id,
-              branch_id: selectedBranch.id,
+              branch_id: selectedBranch?.id,
               description: "item",
               modifierGroups: allModifires,
               variation_id: variationState.id,
@@ -240,6 +239,7 @@ const DetailsCard = () => {
     });
     setAttributeValueNumber(attributeValueNumber);
   }, [detailsState]);
+  
 
   useEffect(() => {
     setSelectedAttributes([]);
@@ -247,6 +247,7 @@ const DetailsCard = () => {
       setSelectedAttributes((prev) => [...prev, attribute.attribute_values.id]);
     });
   }, [variationState]);
+  
 
   useEffect(() => {
     let arrayOfArrays: any = [];
@@ -282,6 +283,7 @@ const DetailsCard = () => {
     variationState,
     attributeToSetVAriation,
   ]);
+  
 
   useEffect(() => {
     detailsState.variations.map((variation) => {
@@ -305,28 +307,48 @@ const DetailsCard = () => {
     });
   }, [newArrayOFArray, variationState, attributeToSetVAriation]);
 
+  
+
   const handelAttribute = (value: { id: number; parent_id: number }) => {
     let num: { id: number; parent: number } = { id: -1, parent: -1 };
     num = { id: value.id, parent: value.parent_id };
     setAttributesToSetVAriation(num);
   };
+  
 
   useEffect(() => {
     let count = selectedAttributes.length;
     let countArray = 0;
     let checked: [] = [];
-    newArrayOFArray?.map((array: any) => {
-      for (let i = 0; i < array.length; i++) {
-        if (array[i] === attributeToSetVAriation?.id) {
-          if (array[i] !== selectedAttributes[i]) {
-            countArray++;
-          }
-        }
-      }
-      if (countArray === 1) {
-        checked = array;
-      }
-    });
+
+    newArrayOFArray?.map((arr:any) => {
+      arr.map((iid:number) => {
+          selectedAttributes.map(id => {
+            if(iid===id){
+              if(iid===attributeToSetVAriation?.id){
+                checked=arr
+              }
+            }
+          })
+      })
+    })
+    console.log({newArrayOFArray});
+    console.log(attributeToSetVAriation?.id);
+    
+
+    // newArrayOFArray?.map((array: any) => {
+    //   for (let i = 0; i < array.length; i++) {
+    //     if (array[i] === attributeToSetVAriation?.id) {
+    //       if (array[i] !== selectedAttributes[i]) {
+    //         countArray++;
+    //       }
+    //     }
+    //   }
+    //   if (countArray === 1) {
+    //     checked = array;
+    //   }
+    // });
+    
     let num = checked.findIndex(
       (check) => check === attributeToSetVAriation?.id
     );
@@ -344,6 +366,8 @@ const DetailsCard = () => {
             }
           }
           if (same === count) {
+            console.log({variation});
+            
             setVariationState(variation);
           }
         }
@@ -363,8 +387,10 @@ const DetailsCard = () => {
         }
       });
     }
+    
   }, [attributeToSetVAriation]);
-
+  
+  console.log({selectedAttributes});
   //for button
 
   const handelTtrackingType = (id: number) => {
@@ -533,7 +559,7 @@ const DetailsCard = () => {
         }
       }
     });
-    const response = await getCartItems(token, selectedBranch.id);
+    const response = await getCartItems(token, selectedBranch?.id);
     if (response === null) {
     } else {
       setAllCartsInfo(response.result);
@@ -722,7 +748,7 @@ const DetailsCard = () => {
                         }
                           mt-2 rounded-md cursor-pointer px-3 py-0.5    hover:border-black`}
                       >
-                        {value.name}
+                        {value.id}
                       </BaseButton>
                     );
                   })}

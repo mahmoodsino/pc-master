@@ -87,7 +87,7 @@ const MainSection = () => {
           ...clickedItem,
           quantity: 1,
           product_id: clickedItem.product_id,
-          branch_id: selectedBranch.id,
+          branch_id: selectedBranch?.id,
           description: "",
           variation_id: clickedItem.variation_id,
           company_id: 1,
