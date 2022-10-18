@@ -178,32 +178,6 @@ const MainSection = () => {
     selectedBranch,
   ]);
 
-  useEffect(() => {
-    const getData = async () => {
-      const res = await getProducts({
-        token: token,
-        //@ts-ignore
-        product_name: query.search,
-        categoryId: queryFilters.SelectedCategories,
-        AttributeValues: queryFilters.SelectedAttribute,
-        Brands: queryFilters.SelectedBrands,
-        MinPrice: queryFilters.minPrice,
-        MaxPrice: queryFilters.maxPrice,
-        page: queryFilters.page,
-        branchId: selectedBranch?.id,
-      });
-      if (res === null) {
-      } else {
-        setTotalPages(res.result.pages_count);
-        setProductsState(res.result.items);
-      }
-      setLoading(false);
-    };
-    clearTimeout(timerRef.current);
-    timerRef.current = setTimeout(() => {
-      getData();
-    }, 500);
-  }, [wishList]);
   const paginate = (pageNumber: number) => setQueryFilters(prev => {
     return(
       {...prev , page:pageNumber}
@@ -280,7 +254,6 @@ const MainSection = () => {
           </div>
         </div>
       </div>
-      {!loading ? (
         <div>
           <div className=" mt-10">
             <div className="flex md:flex-row sm:px-1  md:space-x-10 items-end lg:tracking-[0.08em] sm:justify-between md:justify-end md:mx-3 mb-7 text-gray-1250">
@@ -302,19 +275,21 @@ const MainSection = () => {
               <div className="sm:hidden md:block md:col-span-2 lg:col-span-1 relative ">
                 <FilterShop />
               </div>
+              {!loading ? 
               <div className="sm:col-span-5 md:col-span-3 lg:col-span-4 md:ml-5 h-full mb-10">
                 <ShopProducts />
                 <Pagination paginate={paginate} />
-              </div>
+              </div> : 
+              <div className=" col-span-3  right-0 left-0 mx-auto">
+              <Spinner className="w-40  fill-green-950" />
+            </div>
+              
+            }
               <FillterProductsMobile />
             </div>
           </div>
         </div>
-      ) : (
-        <div className="flex justify-center items-center">
-          <Spinner className="w-40 fill-green-950" />
-        </div>
-      )}
+     
       <AddToWishList />
     </div>
   );

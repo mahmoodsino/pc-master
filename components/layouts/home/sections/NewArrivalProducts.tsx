@@ -63,21 +63,6 @@ const NewArrivalProducts = () => {
       getData();
     }
   }, [selectedBranch]);
-  useEffect(() => {
-    const getData = async () => {
-      if (selectedBranch?.id) {
-        const res = await getNewArraivalProducts(token, selectedBranch?.id);
-        if (res === null) {
-          toast.error("some thing went wrong");
-        } else {
-          setNewArrivalProducts(res.result.items);
-        }
-      }
-    };
-    if (selectedBranch?.id > 0 && token.length > 0) {
-      getData();
-    }
-  }, [wishList]);
 
   return (
     <div>

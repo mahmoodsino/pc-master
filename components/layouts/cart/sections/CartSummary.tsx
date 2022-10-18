@@ -101,8 +101,7 @@ const CartSummary = () => {
           <div>
             <span className="font-semibold ">Subtotal</span>
             <span className="text-sm">
-              {" "}
-              ({allCartsInfo.items.length} items)
+              ({allCartsInfo?.items.length} items)
             </span>
           </div>
           <span className="">${allCartsInfo.sub_total_price.toFixed(2)}</span>

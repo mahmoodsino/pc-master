@@ -10,8 +10,6 @@ import {
   DetailsType,
   ErroreMessageAtom,
   FetchedCartItemsAtom,
-  getCartItems,
-  getWishList,
   items,
   NewCartAtom,
   OpenAddToWishListAtom,
@@ -75,6 +73,17 @@ const DetailsCard = () => {
     const [openMessageModal, setOpenMassegModal] =
   useRecoilState(OpenMessageModalAtom);
   const [wrongMessage,setWrrongMessage]=useRecoilState(ErroreMessageAtom)
+
+  useEffect (() => {
+    for (let i = 0; i < detailsState?.variations?.length; i++) {
+      const variation = detailsState?.variations[i];
+      if(variation.is_default===1){
+        setVariationState(variation)
+        break
+      }
+      
+    }
+  },[detailsState])
 
   useEffect(() => {
     if (modifiersId !== 0) {
@@ -233,9 +242,9 @@ const DetailsCard = () => {
         attributeValueNumber.push(attributValueID);
         attributValueID = [];
       }
-      if (variation.is_default) {
-        setVariationState(variation);
-      }
+      // if (variation.is_default) {
+      //   setVariationState(variation);
+      // }
     });
     setAttributeValueNumber(attributeValueNumber);
   }, [detailsState]);
@@ -319,40 +328,39 @@ const DetailsCard = () => {
   useEffect(() => {
     let count = selectedAttributes.length;
     let countArray = 0;
-    let checked: [] = [];
+    let checked: number[] = [];
+    let index :number =-1
 
-    newArrayOFArray?.map((arr:any) => {
-      arr.map((iid:number) => {
-          selectedAttributes.map(id => {
-            if(iid===id){
-              if(iid===attributeToSetVAriation?.id){
-                checked=arr
-              }
-            }
-          })
-      })
+    for (let i = 0; i < attributeValueNumbers?.length; i++) {
+      const array : number[] = attributeValueNumbers[i]
+      index = array.findIndex(value => value===attributeToSetVAriation?.id)
+      if ( index>-1) {
+        break
+      }
+    }
+    selectedAttributes.map((item,i) => {
+      if(index===i){
+        //@ts-ignore
+        checked.push(attributeToSetVAriation?.id)
+      }else if(index!==i){
+        checked.push(item)
+      }
     })
-    console.log({newArrayOFArray});
-    console.log(attributeToSetVAriation?.id);
-    
-
-    // newArrayOFArray?.map((array: any) => {
-    //   for (let i = 0; i < array.length; i++) {
-    //     if (array[i] === attributeToSetVAriation?.id) {
-    //       if (array[i] !== selectedAttributes[i]) {
-    //         countArray++;
-    //       }
-    //     }
-    //   }
-    //   if (countArray === 1) {
-    //     checked = array;
-    //   }
-    // });
-    
-    let num = checked.findIndex(
-      (check) => check === attributeToSetVAriation?.id
-    );
-    if (num >= 0 && checked.length > 0) {
+    for (let i = 0; i < attributeValueNumbers?.length; i++) {
+      const array : number[] = attributeValueNumbers[i]
+      countArray = 0
+      for (let j = 0; j < array.length; j++) {
+        const element = array[j];
+        const chec = checked[j]
+        if(element===chec){
+          countArray++
+        }
+      }
+      if(countArray===count){
+        break
+      }
+    }
+    if (countArray===count) {
       let same: number = 1;
       detailsState.variations.map((variation) => {
         same = 0;
@@ -366,14 +374,12 @@ const DetailsCard = () => {
             }
           }
           if (same === count) {
-            console.log({variation});
-            
             setVariationState(variation);
           }
         }
       });
     }
-    if (num < 0) {
+    if (countArray < count) {
       detailsState.variations.map((variation) => {
         if (attributeToSetVAriation?.id) {
           variation.attributes?.map((attribute) => {
@@ -390,7 +396,6 @@ const DetailsCard = () => {
     
   }, [attributeToSetVAriation]);
   
-  console.log({selectedAttributes});
   //for button
 
   const handelTtrackingType = (id: number) => {
@@ -537,8 +542,8 @@ const DetailsCard = () => {
   };
 
   const finallAddtoCart = async () => {
+    setLoading(true);
     newCart.map(async (item) => {
-      setLoading(true);
       if (item.product) {
         const res = await addToCart(
           token,
@@ -546,7 +551,7 @@ const DetailsCard = () => {
           item.product?.id,
           item.variation_id,
           1,
-          1,
+          selectedBranch?.id,
           item.modifierGroups,
           item.quantity,
           "item"
@@ -555,19 +560,15 @@ const DetailsCard = () => {
           setWrrongMessage("some thing went wrong");
           setOpenMassegModal(true)
         }else {
+          setAllCartsInfo(res.result);
+          setCarts(res.result.items);
           setMoveToCartPageModalState(true);
         }
       }
     });
-    const response = await getCartItems(token, selectedBranch?.id);
-    if (response === null) {
-    } else {
-      setAllCartsInfo(response.result);
-      setCarts(response.result.items);
-
-    }
-    
-    setLoading(false);
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
   };
 
   const getbg = (id: number) => {
@@ -606,12 +607,8 @@ const DetailsCard = () => {
           setOpenMassegModal(true)
         }
           setRemoveLoading(false);
+          setWishList(res.result.items);
       }
-    }
-    const response = await getWishList(token);
-    if (response === null) {
-    } else {
-      setWishList(response.result.items);
     }
   };
 

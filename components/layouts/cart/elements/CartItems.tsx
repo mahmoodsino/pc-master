@@ -9,7 +9,6 @@ import {
   ErroreMessageAtom,
   FetchedCartItemsAtom,
   FetchedItems,
-  getCartItems,
   OpenMessageModalAtom,
   SelectedBranchAtom,
   TokenAtom,
@@ -17,16 +16,13 @@ import {
 } from "../../../../helper";
 import { v4 as uuidv4 } from "uuid";
 import no_image from "../../../../public/assets/image/no_image.jpg";
-import { MutableRefObject, useRef, useState } from "react";
+import { MutableRefObject, useRef} from "react";
 import Collapsible from "react-collapsible";
-import { SpinnerWithBack } from "../../../spinner";
-import { toast } from "react-toastify";
 
 export const CartLoading = atom({
   key:"CartLoading",
   default:false
 })
-
 const CartItems = () => {
   const [carts, setCarts] = useRecoilState(FetchedCartItemsAtom);
   const token = useRecoilValue(TokenAtom);
@@ -79,17 +75,13 @@ const CartItems = () => {
         setLoading(true);
         if (id) {
           const res = await updateCart(token, id, newQuantity, "item");
+          console.log(res);
           if (res === null) {
             setWrrongMessage("some thing went wrong");
             setOpenMassegModal(true);
-          } else {
-            const res = await getCartItems(token, selectedBranch?.id);
-            if (res === null) {
-              toast.error("wrong");
-            } else {
-              setCarts(res.result.items);
-              setAllCartsInfo(res.result);
-            }
+          }else{
+            setAllCartsInfo(res.result);
+            setCarts(res.result.items);
           }
         }
         setLoading(false);
@@ -142,14 +134,10 @@ const CartItems = () => {
         if (res === null) {
           setWrrongMessage("some thing went wrong");
           setOpenMassegModal(true);
-        } else {
-          const res = await getCartItems(token, selectedBranch?.id);
-          if (res === null) {
-            toast.error("wrong");
-          } else {
-            setCarts(res.result.items);
-            setAllCartsInfo(res.result);
-          }
+        }
+        else{
+          setAllCartsInfo(res.result);
+          setCarts(res.result.items);
         }
         setLoading(false);
       }, 1000);
@@ -161,34 +149,29 @@ const CartItems = () => {
       timerRef.current = setTimeout(async () => {
         setLoading(true);
         const res = await updateCart(token, id, itemQuantity, "item");
+        console.log(res);
+        
         if (res === null) {
           setWrrongMessage("some thing went wrong");
           setOpenMassegModal(true);
-        } else {
-          const res = await getCartItems(token, selectedBranch?.id);
-          if (res === null) {
-            toast.error("wrong");
-          } else {
-            setCarts(res.result.items);
-            setAllCartsInfo(res.result);
-          }
+        }
+        else{
+          setAllCartsInfo(res.result);
+          setCarts(res.result.items);
         }
         setLoading(false);
       }, 1000);
     } else if (itemQuantity === 1 || reomve) {
       const res = await deleteCart(token, id);
+      console.log(res);
+      
       if (res === null) {
         setWrrongMessage("some thing went wrong");
         setOpenMassegModal(true);
       }
-      else {
-        const res = await getCartItems(token, selectedBranch?.id);
-        if (res === null) {
-          toast.error("wrong");
-        } else {
-          setCarts(res.result.items);
-          setAllCartsInfo(res.result);
-        }
+      else{
+        setAllCartsInfo(res.result);
+        setCarts(res.result.items);
       }
     }
   };

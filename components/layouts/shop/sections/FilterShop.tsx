@@ -76,7 +76,7 @@ const FilterShop = () => {
     };
 
     getData();
-  }, [selectedBranch]);
+  }, []);
 
   return (
     <div className="mt-7 md:pl-10 lg:pl-0">

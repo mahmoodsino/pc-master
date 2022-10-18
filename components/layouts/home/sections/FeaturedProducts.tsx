@@ -57,19 +57,7 @@ const FeaturedProducts = () => {
     }
   }, [selectedBranch]);
 
-  useEffect(() => {
-    const getData = async () => {
-      const res = await getfeaturedProducts(token, selectedBranch?.id);
-      if (res === null) {
-        toast.error("some thing went wrong");
-      } else {
-        setFeaturedProducts(res.result.items);
-      }
-    };
-    if (selectedBranch?.id > 0 && token.length > 0) {
-      getData();
-    }
-  }, [wishList]);
+
   return (
     <div>
       <div className="flex sm:flex-col space-y-3 lg:flex-row items-center sm:justify-start lg:justify-between my-10 pt-10">

@@ -31,33 +31,21 @@ const MainSection = () => {
   const timerRef = useRef() as MutableRefObject<NodeJS.Timeout>;
   const [openMessageModal, setOpenMassegModal] =
     useRecoilState(OpenMessageModalAtom);
-    const [wrongMessage,setWrrongMessage]=useRecoilState(ErroreMessageAtom)
-    const [selectedBranch,setSelectedBranch]=useRecoilState(SelectedBranchAtom)
+  const [wrongMessage, setWrrongMessage] = useRecoilState(ErroreMessageAtom);
+  const [selectedBranch, setSelectedBranch] =
+    useRecoilState(SelectedBranchAtom);
 
   const { push } = useRouter();
 
   useEffect(() => {
     const getData = async () => {
-      const response = await getWishList(token);
-      if(response===null){
-        toast.error("some thing wrong happend")
-      }else{
-        setWishList(response.result.items);
-      }
-    };
-    if (token.length > 1) {
-      getData();
-    }
-  }, []);
-
-  useEffect(() => {
-    const getData = async () => {
       setLoading(true);
       const response = await getWishList(token);
-      if(response===null){
-        toast.error("some thing wrong happend")
-      }else{
+      if (response === null) {
+        toast.error("some thing wrong happend");
+      } else {
         setWishList(response.result.items);
+        setAllWishListInfo(response.result);
       }
       setLoading(false);
     };
@@ -114,9 +102,12 @@ const MainSection = () => {
             "item",
             clickedItem.title
           );
-          if(res===null){
+          if (res === null) {
             setWrrongMessage("wrong");
-        setOpenMassegModal(true)
+            setOpenMassegModal(true);
+          }else{
+            setWishList(res.result.items);
+            setAllWishListInfo(res.result);
           }
         }
       }, 1000);
@@ -150,16 +141,24 @@ const MainSection = () => {
           "item",
           title
         );
-        if(res===null){
+        if (res === null) {
           setWrrongMessage("some thing went wrong");
-        setOpenMassegModal(true)
+          setOpenMassegModal(true);
+        }
+        else{
+          setWishList(res.result.items);
+          setAllWishListInfo(res.result);
         }
       }, 1000);
     } else if (itemQuantity === 1 || remove) {
       const res = await deleteWishList(token, id);
-      if(res===null){
+      if (res === null) {
         setWrrongMessage("some thing went wrong");
-        setOpenMassegModal(true)
+        setOpenMassegModal(true);
+      }
+      else{
+        setWishList(res.result.items);
+        setAllWishListInfo(res.result);
       }
     }
   };
@@ -168,9 +167,8 @@ const MainSection = () => {
     const res = await handelMoveWishListToCart(token, id);
     if (res === null) {
       setWrrongMessage("there is no available quantity");
-      setOpenMassegModal(true)
+      setOpenMassegModal(true);
     }
-
     push("./cart");
   };
 

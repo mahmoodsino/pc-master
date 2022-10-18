@@ -69,7 +69,7 @@ const Reviews = () => {
 
       }
     };
-    if (token.length > 1) {
+    if (token.length > 1&&detailsState.product.id>0) {
       getData();
     }
   }, [detailsState, openUbdateReviewModal, openWriteReviewModal]);

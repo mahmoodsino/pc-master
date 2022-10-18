@@ -5,11 +5,11 @@ const root = process.env.NEXT_PUBLIC_BASE
 
 const apiWorker = axios.create();
 
-apiWorker.interceptors.request.use(function (config: any) {
-  config.headers.branch_id = 1;
-  config.headers.company = 1;
-  return config;
-});
+// apiWorker.interceptors.request.use(function (config: any) {
+//   config.headers.branch_id = 1;
+//   config.headers.company = 1;
+//   return config;
+// });
 
 apiWorker.interceptors.response.use(
   function (response) {

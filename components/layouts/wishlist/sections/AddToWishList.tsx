@@ -19,7 +19,6 @@ import { BaseInput } from "../../../inputs";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Spinner } from "../../../spinner";
-import { toast } from "react-toastify";
 
 interface IFormInputs {
   title: string;
@@ -87,7 +86,7 @@ const AddToWishList = () => {
         detailsState.product.id,
         variationState.id,
         1,
-        1,
+        selectedBranch?.id,
         1,
         data.title,
         data.title
@@ -98,6 +97,7 @@ const AddToWishList = () => {
       }else {
         setOpenAddToWishList(false);
         setLoading(false)
+        setWishList(res.result.items);
       }
     }
     if (isItemInWishList >= 0) {
@@ -109,14 +109,9 @@ const AddToWishList = () => {
         setOpenMassegModal(true)
         }else{
           setOpenAddToWishList(false);
+          setWishList(res.result.items);
         }
       }
-    }
-    const response = await getWishList(token);
-    if(response===null){
-      toast.error("some think wrong happend ")
-    }else{
-      setWishList(response.result.items);
     }
   };
 

@@ -87,42 +87,19 @@ const App = ({ children }: Props) => {
     }
   },[barnches])
 
-
-
-
-
   useEffect(() => {
     const getData = async () => {
       const res = await getCartItems(token,selectedBranch?.id);
       if (res === null) {
       } else {
         setAllCartsInfo(res.result);
-      }
-      const response = await getWishList(token);
-      if (response === null) {
-      } else {
-        setAllWishListInfo(response.result);
-      }
-    };
-    if (token.length > 1&&selectedBranch?.id) {
-      clearTimeout(timerRef.current);
-      timerRef.current = setTimeout(() => {
-        getData();
-      }, 1000);
-    }
-  }, [token, wishList]);
-
-  useEffect(() => {
-    const getData = async () => {
-      const res = await getCartItems(token,selectedBranch?.id);
-      if (res === null) {
-      } else {
         setCarts(res.result.items);
       }
       const response = await getWishList(token);
       if (response === null) {
       } else {
         setWishList(response.result.items);
+        setAllWishListInfo(response.result);
       }
     };
     if (token.length > 1&&selectedBranch?.id) {

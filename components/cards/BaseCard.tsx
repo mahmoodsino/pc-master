@@ -83,7 +83,7 @@ const BaseCard = ({
       id,
       clikedItem.id,
       1,
-      1,
+      selectedBranch?.id,
       1,
       "my favorait item",
       "my favorait item"
@@ -92,14 +92,8 @@ const BaseCard = ({
       setWrrongMessage("some thing went wrong");
       setOpenMassegModal(true)
     }
-
     else{
-      const response = await getWishList(token);
-      if(response===null){
-        toast.error("some thing went wrong")
-      }else{
-        setWishList(response.result.items);
-      }
+        setWishList(res.result.items);
     }
   };
 
@@ -114,15 +108,22 @@ const BaseCard = ({
         if(res===null){
           setWrrongMessage("some thing went wrong");
           setOpenMassegModal(true)
+        }else{
+          setWishList(res.result.items);
         }
-        
       }
     }
-    const response = await getWishList(token);
-    if(response===null){
-    }else{
-      setWishList(response.result.items);
+  };
+
+  const handelHeart = () => {
+    let isFound = false;
+    for (let item of wishList) {
+      if (wishList.length === 0) return isFound;
+      else if (item?.product_id === id) {
+        return (isFound = true);
+      }
     }
+    return isFound;
   };
 
   return (
@@ -170,7 +171,7 @@ const BaseCard = ({
           <span className="text-lg sm:block md:hidden font-bold md:leading-[24px] md:tracking-[0.055em] mb-1">
             ${price}
           </span>
-          {in_wishlist ? (
+          {handelHeart() ? (
             <RedHeartIcon
               onClick={() => removeFromWishList(variation)}
               className="w-5 cursor-pointer"

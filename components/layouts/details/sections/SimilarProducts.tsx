@@ -21,29 +21,14 @@ const SimilarProducts = () => {
     const getData = async () => {
       const res = await getSimilarProducts(token, detailsState.product.id,selectedBranch?.id);
       if(res===null){
-        
       }else{
         setSimilarProducts(res.result);
       }
     };
-    if (detailsState.product.id > 0) {
+    if (selectedBranch?.id>0 && detailsState.product.id>0) {
       getData();
     }
-  }, [detailsState, wishList]);
-
-  useEffect(() => {
-    const getData = async () => {
-      const res = await getSimilarProducts(token, detailsState.product.id,selectedBranch?.id);
-      if(res===null){
-
-      }else{
-        setSimilarProducts(res.result);
-      }
-    };
-    if (detailsState.product.id > 0) {
-      getData();
-    }
-  }, [wishList]);
+  }, []);
   return (
     <div>
       <div className="  pb">
