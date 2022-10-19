@@ -18,6 +18,7 @@ import {
   getCountries,
   getWishList,
   OpenAddNewAddressModalAtom,
+  OpenDeleteModalAtom,
   OpenEditAddressModalAtom,
   optionTypeCountry,
   registerCountryAtom,
@@ -60,6 +61,8 @@ const App = ({ children }: Props) => {
   const [barnches,setBranches]=useRecoilState(BranchesAtom)
   const [selectedBranch,setSelectedBranch]=useRecoilState(SelectedBranchAtom)
   const [wrongMessage,setWrrongMessage]=useRecoilState(ErroreMessageAtom)
+  const [openDeleteModal, setOpenDeleteModal] =
+    useRecoilState(OpenDeleteModalAtom);
   if (typeof window !== "undefined") {
     setToken(localStorage.getItem("token") || "");
   }
@@ -145,7 +148,7 @@ const App = ({ children }: Props) => {
     if (token.length > 1) {
       getData();
     }
-  }, [openAddNewAddressModal, openEditAddressModal, token]);
+  }, [openAddNewAddressModal, openEditAddressModal, token,openDeleteModal]);
   return (
     <div
       onClick={() => (activeDropDown ? setActiveDropDown(false) : null)}

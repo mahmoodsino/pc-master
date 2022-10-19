@@ -1,5 +1,12 @@
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import {  ActiveDropDownAtom, CouninueAsGuestModalAtom, FetchedCartItemsAtom, NewCartAtom, ShowSidbarAtom, TokenAtom, WishListAtom } from "../../helper/state";
+import {
+  ActiveDropDownAtom,
+  CouninueAsGuestModalAtom,
+  FetchedCartItemsAtom,
+  ShowSidbarAtom,
+  TokenAtom,
+  WishListAtom,
+} from "../../helper/state";
 import { goingUpAtom } from "./FixedNavbar";
 import Dropdown from "../dropdown/Dropdown";
 import { burgerIcon } from "../icons/Icons";
@@ -17,25 +24,24 @@ const MobileHeader = () => {
   const goingUp = useRecoilValue(goingUpAtom);
   const [activeDropDown, setActiveDropDown] =
     useRecoilState(ActiveDropDownAtom);
-    const wishList=useRecoilValue(WishListAtom)
-    const carts = useRecoilValue(FetchedCartItemsAtom)
-    const setContinueAsGuestModal = useSetRecoilState(CouninueAsGuestModalAtom);
-    const [token, setToken] = useRecoilState(TokenAtom);
+  const wishList = useRecoilValue(WishListAtom);
+  const carts = useRecoilValue(FetchedCartItemsAtom);
+  const setContinueAsGuestModal = useSetRecoilState(CouninueAsGuestModalAtom);
+  const [token, setToken] = useRecoilState(TokenAtom);
 
-  const {push} = useRouter()
+  const { push } = useRouter();
 
-    const handelGoToCart = () => {
-      push("/cart");
-    };
-  
-    const handelGoToWishList = () => {
-      push("/wishlist");
-    };
+  const handelGoToCart = () => {
+    push("/cart");
+  };
 
-    let useType
-  if(typeof window !== "undefined"){
+  const handelGoToWishList = () => {
+    push("/wishlist");
+  };
 
-     useType = localStorage.getItem("type" || "");
+  let useType;
+  if (typeof window !== "undefined") {
+    useType = localStorage.getItem("type" || "");
   }
 
   return (
@@ -48,78 +54,86 @@ const MobileHeader = () => {
         <div onClick={() => setShowSidbarState(true)} className="w-fit ">
           {burgerIcon}
         </div>
-        <div className="w-28 mt-2">
-          <Image  src={img1} />
-        </div>
+        <Link href="/">
+          <a className="w-28 mt-2">
+            <Image src={img1} />
+          </a>
+        </Link>
       </div>
 
       <div className="flex items-center space-x-10   mr-5 sa">
         <div className="relative  flex space-x-7 ">
-          <BaseButton onClick={() =>
-                  token.length > 1
-                    ? handelGoToWishList()
-                    : setContinueAsGuestModal(true)
-                } className="w-5">
-              <div>
-                <div className="absolute -top-0 right-[60%]  flex items-center cursor-pointer justify-center text-white bg-red-950 rounded-full text-sm w-4 h-4 ">
-                  {wishList.length}
-                </div>
-                <HeartIcon className="w-6" />
+          <BaseButton
+            onClick={() =>
+              token.length > 1
+                ? handelGoToWishList()
+                : setContinueAsGuestModal(true)
+            }
+            className="w-5"
+          >
+            <div>
+              <div className="absolute -top-0 right-[60%]  flex items-center cursor-pointer justify-center text-white bg-red-950 rounded-full text-sm w-4 h-4 ">
+                {wishList.length}
               </div>
+              <HeartIcon className="w-6" />
+            </div>
           </BaseButton>
-          <BaseButton onClick={() =>
-                  token.length > 1
-                    ? handelGoToCart()
-                    : setContinueAsGuestModal(true)
-                } className=" " >
-              <div>
-                <div className="absolute -top-0 -right-[5%] cursor-pointer flex items-center justify-center text-white bg-red-950 rounded-full text-sm w-4 h-4 ">
-                  {carts.length}
-                </div>
-
-                <CartIcon className="text-black w-6" />
+          <BaseButton
+            onClick={() =>
+              token.length > 1
+                ? handelGoToCart()
+                : setContinueAsGuestModal(true)
+            }
+            className=" "
+          >
+            <div>
+              <div className="absolute -top-0 -right-[5%] cursor-pointer flex items-center justify-center text-white bg-red-950 rounded-full text-sm w-4 h-4 ">
+                {carts.length}
               </div>
+
+              <CartIcon className="text-black w-6" />
+            </div>
           </BaseButton>
         </div>
-        
-        {  useType === "user" &&
-            <div 
-              onClick={() => setActiveDropDown(!activeDropDown)}
-              className={`space-x-2 flex relative  items-center cursor-pointer h-full px-2.5 ${
-                !activeDropDown ? "" : "bg-white"
-              }`}
-            >
-              {!activeDropDown ? (
-                <PersonIcon className="w-5 text-black" />
-              ) : (
-                <PersonIcon className="w-5 text-green-950" />
-              )}
-              {activeDropDown ? (
-                <div className="bg-white absolute  z-10 top-[100%] right-[1%]  shadow-[0_0_5px_rgba(0,0,0,0.12)]">
-                  <Dropdown />
-                </div>
-              ) : null}
-            </div>
-        }
-        {   useType === "guest"&&
-            <div 
-              onClick={() => setActiveDropDown(!activeDropDown)}
-              className={`space-x-2 flex  relative items-center cursor-pointer h-full px-2.5 ${
-                !activeDropDown ? "" : "bg-white"
-              }`}
-            >
-              {!activeDropDown ? (
-                <PersonIcon className="w-5 text-black" />
-              ) : (
-                <PersonIcon className="w-5 text-green-950" />
-              )}
-              {activeDropDown ? (
-                <div className="bg-white absolute  z-10 top-[100%] right-[1%]  shadow-[0_0_5px_rgba(0,0,0,0.12)]">
-                  <Dropdown />
-                </div>
-              ) : null}
-            </div>
-        }
+
+        {useType === "user" && (
+          <div
+            onClick={() => setActiveDropDown(!activeDropDown)}
+            className={`space-x-2 flex relative  items-center cursor-pointer h-full px-2.5 ${
+              !activeDropDown ? "" : "bg-white"
+            }`}
+          >
+            {!activeDropDown ? (
+              <PersonIcon className="w-5 text-black" />
+            ) : (
+              <PersonIcon className="w-5 text-green-950" />
+            )}
+            {activeDropDown ? (
+              <div className="bg-white absolute  z-10 top-[100%] right-[1%]  shadow-[0_0_5px_rgba(0,0,0,0.12)]">
+                <Dropdown />
+              </div>
+            ) : null}
+          </div>
+        )}
+        {useType === "guest" && (
+          <div
+            onClick={() => setActiveDropDown(!activeDropDown)}
+            className={`space-x-2 flex  relative items-center cursor-pointer h-full px-2.5 ${
+              !activeDropDown ? "" : "bg-white"
+            }`}
+          >
+            {!activeDropDown ? (
+              <PersonIcon className="w-5 text-black" />
+            ) : (
+              <PersonIcon className="w-5 text-green-950" />
+            )}
+            {activeDropDown ? (
+              <div className="bg-white absolute  z-10 top-[100%] right-[1%]  shadow-[0_0_5px_rgba(0,0,0,0.12)]">
+                <Dropdown />
+              </div>
+            ) : null}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -11,7 +11,6 @@ import VariationAtom from "../../../../helper/state/products/VariationAtom";
 import { Searchbar } from "../../../header";
 import DetailsCard from "./DetailsCard";
 import DetailsProductPhoto from "./DetailsProductPhoto";
-import { v4 as uuidv4 } from "uuid";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Spinner } from "../../../spinner";
@@ -108,10 +107,10 @@ const MainSection = () => {
                     Specifications
                   </span>
                   <div className="grid  xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-2 pb-5">
-                    {variationState.attributes?.map((attribute) => {
+                    {variationState.attributes?.map((attribute,i) => {
                       return (
                         <div
-                          key={uuidv4()}
+                          key={i}
                           className="mb-6 shadow-[0_0_5px_rgba(0,0,0,0.12)] sm:w-[90%] md-[100%] rounded-md  lg:w-[90%] py-4 px-4 "
                         >
                           <p className="font-bold">{attribute.name}</p>
@@ -119,10 +118,10 @@ const MainSection = () => {
                         </div>
                       );
                     })}
-                    {detailsState.product.custome_properties.map((item) => {
+                    {detailsState.product.custome_properties.map((item,i) => {
                       return (
                         <div
-                          key={uuidv4()}
+                          key={i}
                           className="mb-6 shadow-[0_0_5px_rgba(0,0,0,0.12)] sm:w-[90%] md-[100%] rounded-md  lg:w-[90%] py-4 px-4 "
                         >
                           <p className="font-bold">{item.name}</p>
@@ -167,10 +166,10 @@ const MainSection = () => {
             >
               <span className="text-xl block mb-10">Specifications</span>
               <div className="grid  xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-2 pb-5">
-                {variationState.attributes?.map((attribute) => {
+                {variationState.attributes?.map((attribute,i) => {
                   return (
                     <div
-                      key={uuidv4()}
+                      key={i}
                       className="mb-6 shadow-[0_0_5px_rgba(0,0,0,0.12)] sm:w-[90%] md-[100%] rounded-md  lg:w-[90%] py-4 px-4 "
                     >
                       <p className="font-bold">{attribute.name}</p>
@@ -178,10 +177,10 @@ const MainSection = () => {
                     </div>
                   );
                 })}
-                {detailsState.product.custome_properties.map((item) => {
+                {detailsState.product.custome_properties.map((item,i) => {
                   return (
                     <div
-                      key={uuidv4()}
+                      key={i}
                       className="mb-6 shadow-[0_0_5px_rgba(0,0,0,0.12)] sm:w-[90%] md-[100%] rounded-md  lg:w-[90%] py-4 px-4 "
                     >
                       <p className="font-bold">{item.name}</p>

@@ -1,6 +1,5 @@
 import BaseButton from "../buttons/BaseButton";
 import { categoriesType } from "../../helper";
-import { v4 as uuidv4 } from "uuid";
 //@ts-ignore
 import Slider from "react-slick";
 
@@ -81,9 +80,9 @@ const Cheips = ({ categories, setItem,selectedItem }: Props) => {
   return (
     <div className="">
       <Slider {...settings}>
-        {categories.map((item) => {
+        {categories.map((item,i) => {
           return (
-            <div className="p-[5px]" key={uuidv4()}>
+            <div className="p-[5px]" key={i}>
               <BaseButton
                 onClick={() => setItem(item.id)}
                 className={`w-60  text-gray-1250 px-2 py-0.5 shadow-[0_0_4px_rgba(0,0,0,0.25)]  leading-[24px] tracking-[0.055em] font-semibold  border border-[#E5E5E5] hover:border-green-950 rounded-full ${item.id===selectedItem ? "border border-green-950 " : ""}`}

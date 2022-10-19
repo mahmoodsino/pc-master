@@ -1,37 +1,46 @@
-import {  useRecoilState } from "recoil";
-import { SuccessEdit, TokenAtom } from "../../../../../helper/state/";
-import {BaseButton} from "../../../../buttons";
-import {AddresToDeleteIdAtom,OpenDeleteModalAtom  } from "../../../../../helper/state/index";
-import { addressatom } from "../AddressBook";
+import { useRecoilState } from "recoil";
+import { ErroreMessageAtom, OpenMessageModalAtom, SuccessEdit, TokenAtom } from "../../../../../helper/state/";
+import { BaseButton } from "../../../../buttons";
+import {
+  AddresToDeleteIdAtom,
+  OpenDeleteModalAtom,
+} from "../../../../../helper/state/index";
 import { deleteAddress } from "../../../../../helper";
-
-
+import { useState } from "react";
+import { Spinner } from "../../../../spinner";
 
 const ConfiermDeleteModal = () => {
   const [openDeleteModal, setOpenDeleteModal] =
     useRecoilState(OpenDeleteModalAtom);
-  const[addressTodeleteId,setAddressTodeleteId]=useRecoilState(AddresToDeleteIdAtom)
+  const [addressTodeleteId, setAddressTodeleteId] =
+    useRecoilState(AddresToDeleteIdAtom);
   const [editSuccess, setEditSuccess] = useRecoilState(SuccessEdit);
-  const[token,setToken]=useRecoilState(TokenAtom)
+  const [token, setToken] = useRecoilState(TokenAtom);
+  const [loading, setLoading] = useState(false);
+  const [openMessageModal, setOpenMassegModal] =
+  useRecoilState(OpenMessageModalAtom);
+const [wrongMessage, setWrrongMessage] = useRecoilState(ErroreMessageAtom);
 
-
-
-  if( (typeof window !== 'undefined')) {
+  if (typeof window !== "undefined") {
     setToken(localStorage.getItem("token") || "");
   }
 
   const deletAddressHandler = async () => {
-    const res = await deleteAddress(token,addressTodeleteId)
-    if(res===null){
-
-    }else{
-      setEditSuccess("deleteSusecc")
+    setLoading(true);
+    const res = await deleteAddress(token, addressTodeleteId);
+    if (res === null) {
+      setOpenDeleteModal(false);
+      setWrrongMessage("some thing went wrong")
+      setOpenMassegModal(true)
+    } else {
+      setEditSuccess("deleteSusecc");
     }
-      setTimeout(() => {
-        setEditSuccess("");
-      }, 500);
-    setOpenDeleteModal(false)
-}
+    setTimeout(() => {
+      setEditSuccess("");
+    }, 500);
+    setLoading(false);
+    setOpenDeleteModal(false);
+  };
   return (
     <div className="2xl:container">
       <>
@@ -46,8 +55,20 @@ const ConfiermDeleteModal = () => {
               This action will permanently delete the address. Are you sure?
             </h1>
             <div className="flex justify-between mt-10">
-              <BaseButton onClick={() => setOpenDeleteModal(false)} className="border border-gray-950 px-7 py-2" title="Cancel"/>
-              <BaseButton onClick={() => deletAddressHandler()} className="border border-red-950 text-red-950 px-7 py-2" title="Delete"/> 
+              <BaseButton
+                onClick={() => setOpenDeleteModal(false)}
+                className="border border-gray-950 px-7 py-2"
+                title="Cancel"
+              />
+              {!loading ? (
+                <BaseButton
+                  onClick={() => deletAddressHandler()}
+                  className="border border-red-950 text-red-950 px-7 py-2"
+                  title="Delete"
+                />
+              ) : (
+                <Spinner className="w-10" />
+              )}
             </div>
           </div>
         </div>

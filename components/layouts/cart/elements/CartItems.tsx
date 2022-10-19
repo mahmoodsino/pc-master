@@ -14,7 +14,6 @@ import {
   TokenAtom,
   updateCart,
 } from "../../../../helper";
-import { v4 as uuidv4 } from "uuid";
 import no_image from "../../../../public/assets/image/no_image.jpg";
 import { MutableRefObject, useRef} from "react";
 import Collapsible from "react-collapsible";
@@ -149,8 +148,6 @@ const CartItems = () => {
       timerRef.current = setTimeout(async () => {
         setLoading(true);
         const res = await updateCart(token, id, itemQuantity, "item");
-        console.log(res);
-        
         if (res === null) {
           setWrrongMessage("some thing went wrong");
           setOpenMassegModal(true);
@@ -162,9 +159,8 @@ const CartItems = () => {
         setLoading(false);
       }, 1000);
     } else if (itemQuantity === 1 || reomve) {
+      setLoading(true);
       const res = await deleteCart(token, id);
-      console.log(res);
-      
       if (res === null) {
         setWrrongMessage("some thing went wrong");
         setOpenMassegModal(true);
@@ -173,6 +169,7 @@ const CartItems = () => {
         setAllCartsInfo(res.result);
         setCarts(res.result.items);
       }
+      setLoading(false);
     }
   };
 
@@ -183,10 +180,10 @@ const CartItems = () => {
             <h1 className="md:text-xl font-bold   text-center py-5 left-0 right-0 m-auto bg-gray-1350">
               Pickup or delivery from store, within 3 working days
             </h1>
-            {carts.map((item) => {
+            {carts.map((item,i) => {
               return (
                 <div
-                  key={uuidv4()}
+                  key={i}
                   className={`md:px-5 ${
                     item.in_stock < 1
                       ? "bg-red-100"
@@ -240,10 +237,10 @@ const CartItems = () => {
                     </div>
                   </div>
                   <div className="whitespace-nowrap ml-8  mr-10 w-full">
-                    {item.modifierGroups.map((it) => {
+                    {item.modifierGroups.map((it,i) => {
                       return (
                         <Collapsible
-                          key={uuidv4()}
+                          key={i}
                           trigger={
                             <BaseButton className="shadow-md flex mt-1 bg-gray-1350 justify-between items-center w-[90%] border">
                               <span className="font-semibold">{it.name}</span>
@@ -269,10 +266,10 @@ const CartItems = () => {
                           }
                         >
                           <div className="ml-3 flex space-x-1 mt-2">
-                            {it.modifiers.map((modi) => {
+                            {it.modifiers.map((modi,i) => {
                               return (
                                 <img
-                                  key={uuidv4()}
+                                  key={i}
                                   className="w-16 bg-cover flex"
                                   src={modi.image}
                                   alt="Picture of the author"
@@ -283,11 +280,14 @@ const CartItems = () => {
                         </Collapsible>
                       );
                     })}
-                    {item.actual_quantity === item.available_quantity && (
-                      <h1 className="text-red-950 text-xs ">
-                        you cant add more of this product
-                      </h1>
-                    )}
+                    <div className="h-4">
+                      {item.actual_quantity === item.available_quantity && (
+                        <span className="text-red-950 text-xs ">
+                          you cant add more of this product
+                        </span>
+                      )}
+
+                    </div>
                   </div>
                   <div
                     className={`flex sm:justify-around items-center md:justify-between sm:space-x-2 md:space-x-14 border-b  mx-8 py-6 `}

@@ -34,6 +34,7 @@ const MainSection = () => {
   const [wrongMessage, setWrrongMessage] = useRecoilState(ErroreMessageAtom);
   const [selectedBranch, setSelectedBranch] =
     useRecoilState(SelectedBranchAtom);
+  const [updateLoading,setUpdateLoading]=useState(false)
 
   const { push } = useRouter();
 
@@ -94,6 +95,7 @@ const MainSection = () => {
       let id = wishList[isItemInCarts].id;
       clearTimeout(timerRef.current);
       timerRef.current = setTimeout(async () => {
+        setUpdateLoading(true)
         if (id) {
           const res = await updateWishList(
             token,
@@ -110,7 +112,8 @@ const MainSection = () => {
             setAllWishListInfo(res.result);
           }
         }
-      }, 1000);
+        setUpdateLoading(false)
+      }, 700);
     }
   };
 
@@ -134,6 +137,7 @@ const MainSection = () => {
       itemQuantity--;
       clearTimeout(timerRef.current);
       timerRef.current = setTimeout(async () => {
+        setUpdateLoading(true)
         const res = await updateWishList(
           token,
           id,
@@ -149,8 +153,10 @@ const MainSection = () => {
           setWishList(res.result.items);
           setAllWishListInfo(res.result);
         }
-      }, 1000);
+        setUpdateLoading(false)
+      }, 700);
     } else if (itemQuantity === 1 || remove) {
+      setUpdateLoading(true)
       const res = await deleteWishList(token, id);
       if (res === null) {
         setWrrongMessage("some thing went wrong");
@@ -160,16 +166,22 @@ const MainSection = () => {
         setWishList(res.result.items);
         setAllWishListInfo(res.result);
       }
+      setUpdateLoading(false)
     }
   };
 
   const moveWishListToCart = async (id: number) => {
+    setUpdateLoading(true)
     const res = await handelMoveWishListToCart(token, id);
     if (res === null) {
+      setWrrongMessage("some thing went wrong");
+      setOpenMassegModal(true);
+    }else if(res==400){
       setWrrongMessage("there is no available quantity");
       setOpenMassegModal(true);
     }
     push("./cart");
+    setUpdateLoading(false)
   };
 
   return (
@@ -189,7 +201,7 @@ const MainSection = () => {
               </a>
             </Link>
           </div>
-          <div>
+          <div className={`${updateLoading && "pointer-events-none"}`}>
             {wishList.length > 0 ? (
               <div>
                 <WishListTableDetails

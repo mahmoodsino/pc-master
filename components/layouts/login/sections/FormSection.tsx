@@ -1,7 +1,13 @@
 import Link from "next/link";
 import { useRecoilState } from "recoil";
 import handelLogin from "../../../../helper/sever/users/login/services";
-import { ErroreMessageAtom, forgetPasswordModalAtom, OpenMessageModalAtom, TokenAtom, YouHaveItemsModalAtom } from "../../../../helper/state";
+import {
+  ErroreMessageAtom,
+  forgetPasswordModalAtom,
+  OpenMessageModalAtom,
+  TokenAtom,
+  YouHaveItemsModalAtom,
+} from "../../../../helper/state";
 import { BaseButton } from "../../../buttons";
 import { BaseInput } from "../../../inputs";
 import { useForm } from "react-hook-form";
@@ -12,28 +18,26 @@ import ForgetPasswordModal from "./ForgetPasswordModal";
 import { useState } from "react";
 import YouHaveItemsModal from "./YouHaveItemsModal";
 import { Spinner } from "../../../spinner";
-import {toast} from "react-toastify"
-
 
 interface IFormInputs {
   email: string;
   password: string;
 }
 
-
-
-
-
 const FormSection = () => {
   const [token, setToken] = useRecoilState(TokenAtom);
-  const [forgerPasswordModal,setForgetPasswordModal]=useRecoilState(forgetPasswordModalAtom)
-  const [guestUsrerId,setGuestUserId]=useState<number|null>(null)
-  const[openYouHaveItemsModal,setYouHaveItemsModal]=useRecoilState(YouHaveItemsModalAtom)
-  const [loading,setLoading]=useState(false)
+  const [forgerPasswordModal, setForgetPasswordModal] = useRecoilState(
+    forgetPasswordModalAtom
+  );
+  const [guestUsrerId, setGuestUserId] = useState<number | null>(null);
+  const [openYouHaveItemsModal, setYouHaveItemsModal] = useRecoilState(
+    YouHaveItemsModalAtom
+  );
+  const [loading, setLoading] = useState(false);
   const [openMessageModal, setOpenMassegModal] =
-  useRecoilState(OpenMessageModalAtom);
-  const [wrongMessage,setWrrongMessage]=useRecoilState(ErroreMessageAtom)
-  
+    useRecoilState(OpenMessageModalAtom);
+  const [wrongMessage, setWrrongMessage] = useRecoilState(ErroreMessageAtom);
+
   const {
     register,
     handleSubmit,
@@ -42,36 +46,32 @@ const FormSection = () => {
     resolver: yupResolver(loginSchema),
   });
 
-  const push = useRouter().push
+  const push = useRouter().push;
 
-
-  const handelLog = async (data:IFormInputs) => {
-    setLoading(true)
-    const res = await handelLogin(data.password, data.email,token);
-    if(!res.ok){
-      setWrrongMessage(res?.message)
-      setOpenMassegModal(true)
-      setLoading(false)
-    }else{
+  const handelLog = async (data: IFormInputs) => {
+    setLoading(true);
+    const res = await handelLogin(data.password, data.email, token);
+    if (!res.ok) {
+      setWrrongMessage(res?.message);
+      setOpenMassegModal(true);
+      setLoading(false);
+    } else {
       if (res?.token) {
-        setLoading(false)
+        setLoading(false);
         localStorage.setItem("token", res.token);
         localStorage.setItem("id", res.user.id);
         localStorage.setItem("email", res.user.email);
         localStorage.setItem("type", res.user.type);
         localStorage.setItem("first_name", res.user.first_name);
         localStorage.setItem("last_name", res.user.last_name);
-        
-        setToken(res.token);
-        if (res.guest_user_id===null){
-          push("./")
 
-        }else if(res.guest_user_id!==null){
-          setGuestUserId(res.guest_user_id)
-          setYouHaveItemsModal(true)
-          
+        setToken(res.token);
+        if (res.guest_user_id === null) {
+          push("./");
+        } else if (res.guest_user_id !== null) {
+          setGuestUserId(res.guest_user_id);
+          setYouHaveItemsModal(true);
         }
-        
       }
     }
   };
@@ -87,7 +87,7 @@ const FormSection = () => {
             className={undefined}
             register={register}
           />
-            <p className="text-xs text-red-900">{errors.email?.message}</p>
+          <p className="text-xs text-red-900">{errors.email?.message}</p>
 
           <BaseInput
             name="password"
@@ -97,12 +97,11 @@ const FormSection = () => {
             className={undefined}
             register={register}
           />
-            <p className="text-xs text-red-900">{errors.password?.message}</p>
-
+          <p className="text-xs text-red-900">{errors.password?.message}</p>
 
           <div className="flex flex-row justify-end">
             <BaseButton
-            onClick={() => setForgetPasswordModal(true)}
+              onClick={() => setForgetPasswordModal(true)}
               type="button"
               className="border-b border-b-gray-950  text-gray-950"
             >
@@ -117,15 +116,11 @@ const FormSection = () => {
               </Link>
             </div>
             <div>
-              {!loading ? 
-              <BaseButton
-              type="submit"
-                title="Login"
-                className={undefined}
-              /> : 
-              <Spinner className="fill-green-950 w-16" />
-              
-            }
+              {!loading ? (
+                <BaseButton type="submit" title="Login" className={undefined} />
+              ) : (
+                <Spinner className="fill-green-950 w-16" />
+              )}
             </div>
           </div>
         </div>

@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { atom, useRecoilState } from "recoil";
 import { ModifiersGroupAtom } from "../../../../helper";
 import { outLineProtectIcon } from "../../../icons/Icons";
-import { v4 as uuidv4 } from "uuid";
 import { BaseButton } from "../../../buttons";
 import { modifierActiveAtom } from "./Modifiers";
 import Collapsible from "react-collapsible";
@@ -74,11 +73,11 @@ const useProtectPurchaseCard = () => {
                     </BaseButton>
                   }
                 >
-                  {Object.keys(modifiers).map((key) => {
+                  {Object.keys(modifiers).map((key,i) => {
                     const value = modifiers[key];
                     if (key === "warranty") {
                       return (
-                        <div key={uuidv4()} className={`px-5 `}>
+                        <div key={i} className={`px-5 `}>
                           <div className=" py-5 pr-10 text-left">
                             <span className="text-sm tracking-[0.05em] text-[#383838]">
                               Get the best value on product protection including
@@ -89,9 +88,9 @@ const useProtectPurchaseCard = () => {
                             {outLineProtectIcon}
                             <span>Add PC MasterPro Protection Plan</span>
                           </div>
-                          {value.map((item) => {
+                          {value.map((item,i) => {
                             return (
-                              <label key={uuidv4()} className="mt-10">
+                              <label key={i} className="mt-10">
                                 <input
                                 onClick={() => setSelectedWarranty(item)}
                                   checked={

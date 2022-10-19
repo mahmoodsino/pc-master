@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import { v4 as uuidv4 } from "uuid";
 import {
   addToCart,
   AllCartsInfo,
@@ -70,21 +69,19 @@ const DetailsCard = () => {
     useRecoilState(MoveToCartPageModalAtom);
   const [selectedBranch, setSelectedBranch] =
     useRecoilState(SelectedBranchAtom);
-    const [openMessageModal, setOpenMassegModal] =
-  useRecoilState(OpenMessageModalAtom);
-  const [wrongMessage,setWrrongMessage]=useRecoilState(ErroreMessageAtom)
+  const [openMessageModal, setOpenMassegModal] =
+    useRecoilState(OpenMessageModalAtom);
+  const [wrongMessage, setWrrongMessage] = useRecoilState(ErroreMessageAtom);
 
-
-  useEffect (() => {
+  useEffect(() => {
     for (let i = 0; i < detailsState?.variations?.length; i++) {
       const variation = detailsState?.variations[i];
-      if(variation.is_default===1){
-        setVariationState(variation)
-        break
+      if (variation.is_default === 1) {
+        setVariationState(variation);
+        break;
       }
-      
     }
-  },[detailsState])
+  }, [detailsState]);
 
   useEffect(() => {
     if (modifiersId !== 0) {
@@ -249,7 +246,6 @@ const DetailsCard = () => {
     });
     setAttributeValueNumber(attributeValueNumber);
   }, [detailsState]);
-  
 
   useEffect(() => {
     setSelectedAttributes([]);
@@ -257,7 +253,6 @@ const DetailsCard = () => {
       setSelectedAttributes((prev) => [...prev, attribute.attribute_values.id]);
     });
   }, [variationState]);
-  
 
   useEffect(() => {
     let arrayOfArrays: any = [];
@@ -293,7 +288,6 @@ const DetailsCard = () => {
     variationState,
     attributeToSetVAriation,
   ]);
-  
 
   useEffect(() => {
     detailsState.variations.map((variation) => {
@@ -317,51 +311,48 @@ const DetailsCard = () => {
     });
   }, [newArrayOFArray, variationState, attributeToSetVAriation]);
 
-  
-
   const handelAttribute = (value: { id: number; parent_id: number }) => {
     let num: { id: number; parent: number } = { id: -1, parent: -1 };
     num = { id: value.id, parent: value.parent_id };
     setAttributesToSetVAriation(num);
   };
-  
 
   useEffect(() => {
     let count = selectedAttributes.length;
     let countArray = 0;
     let checked: number[] = [];
-    let index :number =-1
+    let index: number = -1;
 
     for (let i = 0; i < attributeValueNumbers?.length; i++) {
-      const array : number[] = attributeValueNumbers[i]
-      index = array.findIndex(value => value===attributeToSetVAriation?.id)
-      if ( index>-1) {
-        break
+      const array: number[] = attributeValueNumbers[i];
+      index = array.findIndex((value) => value === attributeToSetVAriation?.id);
+      if (index > -1) {
+        break;
       }
     }
-    selectedAttributes.map((item,i) => {
-      if(index===i){
+    selectedAttributes.map((item, i) => {
+      if (index === i) {
         //@ts-ignore
-        checked.push(attributeToSetVAriation?.id)
-      }else if(index!==i){
-        checked.push(item)
+        checked.push(attributeToSetVAriation?.id);
+      } else if (index !== i) {
+        checked.push(item);
       }
-    })
+    });
     for (let i = 0; i < attributeValueNumbers?.length; i++) {
-      const array : number[] = attributeValueNumbers[i]
-      countArray = 0
+      const array: number[] = attributeValueNumbers[i];
+      countArray = 0;
       for (let j = 0; j < array.length; j++) {
         const element = array[j];
-        const chec = checked[j]
-        if(element===chec){
-          countArray++
+        const chec = checked[j];
+        if (element === chec) {
+          countArray++;
         }
       }
-      if(countArray===count){
-        break
+      if (countArray === count) {
+        break;
       }
     }
-    if (countArray===count) {
+    if (countArray === count) {
       let same: number = 1;
       detailsState.variations.map((variation) => {
         same = 0;
@@ -394,9 +385,8 @@ const DetailsCard = () => {
         }
       });
     }
-    
   }, [attributeToSetVAriation]);
-  
+
   //for button
 
   const handelTtrackingType = (id: number) => {
@@ -557,10 +547,13 @@ const DetailsCard = () => {
           item.quantity,
           "item"
         );
-        if(res===null){
+        if (res === null) {
           setWrrongMessage("some thing went wrong");
-          setOpenMassegModal(true)
-        }else {
+          setOpenMassegModal(true);
+        }else if(res==400){
+          setWrrongMessage("you cant add any more of this product");
+          setOpenMassegModal(true);
+        } else {
           setAllCartsInfo(res.result);
           setCarts(res.result.items);
           setMoveToCartPageModalState(true);
@@ -603,12 +596,12 @@ const DetailsCard = () => {
       const id = wishList[index].id;
       if (id) {
         const res = await deleteWishList(token, id);
-        if(res===null){
+        if (res === null) {
           setWrrongMessage("some thing went wrong");
-          setOpenMassegModal(true)
+          setOpenMassegModal(true);
         }
-          setRemoveLoading(false);
-          setWishList(res.result.items);
+        setRemoveLoading(false);
+        setWishList(res.result.items);
       }
     }
   };
@@ -714,17 +707,17 @@ const DetailsCard = () => {
         )}
       </div>
       <div className={`ml-4`}>
-        {Object.keys(names).map((key) => {
+        {Object.keys(names).map((key,i) => {
           const values = names[key];
           return (
-            <div key={uuidv4()}>
+            <div key={i}>
               <div>
                 <h1 className="font-bold mt-5">{key}</h1>
                 <div className="flex space-x-3">
-                  {values.map((value: any) => {
+                  {values.map((value: any,index:number) => {
                     return (
                       <BaseButton
-                        key={uuidv4()}
+                        key={index}
                         onClick={() => handelAttribute(value)}
                         className={`
                         ${
@@ -742,7 +735,8 @@ const DetailsCard = () => {
                             ? "bg-[#f5f5f5] text-black font-semibold"
                             : selectedAttributes.findIndex(
                                 (item: number) => item === value.id
-                              ) === -1 && "bg-[#f8f8f8] text-[#aaa] line-through"
+                              ) === -1 &&
+                              "bg-[#f8f8f8] text-[#aaa] line-through"
                         }
                           mt-2 rounded-md cursor-pointer px-3 py-0.5 hover:border-black`}
                       >

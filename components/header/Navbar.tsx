@@ -3,7 +3,6 @@ import { routse } from "../fotter/Fotter";
 import { LetterIcon, HeadPhoneIcon } from "../icons";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { v4 as uuidv4 } from "uuid";
 import img1 from "../../public/assets/image/img1.png";
 import Image from "next/image";
 import {
@@ -105,13 +104,15 @@ const Navbar = () => {
         </div>
 
         <div className="flex  items-center">
-          <div className=" w-[18%]">
-            <Image src={img1} />
-          </div>
+          <Link href="/" >
+            <a className=" w-[18%]">
+              <Image src={img1} />
+            </a>
+          </Link>
           <div className="grow flex justify-evenly items-center  text-sm uppercase  font-bold leading-[21px] tracking-[0.03em]">
-            {routse.map((item) => {
+            {routse.map((item,i) => {
               return (
-                <Link key={uuidv4()} href={item.path}>
+                <Link key={i} href={item.path}>
                   <a
                     className={`h-fit px-2 py-1 rounded-xl ${
                       pathname.slice(1) !== item.path.slice(1)

@@ -48,7 +48,7 @@ const useBrands = () => {
               {brand.name}
               <input
                 onChange={() =>( handeBrands(brand.id))}
-                checked={SleBran.findIndex(bran => bran===brand.id)>-1 ? true : false }
+                checked={queryFilters.SelectedBrands.findIndex(bran => bran===brand.id)>-1 ? true : false }
                 className="checkbox"
                 type="checkbox"
               />

@@ -1,10 +1,8 @@
-import React, { Component } from "react";
+import React from "react";
 //@ts-ignore
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import Image from "next/image";
-import { v4 as uuidv4 } from "uuid";
 import { imagesType } from "../../helper";
 
 interface Props {
@@ -88,9 +86,9 @@ const ShopCarousel = ({ img, hover }: Props) => {
   return (
     <div className="lg:container ">
       <Slider {...settings}>
-        {img.map((item) => {
+        {img.map((item,i) => {
           return (
-            <div className="product-slider-img px-1" key={uuidv4()}>
+            <div className="product-slider-img px-1" key={i}>
                   <img className="m-auto product-slider-img my-auto  mt-5 w-[200px] h-[150px]"  src={item?.path} />
             </div>
           );

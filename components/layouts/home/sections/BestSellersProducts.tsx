@@ -1,9 +1,6 @@
 import { useState } from 'react';
-import {BaseCard} from '../../../cards';
-import {Cheips} from '../../../inputs';
 import { HomePageAtom } from '../../../../helper/state';
 import { useRecoilState } from 'recoil';
-import { v4 as uuidv4 } from 'uuid';
 
 
 
@@ -30,7 +27,7 @@ const BestSellersProducts = () => {
         <div className="grid sm:grid-cols-2 lg:grid-cols-5 md:grid-cols-3 my-5  lg:mx-10 xl:mx-10 mb-10">
           {/* {products.map((item) => {
             return (
-              <BaseCard key={uuidv4()} image={item.img}  price={item.price}  description={item.decs} id={0} />
+              <BaseCard key={} image={item.img}  price={item.price}  description={item.decs} id={0} />
               
             );
           })} */}

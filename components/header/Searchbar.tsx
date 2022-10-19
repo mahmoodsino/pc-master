@@ -20,6 +20,7 @@ import HeartIcon from "../icons/HeartIcon";
 import CartIcon from "../icons/CartIcon";
 import PersonIcon from "../icons/PersonIcon";
 import { useRouter } from "next/router";
+import { FiltersQueryAtom } from "../layouts/shop/sections/MainSection";
 
 const Searchbar = () => {
   const [activeDropDown, setActiveDropDown] =
@@ -30,6 +31,7 @@ const Searchbar = () => {
   const allCartsInfo = useRecoilValue(AllCartsInfo);
   const [token, setToken] = useRecoilState(TokenAtom);
   const setContinueAsGuestModal = useSetRecoilState(CouninueAsGuestModalAtom);
+  const [queryFilters, setQueryFilters] = useRecoilState(FiltersQueryAtom);
 
   const push = useRouter().push;
 
@@ -42,9 +44,14 @@ const Searchbar = () => {
   };
 
   const handelSearch = async () => {
+    setQueryFilters(prev => {
+      return(
+        {...prev,search:searchState}
+      )
+    })
     push({
       pathname: "/shop",
-      query: { search: encodeURI(searchState) },
+      // query: { search: encodeURI(searchState) },
     });
   };
   let useType;
@@ -112,7 +119,7 @@ const Searchbar = () => {
           </div>
           <div className="w-[35%] ">
             <span className="  inline-block text-white  w- text-xs font-medium  ">
-              ${allCartsInfo?.sub_total_price.toFixed(2)}
+              ${allCartsInfo?.total_price.toFixed(2)}
             </span>
           </div>
 

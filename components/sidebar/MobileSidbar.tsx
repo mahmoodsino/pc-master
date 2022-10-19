@@ -15,7 +15,6 @@ import {
 } from "../../helper/state";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { v4 as uuidv4 } from "uuid";
 import { BranchsType } from "../../helper";
 
 const MobileSidbar = () => {
@@ -127,9 +126,9 @@ const MobileSidbar = () => {
               onClick={() => setShowSidbarState(false)}
               className="text-left   text-white uppercase font-semibold mt-5 overflow-y-auto"
             >
-              {routseWAuth.map((item) => {
+              {routseWAuth.map((item,i) => {
                 return (
-                  <Link key={uuidv4()} href={item.path}>
+                  <Link key={i} href={item.path}>
                     <a className=" block border-b pl-3 py-2">{item.name}</a>
                   </Link>
                 );
@@ -139,9 +138,9 @@ const MobileSidbar = () => {
             onClick={() => setShowSidbarState(false)}
             className="text-left  text-white uppercase font-semibold mt-10 overflow-y-auto"
           >
-            {routswithout.map((item) => {
+            {routswithout.map((item,i) => {
               return (
-                <Link key={uuidv4()} href={item.path}>
+                <Link key={i} href={item.path}>
                   <a className=" block border-b pl-3 py-2">{item.name}</a>
                 </Link>
               );

@@ -1,5 +1,4 @@
 import {BaseButton} from '../../../buttons';
-import { v4 as uuidv4 } from 'uuid';
 import { useRecoilState } from 'recoil';
 import {  OrderAtom} from '../../../../helper';
 import { useRouter } from 'next/router';
@@ -23,9 +22,9 @@ const Orders = () => {
 
   return (
     <div>
-      {orderState.map((item) => {
+      {orderState.map((item,i) => {
             return (
-              <div key={uuidv4()} className="border-b pb-5 mb-8 ">
+              <div key={i} className="border-b pb-5 mb-8 ">
                 <div className="flex flex-row justify-between mb-5">
                   <div className=" space-x-10 sm:text-xs md:text-sm">
                     <div className="inline-block  ">

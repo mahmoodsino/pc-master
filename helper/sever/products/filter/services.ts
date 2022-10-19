@@ -8,7 +8,7 @@ const handelFilterProduct = async (branchId:number) => {
     try {
             const res = await apiWorker.get(`${root}/products/filters`, {
                 headers: {
-                    "branch_id": branchId,
+                    "branch-id": branchId,
                     "company-id": 1,
                 }
             })

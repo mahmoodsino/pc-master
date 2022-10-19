@@ -1,4 +1,4 @@
-import { MouseEvent, useEffect, useId, useState } from "react";
+import {  useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import {
   CitiesAtom,
@@ -14,7 +14,6 @@ import { BaseInput } from "../../../../inputs";
 import Select, { ActionMeta, StylesConfig } from "react-select";
 
 import {
-  AddresToDeleteIdAtom,
   EditAddressIdAtom,
   OpenAddNewAddressModalAtom,
   OpenEditAddressModalAtom,
@@ -31,7 +30,7 @@ import {
   optionTypeCountry,
   stateType,
 } from "../../../../../helper";
-import { SpinnerWithBack } from "../../../../spinner";
+import { Spinner, SpinnerWithBack } from "../../../../spinner";
 import {toast} from "react-toastify"
 
 interface IFormInputs {
@@ -66,6 +65,7 @@ const EditAddressModal = () => {
   const [stateId, setStateId] = useState<number | undefined>();
   const [cities, setCities] = useRecoilState(CitiesAtom);
   const[loading,setLoading]=useState(false)
+  const [saveLoading,setSaveLoading]=useState(false)
 
   const customStyles: StylesConfig<optionTypeCountry> = {
     option: (provided: ActionMeta, state: ActionMeta) => ({
@@ -97,6 +97,7 @@ const EditAddressModal = () => {
   
 
   const submitForm = async (data: IFormInputs) => {
+    setLoading(true)
     if (openAddNewAddressModal) {
       const res = await handelAddAress(
         data.addressName,
@@ -146,6 +147,7 @@ const EditAddressModal = () => {
       }, 500);
       setOpenEditAddressModal(false);
     }
+    setLoading(false)
   };
   useEffect(() => {
     if (openEditAddressModal) {
@@ -426,11 +428,15 @@ const EditAddressModal = () => {
                   className="md:px-6 cursor-pointer sm:px-3 py-2 border border-black font-medium"
                   type="button"
                 />
+                {!saveLoading ? 
                 <BaseButton
                   type="submit"
                   title="Save Changes"
                   className="md:px-6 sm:px-3 py-2 border bg-green-950 text-white font-medium"
-                />
+                /> : 
+                <Spinner className="w-10"/>
+                
+              }
               </div>
             </form>
           </div>

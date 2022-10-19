@@ -26,7 +26,7 @@ const getProducts = async (params: Params) => {
       },
       params: {
         category: params.categoryId,
-        product_name: params.product_name,
+        text: params.product_name,
         Brand: params.Brands,
         AttributeValues: JSON.stringify(params.AttributeValues),
         MinPrice: params.MinPrice,

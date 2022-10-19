@@ -9,7 +9,6 @@ import img1 from "../../public/assets/image/img1.png";
 import light from "../../public/assets/image/light.png";
 import Map from "../../public/assets/image/Map.png";
 import Image from "next/image";
-import { v4 as uuidv4 } from "uuid";
 import { useRecoilState } from "recoil";
 import { ContactAtom, getContactInfo } from "../../helper";
 import { useEffect } from "react";
@@ -71,9 +70,9 @@ const Footer = () => {
         <div className="col-span-1 text-center">
           <h1 className="text-lg text-white font-normal mt-14">Site Map</h1>
           <div className="mt-10 text-white">
-            {routse.map((item) => {
+            {routse.map((item,i) => {
               return (
-                <div key={uuidv4()}>
+                <div key={i}>
                   <Link href={item.path}>
                     <a className="uppercase text-sm font-light hover:text-green-950">
                       {item.name}

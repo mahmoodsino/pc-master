@@ -4,7 +4,6 @@ import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 import { atom, useRecoilState } from "recoil";
 import img1 from "../../public/assets/image/img1.png";
-import { v4 as uuidv4 } from "uuid";
 
 export const routseWAuth = [
   { path: "/", name: "Home" },
@@ -63,14 +62,16 @@ const FixedNavbar = () => {
       }
     >
       <div className="flex items-center 2xl:container">
-        <div className=" w-[21%]">
-          <Image src={img1} />
-        </div>
+        <Link href="/">
+          <a className=" w-[21%]">
+            <Image src={img1} />
+          </a>
+        </Link>
         {useType !== "user" ? (
           <div className=" flex grow  justify-end gap-8  mr-3   uppercase  font-bold leading-[21px] tracking-[0.03em]  text-sm ">
-            {routseWAuth.map((item) => {
+            {routseWAuth.map((item, i) => {
               return (
-                <Link key={uuidv4()} href={item.path}>
+                <Link key={i} href={item.path}>
                   <a
                     className={`h-fit px-2 py-1 rounded-xl ${
                       pathname.slice(1) !== item.path.slice(1)
@@ -86,9 +87,9 @@ const FixedNavbar = () => {
           </div>
         ) : (
           <div className=" flex grow  justify-end gap-8  mr-3   uppercase  font-bold leading-[21px] tracking-[0.03em]  text-sm ">
-            {routswithout.map((item) => {
+            {routswithout.map((item, i) => {
               return (
-                <Link key={uuidv4()} href={item.path}>
+                <Link key={i} href={item.path}>
                   <a
                     className={`h-fit px-2 py-1 rounded-xl ${
                       pathname.slice(1) !== item.path.slice(1)

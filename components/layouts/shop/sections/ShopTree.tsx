@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { categoriesType } from "../../../../helper/interfaces";
 import { shopArrowIcon } from "../../../icons/Icons";
-import { v4 as uuidv4 } from "uuid";
-import { SelectedShopCategoryAtom } from "../../../../helper";
 import { useRecoilState } from "recoil";
 import { useRouter } from "next/router";
 import { FiltersQueryAtom } from "./MainSection";
@@ -19,9 +17,9 @@ const ShopTree = ({ data }: data) => {
     return (
       <div className=" ">
         <ul className="">
-          {data.map((tree) => (
+          {data.map((tree,i) => (
             <ShopTreeNode
-              key={uuidv4()}
+              key={i}
               node={tree}
               ShopselectedParentId={ShopselectedParentId}
               setShopParentId={setShopParentId}
@@ -34,9 +32,9 @@ const ShopTree = ({ data }: data) => {
     return (
       <div className=" ">
         <ul className="">
-          {data.categories.map((tree) => (
+          {data.categories.map((tree,i) => (
             <ShopTreeNode
-              key={uuidv4()}
+              key={i}
               node={tree}
               ShopselectedParentId={ShopselectedParentId}
               setShopParentId={setShopParentId}
@@ -68,11 +66,12 @@ const ShopTreeNode = ({
   const hasChild = node.categories?.length > 0 ? true : false;
 
   const handelSearch = async (categoreyID: number) => {
-    const index = selCategory.findIndex(
+  
+    const index = queryFilters.SelectedCategories.findIndex(
       (category) => category === categoreyID
     );
     if (index < 0) {
-      selCategory=[...selCategory,categoreyID]
+      selCategory=[...queryFilters.SelectedCategories,categoreyID]
       // setSelectedCategory((prev) => [...prev, categoreyID]);
     } else if (index >= 0) {
       selCategory=selCategory.filter((item) => item !== categoreyID)
@@ -100,7 +99,8 @@ const ShopTreeNode = ({
             {node.name}
             <input
               checked={
-                selCategory.findIndex(
+                queryFilters.SelectedCategories.
+                findIndex(
                   (categorey) => categorey === node.id
                 ) > -1
                   ? true
@@ -113,7 +113,7 @@ const ShopTreeNode = ({
             <span className="text-sm  shopCheckmark"></span>
           </label>
           <div className="flex items-center space-x-1">
-            <h1 className="text-[10px] mt-2 inline-block text-[#7A797B] tracking-[0.03em]"></h1>
+            <span className="text-[10px] mt-2 inline-block text-[#7A797B] tracking-[0.03em]"></span>
             <div
               onClick={() => (
                 setShopParentId(node.id),

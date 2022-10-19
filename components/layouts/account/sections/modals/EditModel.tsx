@@ -1,9 +1,11 @@
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import { useRecoilState } from "recoil";
 import { BaseButton } from "../../../../buttons";
 import { BaseInput } from "../../../../inputs";
 import {
+  ErroreMessageAtom,
   OpenEditModelAtom,
+  OpenMessageModalAtom,
   SuccessEdit,
 } from "../../../../../helper/state";
 import { UserInterface } from "../../../../../helper/interfaces";
@@ -13,6 +15,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { editUpdateUserSchema } from "../../../../../helper/validation";
 import { useRouter } from "next/router";
 import {toast} from "react-toastify"
+import { Spinner } from "../../../../spinner";
 
 type User = {
   userInfo: UserInterface ;
@@ -29,8 +32,10 @@ interface IFormInputs {
 const EditModel = ({ userInfo, setUserInfo, token }: User) => {
   const [showEditModel, setShowEditModel] = useRecoilState(OpenEditModelAtom);
   const [editSuccess, setEditSuccess] = useRecoilState(SuccessEdit);
-  
-
+  const [loading,setLoading]=useState(false)
+  const [openMessageModal, setOpenMassegModal] =
+  useRecoilState(OpenMessageModalAtom);
+const [wrongMessage, setWrrongMessage] = useRecoilState(ErroreMessageAtom);
 
 const {
     register,
@@ -51,9 +56,12 @@ const {
 
   
   const handelEdit = async (data: IFormInputs) => {
+    setLoading(true)
     const res = await handelUpdateUser(data.firstName,data.lastName,data.email,token)
     if(res===null){
-      toast.error("some thing went wrong")
+      setShowEditModel(false);
+      setWrrongMessage("some thing went wrong")
+      setOpenMassegModal(true)
     }else{
       setEditSuccess("EditModel");
       setShowEditModel(false);
@@ -63,7 +71,7 @@ const {
       setEditSuccess("");
     }, 500);
     push("./account")
-    
+    setLoading(false)
   };
 
   return (
@@ -120,10 +128,12 @@ const {
                   className="md:px-6 cursor-pointer sm:px-3 py-2 border border-black font-medium"
                   type="button"
                 />
-
+                {!loading ? 
                 <BaseButton type="submit" className="md:px-6 sm:px-3 py-2 border bg-green-950 text-white font-medium ">
                   Save Changes
-                </BaseButton>
+                </BaseButton> : 
+                <Spinner className="w-10" />
+                }
               </div>
             </form>
           </div>

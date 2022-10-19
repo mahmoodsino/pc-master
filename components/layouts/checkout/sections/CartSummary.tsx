@@ -3,7 +3,6 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { getOrderCratedOrder, OrderDetailsAtom, TokenAtom } from "../../../../helper";
 import { BaseButton } from "../../../buttons";
 import { CartIcon } from "../../../icons";
-import { v4 as uuidv4 } from "uuid";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Spinner } from "../../../spinner";
@@ -59,10 +58,10 @@ const CartSummary = () => {
               <span>{item.description}</span>
               
               
-              {item.modifierGroups?.map((it) => {
+              {item.modifierGroups?.map((it,i) => {
                 return (
                   <Collapsible
-                    key={uuidv4()}
+                    key={i}
                     trigger={
                       <BaseButton className="bg-gray-1350 flex justify-between items-center w-[101%] border">
                         <span className="font-semibold">{it.name}</span>
@@ -86,9 +85,9 @@ const CartSummary = () => {
                     }
                   >
                     <div className="ml-5">
-                      {it.modifiers.map((modi) => {
+                      {it.modifiers.map((modi,i) => {
                         return (
-                          <div key={uuidv4()} className="space-x-3 mt-3 bg-cover">
+                          <div key={i} className="space-x-3 mt-3 bg-cover">
                             <img
                               className="w-20 bg-cover"
                               src={modi.image}

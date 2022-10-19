@@ -5,7 +5,6 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useRecoilState } from "recoil";
 import { HomePageAtom } from "../../helper/state";
-import { v4 as uuidv4 } from 'uuid';
 import { BaseButton } from "../buttons";
 
 
@@ -27,9 +26,9 @@ const  Carousel = () =>{
     return (
       <div className="lg:container ">
         <Slider {...settings}>
-          {homePageState.slider.map(item => {
+          {homePageState.slider.map((item,index) => {
             return (
-            <div key={uuidv4()}>
+            <div key={index}>
               <div
                 className="w-[100%]  h-[440px] justify-around flex md:flex-row sm:items-center sm:flex-col  bg-cover"
                 style={{

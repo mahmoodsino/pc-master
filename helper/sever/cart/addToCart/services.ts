@@ -19,9 +19,13 @@ const addToCart = async (token: string,type:number,product_id:number,variation_i
         }, getConfig(token)
         )
         return res.data
-    } catch (error) {
+    } catch (error:any) {
         console.log(error)
-        return null
+        if(error?.response.status==400){
+            return error?.response.status
+        }else{
+            return null
+        }
     }
 }
 

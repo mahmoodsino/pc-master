@@ -10,7 +10,6 @@ import {
 } from "../../../../helper/state";
 import { BaseCard } from "../../../cards";
 import { Cheips, MobaiChips } from "../../../inputs";
-import { v4 as uuidv4 } from "uuid";
 import { getfeaturedProducts, ProductsType } from "../../../../helper";
 import { Spinner } from "../../../spinner";
 import { toast } from "react-toastify";
@@ -81,10 +80,10 @@ const FeaturedProducts = () => {
       </div>
       {!loading ? (
         <div className="grid sm:grid-cols-2 lg:grid-cols-5 md:grid-cols-3 my-5 gap-2 xl:mx-4  mb-10">
-          {featuredProducts.map((item) => {
+          {featuredProducts.map((item,i) => {
             return (
               <BaseCard
-                key={uuidv4()}
+                key={i}
                 name={item.name}
                 image={item.images}
                 price={item.variation.price}

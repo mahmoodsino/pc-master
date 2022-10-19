@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { atom, useRecoilState } from "recoil";
 import { ModifiersGroupAtom, ModifiersGroupType } from "../../../../helper";
-import { v4 as uuidv4 } from "uuid";
 import { BaseButton } from "../../../buttons";
 import { warrantyActiveAtom } from "./ProtectPurchaseCard";
 import Collapsible from "react-collapsible";
@@ -39,6 +38,8 @@ const useModifiers = () => {
     setSelectedPackage(modefier);
   };
   useEffect(() => {
+    setModifierswithoutWarranty([])
+    setSelectedPackage({} as Prop)
     Object.keys(modifiers).map((key) => {
       const value = modifiers[key];
       if (key !== "warranty") {
@@ -59,7 +60,6 @@ const useModifiers = () => {
             open={modifierActive}
             trigger={
               <BaseButton
-                key={uuidv4()}
                 onClick={() => (
                   setModifierActive(!modifierActive), setWarrantyActive(false)
                 )}
@@ -106,11 +106,11 @@ const useModifiers = () => {
                 <span className="design"></span>
                 <span className="value sm:text-xs md:text-base">no package</span>
               </label>
-              {modifierswithoutWarranty.map((modefier) => {
+              {modifierswithoutWarranty.map((modefier,i) => {
                 return (
                   <div
                     onClick={() => addModifiers(modefier)}
-                    key={uuidv4()}
+                    key={i}
                     className={`cursor-pointer sm:w-[100%] md:w-[90%] border hover:-translate-y-0.5 hover:shadow-sm duration-300 md:my-2 ${
                       modifiersIdforModifiers.findIndex(
                         (item) => item === modefier.id
@@ -138,11 +138,11 @@ const useModifiers = () => {
                       </p>
                     </label>
                     <div className="flex ml-10">
-                      {modefier.modifiers.map((item) => {
+                      {modefier.modifiers.map((item,i) => {
                         if (item.image) {
                           return (
                             <div
-                              key={uuidv4()}
+                              key={i}
                               className="flex justify-around bg-cover "
                             >
                               <img

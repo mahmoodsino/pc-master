@@ -26,33 +26,32 @@ import { CartIcon, HeartIcon, PersonIcon } from "../../../icons";
 import { Dropdown } from "../../../dropdown";
 import { Pagination } from "../../../pagination";
 
-
 interface FiltersType {
-  SelectedBrands:number[],
-  SelectedCategories:number[],
-  page:number,
-  rating:number,
-  minPrice:number,
-  maxPrice:number,
-  SelectedAttribute:{[key: number]: number[]},
-  search:string | string[] | undefined,
-  orderby:string
+  SelectedBrands: number[];
+  SelectedCategories: number[];
+  page: number;
+  rating: number;
+  minPrice: number;
+  maxPrice: number;
+  SelectedAttribute: { [key: number]: number[] };
+  search: string | string[] | undefined;
+  orderby: string;
 }
 
 export const FiltersQueryAtom = atom<FiltersType>({
-  key:"FiltersQueryAtom",
-  default:{
-    minPrice:0,
-    maxPrice:5000,
-    SelectedBrands:[],
-    SelectedCategories:[],
-    page:1,
-    rating:0,
-    SelectedAttribute:{} as {[key: number]: number[]},
-    search:"",
-    orderby:"OrderByNewest"
-  }
-})
+  key: "FiltersQueryAtom",
+  default: {
+    minPrice: 0,
+    maxPrice: 5000,
+    SelectedBrands: [],
+    SelectedCategories: [],
+    page: 1,
+    rating: 0,
+    SelectedAttribute: {} as { [key: number]: number[] },
+    search: "",
+    orderby: "OrderByNewest",
+  },
+});
 
 const MainSection = () => {
   const [showFillterProducts, setShowFillterProducts] =
@@ -68,43 +67,36 @@ const MainSection = () => {
   const [totalPages, setTotalPages] = useRecoilState(totalPagesAtom);
   const [selectedBranch, setSelectedBranch] =
     useRecoilState(SelectedBranchAtom);
-  const [queryFilters,setQueryFilters]=useRecoilState(FiltersQueryAtom)
+  const [queryFilters, setQueryFilters] = useRecoilState(FiltersQueryAtom);
 
   const timerRef = useRef() as MutableRefObject<NodeJS.Timeout>;
 
-  const query = useRouter().query;
+  const { query, asPath, push } = useRouter();
   let useType;
   if (typeof window !== "undefined") {
     useType = localStorage.getItem("type" || "");
   }
-  
-  useEffect(() =>{
-    console.log(queryFilters);
-    
-  },[queryFilters])
 
-  useEffect(() => {
-    if (typeof query.categorey !== "undefined") {
-      setQueryFilters(prev => {
-        return(
-          {
-            //@ts-ignore
-            ...prev,SelectedCategories:[+query.categorey]
-          }
-        )
-      })
-    }
-    if (typeof query.search !== "undefined") {
-      setQueryFilters(prev => {
-        return(
-          {
-            //@ts-ignore
-            ...prev,search:query.search
-          }
-        )
-      })
-    }
-  }, [query.categorey,query.search]);
+  // useEffect(() => {
+  //   let queryCategories = queryFilters.SelectedCategories.map(
+  //     (element) => element
+  //   ).join("-");
+  //   let queryBrands = queryFilters.SelectedBrands.map(
+  //     (element) => element
+  //   ).join("-");
+  //   push({
+  //     query: {
+  //       rate: queryFilters.rating,
+  //       page: queryFilters.page,
+  //       search: queryFilters.search,
+  //       brand: queryBrands,
+  //       categorey : queryCategories,
+  //       orderby:queryFilters.orderby,
+  //       minprice:queryFilters.minPrice,
+  //       maxprice:queryFilters.maxPrice
+  //     },
+  //   });
+  // }, [queryFilters]);
 
   // useEffect(() => {
   //     let queryCategories = selecterCategory.map((element) => element).join("-");
@@ -134,16 +126,40 @@ const MainSection = () => {
   // },[])
 
   useEffect(() => {
+    if (typeof query.categorey !== "undefined") {
+      setQueryFilters((prev) => {
+        return {
+          ...prev,
+          //@ts-ignore
+          SelectedCategories: [+query.categorey],
+        };
+      });
+    }
+    if (typeof query.search !== "undefined") {
+      setQueryFilters((prev) => {
+        return {
+          ...prev,
+          search: query.search,
+        };
+      });
+    }
+  }, [query.categorey, query.search]);
+
+  useEffect(() => {}, []);
+
+  useEffect(() => {
     const leave = () => {
-      setQueryFilters({minPrice:0,
-        maxPrice:5000,
-        SelectedBrands:[],
-        SelectedCategories:[],
-        page:1,
-        rating:0,
-        SelectedAttribute:{} as {[key: number]: number[]},
-        search:"",
-        orderby:"OrderByNewest"})
+      setQueryFilters({
+        minPrice: 0,
+        maxPrice: 5000,
+        SelectedBrands: [],
+        SelectedCategories: [],
+        page: 1,
+        rating: 0,
+        SelectedAttribute: {} as { [key: number]: number[] },
+        search: "",
+        orderby: "OrderByNewest",
+      });
     };
     return () => {
       leave();
@@ -155,9 +171,9 @@ const MainSection = () => {
       setLoading(true);
       const res = await getProducts({
         token: token,
-        orderBy:queryFilters.orderby,
+        orderBy: queryFilters.orderby,
         //@ts-ignore
-        product_name: query.search,
+        product_name:  queryFilters.search,
         categoryId: queryFilters.SelectedCategories,
         AttributeValues: queryFilters.SelectedAttribute,
         Brands: queryFilters.SelectedBrands,
@@ -179,16 +195,12 @@ const MainSection = () => {
     timerRef.current = setTimeout(() => {
       getData();
     }, 500);
-  }, [
-    queryFilters,
-    selectedBranch,
-  ]);
+  }, [queryFilters, selectedBranch]);
 
-  const paginate = (pageNumber: number) => setQueryFilters(prev => {
-    return(
-      {...prev , page:pageNumber}
-    )
-  }) 
+  const paginate = (pageNumber: number) =>
+    setQueryFilters((prev) => {
+      return { ...prev, page: pageNumber };
+    });
 
   return (
     <div className="lg:ml-4">
@@ -231,7 +243,7 @@ const MainSection = () => {
                 </div>
               ) : null}
               <span className=" text-black inline-block text-xs font-semibold  ">
-                ${allCartsInfo.sub_total_price.toFixed(2)}
+                ${allCartsInfo.total_price.toFixed(2)}
               </span>
               <div className="relative flex space-x-5">
                 <Link href="/wishlist">
@@ -260,42 +272,42 @@ const MainSection = () => {
           </div>
         </div>
       </div>
-        <div>
-          <div className=" mt-10">
-            <div className="flex md:flex-row sm:px-1  md:space-x-10 items-end lg:tracking-[0.08em] sm:justify-between md:justify-end md:mx-3 mb-7 text-gray-1250">
-              <div className="sm:block md:hidden">
-                <BaseButton
-                  onClick={() => setShowFillterProducts(true)}
-                  className="px-7 py-2.5 rounded-full text-white bg-gray-1250"
-                  title="Fillter"
-                />
-              </div>
-              <div className="flex md:flex-row sm:flex-col md:space-x-5 items-center md:justify-end sm:w-fit md:w-full">
-                <span className="sm:text-sm sm:mb-5 md:mb-0">
-                  Showing 1-25 of {totalPages * 25} results
-                </span>
-                <ShopSelect />
-              </div>
+      <div>
+        <div className=" mt-10">
+          <div className="flex md:flex-row sm:px-1  md:space-x-10 items-end lg:tracking-[0.08em] sm:justify-between md:justify-end md:mx-3 mb-7 text-gray-1250">
+            <div className="sm:block md:hidden">
+              <BaseButton
+                onClick={() => setShowFillterProducts(true)}
+                className="px-7 py-2.5 rounded-full text-white bg-gray-1250"
+                title="Fillter"
+              />
             </div>
-            <div className="grid grid-cols-5">
-              <div className="sm:hidden md:block md:col-span-2 lg:col-span-1 relative ">
-                <FilterShop />
-              </div>
-              {!loading ? 
+            <div className="flex md:flex-row sm:flex-col md:space-x-5 items-center md:justify-end sm:w-fit md:w-full">
+              <span className="sm:text-sm sm:mb-5 md:mb-0">
+                Showing 1-25 of {totalPages * 25} results
+              </span>
+              <ShopSelect />
+            </div>
+          </div>
+          <div className="grid grid-cols-5">
+            <div className="sm:hidden md:block md:col-span-2 lg:col-span-1 relative ">
+              <FilterShop />
+            </div>
+            {!loading ? (
               <div className="sm:col-span-5 md:col-span-3 lg:col-span-4 md:ml-5 h-full mb-10">
                 <ShopProducts />
                 <Pagination paginate={paginate} />
-              </div> : 
+              </div>
+            ) : (
               <div className=" sm:col-span-5 md:col-span-3 lg:col-span-4  right-0 left-0 mx-auto">
-              <Spinner className="w-40  fill-green-950" />
-            </div>
-              
-            }
-              <FillterProductsMobile />
-            </div>
+                <Spinner className="w-40  fill-green-950" />
+              </div>
+            )}
+            <FillterProductsMobile />
           </div>
         </div>
-     
+      </div>
+
       <AddToWishList />
     </div>
   );

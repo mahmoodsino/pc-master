@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { categoriesType } from "../../../../helper/interfaces";
 import { ProductsAtom } from "../../../../helper/state";
-import { v4 as uuidv4 } from 'uuid';
+import { FiltersQueryAtom } from "../../shop/sections/MainSection";
 
 
 interface data {
@@ -14,9 +14,9 @@ const HomeTree = ({ data }: data) => {
   if (Array.isArray(data)) {
     return (
         <ul onMouseLeave={() => setParentId(-1)} className="">
-          {data.map((tree) => (
+          {data.map((tree,i) => (
             <TreeNode
-            key={uuidv4()}
+            key={i}
               node={tree}
               selectedParentId={selectedParentId}
               setParentId={setParentId}
@@ -27,9 +27,9 @@ const HomeTree = ({ data }: data) => {
   } else
     return (
         <ul onMouseLeave={() => setParentId(-1)} className="h-[440px] w-[230px] overflow-y-auto overflow-x-hidden ">
-          {data.categories.map((tree) => (
+          {data.categories.map((tree,i) => (
             <TreeNode
-            key={uuidv4()}
+            key={i}
               node={tree}
               selectedParentId={selectedParentId}
               setParentId={setParentId}
@@ -48,6 +48,7 @@ const TreeNode = ({ node, selectedParentId, setParentId }: node) => {
 
   const[categoreyId,setCategoreyId]=useState(-1)
   const [productsState,setProductsState]=useRecoilState(ProductsAtom)
+  const [queryFilters, setQueryFilters] = useRecoilState(FiltersQueryAtom);
 
 
   const hasChild = node.categories?.length > 0 ? true : false;
@@ -55,10 +56,14 @@ const TreeNode = ({ node, selectedParentId, setParentId }: node) => {
 
 
   const handelSearch = async (categoreyID: number) => {
-    
+    setQueryFilters(prev => {
+      return(
+        {...prev,SelectedCategories:[categoreyID]}
+      )
+    })
     push({
       pathname: '/shop',
-      query: { categorey:categoreyID},
+      // query: { categorey:categoreyID},
   });
   };
   return (

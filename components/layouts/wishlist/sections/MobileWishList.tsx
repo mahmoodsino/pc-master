@@ -45,6 +45,7 @@ const MobileWishList = ({
                 <div className="w-20 h-20 border">
                   {item.product?.image?.id ? (
                     <img
+                    style={{objectFit:"cover"}}
                       className="h-20 w-20 "
                       src={item.product?.image.path}
                       alt=""

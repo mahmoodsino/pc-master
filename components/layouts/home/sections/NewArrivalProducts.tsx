@@ -10,7 +10,6 @@ import {
 } from "../../../../helper/state";
 import { BaseCard } from "../../../cards";
 import { Cheips, MobaiChips } from "../../../inputs";
-import { v4 as uuidv4 } from "uuid";
 import { getNewArraivalProducts, ProductsType } from "../../../../helper";
 import { Spinner } from "../../../spinner";
 import { toast } from "react-toastify";
@@ -89,11 +88,11 @@ const NewArrivalProducts = () => {
       </div>
       {!loading ? (
         <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-2 md:grid-cols-3 my-5   xl:mx-4 mb-10">
-          {newArrivalProducts?.map((item) => {
+          {newArrivalProducts?.map((item,i) => {
             return (
               <BaseCard
                 name={item.name}
-                key={uuidv4()}
+                key={i}
                 image={item.images}
                 price={item.variation.price}
                 description={item.short_description}

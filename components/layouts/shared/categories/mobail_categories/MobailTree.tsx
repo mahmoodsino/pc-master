@@ -1,7 +1,6 @@
 import  { useState } from "react";
 import { categoriesType } from "../../../../../helper/interfaces";
 import { totherightArrowIcon } from "../../../../icons/Icons";
-import { v4 as uuidv4 } from 'uuid';
 import { useRouter } from "next/router";
 import { useRecoilState } from "recoil";
 import { OpenCategoryModalAtom } from "../../../../../helper";
@@ -16,8 +15,8 @@ const MobailTree = ({ data }: data) => {
     return (
       <div className=" ">
         <ul className="">
-          {data.map((tree) => (
-            <MobailTreeNode key={uuidv4()} node={tree} MobailselectedParentId={MobailselectedParentId} setMobailParentId={setMobailParentId} />
+          {data.map((tree,i) => (
+            <MobailTreeNode key={i} node={tree} MobailselectedParentId={MobailselectedParentId} setMobailParentId={setMobailParentId} />
           ))}
         </ul>
       </div>
@@ -26,8 +25,8 @@ const MobailTree = ({ data }: data) => {
     return (
       <div className=" ">
         <ul className="">
-          {data.categories.map((tree) => (
-            <MobailTreeNode key={uuidv4()} node={tree} MobailselectedParentId={MobailselectedParentId} setMobailParentId={setMobailParentId}/>
+          {data.categories.map((tree,i) => (
+            <MobailTreeNode key={i} node={tree} MobailselectedParentId={MobailselectedParentId} setMobailParentId={setMobailParentId}/>
           ))}
         </ul>
       </div>

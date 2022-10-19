@@ -1,6 +1,4 @@
-
-
-import axios from "axios"
+import axios, {AxiosError} from 'axios';
 import apiWorker from "../../axios"
 import { getConfig } from "../../users/logout/services"
 
@@ -13,9 +11,13 @@ const handelMoveWishListToCart = async (token: string,id:number) => {
         }, getConfig(token)
         )
         return res.data
-    } catch (error) {
+    } catch (error:any) {
         console.log(error)
-        return null
+        if(error?.response.status==400){
+            return error?.response.status
+        }else{
+            return null
+        }
     }
 }
 

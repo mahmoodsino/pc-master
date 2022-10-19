@@ -47,10 +47,15 @@ const FilterShop = () => {
   const push = useRouter().push;
 
   const handelSearch = async () => {
-    push({
-      pathname: "/shop",
-      query: { search: encodeURI(searchState) },
-    });
+    setQueryFilters(prev => {
+      return (
+        {...prev,search:searchState}
+      )
+    })
+    // push({
+    //   pathname: "/shop",
+    //   query: { search: encodeURI(searchState) },
+    // });
   };
   
 
@@ -71,8 +76,11 @@ const FilterShop = () => {
         setShopCategory(res.result.categories);
       }
     };
+    if(selectedBranch?.id>-1){
       getData();
-  }, []);
+
+    }
+  }, [selectedBranch]);
 
   return (
     <div className="mt-7 md:pl-10 lg:pl-0">

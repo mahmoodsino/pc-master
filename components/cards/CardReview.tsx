@@ -4,7 +4,6 @@ import { useRecoilState } from "recoil";
 import { OrderDetailsAtom } from "../../helper";
 import no_image from "../../public/assets/image/no_image.jpg";
 import { BaseButton } from "../buttons";
-import { v4 as uuidv4 } from "uuid";
 
 const CardReview = () => {
   const [orderDetails, setOrderDetails] = useRecoilState(OrderDetailsAtom);
@@ -53,10 +52,10 @@ const CardReview = () => {
                 </div>
               </div>
               <div className="pb-5">
-                {item.modifierGroups?.map((it) => {
+                {item.modifierGroups?.map((it,index) => {
                   return (
                     <Collapsible
-                      key={uuidv4()}
+                      key={index}
                       trigger={
                         <BaseButton className="flex justify-between bg-gray-1350 items-center w-[100%] border">
                           <span className="font-semibold">{it.name}</span>
@@ -82,10 +81,10 @@ const CardReview = () => {
                       }
                     >
                       <div className="ml-5">
-                        {it.modifiers.map((modi) => {
+                        {it.modifiers.map((modi,index) => {
                           return (
                             <div
-                              key={uuidv4()}
+                              key={index}
                               className="space-x-3 mt-3 bg-cover"
                             >
                               <img

@@ -24,7 +24,7 @@ const MoveToCartPageModal = () => {
         <div
           className={`${
             MoveToCartPageModalState ? "top-0 " : "-top-[200%]"
-          } inset-0 sm:w-[95%] px-5 py-5 bg-white md:w-[60%] rounded-xl lg:w-[40%] w-[50vw] h-fit left-0 right-0 top-0 bottom-0 mx-auto my-auto shadow-lg z-50 fixed transition-all duration-300 ease-in-out`}
+          } inset-0 sm:w-[95%] px-5 py-5 bg-white md:w-[60%] rounded-xl lg:w-[40%] w-[50vw] h-fit left-0 right-0 top-0 bottom-0 mx-auto my-auto shadow-lg z-[100] fixed transition-all duration-300 ease-in-out`}
         >
           <span className="block font-semibold">
             You have added new item to the cart!!
@@ -45,7 +45,7 @@ const MoveToCartPageModal = () => {
           </div>
         </div>
         {MoveToCartPageModalState ? (
-          <div className="opacity-25 fixed inset-0 z-40 bg-black  "></div>
+          <div className="opacity-25 fixed inset-0 z-[99] bg-black  "></div>
         ) : null}
       </>
     </div>
