@@ -30,6 +30,8 @@ const NewArrivalProducts = () => {
     useRecoilState(OpenMessageModalAtom);
   const [wrongMessage, setWrrongMessage] = useRecoilState(ErroreMessageAtom);
 
+  
+
   const setItem = async (setItem: number) => {
     setLoading(true);
     setSelected(setItem);

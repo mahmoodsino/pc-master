@@ -74,6 +74,7 @@ const DetailsCard = () => {
   useRecoilState(OpenMessageModalAtom);
   const [wrongMessage,setWrrongMessage]=useRecoilState(ErroreMessageAtom)
 
+
   useEffect (() => {
     for (let i = 0; i < detailsState?.variations?.length; i++) {
       const variation = detailsState?.variations[i];
@@ -738,14 +739,14 @@ const DetailsCard = () => {
                           selectedAttributes.findIndex(
                             (item: number) => item === value.id
                           ) === -1
-                            ? "bg-blue-200 text-blue-500 font-semibold"
+                            ? "bg-[#f5f5f5] text-black font-semibold"
                             : selectedAttributes.findIndex(
                                 (item: number) => item === value.id
-                              ) === -1 && "bg-[#f8f8f8] text-[#aaa]"
+                              ) === -1 && "bg-[#f8f8f8] text-[#aaa] line-through"
                         }
-                          mt-2 rounded-md cursor-pointer px-3 py-0.5    hover:border-black`}
+                          mt-2 rounded-md cursor-pointer px-3 py-0.5 hover:border-black`}
                       >
-                        {value.id}
+                        {value.name}
                       </BaseButton>
                     );
                   })}

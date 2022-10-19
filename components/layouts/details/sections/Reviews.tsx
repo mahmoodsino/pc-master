@@ -82,7 +82,7 @@ const Reviews = () => {
     }
     if (res.name === "AxiosError") {
       if (res.response.status === 400) {
-        setWrongMessage(res.response.data.message);
+        setWrongMessage("you can`t review this item until you bought it");
         setOpenMassegModal(true);
       } else {
       }

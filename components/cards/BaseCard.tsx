@@ -9,7 +9,6 @@ import {
   CouninueAsGuestModalAtom,
   deleteWishList,
   ErroreMessageAtom,
-  getWishList,
   imagesType,
   OpenMessageModalAtom,
   SelectedBranchAtom,
@@ -20,8 +19,6 @@ import {
 import { useRouter } from "next/router";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { RedHeartIcon } from "../icons";
-import {toast} from "react-toastify"
-import { MessageModal } from "../messageModal";
 
 interface cardType {
   image: imagesType[];
@@ -36,7 +33,6 @@ interface cardType {
 const BaseCard = ({
   image,
   price,
-  description,
   id,
   variation,
   in_wishlist,

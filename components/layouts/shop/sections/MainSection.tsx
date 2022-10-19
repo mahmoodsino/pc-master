@@ -35,7 +35,8 @@ interface FiltersType {
   minPrice:number,
   maxPrice:number,
   SelectedAttribute:{[key: number]: number[]},
-  search:string | string[] | undefined
+  search:string | string[] | undefined,
+  orderby:string
 }
 
 export const FiltersQueryAtom = atom<FiltersType>({
@@ -48,7 +49,8 @@ export const FiltersQueryAtom = atom<FiltersType>({
     page:1,
     rating:0,
     SelectedAttribute:{} as {[key: number]: number[]},
-    search:""
+    search:"",
+    orderby:"OrderByNewest"
   }
 })
 
@@ -133,12 +135,15 @@ const MainSection = () => {
 
   useEffect(() => {
     const leave = () => {
-      // setSelectedCategory([]);
-      // setSelectBrand([]);
-      // setSelectedAttribute({});
-      // setCurrentPage(1);
-      // setRatingState(0);
-      // setRangeSlider([0, 5000]);
+      setQueryFilters({minPrice:0,
+        maxPrice:5000,
+        SelectedBrands:[],
+        SelectedCategories:[],
+        page:1,
+        rating:0,
+        SelectedAttribute:{} as {[key: number]: number[]},
+        search:"",
+        orderby:"OrderByNewest"})
     };
     return () => {
       leave();
@@ -150,6 +155,7 @@ const MainSection = () => {
       setLoading(true);
       const res = await getProducts({
         token: token,
+        orderBy:queryFilters.orderby,
         //@ts-ignore
         product_name: query.search,
         categoryId: queryFilters.SelectedCategories,
@@ -232,7 +238,7 @@ const MainSection = () => {
                   <a className="w-5">
                     <div>
                       <div className="absolute -top-2 right-[54%]  flex items-center cursor-pointer justify-center text-white bg-red-950 rounded-full text-sm w-4 h-4 ">
-                        {wishList.length}
+                        {wishList?.length}
                       </div>
                       <HeartIcon className="w-6" />
                     </div>
@@ -280,7 +286,7 @@ const MainSection = () => {
                 <ShopProducts />
                 <Pagination paginate={paginate} />
               </div> : 
-              <div className=" col-span-3  right-0 left-0 mx-auto">
+              <div className=" sm:col-span-5 md:col-span-3 lg:col-span-4  right-0 left-0 mx-auto">
               <Spinner className="w-40  fill-green-950" />
             </div>
               

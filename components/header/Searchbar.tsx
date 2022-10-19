@@ -88,7 +88,7 @@ const Searchbar = () => {
                 className="w-5"
               >
                 <div className="absolute -top-1 right-[70%]  flex items-center cursor-pointer justify-center text-white bg-red-950 rounded-full text-sm w-4 h-4 ">
-                  {wishList.length}
+                  {wishList?.length}
                 </div>
                 <HeartIcon className="w-6 text-white" />
               </BaseButton>

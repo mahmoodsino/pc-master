@@ -5,8 +5,6 @@ import {
   AttributesShopAtom,
   BrandsAtom,
   OrderByAtom,
-  ProductsAtom,
-  RangeSliderAtom,
   SearchAtom,
   SelectedBranchAtom,
 } from "../../../../helper/state";
@@ -30,7 +28,6 @@ const FilterShop = () => {
   const [shopCategorey, setShopCategory] = useState<categoriesType[]>([]);
   const [brands, setBrands] = useRecoilState(BrandsAtom);
   const [attributes, setAttributes] = useRecoilState(AttributesShopAtom);
-  // const [rangeSlider, setRangeSlider] = useRecoilState(RangeSliderAtom);
   const { render } = useBrands();
   const { rende } = useRating();
   const { AttributeRender } = useAttributes();
@@ -55,6 +52,7 @@ const FilterShop = () => {
       query: { search: encodeURI(searchState) },
     });
   };
+  
 
   useEffect(() => {
     const getData = async () => {
@@ -71,11 +69,9 @@ const FilterShop = () => {
         }));
         setOrderByState(result);
         setShopCategory(res.result.categories);
-
       }
     };
-
-    getData();
+      getData();
   }, []);
 
   return (

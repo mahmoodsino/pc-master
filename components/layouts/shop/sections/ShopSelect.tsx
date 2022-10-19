@@ -5,21 +5,16 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRecoilState } from "recoil";
 import {
-  currentPageAtom,
   ErroreMessageAtom,
   getProducts,
   OpenMessageModalAtom,
   OrderByAtom,
   ProductsAtom,
-  RangeSliderAtom,
   SelectedBranchAtom,
   SelectedShopCategoryAtom,
   TokenAtom,
 } from "../../../../helper";
 import { orderBySchema } from "../../../../helper/validation";
-import useBrands from "./Brands";
-import useRating from "./Rating";
-import useAttributes from "./Attributes";
 import { useRouter } from "next/router";
 import { FiltersQueryAtom } from "./MainSection";
 
@@ -36,29 +31,23 @@ const ShopSelect = () => {
   const [orderByState, setOrderByState] = useRecoilState(OrderByAtom);
   const [productsState, setProductsState] = useRecoilState(ProductsAtom);
   const [token, setToken] = useRecoilState(TokenAtom);
-  // const { selectedAttribute } = useAttributes();
   const [selecterCategory, setSelectedCategory] = useRecoilState(
     SelectedShopCategoryAtom
   );
-  // const [rangeSlider, setRangeSlider] = useRecoilState(RangeSliderAtom);
-  // const [currentPage, setCurrentPage] = useRecoilState(currentPageAtom);
-  const [selectedBranch,setSelectedBranch]=useRecoilState(SelectedBranchAtom)
+  const [selectedBranch, setSelectedBranch] =
+    useRecoilState(SelectedBranchAtom);
   const [openMessageModal, setOpenMassegModal] =
-  useRecoilState(OpenMessageModalAtom);
-  const [wrongMessage,setWrrongMessage]=useRecoilState(ErroreMessageAtom)
-  const [queryFilters,setQueryFilters]=useRecoilState(FiltersQueryAtom)
+    useRecoilState(OpenMessageModalAtom);
+  const [wrongMessage, setWrrongMessage] = useRecoilState(ErroreMessageAtom);
+  const [queryFilters, setQueryFilters] = useRecoilState(FiltersQueryAtom);
 
   const {
     control,
-    register,
-    handleSubmit,
-    formState: { errors },
   } = useForm<IFormInputs>({
     resolver: yupResolver(orderBySchema),
   });
 
   const query = useRouter().query;
-
 
   const customStyles: StylesConfig<optionType> = {
     option: (provided: ActionMeta, state: ActionMeta) => ({
@@ -85,25 +74,12 @@ const ShopSelect = () => {
             const handleSelectChange = async (
               selectedOption: optionType | null
             ) => {
-              const res = await getProducts({
-                orderBy: selectedOption?.label,
-                token: token,
-                //@ts-ignore
-                product_name: query.search,
-                categoryId: selecterCategory,
-                AttributeValues: queryFilters.SelectedAttribute,
-                Brands: queryFilters.SelectedBrands,
-                MinPrice: queryFilters.minPrice,
-                MaxPrice: queryFilters.maxPrice,
-                page: queryFilters.page,
-                branchId:selectedBranch?.id
-
-              });
-              if(res===null){
-                setWrrongMessage("some thing went wrong");
-      setOpenMassegModal(true)
-              }else{
-                setProductsState(res.result.items);
+              if(selectedOption?.label!=null){
+                setQueryFilters(prev => {
+                  return (
+                    {...prev,orderby: selectedOption?.label}
+                  )
+                })
               }
             };
             return (

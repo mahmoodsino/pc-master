@@ -5,7 +5,6 @@ import {
   deleteWishList,
   DetailsAtom,
   ErroreMessageAtom,
-  getWishList,
   OpenAddToWishListAtom,
   OpenMessageModalAtom,
   SelectedBranchAtom,
