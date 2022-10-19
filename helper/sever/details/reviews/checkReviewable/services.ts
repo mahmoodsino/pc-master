@@ -9,9 +9,13 @@ const checkRewiewable = async (token: string, id: number) => {
         const res = await apiWorker.get(`${root}/reviews/${id}/check-reviewable
         `, getConfig(token))
         return res.data
-    } catch (error) {
+    } catch (error:any) {
         console.log(error)
-        return error
+        if(error?.response.status==400){
+            return error?.response.status
+        }else{
+            return null
+        }
     }
 }
 export default checkRewiewable

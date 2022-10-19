@@ -194,7 +194,7 @@ const MainSection = () => {
     clearTimeout(timerRef.current);
     timerRef.current = setTimeout(() => {
       getData();
-    }, 500);
+    }, 1000);
   }, [queryFilters, selectedBranch]);
 
   const paginate = (pageNumber: number) =>
