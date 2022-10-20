@@ -47,7 +47,7 @@ const ShopSelect = () => {
     resolver: yupResolver(orderBySchema),
   });
 
-  const query = useRouter().query;
+  const {query,replace} = useRouter()
 
   const customStyles: StylesConfig<optionType> = {
     option: (provided: ActionMeta, state: ActionMeta) => ({
@@ -80,6 +80,14 @@ const ShopSelect = () => {
                     {...prev,orderby: selectedOption?.label}
                   )
                 })
+                // replace({
+                //   query: { ...query, orderby: selectedOption?.label }
+                  
+                // },
+                // undefined,{
+                //   scroll:false
+                // }
+                // );
               }
             };
             return (

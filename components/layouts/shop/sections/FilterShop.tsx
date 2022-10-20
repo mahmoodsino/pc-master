@@ -34,7 +34,19 @@ const FilterShop = () => {
   const [selectedBranch,setSelectedBranch]=useRecoilState(SelectedBranchAtom)
   const [queryFilters,setQueryFilters]=useRecoilState(FiltersQueryAtom)
 
+  const {replace,query} = useRouter()
+
   const handleChange = (value: number[]) => {
+    // replace({
+    //   query: { ...query, minprice:value[0],maxprice:value[1] }
+      
+    // },
+    // undefined,{
+    //   scroll:false
+    // }
+    // );
+    
+
     setQueryFilters(prev=>{
       return(
         {
@@ -44,14 +56,22 @@ const FilterShop = () => {
     })
   };
 
-  const push = useRouter().push;
-
   const handelSearch = async () => {
     setQueryFilters(prev => {
       return (
         {...prev,search:searchState}
       )
     })
+
+    // replace({
+    //   query: { ...query, search:searchState}
+      
+    // },
+    // undefined,{
+    //   scroll:false
+    // }
+    // );
+
     // push({
     //   pathname: "/shop",
     //   query: { search: encodeURI(searchState) },

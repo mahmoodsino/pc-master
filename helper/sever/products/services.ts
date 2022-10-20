@@ -20,7 +20,7 @@ const getProducts = async (params: Params) => {
   try {
     const res = await apiWorker.get(`${root}/products?${params.orderBy ? params.orderBy : "OrderByNewest"}&page_size=25`, {
       headers: {
-        "branch-id": params.branchId,
+        "branch-id": params.branchId ? params.branchId : "1",
         "company-id": 1,
         Authorization: `Bearer ${params.token}`
       },

@@ -71,7 +71,7 @@ const MainSection = () => {
 
   const timerRef = useRef() as MutableRefObject<NodeJS.Timeout>;
 
-  const { query, asPath, push } = useRouter();
+  const { query, asPath, push,replace } = useRouter();
   let useType;
   if (typeof window !== "undefined") {
     useType = localStorage.getItem("type" || "");
@@ -197,10 +197,21 @@ const MainSection = () => {
     }, 1000);
   }, [queryFilters, selectedBranch]);
 
-  const paginate = (pageNumber: number) =>
+  const paginate = (pageNumber: number) =>{
+
+
     setQueryFilters((prev) => {
       return { ...prev, page: pageNumber };
-    });
+    })
+    // replace({
+    //   query: { ...query, brand: pageNumber }
+      
+    // },
+    // undefined,{
+    //   scroll:false
+    // }
+    // );
+  }
 
   return (
     <div className="lg:ml-4">

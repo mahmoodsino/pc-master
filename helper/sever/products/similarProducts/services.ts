@@ -8,7 +8,7 @@ const getSimilarProducts = async (token:string,id: number,branhId:number) => {
     try {
             const res = await apiWorker.get(`${root}/products/${id}/similar`, {
                 headers: {
-                    "branch-id": branhId,
+                    'branch-id': branhId ? branhId : "1"  ,
                     "company-id": 1,
                     Authorization: `Bearer ${token}`
                 }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { categoriesType } from "../../../../helper/interfaces";
 import { shopArrowIcon } from "../../../icons/Icons";
 import { useRecoilState } from "recoil";
@@ -8,8 +8,7 @@ import { FiltersQueryAtom } from "./MainSection";
 interface data {
   data: categoriesType[] | categoriesType;
 }
-export let selCategory :number[] =[]
-
+export let selCategory: number[] = [];
 
 const ShopTree = ({ data }: data) => {
   const [ShopselectedParentId, setShopParentId] = useState(-1);
@@ -17,7 +16,7 @@ const ShopTree = ({ data }: data) => {
     return (
       <div className=" ">
         <ul className="">
-          {data.map((tree,i) => (
+          {data.map((tree, i) => (
             <ShopTreeNode
               key={i}
               node={tree}
@@ -32,7 +31,7 @@ const ShopTree = ({ data }: data) => {
     return (
       <div className=" ">
         <ul className="">
-          {data.categories.map((tree,i) => (
+          {data.categories.map((tree, i) => (
             <ShopTreeNode
               key={i}
               node={tree}
@@ -56,39 +55,86 @@ const ShopTreeNode = ({
   ShopselectedParentId,
   setShopParentId,
 }: node) => {
+  const { replace, query } = useRouter();
   // const [selecterCategory, setSelectedCategory] = useRecoilState(
   //   SelectedShopCategoryAtom
   // );
-  const [queryFilters,setQueryFilters]=useRecoilState(FiltersQueryAtom)
+  const [queryFilters, setQueryFilters] = useRecoilState(FiltersQueryAtom);
 
-  const { push } = useRouter();
 
   const hasChild = node.categories?.length > 0 ? true : false;
 
+  // useEffect(() => {
+  //   if(typeof (query.category)!=="undefined"||query.category){
+  //     const i:string = query?.category
+  //     const j = i.split("-")
+  //     console.log(j);
+  //     if(j.length>0){
+
+  //       j.map(item => {
+  //         let index:number=selCategory.findIndex(find => find===(+item))
+  //         if(index<0){
+  //           if(item!="0"){
+  //             selCategory.push(+item)
+  //           }
+  //         }
+  //       })
+  //     }
+      
+      
+      
+  //   }
+  //   if(query.category=="0"){
+  //     replace({
+  //       query: { ...query, category: "" }
+        
+  //     },
+  //     undefined,{
+  //       scroll:false
+  //     }
+  //     );
+  //   }
+  //   setQueryFilters((prev) => {
+  //     return {
+  //       ...prev,
+  //       SelectedCategories: selCategory,
+  //     };
+  //   });
+    
+  // },[query.category])
+
+
   const handelSearch = async (categoreyID: number) => {
-  
     const index = queryFilters.SelectedCategories.findIndex(
       (category) => category === categoreyID
     );
     if (index < 0) {
-      selCategory=[...queryFilters.SelectedCategories,categoreyID]
+      selCategory = [...queryFilters.SelectedCategories, categoreyID];
       // setSelectedCategory((prev) => [...prev, categoreyID]);
     } else if (index >= 0) {
-      selCategory=selCategory.filter((item) => item !== categoreyID)
+      selCategory = selCategory.filter((item) => item !== categoreyID);
       // setSelectedCategory((prev) =>
       //   prev.filter((item) => item !== categoreyID)
       // );
     }
 
-    // let stringwithhyphen=cat.map(element=>element).join("-")
-    setQueryFilters(prev=>{
-      return(
-        {
-          ...prev , SelectedCategories:selCategory
-        }
-      )
-    })    
-   
+    // let stringwithhyphen=selCategory.map(element=>element).join("-")
+
+    // replace({
+    //   query: { ...query, category: stringwithhyphen }
+      
+    // },
+    // undefined,{
+    //   scroll:false
+    // }
+    // );
+
+    setQueryFilters((prev) => {
+      return {
+        ...prev,
+        SelectedCategories: selCategory,
+      };
+    });
   };
 
   return (
@@ -99,8 +145,7 @@ const ShopTreeNode = ({
             {node.name}
             <input
               checked={
-                queryFilters.SelectedCategories.
-                findIndex(
+                queryFilters.SelectedCategories.findIndex(
                   (categorey) => categorey === node.id
                 ) > -1
                   ? true

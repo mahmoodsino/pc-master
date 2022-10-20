@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { BrandsAtom, selectBrandAtom } from "../../../../helper";
 import { FiltersQueryAtom } from "./MainSection";
@@ -12,6 +12,36 @@ const useBrands = () => {
   const{push}=useRouter()
   const [queryFilters,setQueryFilters]=useRecoilState(FiltersQueryAtom)
   
+  const { replace, query } = useRouter();
+
+
+  // useEffect(() => {
+  //   if(typeof (query.brand)!=="undefined"||query.brand){
+  //     const i:string = query?.brand
+  //     const j = i.split("-")
+  //     console.log(j);
+  //     if(j.length>0){
+
+  //       j.map(item => {
+  //         let index:number=SleBran.findIndex(find => find===(+item))
+  //         if(index<0){
+  
+  //           SleBran.push(+item)
+  //         }
+  //       })
+  //     }
+      
+      
+      
+  //   }
+  //   setQueryFilters((prev) => {
+  //     return {
+  //       ...prev,
+  //       SelectedBrands: SleBran,
+  //     };
+  //   });
+    
+  // },[query.brand])
 
 
   const handeBrands =async (id: number) => {
@@ -23,7 +53,18 @@ const useBrands = () => {
       SleBran=SleBran.filter((item) => item !== id)
       // setSelectBrand(prev => prev.filter(item => item!==id))
     }
-    // let stringwithhyphen=bran.map(element=>element).join("-")    
+    
+    // let stringwithhyphen=SleBran.map(element=>element).join("-")    
+
+    // replace({
+    //   query: { ...query, brand: stringwithhyphen }
+      
+    // },
+    // undefined,{
+    //   scroll:false
+    // }
+    // );
+
     setQueryFilters(prev => {
       return(
         {

@@ -6,15 +6,19 @@ import { StarIcon } from "../../../icons";
 import { FiltersQueryAtom } from "./MainSection";
 
 
+  let rate : number
+
 const useRating = () => {
   // const [ratingState,setRatingState]=useRecoilState(RatingAtom)
   const{push}=useRouter()
   const [queryFilters,setQueryFilters]=useRecoilState(FiltersQueryAtom)
 
+  const { replace, query } = useRouter();
 
   const handelRating = (ratingNumber: number) => {
     if(queryFilters.rating===ratingNumber){
       // setRatingState(0)
+      rate = 0
       setQueryFilters(prev => {
         return(
           {...prev , rating:0}
@@ -22,6 +26,9 @@ const useRating = () => {
       })
     }else{
       // setRatingState(ratingNumber)
+      rate = ratingNumber
+      
+
       setQueryFilters(prev=>{
         return(
           {
@@ -30,6 +37,15 @@ const useRating = () => {
         )
       })
     }
+
+    // replace({
+    //   query: { ...query, rate: rate }
+      
+    // },
+    // undefined,{
+    //   scroll:false
+    // }
+    // );
   };
 
   return {

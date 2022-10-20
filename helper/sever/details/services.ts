@@ -7,7 +7,7 @@ const root =process.env.NEXT_PUBLIC_ROOT
     try {
         const res = await apiWorker.get(`${root}/products/${id}` , {
             headers: {
-              'branch-id': branchId
+              'branch-id': branchId ? branchId : "1"
             }
           })
         return res.data
