@@ -1,18 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 //@ts-ignore
 import Select, { StylesConfig, ActionMeta } from "react-select";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRecoilState } from "recoil";
 import {
-  ErroreMessageAtom,
-  getProducts,
-  OpenMessageModalAtom,
   OrderByAtom,
-  ProductsAtom,
-  SelectedBranchAtom,
-  SelectedShopCategoryAtom,
-  TokenAtom,
 } from "../../../../helper";
 import { orderBySchema } from "../../../../helper/validation";
 import { useRouter } from "next/router";
@@ -29,16 +22,6 @@ interface IFormInputs {
 
 const ShopSelect = () => {
   const [orderByState, setOrderByState] = useRecoilState(OrderByAtom);
-  const [productsState, setProductsState] = useRecoilState(ProductsAtom);
-  const [token, setToken] = useRecoilState(TokenAtom);
-  const [selecterCategory, setSelectedCategory] = useRecoilState(
-    SelectedShopCategoryAtom
-  );
-  const [selectedBranch, setSelectedBranch] =
-    useRecoilState(SelectedBranchAtom);
-  const [openMessageModal, setOpenMassegModal] =
-    useRecoilState(OpenMessageModalAtom);
-  const [wrongMessage, setWrrongMessage] = useRecoilState(ErroreMessageAtom);
   const [queryFilters, setQueryFilters] = useRecoilState(FiltersQueryAtom);
 
   const {
@@ -48,6 +31,19 @@ const ShopSelect = () => {
   });
 
   const {query,replace} = useRouter()
+
+
+  useEffect(() => {
+    if(typeof(query.orderby)==="string"){
+      //@ts-ignore
+      setQueryFilters(prev => {
+        return (
+          {...prev,orderby: query.orderby}
+        )
+      })
+    }
+
+  },[query.orderby])
 
   const customStyles: StylesConfig<optionType> = {
     option: (provided: ActionMeta, state: ActionMeta) => ({
@@ -75,19 +71,22 @@ const ShopSelect = () => {
               selectedOption: optionType | null
             ) => {
               if(selectedOption?.label!=null){
+
+                replace(
+                  {
+                    query: { ...query, orderby: selectedOption?.label },
+                  },
+                  undefined,
+                  {
+                    scroll: false,
+                  }
+                );
+
                 setQueryFilters(prev => {
                   return (
                     {...prev,orderby: selectedOption?.label}
                   )
                 })
-                // replace({
-                //   query: { ...query, orderby: selectedOption?.label }
-                  
-                // },
-                // undefined,{
-                //   scroll:false
-                // }
-                // );
               }
             };
             return (

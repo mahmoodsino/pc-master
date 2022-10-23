@@ -50,9 +50,9 @@ const Searchbar = () => {
       )
     })
     push({
-      pathname: "/shop",
-      // query: { search: encodeURI(searchState) },
-    });
+      query:{search:searchState},
+      pathname:"/shop"
+    })
   };
   let useType;
   if (typeof window !== "undefined") {

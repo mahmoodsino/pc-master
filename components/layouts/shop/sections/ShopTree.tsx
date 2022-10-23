@@ -12,6 +12,31 @@ export let selCategory: number[] = [];
 
 const ShopTree = ({ data }: data) => {
   const [ShopselectedParentId, setShopParentId] = useState(-1);
+  const [queryFilters, setQueryFilters] = useRecoilState(FiltersQueryAtom);
+  const {query,replace} = useRouter()
+
+
+  useEffect(() => {
+    if(typeof(query.category) !=="undefined"){
+      //@ts-ignore
+      const q = query?.category?.split("-")
+      q.map((item:string) =>{
+        let index:number=selCategory.findIndex(find => ( find===(+item)))  
+        if(index<0 && +item!=0){
+          selCategory=[...selCategory,+item]
+        }
+      })
+    }
+    setQueryFilters((prev) => {
+      return {
+        ...prev,
+        SelectedCategories: selCategory,
+      };
+    });
+  },[query.category])
+
+
+
   if (Array.isArray(data)) {
     return (
       <div className=" ">
@@ -56,78 +81,26 @@ const ShopTreeNode = ({
   setShopParentId,
 }: node) => {
   const { replace, query } = useRouter();
-  // const [selecterCategory, setSelectedCategory] = useRecoilState(
-  //   SelectedShopCategoryAtom
-  // );
   const [queryFilters, setQueryFilters] = useRecoilState(FiltersQueryAtom);
 
 
   const hasChild = node.categories?.length > 0 ? true : false;
 
-  // useEffect(() => {
-  //   if(typeof (query.category)!=="undefined"||query.category){
-  //     const i:string = query?.category
-  //     const j = i.split("-")
-  //     console.log(j);
-  //     if(j.length>0){
-
-  //       j.map(item => {
-  //         let index:number=selCategory.findIndex(find => find===(+item))
-  //         if(index<0){
-  //           if(item!="0"){
-  //             selCategory.push(+item)
-  //           }
-  //         }
-  //       })
-  //     }
-      
-      
-      
-  //   }
-  //   if(query.category=="0"){
-  //     replace({
-  //       query: { ...query, category: "" }
-        
-  //     },
-  //     undefined,{
-  //       scroll:false
-  //     }
-  //     );
-  //   }
-  //   setQueryFilters((prev) => {
-  //     return {
-  //       ...prev,
-  //       SelectedCategories: selCategory,
-  //     };
-  //   });
-    
-  // },[query.category])
-
-
+ 
   const handelSearch = async (categoreyID: number) => {
     const index = queryFilters.SelectedCategories.findIndex(
       (category) => category === categoreyID
     );
     if (index < 0) {
       selCategory = [...queryFilters.SelectedCategories, categoreyID];
-      // setSelectedCategory((prev) => [...prev, categoreyID]);
     } else if (index >= 0) {
       selCategory = selCategory.filter((item) => item !== categoreyID);
-      // setSelectedCategory((prev) =>
-      //   prev.filter((item) => item !== categoreyID)
-      // );
     }
 
-    // let stringwithhyphen=selCategory.map(element=>element).join("-")
-
-    // replace({
-    //   query: { ...query, category: stringwithhyphen }
-      
-    // },
-    // undefined,{
-    //   scroll:false
-    // }
-    // );
+    let QueryCategory = selCategory.map(item => item).join("-")
+    replace({query: { ...query, category: QueryCategory }},
+   undefined,{scroll:false}
+   );
 
     setQueryFilters((prev) => {
       return {

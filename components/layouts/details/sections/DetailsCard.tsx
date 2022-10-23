@@ -159,7 +159,7 @@ const DetailsCard = () => {
             variation_id: variationState.id,
           },
         ]);
-      } else if (detailsState.product.tracking_type === 2 || 3) {
+      } else if (detailsState.product.tracking_type === 2 ||detailsState.product.tracking_type === 3) {
         if (variationState.available_quantity !== 0) {
           setNewCart([
             {
@@ -222,6 +222,8 @@ const DetailsCard = () => {
     setNames(newNames);
     setIsChange(false);
   }, [detailsState]);
+  console.log(names);
+  
 
   useEffect(() => {
     setNewCart([]);
@@ -473,7 +475,7 @@ const DetailsCard = () => {
             </div>
           );
         }
-      } else if (detailsState.product.tracking_type === 2 || 3) {
+      } else if (detailsState.product.tracking_type === 2 || detailsState.product.tracking_type===3) {
         if (variationState.available_quantity === 0) {
           return (
             <p className="text-sm block text-red-950 h-[24px]">

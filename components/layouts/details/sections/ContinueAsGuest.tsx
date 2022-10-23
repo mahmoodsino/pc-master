@@ -24,7 +24,7 @@ const ContinueAsGuest = () => {
     setLoading(true)
     const res = await handelRegisterAsGuest();
     if(res===null){
-
+      
     }else if (res.result.token) {
       localStorage.setItem("token", res.result.token.access_token);
       localStorage.setItem("id", res.result.user.id);

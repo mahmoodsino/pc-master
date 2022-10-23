@@ -71,82 +71,53 @@ const MainSection = () => {
 
   const timerRef = useRef() as MutableRefObject<NodeJS.Timeout>;
 
-  const { query, asPath, push,replace } = useRouter();
+  const { query,  push,replace } = useRouter();
   let useType;
   if (typeof window !== "undefined") {
     useType = localStorage.getItem("type" || "");
   }
 
-  // useEffect(() => {
-  //   let queryCategories = queryFilters.SelectedCategories.map(
-  //     (element) => element
-  //   ).join("-");
-  //   let queryBrands = queryFilters.SelectedBrands.map(
-  //     (element) => element
-  //   ).join("-");
-  //   push({
-  //     query: {
-  //       rate: queryFilters.rating,
-  //       page: queryFilters.page,
-  //       search: queryFilters.search,
-  //       brand: queryBrands,
-  //       categorey : queryCategories,
-  //       orderby:queryFilters.orderby,
-  //       minprice:queryFilters.minPrice,
-  //       maxprice:queryFilters.maxPrice
-  //     },
-  //   });
-  // }, [queryFilters]);
+  useEffect(() => {
+    if(typeof(query.minprice) !== "undefined"){
+      setQueryFilters(prev => {
+        return(
+          //@ts-ignore
+          {...prev,minPrice:+(query.minprice)}
+        )
+      })
+    }
+    if(typeof(query.maxPrice) !== "undefined"){
+      setQueryFilters(prev => {
+        return(
+          //@ts-ignore
+          {...prev,maxPrice:+(query.maxPrice)}
+        )
+      })
+    }
+  },[query.minprice,query.maxPrice])
 
-  // useEffect(() => {
-  //     let queryCategories = selecterCategory.map((element) => element).join("-");
-  //     let queryBrands = selectBrand.map((element) => element).join("-");
-  //   if(
-  //     !asPath.includes("page")||
-  //     !asPath.includes("rate")||
-  //     !asPath.includes("categorey")||
-  //     !asPath.includes("brand")||
-  //     !asPath.includes("minprice")||
-  //     !asPath.includes("maxprice")||
-  //     !asPath.includes("search")
-  //   ){
-  //     push({
-  //       query: {
-  //         page: 1,
-  //         rate: 0,
-  //         categorey: [],
-  //         brand: [],
-  //         minprice: 0,
-  //         maxprice:5000,
-  //         search: "",
-  //       },
-  //     });
-  //   }
-
-  // },[])
 
   useEffect(() => {
-    if (typeof query.categorey !== "undefined") {
-      setQueryFilters((prev) => {
-        return {
-          ...prev,
+    if(typeof(query.page) !== "undefined"){
+      setQueryFilters(prev => {
+        return(
           //@ts-ignore
-          SelectedCategories: [+query.categorey],
-        };
-      });
+          {...prev,page:+(query.page)}
+        )
+      })
     }
-    if (typeof query.search !== "undefined") {
-      setQueryFilters((prev) => {
-        return {
-          ...prev,
-          search: query.search,
-        };
-      });
+  },[query.page])
+
+  useEffect(() => {
+    if(typeof(query.search)!=="undefined"){
+      setQueryFilters(prev => {
+        return(
+          {...prev ,search:query.search}
+        )
+      })
     }
-  }, [query.categorey, query.search]);
 
-  useEffect(() => {}, []);
-
+  },[query.search])
   useEffect(() => {
     const leave = () => {
       setQueryFilters({
@@ -198,19 +169,15 @@ const MainSection = () => {
   }, [queryFilters, selectedBranch]);
 
   const paginate = (pageNumber: number) =>{
-
+    replace(
+      {query: { ...query, page:pageNumber }},
+      undefined,
+      {scroll: true,}
+    );
 
     setQueryFilters((prev) => {
       return { ...prev, page: pageNumber };
     })
-    // replace({
-    //   query: { ...query, brand: pageNumber }
-      
-    // },
-    // undefined,{
-    //   scroll:false
-    // }
-    // );
   }
 
   return (

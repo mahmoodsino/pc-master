@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { useRecoilState } from "recoil";
-import { RatingAtom } from "../../../../helper";
 import { StarIcon } from "../../../icons";
 import { FiltersQueryAtom } from "./MainSection";
 
@@ -9,15 +8,25 @@ import { FiltersQueryAtom } from "./MainSection";
   let rate : number
 
 const useRating = () => {
-  // const [ratingState,setRatingState]=useRecoilState(RatingAtom)
-  const{push}=useRouter()
   const [queryFilters,setQueryFilters]=useRecoilState(FiltersQueryAtom)
 
   const { replace, query } = useRouter();
 
+  useEffect (() => {
+    if(typeof(query.rate)!=="undefined"){
+      setQueryFilters(prev => {
+        return(
+          //@ts-ignore
+          {...prev,page:+(query.rate)}
+        )
+      })
+    }
+
+  },[query.rate])
+
+
   const handelRating = (ratingNumber: number) => {
     if(queryFilters.rating===ratingNumber){
-      // setRatingState(0)
       rate = 0
       setQueryFilters(prev => {
         return(
@@ -25,10 +34,7 @@ const useRating = () => {
         )
       })
     }else{
-      // setRatingState(ratingNumber)
       rate = ratingNumber
-      
-
       setQueryFilters(prev=>{
         return(
           {
@@ -38,19 +44,15 @@ const useRating = () => {
       })
     }
 
-    // replace({
-    //   query: { ...query, rate: rate }
-      
-    // },
-    // undefined,{
-    //   scroll:false
-    // }
-    // );
+    replace(
+      {query: { ...query, rate: rate },},
+      undefined,{scroll: false,}
+    );
+
+   
   };
 
   return {
-    // ratingState,
-    // setRatingState,
     rende:(
     <div className="">
       <label  className="shopContainer flex items-center">

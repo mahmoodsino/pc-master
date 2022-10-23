@@ -37,15 +37,12 @@ const FilterShop = () => {
   const {replace,query} = useRouter()
 
   const handleChange = (value: number[]) => {
-    // replace({
-    //   query: { ...query, minprice:value[0],maxprice:value[1] }
-      
-    // },
-    // undefined,{
-    //   scroll:false
-    // }
-    // );
     
+    replace(
+      {query: { ...query, minprice:value[0],maxprice:value[1] }},
+      undefined,
+      {scroll: false,}
+    );
 
     setQueryFilters(prev=>{
       return(
@@ -62,20 +59,11 @@ const FilterShop = () => {
         {...prev,search:searchState}
       )
     })
-
-    // replace({
-    //   query: { ...query, search:searchState}
-      
-    // },
-    // undefined,{
-    //   scroll:false
-    // }
-    // );
-
-    // push({
-    //   pathname: "/shop",
-    //   query: { search: encodeURI(searchState) },
-    // });
+    replace(
+      {query: { ...query, search:searchState }},
+      undefined,
+      {scroll: false,}
+    );
   };
   
 

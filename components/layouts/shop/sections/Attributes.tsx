@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import {
   AttributesShopAtom,
   AttributesShopType,
-  SelectedAttributeAtom,
 } from "../../../../helper";
 import { BaseButton } from "../../../buttons";
 import { totherightArrowIcon } from "../../../icons/Icons";
@@ -12,14 +12,36 @@ import { FiltersQueryAtom } from "./MainSection";
 let seleAttribute: { [key: number]: number[] } = {} as {
   [key: number]: number[];
 };
+let toCheck: number[] = [];
+
 
 const useAttributes = () => {
   const [attributes, setAttributes] = useRecoilState(AttributesShopAtom);
   const [val, setVal] = useState<number>();
-  // const [selectedAttribute, setSelectedAttribute] = useRecoilState(
-  //   SelectedAttributeAtom
-  // );
   const [queryFilters, setQueryFilters] = useRecoilState(FiltersQueryAtom);
+
+  const {replace,query} = useRouter()
+
+
+  useEffect(() => {
+    let value: number[] = [];
+    if (typeof query.attribute !== "undefined") {
+      //@ts-ignore
+      const att = query?.attribute?.split("_");
+      att.map((item: string) => {
+        value = [];
+        const aa = item.split("-");
+        const bb = aa[1]?.split("*");
+        bb?.map((item) => {
+          value = [...value, +item];
+          seleAttribute = { ...seleAttribute, [+aa[0]]: [...value] };
+        });
+      });
+    }
+    setQueryFilters((prev) => {
+      return { ...prev, SelectedAttribute: seleAttribute };
+    });
+  }, [query.attribute]);
 
   const activeHandler = (attribute: AttributesShopType) => {
     if (attribute.attribute_values.length > 0) {
@@ -36,25 +58,18 @@ const useAttributes = () => {
     );
     if (index < 0) {
       seleAttribute = { ...seleAttribute, [attributeId]: [attValueID] };
-      // setSelectedAttribute({
-      //   ...selectedAttribute,
-      //   [attributeId]: [attValueID],
-      // });
     } else if (index >= 0) {
       Object.keys(seleAttribute).map((key) => {
         const values = [...seleAttribute[+attributeId]];
-
         const valueIndex = values.findIndex((value) => value === attValueID);
         if (valueIndex < 0) {
           if (+key === attributeId) {
             values.push(attValueID);
-            // setSelectedAttribute({ ...selectedAttribute, [key]: [...values] });
             seleAttribute = { ...seleAttribute, [key]: [...values] };
           }
         } else if (valueIndex >= 0) {
           if (+key === attributeId) {
             values.splice(valueIndex, 1);
-            // setSelectedAttribute({ ...selectedAttribute, [key]: [...values] });
             seleAttribute = { ...seleAttribute, [key]: [...values] };
           }
         }
@@ -68,14 +83,42 @@ const useAttributes = () => {
       if (value.length !== 0) newSelected[+key] = value;
     });
     seleAttribute = newSelected;
+
+    let aa: string = "";
+    Object.keys(seleAttribute).map((key) => {
+      const value = seleAttribute[+key];
+      aa = aa + key + "-";
+      value.map((val, i) => {
+        if (value.length - 1 === i) {
+          aa = aa + val;
+        } else {
+          aa = aa + val + "*";
+        }
+      });
+      aa = aa + "_";
+    });
+
+    replace({ query: { ...query, attribute: aa } }, undefined, {
+      scroll: false,
+    });
+
     setQueryFilters((prev) => {
       return { ...prev, SelectedAttribute: seleAttribute };
     });
   };
 
+
+  useEffect(() => {
+    toCheck = [];
+    Object.keys(queryFilters.SelectedAttribute).map((key) => {
+      const value = queryFilters.SelectedAttribute[+key];
+      value.map((val) => {
+        toCheck = [...toCheck, val];
+      });
+    });
+  }, [queryFilters.SelectedAttribute]);
+
   return {
-    // selectedAttribute,
-    // setSelectedAttribute,
     AttributeRender: (
       <div>
         {attributes.map((attribute) => {
@@ -105,6 +148,13 @@ const useAttributes = () => {
                             <input
                               onChange={() =>
                                 handelValues(attribute.id, att_value.id)
+                              }
+                              checked={
+                                toCheck.findIndex(
+                                  (bran) => bran === att_value.id
+                                ) > -1
+                                  ? true
+                                  : false
                               }
                               className="checkbox"
                               type="checkbox"
