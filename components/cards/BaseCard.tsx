@@ -162,7 +162,7 @@ const BaseCard = ({
         </span>
         <div className="flex items-center justify-between pt-3 mr-4 ">
           <span className=" sm:hidden text-sm md:leading-[19px]  h-fit md:block w-[80%]  md:tracking-[0.03em]">
-            <span className="line-clamp">{name}</span>
+            <span title={name} className="line-clamp cursor-default">{name}</span>
           </span>
           <span className="text-lg sm:block md:hidden font-bold md:leading-[24px] md:tracking-[0.055em] mb-1">
             ${price}
