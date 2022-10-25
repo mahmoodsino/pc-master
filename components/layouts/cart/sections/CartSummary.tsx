@@ -72,7 +72,6 @@ const CartSummary = () => {
     } else {
       setLoading(true);
       const res = await handelCrateOrder(
-        // 
         {branchId:selectedBranch?.id,shipping_method:selectedMethod,token:token,address_id:shippingAddressId}
       );
       if(res===null){

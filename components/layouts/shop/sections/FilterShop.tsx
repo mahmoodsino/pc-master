@@ -84,11 +84,8 @@ const FilterShop = () => {
         setShopCategory(res.result.categories);
       }
     };
-    if(selectedBranch?.id>-1){
       getData();
-
-    }
-  }, [selectedBranch]);
+  }, []);
 
   return (
     <div className="mt-7 md:pl-10 lg:pl-0">

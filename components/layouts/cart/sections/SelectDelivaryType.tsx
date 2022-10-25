@@ -8,6 +8,7 @@ export const SelectDelivaryTypeAtom = atom({
 });
 
 const delivaryMethods: string[] = ["PICKUP", "DELIVERY"];
+
 export const selctedMethodAtom = atom({
   key: "selctedMethodAtom",
   default: "PICKUP",
