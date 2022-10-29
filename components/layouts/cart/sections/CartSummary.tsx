@@ -39,13 +39,15 @@ const CartSummary = () => {
     let isFound = true;
     for (const item of carts) {
       if(item.in_stock<1){
-        return isFound=false
+         isFound=false
+         break
       }else if(item.in_stock===1&&(item.product?.tracking_type===2||item.product?.tracking_type===3)){
         if (item.available_quantity) {
            if (item.available_quantity >= item.quantity) {
             return (isFound = true);
           } else if (item.available_quantity < item.quantity) {
             isFound = false;
+            break
           }
         }
       }

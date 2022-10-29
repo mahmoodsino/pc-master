@@ -552,19 +552,22 @@ const DetailsCard = () => {
         if (res === null) {
           setWrrongMessage("some thing went wrong");
           setOpenMassegModal(true);
+          setLoading(false);
+
         }else if(res==400){
           setWrrongMessage("you cant add any more of this product");
           setOpenMassegModal(true);
+          setLoading(false);
+
         } else {
           setAllCartsInfo(res.result);
           setCarts(res.result.items);
           setMoveToCartPageModalState(true);
+          setLoading(false);
+
         }
       }
     });
-    setTimeout(() => {
-      setLoading(false);
-    }, 500);
   };
 
   const getbg = (id: number) => {

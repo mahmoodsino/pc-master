@@ -10,6 +10,7 @@ export const getConfig = (token?: string|null) => {
             'Content-Type': 'application/json',
             Accept: 'application/json',
             'X-Requested-With': 'XMLHttpRequest',
+            "company-id": 1,
             Authorization: `Bearer ${token}`,
         },
     };
