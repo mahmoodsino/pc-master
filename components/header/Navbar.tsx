@@ -54,7 +54,7 @@ const Navbar = () => {
                   <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
                 </svg>
               </button>
-              <ul className="absolute shadow-[0_0_5px_rgba(0,0,0,0.12)] hidden text-gray-700 pt-1 group-hover:block">
+              <ul className="absolute shadow-[0_0_5px_rgba(0,0,0,0.12)] hidden text-gray-700 pt-1  group-hover:block">
                 {barnches.map((branch,i) => {
                   return (
                     <button
@@ -62,7 +62,7 @@ const Navbar = () => {
                       onClick={() => branchSelect(branch)}
                       className="w-48"
                     >
-                      <li className="rounded-t bg-white hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap">
+                      <li className="rounded-t bg-white z-[90] hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap">
                         {branch.name}
                       </li>
                     </button>

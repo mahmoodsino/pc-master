@@ -18,13 +18,13 @@ const CardReview = () => {
                 <div className="">
                   <div className="flex flex-row items-center ">
                     <span className="md:text-sm sm:text-xs text-gray-1050">
-                      x{item.quantity}
+                      x{item?.quantity}
                     </span>
                     <div className="border w-20 h-20 ml-2 product-slider-img">
-                      {item.product?.image.id ? (
+                      {item?.product?.image?.id ? (
                         <img
                           className="w-20 h-20 product-slider-img"
-                          src={item.product.image.path}
+                          src={item.product?.image?.path}
                           alt=""
                         />
                       ) : (
@@ -38,8 +38,8 @@ const CardReview = () => {
                       <div className="w-[80%]">
                         {item.variation?.attributes?.map((attribute) => {
                           return (
-                            <span className="" key={attribute.id}>
-                              {attribute.attribute_values.name},{" "}
+                            <span className="" key={attribute?.id}>
+                              {attribute?.attribute_values?.name},{" "}
                             </span>
                           );
                         })}

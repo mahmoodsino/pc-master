@@ -5,7 +5,7 @@ const pay =process.env.NEXT_PUBLIC_PAYMENT_KEY
 
 const getPaymentProvidor = async (branchId:number) => {
     try {
-        const res = await apiWorker.get(`${root}/payment-way/payment-providers?is_enabled=1&branch_id=${branchId}`,{
+        const res = await apiWorker.get(`${root}/payment-way/payment-providers?is_enabled=1&branch_id=${branchId ? branchId : "1"}`,{
             headers:{
                 "D-PAYMENT-AUTHORIZATION":`${pay}`
             }
