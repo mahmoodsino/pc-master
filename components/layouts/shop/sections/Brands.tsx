@@ -6,7 +6,6 @@ import { FiltersQueryAtom } from "./MainSection";
 
 
 let SleBran :number[] = []
-export let selCategory: number[] = [];
 
 const useBrands = () => {
   const [brands, setBrands] = useRecoilState(BrandsAtom);
@@ -17,6 +16,8 @@ const useBrands = () => {
 
 
   useEffect(() => {
+let selCategory: number[] =queryFilters.SelectedCategories
+
     if(typeof(query.category) !=="undefined"){
       //@ts-ignore
       const q = query?.category?.split("-")

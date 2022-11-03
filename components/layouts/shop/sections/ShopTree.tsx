@@ -8,7 +8,6 @@ import { FiltersQueryAtom } from "./MainSection";
 interface data {
   data: categoriesType[] | categoriesType;
 }
-export let selCategory: number[] = [];
 
 const ShopTree = ({ data }: data) => {
   const [ShopselectedParentId, setShopParentId] = useState(-1);
@@ -71,6 +70,8 @@ const ShopTreeNode = ({
 
  
   const handelSearch = async (categoreyID: number) => {
+let selCategory: number[] = queryFilters.SelectedCategories
+
     const index = queryFilters.SelectedCategories.findIndex(
       (category) => category === categoreyID
     );
