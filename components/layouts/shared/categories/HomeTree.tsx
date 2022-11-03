@@ -63,7 +63,7 @@ const TreeNode = ({ node, selectedParentId, setParentId }: node) => {
     })
     push({
       pathname: '/shop',
-      // query: { categorey:categoreyID},
+      query: { categorey:categoreyID},
   });
   };
   return (
