@@ -20,8 +20,6 @@ import useAttributes from "./Attributes";
 import { toast } from "react-toastify";
 import { FiltersQueryAtom } from "./MainSection";
 
-
-
 const FilterShop = () => {
   const [searchState, setSearchState] = useRecoilState(SearchAtom);
   const [orderByState, setOrderByState] = useRecoilState(OrderByAtom);
@@ -31,48 +29,43 @@ const FilterShop = () => {
   const { render } = useBrands();
   const { rende } = useRating();
   const { AttributeRender } = useAttributes();
-  const [selectedBranch,setSelectedBranch]=useRecoilState(SelectedBranchAtom)
-  const [queryFilters,setQueryFilters]=useRecoilState(FiltersQueryAtom)
+  const [selectedBranch, setSelectedBranch] =
+    useRecoilState(SelectedBranchAtom);
+  const [queryFilters, setQueryFilters] = useRecoilState(FiltersQueryAtom);
 
-  const {replace,query} = useRouter()
+  const { replace, query } = useRouter();
 
   const handleChange = (value: number[]) => {
-    
     replace(
-      {query: { ...query, minprice:value[0],maxprice:value[1] }},
+      { query: { ...query, minprice: value[0], maxprice: value[1] } },
       undefined,
-      {scroll: false,}
+      { scroll: false }
     );
 
-    setQueryFilters(prev=>{
-      return(
-        {
-          ...prev,minPrice:value[0],maxPrice:value[1]
-        }
-      )
-    })
+    setQueryFilters((prev) => {
+      return {
+        ...prev,
+        minPrice: value[0],
+        maxPrice: value[1],
+      };
+    });
   };
 
   const handelSearch = async () => {
-    setQueryFilters(prev => {
-      return (
-        {...prev,search:searchState}
-      )
-    })
-    replace(
-      {query: { ...query, search:searchState }},
-      undefined,
-      {scroll: false,}
-    );
+    setQueryFilters((prev) => {
+      return { ...prev, search: searchState };
+    });
+    replace({ query: { ...query, search: searchState } }, undefined, {
+      scroll: false,
+    });
   };
-  
 
   useEffect(() => {
     const getData = async () => {
       const res = await handelFilterProduct(selectedBranch?.id);
-      if(res===null){
-        toast.error("some thing went wrong")
-      }else{
+      if (res === null) {
+        toast.error("some thing went wrong");
+      } else {
         setBrands(res.result.brands);
         setAttributes(res.result.attributes);
         const modifieOrderBy: string[] = [...res.result.order_by_clauses];
@@ -84,7 +77,7 @@ const FilterShop = () => {
         setShopCategory(res.result.categories);
       }
     };
-      getData();
+    getData();
   }, []);
 
   return (
@@ -104,7 +97,7 @@ const FilterShop = () => {
             onClick={() => handelSearch()}
             className="md:w-[19%] sm:w-[50px] h-10 bg-green-950 hover:bg-green-950/90 inline-block rounded-r-md"
           >
-            {searchIcon}
+            <div className="mr-3">{searchIcon}</div>
           </BaseButton>
         </div>
         <div className="ml-2 mt-10">
@@ -134,12 +127,11 @@ const FilterShop = () => {
               <ShopTree data={shopCategorey} />
             </div>
           </div>
-          <div className={`${brands.length!==0 ? "" : "hidden"}   `}>
-            
-          <h1 className="font-semibold px-5">Brands</h1>
-          <div className=" max-h-[350px] overflow-y-auto pr-4 mt-3 mb-10">
-            {render}
-          </div>
+          <div className={`${brands.length !== 0 ? "" : "hidden"}   `}>
+            <h1 className="font-semibold px-5">Brands</h1>
+            <div className=" max-h-[350px] overflow-y-auto pr-4 mt-3 mb-10">
+              {render}
+            </div>
           </div>
           <div className={`${attributes.length !== 0 ? "" : "hidden"}`}>
             <h1 className="font-semibold px-5">Attributes</h1>

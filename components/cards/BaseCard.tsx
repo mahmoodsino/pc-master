@@ -130,7 +130,7 @@ const BaseCard = ({
     >
       <div>
         <div
-          className={`h-[180px] duration-500  border border-white ${
+          className={`h-[180px] duration-500  border border-transparent ${
             hover ? "scale-105 " : ""
           }`}
         >

@@ -1,7 +1,6 @@
 import { BaseButton } from "../../../buttons";
 import { BlusIcon, TrashIcon } from "../../../icons";
 import { MinusIcon } from "../../../icons";
-import Image from "next/image";
 import { atom, useRecoilState, useRecoilValue } from "recoil";
 import {
   AllCartsInfo,
@@ -14,7 +13,6 @@ import {
   TokenAtom,
   updateCart,
 } from "../../../../helper";
-import no_image from "../../../../public/assets/image/no_image.jpg";
 import { MutableRefObject, useRef } from "react";
 import Collapsible from "react-collapsible";
 
@@ -74,7 +72,6 @@ const CartItems = () => {
         setLoading(true);
         if (id) {
           const res = await updateCart(token, id, newQuantity, "item");
-          console.log(res);
           if (res === null) {
             setWrrongMessage("some thing went wrong");
             setOpenMassegModal(true);
@@ -157,6 +154,7 @@ const CartItems = () => {
         setLoading(false);
       }, 1000);
     } else if (itemQuantity === 1 || reomve) {
+      clearTimeout(timerRef.current);
       setLoading(true);
       const res = await deleteCart(token, id);
       if (res === null) {
@@ -169,8 +167,6 @@ const CartItems = () => {
       setLoading(false);
     }
   };
-
-  console.log(carts);
 
   return (
     <div className={`${loading && "pointer-events-none"}`}>

@@ -159,7 +159,10 @@ const DetailsCard = () => {
             variation_id: variationState.id,
           },
         ]);
-      } else if (detailsState.product.tracking_type === 2 ||detailsState.product.tracking_type === 3) {
+      } else if (
+        detailsState.product.tracking_type === 2 ||
+        detailsState.product.tracking_type === 3
+      ) {
         if (variationState.available_quantity !== 0) {
           setNewCart([
             {
@@ -223,7 +226,6 @@ const DetailsCard = () => {
     setIsChange(false);
   }, [detailsState]);
   console.log(names);
-  
 
   useEffect(() => {
     setNewCart([]);
@@ -317,9 +319,7 @@ const DetailsCard = () => {
     let num: { id: number; parent: number } = { id: -1, parent: -1 };
     num = { id: value.id, parent: value.parent_id };
     setAttributesToSetVAriation(num);
-  };
 
-  useEffect(() => {
     let count = selectedAttributes.length;
     let countArray = 0;
     let checked: number[] = [];
@@ -327,7 +327,7 @@ const DetailsCard = () => {
 
     for (let i = 0; i < attributeValueNumbers?.length; i++) {
       const array: number[] = attributeValueNumbers[i];
-      index = array.findIndex((value) => value === attributeToSetVAriation?.id);
+      index = array.findIndex((value) => value === num?.id);
       if (index > -1) {
         break;
       }
@@ -335,7 +335,7 @@ const DetailsCard = () => {
     selectedAttributes.map((item, i) => {
       if (index === i) {
         //@ts-ignore
-        checked.push(attributeToSetVAriation?.id);
+        checked.push(num?.id);
       } else if (index !== i) {
         checked.push(item);
       }
@@ -375,11 +375,11 @@ const DetailsCard = () => {
     }
     if (countArray < count) {
       detailsState.variations.map((variation) => {
-        if (attributeToSetVAriation?.id) {
+        if (num?.id) {
           variation.attributes?.map((attribute) => {
             if (
-              attribute.id === attributeToSetVAriation.parent &&
-              attribute.attribute_values.id === attributeToSetVAriation.id
+              attribute.id === num.parent &&
+              attribute.attribute_values.id === num.id
             ) {
               setVariationState(variation);
             }
@@ -387,7 +387,11 @@ const DetailsCard = () => {
         }
       });
     }
-  }, [attributeToSetVAriation]);
+  };
+
+  // useEffect(() => {
+
+  // }, [attributeToSetVAriation]);
 
   //for button
 
@@ -475,7 +479,10 @@ const DetailsCard = () => {
             </div>
           );
         }
-      } else if (detailsState.product.tracking_type === 2 || detailsState.product.tracking_type===3) {
+      } else if (
+        detailsState.product.tracking_type === 2 ||
+        detailsState.product.tracking_type === 3
+      ) {
         if (variationState.available_quantity === 0) {
           return (
             <p className="text-sm block text-red-950 h-[24px]">
@@ -553,18 +560,15 @@ const DetailsCard = () => {
           setWrrongMessage("some thing went wrong");
           setOpenMassegModal(true);
           setLoading(false);
-
-        }else if(res==400){
+        } else if (res == 400) {
           setWrrongMessage("you cant add any more of this product");
           setOpenMassegModal(true);
           setLoading(false);
-
         } else {
           setAllCartsInfo(res.result);
           setCarts(res.result.items);
           setMoveToCartPageModalState(true);
           setLoading(false);
-
         }
       }
     });
@@ -712,14 +716,14 @@ const DetailsCard = () => {
         )}
       </div>
       <div className={`ml-4`}>
-        {Object.keys(names).map((key,i) => {
+        {Object.keys(names).map((key, i) => {
           const values = names[key];
           return (
             <div key={i}>
               <div>
                 <h1 className="font-bold mt-5">{key}</h1>
                 <div className="flex space-x-3">
-                  {values.map((value: any,index:number) => {
+                  {values.map((value: any, index: number) => {
                     return (
                       <BaseButton
                         key={index}
