@@ -88,17 +88,17 @@ const Footer = () => {
 
             <div className="flex space-x-5">
               <Link href={contact.insta_link}>
-                <a>
+                <a  target="_blank">
                   <InstagramIcon className="text-white w-7" />
                 </a>
               </Link>
               <Link href={contact.fb_link}>
-                <a>
+                <a  target="_blank">
                   <FacebookIcon className="text-white w-4" />
                 </a>
               </Link>
               <Link href={contact.lin_link}>
-                <a>
+                <a  target="_blank">
                   <LinkedInIcon className="text-white w-7" />
                 </a>
               </Link>

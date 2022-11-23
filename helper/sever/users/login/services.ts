@@ -1,4 +1,3 @@
-import axios from "axios"
 import apiWorker from "../../axios"
 import { getConfig } from "../logout/services"
 

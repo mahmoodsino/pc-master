@@ -51,9 +51,7 @@ const FeaturedProducts = () => {
 
       setLoading(false);
     };
-    if (selectedBranch?.id > 0) {
       getData();
-    }
   }, [selectedBranch]);
 
 

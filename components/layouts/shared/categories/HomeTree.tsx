@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
@@ -61,10 +62,7 @@ const TreeNode = ({ node, selectedParentId, setParentId }: node) => {
         {...prev,SelectedCategories:[categoreyID]}
       )
     })
-    push({
-      pathname: '/shop',
-      query: { category:categoreyID},
-  });
+
   };
   return (
     <li className="">
@@ -76,9 +74,12 @@ const TreeNode = ({ node, selectedParentId, setParentId }: node) => {
         )}
       >
       
-        <div onClick={() => handelSearch(node.id)} className="bg-[#303030] rounded-sm hover:bg-gray-1450 block  py-3 text-sm px-3  tracking-[0.03em] cursor-pointer   border-b border-t-white">
+        <Link href={`/shop?category=${node.id}`}  >
+          <a onClick={() => handelSearch(node.id)} className="bg-[#303030] rounded-sm hover:bg-gray-1450 block  py-3 text-sm px-3  tracking-[0.03em] cursor-pointer   border-b border-t-white">
           {node.name}
-        </div>
+
+          </a>
+        </Link>
         {hasChild && selectedParentId === node.id && (
           <div className=" text-white text-left ">
             <ul className={` absolute top-[0px] left-[96.5%]  z-50`}>

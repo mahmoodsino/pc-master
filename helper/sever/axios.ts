@@ -24,7 +24,7 @@ apiWorker.interceptors.response.use(
       localStorage.removeItem("type")
       localStorage.removeItem("id")
       localStorage.removeItem("token")
-      window.location.reload();
+      window.location.href="/"
     }
 
     return Promise.reject(error);

@@ -60,9 +60,7 @@ const NewArrivalProducts = () => {
 
       setLoading(false);
     };
-    if (selectedBranch?.id > 0) {
       getData();
-    }
   }, [selectedBranch]);
 
   return (

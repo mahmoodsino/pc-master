@@ -10,7 +10,7 @@ const getfeaturedProducts = async (token: string,branchId:number, id?: number) =
         if (id) {
             const res = await apiWorker.get(`${root}/products?page_size=5&is_featured=1&orderbynewest&category=${id}`, {
                 headers: {
-                    'branch-id': branchId ? branchId : "1"  ,
+                    'branch-id': branchId ? branchId : 1  ,
                     "company-id": 1,
                     Authorization: `Bearer ${token}`
                 }
@@ -20,7 +20,7 @@ const getfeaturedProducts = async (token: string,branchId:number, id?: number) =
 
             const res = await apiWorker.get(`${root}/products?page_size=5&is_featured=1&orderbynewest`, {
                 headers: {
-                    'branch-id': branchId ? branchId : "1"  ,
+                    'branch-id': branchId ? branchId : 1 ,
                     "company-id": 1,
                     Authorization: `Bearer ${token}`
                 }

@@ -21,6 +21,7 @@ import CartIcon from "../icons/CartIcon";
 import PersonIcon from "../icons/PersonIcon";
 import { useRouter } from "next/router";
 import { FiltersQueryAtom } from "../layouts/shop/sections/MainSection";
+import Link from "next/link";
 
 const Searchbar = () => {
   const [activeDropDown, setActiveDropDown] =

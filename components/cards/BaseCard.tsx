@@ -19,6 +19,7 @@ import {
 import { useRouter } from "next/router";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { RedHeartIcon } from "../icons";
+import Link from "next/link";
 
 interface cardType {
   image: imagesType[];
@@ -143,17 +144,18 @@ const BaseCard = ({
           )}
         </div>
         <div className="sm:hidden md:flex items-center justify-start  mt-3">
-          <BaseButton
-            onClick={() => handelDetails(id)}
-            className="py-0.5 px-4 text-white  bg-green-950 font-bold rounded-full "
-            title="Options"
-          />
+          <Link href={`/details?product=${id}`}>
+          <a className="py-0.5 px-4 text-white  bg-green-950 font-bold rounded-full">
+          Options
+          </a>
+          </Link>
+          
         </div>
-        <BaseButton onClick={() => handelDetails(id)} className="sm:block h-12 font-medium md:hidden mt-1 text-left">
+        <Link href={`/details?product=${id}`}  className="sm:block h-12 font-medium md:hidden mt-1 text-left">
           <span className="md:hidden sm:block ">
             <span className="line-clamp222">{name}</span>
           </span>
-        </BaseButton>
+        </Link>
       </div>
 
       <div className=" h-[40%] md:mt-5 sm:mt-5 ml-1 ">
