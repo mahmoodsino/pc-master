@@ -1,14 +1,13 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import handelLogout from "../../helper/sever/users/logout/services";
 import { ActiveDropDownAtom, TokenAtom } from "../../helper/state";
 import { BaseButton } from "../buttons";
 
 const Dropdown = () => {
-  const [activeDropDown, setActiveDropDown] =
-    useRecoilState(ActiveDropDownAtom);
+  const setActiveDropDown = useSetRecoilState(ActiveDropDownAtom);
   const token = useRecoilValue(TokenAtom);
   const push = useRouter().push;
 
@@ -45,14 +44,13 @@ const Dropdown = () => {
             title="Log out"
           ></BaseButton>
         </div>
-      ) : useType==="guest" ? 
-      <Link onClick={() => setActiveDropDown(false)} href="/trackorder">
-      <a className="px-7 py-3 border-b font-medium inline-block hover:bg-gray-1000">
-        Track Order
-      </a>
-    </Link> : null
-    
-    }
+      ) : useType === "guest" ? (
+        <Link onClick={() => setActiveDropDown(false)} href="/trackorder">
+          <a className="px-7 py-3 border-b font-medium inline-block hover:bg-gray-1000">
+            Track Order
+          </a>
+        </Link>
+      ) : null}
     </div>
   );
 };

@@ -16,7 +16,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 const Navbar = () => {
   const { pathname } = useRouter();
   const contact = useRecoilValue(ContactAtom);
-  const [barnches, setBranches] = useRecoilState(BranchesAtom);
+  const barnches = useRecoilValue(BranchesAtom);
   const [selectedBranch, setSelectedBranch] =
     useRecoilState(SelectedBranchAtom);
 
@@ -55,10 +55,10 @@ const Navbar = () => {
                 </svg>
               </button>
               <ul className="absolute shadow-[0_0_5px_rgba(0,0,0,0.12)] hidden text-gray-700 pt-1  group-hover:block">
-                {barnches.map((branch,i) => {
+                {barnches.map((branch, i) => {
                   return (
                     <button
-                    key={i}
+                      key={i}
                       onClick={() => branchSelect(branch)}
                       className="w-48"
                     >
@@ -104,13 +104,13 @@ const Navbar = () => {
         </div>
 
         <div className="flex  items-center">
-          <Link href="/" >
+          <Link href="/">
             <a className=" w-[18%]">
               <Image src={img1} />
             </a>
           </Link>
           <div className="grow flex justify-evenly items-center  text-sm uppercase  font-bold leading-[21px] tracking-[0.03em]">
-            {routse.map((item,i) => {
+            {routse.map((item, i) => {
               return (
                 <Link key={i} href={item.path}>
                   <a

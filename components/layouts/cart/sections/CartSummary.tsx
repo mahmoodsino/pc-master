@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import React, { useState } from "react";
+import {  useRecoilValue, useSetRecoilState } from "recoil";
 import {
   AllCartsInfo,
   ErroreMessageAtom,
@@ -18,36 +18,35 @@ import SelectAddAddress from "./SelectAddAddress";
 import SelectDelivaryType, { selctedMethodAtom } from "./SelectDelivaryType";
 
 const CartSummary = () => {
-  const [allCartsInfo, setAllCartsInfo] = useRecoilState(AllCartsInfo);
-  const [carts, setCarts] = useRecoilState(FetchedCartItemsAtom);
-  const [selectedMethod, setSelectedMethod] = useRecoilState(selctedMethodAtom);
-  const [shippingAddressId, setShippingAddressId] = useRecoilState(
-    ShippingAddressIdAtom
-  );
-  const [token, setToken] = useRecoilState(TokenAtom);
+  const allCartsInfo = useRecoilValue(AllCartsInfo);
+  const carts = useRecoilValue(FetchedCartItemsAtom);
+  const selectedMethod = useRecoilValue(selctedMethodAtom);
+  const shippingAddressId = useRecoilValue(ShippingAddressIdAtom);
+  const token = useRecoilValue(TokenAtom);
   const [savedOrderId, setSavedOrderId] = useState<number>();
   const [loading, setLoading] = useState(false);
-  const [selectedBranch,setSelectedBranch]=useRecoilState(SelectedBranchAtom)
-  const [openMessageModal, setOpenMassegModal] =
-  useRecoilState(OpenMessageModalAtom);
-  const [wrongMessage,setWrrongMessage]=useRecoilState(ErroreMessageAtom)
+  const selectedBranch = useRecoilValue(SelectedBranchAtom);
+  const setOpenMassegModal = useSetRecoilState(OpenMessageModalAtom);
+  const setWrrongMessage = useSetRecoilState(ErroreMessageAtom);
   const { push } = useRouter();
-  const [loadingCart, setLoadingCart] = useRecoilState(CartLoading)
-
+  const loadingCart = useRecoilValue(CartLoading);
 
   const checkQuantity = () => {
     let isFound = true;
     for (const item of carts) {
-      if(item.in_stock<1){
-         isFound=false
-         break
-      }else if(item.in_stock===1&&(item.product?.tracking_type===2||item.product?.tracking_type===3)){
+      if (item.in_stock < 1) {
+        isFound = false;
+        break;
+      } else if (
+        item.in_stock === 1 &&
+        (item.product?.tracking_type === 2 || item.product?.tracking_type === 3)
+      ) {
         if (item.available_quantity) {
-           if (item.available_quantity >= item.quantity) {
+          if (item.available_quantity >= item.quantity) {
             return (isFound = true);
           } else if (item.available_quantity < item.quantity) {
             isFound = false;
-            break
+            break;
           }
         }
       }
@@ -57,13 +56,16 @@ const CartSummary = () => {
   const createOrder = async () => {
     if (selectedMethod === "PICKUP") {
       setLoading(true);
-      const res = await handelCrateOrder({branchId:selectedBranch?.id,shipping_method:selectedMethod,token:token});
-      if(res===null){
+      const res = await handelCrateOrder({
+        branchId: selectedBranch?.id,
+        shipping_method: selectedMethod,
+        token: token,
+      });
+      if (res === null) {
         setWrrongMessage("some thing went wrong");
-        setOpenMassegModal(true)
+        setOpenMassegModal(true);
         setLoading(false);
-
-      }else{
+      } else {
         setSavedOrderId(res.result.saved_order_id);
         push({
           pathname: "/checkout",
@@ -73,27 +75,33 @@ const CartSummary = () => {
       }
     } else {
       setLoading(true);
-      const res = await handelCrateOrder(
-        {branchId:selectedBranch?.id,shipping_method:selectedMethod,token:token,address_id:shippingAddressId}
-      );
-      if(res===null){
+      const res = await handelCrateOrder({
+        branchId: selectedBranch?.id,
+        shipping_method: selectedMethod,
+        token: token,
+        address_id: shippingAddressId,
+      });
+      if (res === null) {
         setWrrongMessage("some thing went wrong");
-        setOpenMassegModal(true)
+        setOpenMassegModal(true);
         setLoading(false);
-      }else{
+      } else {
         setSavedOrderId(res.result.saved_order_id);
         push({
           pathname: "/checkout",
           query: { savedOrder: encodeURI(res.result.saved_order_id) },
         });
         setLoading(false);
-
       }
     }
   };
 
   return (
-    <div className={`shadow-[0_0_5px_rgba(0,0,0,0.12)]  md:tracking-[0.03] rounded-md mb-10 ${loadingCart && "pointer-events-none"}`}>
+    <div
+      className={`shadow-[0_0_5px_rgba(0,0,0,0.12)]  md:tracking-[0.03] rounded-md mb-10 ${
+        loadingCart && "pointer-events-none"
+      }`}
+    >
       <h1 className="md:text-xl font-bold   text-center py-5 left-0 right-0 m-auto bg-gray-1350">
         Order Summary
       </h1>

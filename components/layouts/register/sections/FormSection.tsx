@@ -21,13 +21,12 @@ import {
   TokenAtom,
   YouHaveItemsModalAtom,
 } from "../../../../helper/state";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { useRouter } from "next/router";
 import { registerSchema } from "../../../../helper/validation";
 import YouHaveItemsModal from "../../login/sections/YouHaveItemsModal";
 import { Spinner, SpinnerWithBack } from "../../../spinner";
 import { useState } from "react";
-import {toast} from "react-toastify";
 
 interface IFormInputs {
   firstName: string;
@@ -43,22 +42,18 @@ interface IFormInputs {
 }
 
 const FormSection = () => {
-  const [registerCountry, setRegisterCountry] =
-    useRecoilState(registerCountryAtom);
+  const registerCountry = useRecoilValue(registerCountryAtom);
   const [token, setToken] = useRecoilState(TokenAtom);
   const [guestUsrerId, setGuestUserId] = useState<number | null>(null);
-  const [openYouHaveItemsModal, setYouHaveItemsModal] = useRecoilState(
-    YouHaveItemsModalAtom
-  );
+  const setYouHaveItemsModal = useSetRecoilState(YouHaveItemsModalAtom);
   const [countryId, setCountryId] = useState<number | undefined>();
   const [states, setStates] = useRecoilState(StatesAtom);
   const [stateId, setStateId] = useState<number | undefined>();
   const [cities, setCities] = useRecoilState(CitiesAtom);
   const [loading, setLoading] = useState(false);
   const [regLoading, setRegLoading] = useState(false);
-  const [openMessageModal, setOpenMassegModal] =
-  useRecoilState(OpenMessageModalAtom);
-  const [wrongMessage,setWrrongMessage]=useRecoilState(ErroreMessageAtom)
+  const setOpenMassegModal = useSetRecoilState(OpenMessageModalAtom);
+  const setWrrongMessage = useSetRecoilState(ErroreMessageAtom);
 
   const customStyles: StylesConfig<optionTypeCountry> = {
     option: (provided: ActionMeta, state: ActionMeta) => ({
@@ -100,9 +95,9 @@ const FormSection = () => {
       data.houseBuildingNo,
       token
     );
-    if (res ===null) {
+    if (res === null) {
       setWrrongMessage("the given data was invaled");
-      setOpenMassegModal(true)
+      setOpenMassegModal(true);
       setRegLoading(false);
     } else {
       localStorage.setItem("token", res.result.token);

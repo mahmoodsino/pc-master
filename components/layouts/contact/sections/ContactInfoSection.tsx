@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { useRecoilState } from "recoil";
-import { ContactAtom} from "../../../../helper";
+import { useRecoilValue } from "recoil";
+import { ContactAtom } from "../../../../helper";
 import {
   FacebookIcon,
   InstagramIcon,
@@ -11,10 +11,7 @@ import {
 } from "../../../icons";
 
 const ContactInfoSection = () => {
-  const [contact,setContact]=useRecoilState(ContactAtom)
-  console.log(contact);
-  
-
+  const contact = useRecoilValue(ContactAtom);
 
   return (
     <div>
@@ -42,19 +39,19 @@ const ContactInfoSection = () => {
           Follow Us:
         </h1>
         <div className="flex space-x-3">
-          <Link  href={contact.insta_link}>
-          <a>
-            <InstagramIcon className="text-black w-7" />
-          </a>
+          <Link href={contact.insta_link}>
+            <a>
+              <InstagramIcon className="text-black w-7" />
+            </a>
           </Link>
           <Link href={contact.fb_link}>
             <a>
-            <FacebookIcon className="text-black w-4" />
+              <FacebookIcon className="text-black w-4" />
             </a>
           </Link>
           <Link href={contact.lin_link}>
             <a>
-            <LinkedInIcon className="text-black w-7" />
+              <LinkedInIcon className="text-black w-7" />
             </a>
           </Link>
         </div>

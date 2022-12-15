@@ -1,24 +1,24 @@
-import React from 'react'
-import { atom, useRecoilState } from 'recoil';
-import { Breadcrumbs } from '../../../breadcrumbs';
-import { Searchbar } from '../../../header';
-import {RightSignIcon} from '../../../icons';
-import { Title2 } from '../../../titles';
-import AddressBook from './AddressBook';
-import MyAccountOptions from './MyAccountOptions';
-import MyProfile from './MyProfile';
-import PaymentMethod from './PaymentMethod';
-import { SuccessEdit,ActiveBtnAccount } from '../../../../helper/state';
+import React from "react";
+import { useRecoilValue } from "recoil";
+import { Breadcrumbs } from "../../../breadcrumbs";
+import { Searchbar } from "../../../header";
+import { RightSignIcon } from "../../../icons";
+import { Title2 } from "../../../titles";
+import AddressBook from "./AddressBook";
+import MyAccountOptions from "./MyAccountOptions";
+import MyProfile from "./MyProfile";
+import PaymentMethod from "./PaymentMethod";
+import { SuccessEdit, ActiveBtnAccount } from "../../../../helper/state";
 
 export type profile = {
-    FirstName: string;
-    LastName: string;
-    Email: string;
-  };
+  FirstName: string;
+  LastName: string;
+  Email: string;
+};
 
 const MainSection = () => {
-    const [editSuccess, setEditSuccess] = useRecoilState(SuccessEdit);
-    const [btnAccount, setBtnAccount] = useRecoilState(ActiveBtnAccount);
+  const editSuccess = useRecoilValue(SuccessEdit);
+  const btnAccount = useRecoilValue(ActiveBtnAccount);
   return (
     <div>
       <Searchbar />
@@ -59,7 +59,7 @@ const MainSection = () => {
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default MainSection
+export default MainSection;

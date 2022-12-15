@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { atom, useRecoilState } from "recoil";
+import {
+  atom,
+  useRecoilState,
+  useRecoilValue,
+  useSetRecoilState,
+} from "recoil";
 import { BaseButton } from "../../../buttons";
 import {
   DetailsAtom,
@@ -37,14 +42,12 @@ const WriteReviewModal = ({ rated, text, id }: Props) => {
   );
   const [rate, setRate] = useState<number>(0);
   const [writeReview, setWriteReview] = useState("");
-  const [token, setToken] = useRecoilState(TokenAtom);
-  const [detailsState, setDetailState] = useRecoilState(DetailsAtom);
+  const token = useRecoilValue(TokenAtom);
+  const detailsState = useRecoilValue(DetailsAtom);
   const [userReview, setUserReview] = useRecoilState(userReviewAtom);
   const [loading, setLoading] = useState(false);
-  const [openMessageModal, setOpenMassegModal] =
-  useRecoilState(OpenMessageModalAtom);
-  const [wrongMessage,setWrrongMessage]=useRecoilState(ErroreMessageAtom)
-
+  const setOpenMassegModal = useSetRecoilState(OpenMessageModalAtom);
+  const setWrrongMessage = useSetRecoilState(ErroreMessageAtom);
 
   useEffect(() => {
     setRate(0);
@@ -58,21 +61,20 @@ const WriteReviewModal = ({ rated, text, id }: Props) => {
   }, [id]);
 
   const handelSubmit = async () => {
-    setLoading(true)
+    setLoading(true);
     if (openWriteReviewModal) {
-      
       const res = await handelWriteReview(
         token,
         detailsState.product.id,
         rate,
         writeReview
       );
-      if(res===null){
+      if (res === null) {
         setWrrongMessage("some thing went wrong");
-        setOpenMassegModal(true)
+        setOpenMassegModal(true);
       }
-      if(res){
-        setLoading(false)
+      if (res) {
+        setLoading(false);
       }
       setUserReview(res.result);
       if (userReview.id > 0) {
@@ -83,14 +85,12 @@ const WriteReviewModal = ({ rated, text, id }: Props) => {
     if (openUbdateReviewModal && id) {
       setLoading(true);
       const res = await handelUpdateReview(token, id, rate, writeReview);
-      if(res===null){
-
-      }else{
+      if (res === null) {
+      } else {
         setUserReview(res.result);
         if (userReview.id > 0) {
           setLoading(false);
         }
-
       }
       setOpenUpdateReviewModal(false);
     }
@@ -111,7 +111,6 @@ const WriteReviewModal = ({ rated, text, id }: Props) => {
               <div>
                 <h1 className="text-xl font-bold ">write your review</h1>
                 <div className="flex  flex-col items-start my-3 ml-0 mr-0 mx-auto">
-
                   <span className="font-bold block">rate the item </span>
                   <ReactStars
                     value={rate}

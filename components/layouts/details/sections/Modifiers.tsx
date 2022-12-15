@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { atom, useRecoilState } from "recoil";
+import {
+  atom,
+  useRecoilState,
+  useRecoilValue,
+  useSetRecoilState,
+} from "recoil";
 import { ModifiersGroupAtom, ModifiersGroupType } from "../../../../helper";
 import { BaseButton } from "../../../buttons";
 import { warrantyActiveAtom } from "./ProtectPurchaseCard";
@@ -18,7 +23,7 @@ interface Prop {
   total_price: number;
 }
 const useModifiers = () => {
-  const [modifiers, setModifiers] = useRecoilState(ModifiersGroupAtom);
+  const modifiers = useRecoilValue(ModifiersGroupAtom);
   const [modifiersIdforModifiers, setModifiersIdforModifiers] = useRecoilState(
     modifiersIdforModifiersAtom
   );
@@ -29,8 +34,7 @@ const useModifiers = () => {
 
   const [modifierActive, setModifierActive] =
     useRecoilState(modifierActiveAtom);
-  const [warrantyActive, setWarrantyActive] =
-    useRecoilState(warrantyActiveAtom);
+  const setWarrantyActive = useSetRecoilState(warrantyActiveAtom);
 
   const addModifiers = (modefier: ModifiersGroupType) => {
     setModifiersIdforModifiers([]);
@@ -38,8 +42,8 @@ const useModifiers = () => {
     setSelectedPackage(modefier);
   };
   useEffect(() => {
-    setModifierswithoutWarranty([])
-    setSelectedPackage({} as Prop)
+    setModifierswithoutWarranty([]);
+    setSelectedPackage({} as Prop);
     Object.keys(modifiers).map((key) => {
       const value = modifiers[key];
       if (key !== "warranty") {
@@ -49,7 +53,6 @@ const useModifiers = () => {
       }
     });
   }, [modifiers]);
-  
 
   return {
     modifiersIdforModifiers,
@@ -104,9 +107,11 @@ const useModifiers = () => {
                   checked={modifiersIdforModifiers.length === 0 ? true : false}
                 />
                 <span className="design"></span>
-                <span className="value sm:text-xs md:text-base">no package</span>
+                <span className="value sm:text-xs md:text-base">
+                  no package
+                </span>
               </label>
-              {modifierswithoutWarranty.map((modefier,i) => {
+              {modifierswithoutWarranty.map((modefier, i) => {
                 return (
                   <div
                     onClick={() => addModifiers(modefier)}
@@ -132,13 +137,15 @@ const useModifiers = () => {
                         }
                       />
                       <span className="design"></span>
-                      <span className="value sm:text-xs md:text-base">{modefier.name}</span>
+                      <span className="value sm:text-xs md:text-base">
+                        {modefier.name}
+                      </span>
                       <p className="ml-10 whitespace-nowrap sm:text-xs md:text-base">
                         with price of ${modefier.total_price}
                       </p>
                     </label>
                     <div className="flex ml-10">
-                      {modefier.modifiers.map((item,i) => {
+                      {modefier.modifiers.map((item, i) => {
                         if (item.image) {
                           return (
                             <div
@@ -146,7 +153,7 @@ const useModifiers = () => {
                               className="flex justify-around bg-cover "
                             >
                               <img
-                              style={{objectFit:"cover"}}
+                                style={{ objectFit: "cover" }}
                                 className="w-20  ml-2 pb-2 "
                                 src={item.image}
                                 alt="Picture of the author"

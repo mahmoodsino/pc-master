@@ -1,4 +1,4 @@
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
   DetailsAtom,
   getDetails,
@@ -18,29 +18,25 @@ import Reviews from "./Reviews";
 import MoveToCartPageModal from "./MoveToCartPageModal";
 import SimilarProducts from "./SimilarProducts";
 import Availablity from "./Availablity";
-import {toast} from "react-toastify"
+import { toast } from "react-toastify";
 
 const MainSection = () => {
-  const [variationState, setVariationState] = useRecoilState(VariationAtom);
+  const variationState = useRecoilValue(VariationAtom);
   const [detailsState, setDetailState] = useRecoilState(DetailsAtom);
-  const [modifiers, setModifiers] = useRecoilState(ModifiersGroupAtom);
+  const setModifiers = useSetRecoilState(ModifiersGroupAtom);
   const [loading, setLoading] = useState(true);
   const router = useRouter().query;
-  const [token, setToken] = useRecoilState(TokenAtom);
-  const [selectedBranch, setSelectedBranch] =
-    useRecoilState(SelectedBranchAtom);
-
-
-    
+  const token = useRecoilValue(TokenAtom);
+  const selectedBranch = useRecoilValue(SelectedBranchAtom);
 
   useEffect(() => {
     setLoading(false);
     const Data = async () => {
       if (router.product) {
         const res = await getDetails(+router.product, selectedBranch?.id);
-        if(res===null){
-          toast.error("some thing went wrong")
-        }else{
+        if (res === null) {
+          toast.error("some thing went wrong");
+        } else {
           setDetailState(res.result);
         }
         if (res) {
@@ -50,10 +46,9 @@ const MainSection = () => {
           +router.product,
           selectedBranch?.id
         );
-        if(respones===null){
-          toast.error("some thing went wrong")
-
-        }else{
+        if (respones === null) {
+          toast.error("some thing went wrong");
+        } else {
           setModifiers(respones.result);
         }
       }
@@ -107,7 +102,7 @@ const MainSection = () => {
                     Specifications
                   </span>
                   <div className="grid  xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-2 pb-5">
-                    {variationState.attributes?.map((attribute,i) => {
+                    {variationState.attributes?.map((attribute, i) => {
                       return (
                         <div
                           key={i}
@@ -118,7 +113,7 @@ const MainSection = () => {
                         </div>
                       );
                     })}
-                    {detailsState.product.custome_properties.map((item,i) => {
+                    {detailsState.product.custome_properties.map((item, i) => {
                       return (
                         <div
                           key={i}
@@ -142,7 +137,7 @@ const MainSection = () => {
             <div className="lg:w-1/2 sm:mt-28 md:px-2 lg:px-0 lg:mt-0  lg:inline-block">
               <DetailsCard />
               <div className="lg:block sm:hidden">
-              <SimilarProducts />
+                <SimilarProducts />
               </div>
             </div>
           </div>
@@ -166,7 +161,7 @@ const MainSection = () => {
             >
               <span className="text-xl block mb-10">Specifications</span>
               <div className="grid  xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-2 pb-5">
-                {variationState.attributes?.map((attribute,i) => {
+                {variationState.attributes?.map((attribute, i) => {
                   return (
                     <div
                       key={i}
@@ -177,7 +172,7 @@ const MainSection = () => {
                     </div>
                   );
                 })}
-                {detailsState.product.custome_properties.map((item,i) => {
+                {detailsState.product.custome_properties.map((item, i) => {
                   return (
                     <div
                       key={i}
@@ -200,7 +195,7 @@ const MainSection = () => {
             <Availablity />
             <div className="lg:hidden sm:block">
               <SimilarProducts />
-              </div>
+            </div>
           </div>
         </div>
       ) : (

@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
+import {  useRecoilValue, useSetRecoilState } from "recoil";
 import {
   ErroreMessageAtom,
   HomePageAtom,
   OpenMessageModalAtom,
   SelectedBranchAtom,
   TokenAtom,
-  WishListAtom,
 } from "../../../../helper/state";
 import { BaseCard } from "../../../cards";
 import { Cheips, MobaiChips } from "../../../inputs";
@@ -18,18 +17,13 @@ const NewArrivalProducts = () => {
   const [newArrivalProducts, setNewArrivalProducts] = useState<ProductsType[]>(
     []
   );
-  const [homePageState, setHomePageState] = useRecoilState(HomePageAtom);
-  const [token, setToken] = useRecoilState(TokenAtom);
-  const [wishList, setWishList] = useRecoilState(WishListAtom);
+  const homePageState = useRecoilValue(HomePageAtom);
+  const token = useRecoilValue(TokenAtom);
   const [loading, setLoading] = useState(false);
   const [selected, setSelected] = useState<number>();
-  const [selectedBranch, setSelectedBranch] =
-    useRecoilState(SelectedBranchAtom);
-  const [openMessageModal, setOpenMassegModal] =
-    useRecoilState(OpenMessageModalAtom);
-  const [wrongMessage, setWrrongMessage] = useRecoilState(ErroreMessageAtom);
-
-  
+  const selectedBranch = useRecoilValue(SelectedBranchAtom);
+  const setOpenMassegModal = useSetRecoilState(OpenMessageModalAtom);
+  const setWrrongMessage = useSetRecoilState(ErroreMessageAtom);
 
   const setItem = async (setItem: number) => {
     setLoading(true);
@@ -60,7 +54,7 @@ const NewArrivalProducts = () => {
 
       setLoading(false);
     };
-      getData();
+    getData();
   }, [selectedBranch]);
 
   return (
@@ -86,7 +80,7 @@ const NewArrivalProducts = () => {
       </div>
       {!loading ? (
         <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-2 md:grid-cols-3 my-5   xl:mx-4 mb-10">
-          {newArrivalProducts?.map((item,i) => {
+          {newArrivalProducts?.map((item, i) => {
             return (
               <BaseCard
                 name={item.name}

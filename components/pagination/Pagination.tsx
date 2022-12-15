@@ -1,8 +1,7 @@
-import React, { useEffect } from "react";
-import { useRecoilState } from "recoil";
-import {  currentPageAtom, totalPagesAtom } from "../../helper";
+import React from "react";
+import {  useRecoilValue } from "recoil";
+import { totalPagesAtom } from "../../helper";
 import Pagination from "react-js-pagination";
-import { useRouter } from "next/router";
 import { FiltersQueryAtom } from "../layouts/shop/sections/MainSection";
 
 interface Props {
@@ -10,11 +9,8 @@ interface Props {
 }
 
 const Paginations = ({ paginate }: Props) => {
-  const [totalPages, setTotalPages] = useRecoilState(totalPagesAtom);
-  // const [currentPage, setCurrentPage] = useRecoilState(currentPageAtom);
-  const [queryFilters,setQueryFilters]=useRecoilState(FiltersQueryAtom)
-
- 
+  const totalPages = useRecoilValue(totalPagesAtom);
+  const queryFilters = useRecoilValue(FiltersQueryAtom);
 
   return (
     <div className=" mt-10  ">

@@ -3,10 +3,8 @@ import React, { useEffect } from "react";
 import Select, { StylesConfig, ActionMeta } from "react-select";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useRecoilState } from "recoil";
-import {
-  OrderByAtom,
-} from "../../../../helper";
+import {  useRecoilValue, useSetRecoilState } from "recoil";
+import { OrderByAtom } from "../../../../helper";
 import { orderBySchema } from "../../../../helper/validation";
 import { useRouter } from "next/router";
 import { FiltersQueryAtom } from "./MainSection";
@@ -21,29 +19,23 @@ interface IFormInputs {
 }
 
 const ShopSelect = () => {
-  const [orderByState, setOrderByState] = useRecoilState(OrderByAtom);
-  const [queryFilters, setQueryFilters] = useRecoilState(FiltersQueryAtom);
+  const orderByState = useRecoilValue(OrderByAtom);
+  const setQueryFilters = useSetRecoilState(FiltersQueryAtom);
 
-  const {
-    control,
-  } = useForm<IFormInputs>({
+  const { control } = useForm<IFormInputs>({
     resolver: yupResolver(orderBySchema),
   });
 
-  const {query,replace} = useRouter()
-
+  const { query, replace } = useRouter();
 
   useEffect(() => {
-    if(typeof(query.orderby)==="string"){
+    if (typeof query.orderby === "string") {
       //@ts-ignore
-      setQueryFilters(prev => {
-        return (
-          {...prev,orderby: query.orderby}
-        )
-      })
+      setQueryFilters((prev) => {
+        return { ...prev, orderby: query.orderby };
+      });
     }
-
-  },[query.orderby])
+  }, [query.orderby]);
 
   const customStyles: StylesConfig<optionType> = {
     option: (provided: ActionMeta, state: ActionMeta) => ({
@@ -70,8 +62,7 @@ const ShopSelect = () => {
             const handleSelectChange = async (
               selectedOption: optionType | null
             ) => {
-              if(selectedOption?.label!=null){
-
+              if (selectedOption?.label != null) {
                 replace(
                   {
                     query: { ...query, orderby: selectedOption?.label },
@@ -82,11 +73,9 @@ const ShopSelect = () => {
                   }
                 );
 
-                setQueryFilters(prev => {
-                  return (
-                    {...prev,orderby: selectedOption?.label}
-                  )
-                })
+                setQueryFilters((prev) => {
+                  return { ...prev, orderby: selectedOption?.label };
+                });
               }
             };
             return (

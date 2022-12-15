@@ -1,23 +1,25 @@
 import React from "react";
-import { atom, useRecoilState } from "recoil";
+import {  useRecoilValue, useSetRecoilState } from "recoil";
 import { BaseButton } from "../../../buttons";
 import { BaseInput } from "../../../inputs";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { verficationCodeSchema } from "../../../../helper/validation";
 import { useRouter } from "next/router";
-import { handelResetPassword, resetPassEmailAtom, VereficationcodeAtom } from "../../../../helper";
+import {
+  handelResetPassword,
+  resetPassEmailAtom,
+  VereficationcodeAtom,
+} from "../../../../helper";
 import { toast } from "react-toastify";
 
 interface IFormInputs {
   verfication: number;
 }
 
-
 const FormSection = () => {
-  const [resetPassEmail, setResetPassEmail] =
-    useRecoilState(resetPassEmailAtom);
-    const [vereficationCode,setVereficationCode]=useRecoilState(VereficationcodeAtom)
+  const resetPassEmail = useRecoilValue(resetPassEmailAtom);
+  const setVereficationCode = useSetRecoilState(VereficationcodeAtom);
 
   const {
     register,
@@ -26,15 +28,15 @@ const FormSection = () => {
   } = useForm<IFormInputs>({
     resolver: yupResolver(verficationCodeSchema),
   });
-  const push =useRouter().push
+  const push = useRouter().push;
 
   const handelReset = async (data: IFormInputs) => {
     const res = await handelResetPassword(resetPassEmail, data.verfication);
-    if(res?.data){
-      setVereficationCode(data.verfication)
-      push("./resetpassword")
-    }else{
-      toast.error(res.message)
+    if (res?.data) {
+      setVereficationCode(data.verfication);
+      push("./resetpassword");
+    } else {
+      toast.error(res.message);
     }
   };
 

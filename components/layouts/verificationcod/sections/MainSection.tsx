@@ -1,7 +1,5 @@
 import React from 'react'
 import FormSection from './FormSection'
-
-
 const MainSection = () => {
   return (
     <div>
@@ -9,5 +7,4 @@ const MainSection = () => {
     </div>
   )
 }
-
 export default MainSection

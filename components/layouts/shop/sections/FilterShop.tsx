@@ -1,4 +1,4 @@
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { MultiRangeSlider } from "../../../inputs";
 import ShopTree from "./ShopTree";
 import {
@@ -22,17 +22,15 @@ import { FiltersQueryAtom } from "./MainSection";
 
 const FilterShop = () => {
   const [searchState, setSearchState] = useRecoilState(SearchAtom);
-  const [orderByState, setOrderByState] = useRecoilState(OrderByAtom);
+  const setOrderByState = useSetRecoilState(OrderByAtom);
   const [shopCategorey, setShopCategory] = useState<categoriesType[]>([]);
   const [brands, setBrands] = useRecoilState(BrandsAtom);
   const [attributes, setAttributes] = useRecoilState(AttributesShopAtom);
   const { render } = useBrands();
   const { rende } = useRating();
   const { AttributeRender } = useAttributes();
-  const [selectedBranch, setSelectedBranch] =
-    useRecoilState(SelectedBranchAtom);
+  const selectedBranch = useRecoilValue(SelectedBranchAtom);
   const [queryFilters, setQueryFilters] = useRecoilState(FiltersQueryAtom);
-
   const { replace, query } = useRouter();
 
   const handleChange = (value: number[]) => {

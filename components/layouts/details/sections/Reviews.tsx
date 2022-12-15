@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 import ReactStars from "react-stars";
 import { toast } from "react-toastify";
-import { atom, useRecoilState } from "recoil";
+import {
+  atom,
+  useRecoilState,
+  useRecoilValue,
+  useSetRecoilState,
+} from "recoil";
 import {
   checkRewiewable,
   DetailsAtom,
@@ -39,8 +44,8 @@ export const userReviewAtom = atom<reviewsType>({
 });
 
 const Reviews = () => {
-  const [detailsState, setDetailState] = useRecoilState(DetailsAtom);
-  const [token, setToken] = useRecoilState(TokenAtom);
+  const detailsState = useRecoilValue(DetailsAtom);
+  const token = useRecoilValue(TokenAtom);
   const [review, setRewiew] = useState<reviewsType[]>([]);
   const [openWriteReviewModal, setOpenWriteReviewModal] = useRecoilState(
     OpenWriteReviewModalAtom
@@ -50,9 +55,8 @@ const Reviews = () => {
     OpenUpdateReviewModalAtom
   );
   const [checkLoading, setCheckLoading] = useState(false);
-  const [openMessageModal, setOpenMassegModal] =
-    useRecoilState(OpenMessageModalAtom);
-  const [wrongMessage, setWrrongMessage] = useRecoilState(ErroreMessageAtom);
+  const setOpenMassegModal = useSetRecoilState(OpenMessageModalAtom);
+  const setWrrongMessage = useSetRecoilState(ErroreMessageAtom);
   const [delLoadind, setDelLoading] = useState(false);
 
   useEffect(() => {

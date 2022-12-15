@@ -1,4 +1,4 @@
-import { useRecoilState } from "recoil";
+import {  useRecoilValue } from "recoil";
 import { WishListAtom, WishListItems } from "../../../../helper";
 import { BaseButton } from "../../../buttons";
 import { BlusIcon, CartIcon, MinusIcon } from "../../../icons";
@@ -17,7 +17,7 @@ const MobileWishList = ({
   handelDecreaseWishList,
   moveWishListToCart,
 }: Props) => {
-  const [wishList, setWishList] = useRecoilState(WishListAtom);
+  const wishList = useRecoilValue(WishListAtom);
 
   return (
     <div>
@@ -45,7 +45,7 @@ const MobileWishList = ({
                 <div className="w-20 h-20 border">
                   {item.product?.image?.id ? (
                     <img
-                    style={{objectFit:"cover"}}
+                      style={{ objectFit: "cover" }}
                       className="h-20 w-20 "
                       src={item.product?.image.path}
                       alt=""

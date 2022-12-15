@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import {
   AttributesShopAtom,
   AttributesShopType,
@@ -16,7 +16,7 @@ let toCheck: number[] = [];
 
 
 const useAttributes = () => {
-  const [attributes, setAttributes] = useRecoilState(AttributesShopAtom);
+  const attributes= useRecoilValue(AttributesShopAtom);
   const [val, setVal] = useState<number>();
   const [queryFilters, setQueryFilters] = useRecoilState(FiltersQueryAtom);
 

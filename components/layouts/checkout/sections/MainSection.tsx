@@ -4,8 +4,6 @@ import CartSummary from './CartSummary'
 import CheckoutDetails from './CheckoutDetails'
 
 const MainSection = () => {
-
-
   return (
     <div   className="lg:px-10 2xl:px-24 lg:ml-4 2xl:container mt-10">
       <Searchbar />

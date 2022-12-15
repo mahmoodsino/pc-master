@@ -1,4 +1,9 @@
-import { atom, useRecoilState } from "recoil";
+import {
+  atom,
+  useRecoilState,
+  useRecoilValue,
+  useSetRecoilState,
+} from "recoil";
 import { Breadcrumbs } from "../../../breadcrumbs";
 import { BaseButton } from "../../../buttons";
 import FillterProductsMobile from "./FillterProductsMobile";
@@ -54,70 +59,63 @@ export const FiltersQueryAtom = atom<FiltersType>({
 });
 
 const MainSection = () => {
-  const [showFillterProducts, setShowFillterProducts] =
-    useRecoilState(FillterProductAtom);
-  const [productsState, setProductsState] = useRecoilState(ProductsAtom);
-  const [wishList, setWishList] = useRecoilState(WishListAtom);
+  const setShowFillterProducts = useSetRecoilState(FillterProductAtom);
+  const setProductsState = useSetRecoilState(ProductsAtom);
+  const wishList = useRecoilValue(WishListAtom);
   const [loading, setLoading] = useState(true);
-  const [token, setToken] = useRecoilState(TokenAtom);
-  const [carts, setCarts] = useRecoilState(FetchedCartItemsAtom);
+  const token = useRecoilValue(TokenAtom);
+  const carts = useRecoilValue(FetchedCartItemsAtom);
   const [activeDropDown, setActiveDropDown] =
     useRecoilState(ActiveDropDownAtom);
-  const [allCartsInfo, setAllCartsInfo] = useRecoilState(AllCartsInfo);
+  const allCartsInfo = useRecoilValue(AllCartsInfo);
   const [totalPages, setTotalPages] = useRecoilState(totalPagesAtom);
-  const [selectedBranch, setSelectedBranch] =
-    useRecoilState(SelectedBranchAtom);
+  const selectedBranch = useRecoilValue(SelectedBranchAtom);
   const [queryFilters, setQueryFilters] = useRecoilState(FiltersQueryAtom);
-
   const timerRef = useRef() as MutableRefObject<NodeJS.Timeout>;
 
-  const { query,  push,replace } = useRouter();
+  const { query, replace } = useRouter();
   let useType;
   if (typeof window !== "undefined") {
     useType = localStorage.getItem("type" || "");
   }
 
   useEffect(() => {
-    if(typeof(query.minprice) !== "undefined"){
-      setQueryFilters(prev => {
-        return(
+    if (typeof query.minprice !== "undefined") {
+      setQueryFilters((prev) => {
+        return (
           //@ts-ignore
-          {...prev,minPrice:+(query.minprice)}
-        )
-      })
+          { ...prev, minPrice: +query.minprice }
+        );
+      });
     }
-    if(typeof(query.maxPrice) !== "undefined"){
-      setQueryFilters(prev => {
-        return(
+    if (typeof query.maxPrice !== "undefined") {
+      setQueryFilters((prev) => {
+        return (
           //@ts-ignore
-          {...prev,maxPrice:+(query.maxPrice)}
-        )
-      })
+          { ...prev, maxPrice: +query.maxPrice }
+        );
+      });
     }
-  },[query.minprice,query.maxPrice])
-
+  }, [query.minprice, query.maxPrice]);
 
   useEffect(() => {
-    if(typeof(query.page) !== "undefined"){
-      setQueryFilters(prev => {
-        return(
+    if (typeof query.page !== "undefined") {
+      setQueryFilters((prev) => {
+        return (
           //@ts-ignore
-          {...prev,page:+(query.page)}
-        )
-      })
+          { ...prev, page: +query.page }
+        );
+      });
     }
-  },[query.page])
+  }, [query.page]);
 
   useEffect(() => {
-    if(typeof(query.search)!=="undefined"){
-      setQueryFilters(prev => {
-        return(
-          {...prev ,search:query.search}
-        )
-      })
+    if (typeof query.search !== "undefined") {
+      setQueryFilters((prev) => {
+        return { ...prev, search: query.search };
+      });
     }
-
-  },[query.search])
+  }, [query.search]);
   useEffect(() => {
     const leave = () => {
       setQueryFilters({
@@ -144,7 +142,7 @@ const MainSection = () => {
         token: token,
         orderBy: queryFilters.orderby,
         //@ts-ignore
-        product_name:  queryFilters.search,
+        product_name: queryFilters.search,
         categoryId: queryFilters.SelectedCategories,
         AttributeValues: queryFilters.SelectedAttribute,
         Brands: queryFilters.SelectedBrands,
@@ -168,17 +166,15 @@ const MainSection = () => {
     }, 1000);
   }, [queryFilters, selectedBranch]);
 
-  const paginate = (pageNumber: number) =>{
-    replace(
-      {query: { ...query, page:pageNumber }},
-      undefined,
-      {scroll: true,}
-    );
+  const paginate = (pageNumber: number) => {
+    replace({ query: { ...query, page: pageNumber } }, undefined, {
+      scroll: true,
+    });
 
     setQueryFilters((prev) => {
       return { ...prev, page: pageNumber };
-    })
-  }
+    });
+  };
 
   return (
     <div className="lg:ml-4">

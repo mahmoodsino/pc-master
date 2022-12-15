@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import handelLogin from "../../../../helper/sever/users/login/services";
 import {
   ErroreMessageAtom,
@@ -26,17 +26,12 @@ interface IFormInputs {
 
 const FormSection = () => {
   const [token, setToken] = useRecoilState(TokenAtom);
-  const [forgerPasswordModal, setForgetPasswordModal] = useRecoilState(
-    forgetPasswordModalAtom
-  );
+  const setForgetPasswordModal = useSetRecoilState(forgetPasswordModalAtom);
   const [guestUsrerId, setGuestUserId] = useState<number | null>(null);
-  const [openYouHaveItemsModal, setYouHaveItemsModal] = useRecoilState(
-    YouHaveItemsModalAtom
-  );
+  const setYouHaveItemsModal = useSetRecoilState(YouHaveItemsModalAtom);
   const [loading, setLoading] = useState(false);
-  const [openMessageModal, setOpenMassegModal] =
-    useRecoilState(OpenMessageModalAtom);
-  const [wrongMessage, setWrrongMessage] = useRecoilState(ErroreMessageAtom);
+  const setOpenMassegModal = useSetRecoilState(OpenMessageModalAtom);
+  const setWrrongMessage = useSetRecoilState(ErroreMessageAtom);
 
   const {
     register,

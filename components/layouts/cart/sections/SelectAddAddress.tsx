@@ -1,5 +1,10 @@
-import React, {useState } from "react";
-import { atom, useRecoilState } from "recoil";
+import React, { useState } from "react";
+import {
+  atom,
+  useRecoilState,
+  useRecoilValue,
+  useSetRecoilState,
+} from "recoil";
 import {
   OpenAddNewAddressModalAtom,
   ShippingAddressIdAtom,
@@ -12,19 +17,15 @@ export const OpenSelectAddressAtom = atom({
 });
 
 const SelectAddAddress = () => {
-  const [address, setaddress] = useRecoilState(addressatom);
-  const [openAddNewAddressModal, setOpenAddNewAddressModal] = useRecoilState(
+  const address = useRecoilValue(addressatom);
+  const setOpenAddNewAddressModal = useSetRecoilState(
     OpenAddNewAddressModalAtom
   );
   const [openSelectAddress, setOpenSelectAddress] = useRecoilState(
     OpenSelectAddressAtom
   );
-  const [shippingAddressId, setShippingAddressId] = useRecoilState(
-    ShippingAddressIdAtom
-  );
+  const setShippingAddressId = useSetRecoilState(ShippingAddressIdAtom);
   const [addressName, setAddressName] = useState("SelectAddress");
-
-   
 
   return (
     <div

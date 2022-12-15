@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
   addToWishList,
   deleteWishList,
@@ -27,16 +27,14 @@ const AddToWishList = () => {
   const [openAddToWishList, setOpenAddToWishList] = useRecoilState(
     OpenAddToWishListAtom
   );
-  const [variationState, setVariationState] = useRecoilState(VariationAtom);
-  const [detailsState, setDetailState] = useRecoilState(DetailsAtom);
+  const variationState = useRecoilValue(VariationAtom);
+  const detailsState = useRecoilValue(DetailsAtom);
   const [wishList, setWishList] = useRecoilState(WishListAtom);
-  const [token, setToken] = useRecoilState(TokenAtom);
+  const token = useRecoilValue(TokenAtom);
   const [loading, setLoading] = useState(false);
-  const [selectedBranch,setSelectedBranch]=useRecoilState(SelectedBranchAtom)
-  const [openMessageModal, setOpenMassegModal] =
-  useRecoilState(OpenMessageModalAtom);
-  const [wrongMessage,setWrrongMessage]=useRecoilState(ErroreMessageAtom)
-
+  const selectedBranch = useRecoilValue(SelectedBranchAtom);
+  const setOpenMassegModal = useSetRecoilState(OpenMessageModalAtom);
+  const setWrrongMessage = useSetRecoilState(ErroreMessageAtom);
 
   const {
     register,
@@ -90,12 +88,12 @@ const AddToWishList = () => {
         data.title,
         data.title
       );
-      if(res === null){
+      if (res === null) {
         setWrrongMessage("some thing went wrong");
-        setOpenMassegModal(true)
-      }else {
+        setOpenMassegModal(true);
+      } else {
         setOpenAddToWishList(false);
-        setLoading(false)
+        setLoading(false);
         setWishList(res.result.items);
       }
     }
@@ -103,10 +101,10 @@ const AddToWishList = () => {
       const id = wishList[isItemInWishList].id;
       if (id) {
         const res = await deleteWishList(token, id);
-        if(res===null){
+        if (res === null) {
           setWrrongMessage("some thing went wrong");
-        setOpenMassegModal(true)
-        }else{
+          setOpenMassegModal(true);
+        } else {
           setOpenAddToWishList(false);
           setWishList(res.result.items);
         }
@@ -140,15 +138,15 @@ const AddToWishList = () => {
                   onClick={() => setOpenAddToWishList(false)}
                   type="button"
                 />
-                {!loading  ? 
-                <BaseButton
-                  className=""
-                  title="Add To WishList"
-                  type="submit"
-                /> : 
-                <Spinner className="w-10 fill-green-950" />
-                
-              }
+                {!loading ? (
+                  <BaseButton
+                    className=""
+                    title="Add To WishList"
+                    type="submit"
+                  />
+                ) : (
+                  <Spinner className="w-10 fill-green-950" />
+                )}
               </div>
             </form>
           </div>

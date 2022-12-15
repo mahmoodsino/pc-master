@@ -1,8 +1,8 @@
-import  { useState } from "react";
+import { useState } from "react";
 import { categoriesType } from "../../../../../helper/interfaces";
 import { totherightArrowIcon } from "../../../../icons/Icons";
 import { useRouter } from "next/router";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { OpenCategoryModalAtom } from "../../../../../helper";
 
 interface data {
@@ -15,8 +15,13 @@ const MobailTree = ({ data }: data) => {
     return (
       <div className=" ">
         <ul className="">
-          {data.map((tree,i) => (
-            <MobailTreeNode key={i} node={tree} MobailselectedParentId={MobailselectedParentId} setMobailParentId={setMobailParentId} />
+          {data.map((tree, i) => (
+            <MobailTreeNode
+              key={i}
+              node={tree}
+              MobailselectedParentId={MobailselectedParentId}
+              setMobailParentId={setMobailParentId}
+            />
           ))}
         </ul>
       </div>
@@ -25,8 +30,13 @@ const MobailTree = ({ data }: data) => {
     return (
       <div className=" ">
         <ul className="">
-          {data.categories.map((tree,i) => (
-            <MobailTreeNode key={i} node={tree} MobailselectedParentId={MobailselectedParentId} setMobailParentId={setMobailParentId}/>
+          {data.categories.map((tree, i) => (
+            <MobailTreeNode
+              key={i}
+              node={tree}
+              MobailselectedParentId={MobailselectedParentId}
+              setMobailParentId={setMobailParentId}
+            />
           ))}
         </ul>
       </div>
@@ -34,29 +44,27 @@ const MobailTree = ({ data }: data) => {
 };
 
 interface node {
-  node: categoriesType,
-  MobailselectedParentId:number,
-  setMobailParentId:(value:number)=>void
-
+  node: categoriesType;
+  MobailselectedParentId: number;
+  setMobailParentId: (value: number) => void;
 }
 
-const MobailTreeNode = ({ node,MobailselectedParentId,setMobailParentId }: node) => {
-  const [openCategoryModal, setOpencategoryModal] = useRecoilState(
-    OpenCategoryModalAtom
-  );
- 
+const MobailTreeNode = ({
+  node,
+  MobailselectedParentId,
+  setMobailParentId,
+}: node) => {
+  const setOpencategoryModal = useSetRecoilState(OpenCategoryModalAtom);
 
-  const hasChild = node.categories?.length>0 ? true : false;
-  const push = useRouter().push
-
+  const hasChild = node.categories?.length > 0 ? true : false;
+  const push = useRouter().push;
 
   const handelSearch = async (categoreyID: number) => {
-    
     push({
-      pathname: '/shop',
+      pathname: "/shop",
       query: { categorey: encodeURI(`${categoreyID}`) },
-  });
-  setOpencategoryModal(false)
+    });
+    setOpencategoryModal(false);
   };
   return (
     <li className=" relative ">
@@ -70,7 +78,7 @@ const MobailTreeNode = ({ node,MobailselectedParentId,setMobailParentId }: node)
         )}
 
         <div className=" flex justify-between py-3 text-sm font-medium tracking-[0.03em] cursor-pointer  border-t border-b border-t-white">
-          <div onClick={() => handelSearch(node.id)}  className="text">
+          <div onClick={() => handelSearch(node.id)} className="text">
             {node.name}
           </div>
           <div className="flex items-center space-x-1">

@@ -1,51 +1,46 @@
-import { useRecoilState } from "recoil";
-import {EditModel} from "./modals/index";
-import {ChangePassword} from "./modals";
-import {BaseButton} from "../../../buttons";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { EditModel } from "./modals/index";
+import { ChangePassword } from "./modals";
+import { BaseButton } from "../../../buttons";
 import { keyIcon } from "../../../icons/Icons";
-import { OpenEditModelAtom,ChangePassAtom, TokenAtom } from "../../../../helper/state";
+import {
+  OpenEditModelAtom,
+  ChangePassAtom,
+  TokenAtom,
+} from "../../../../helper/state";
 import getUser from "../../../../helper/sever/users/user/services";
 import { useEffect, useState } from "react";
 import { UserInterface } from "../../../../helper/interfaces";
 
 const MyProfile = () => {
-  
   const [showEditModel, setShowEditModel] = useRecoilState(OpenEditModelAtom);
-  const [showChangePassword, setShowChangePassword] =
-    useRecoilState(ChangePassAtom);
-  const[token,setToken]=useRecoilState(TokenAtom)
-  const [userInfo,setUserInfo]=useState<UserInterface>({
-    email:"",
-    first_name:"",
-    id:-1,
-     img:"",
-     last_name:""
-  })
+  const setShowChangePassword = useSetRecoilState(ChangePassAtom);
+  const token = useRecoilValue(TokenAtom);
+  const [userInfo, setUserInfo] = useState<UserInterface>({
+    email: "",
+    first_name: "",
+    id: -1,
+    img: "",
+    last_name: "",
+  });
 
-  let userType:string|null
+  let userType: string | null;
 
-  if( (typeof window !== 'undefined')) {
-    userType = localStorage.getItem("type"|| "");
-
+  if (typeof window !== "undefined") {
+    userType = localStorage.getItem("type" || "");
   }
-    useEffect(() => {
-      const getdata = async () => {
-
-        const res = await getUser(token)
-        if(res===null){
-
-        }else{
-          setUserInfo(res.data)
-        }
+  useEffect(() => {
+    const getdata = async () => {
+      const res = await getUser(token);
+      if (res === null) {
+      } else {
+        setUserInfo(res.data);
       }
-      if(userType==="user"){
-
-        getdata()
-      }
-    },[showEditModel])
-
-
-
+    };
+    if (userType === "user") {
+      getdata();
+    }
+  }, [showEditModel]);
 
   return (
     <div className="sm:w-[100%] md:w-[65%]">
@@ -88,9 +83,13 @@ const MyProfile = () => {
             Change Password
           </h1>
         </div>
-        <BaseButton onClick={() =>setShowEditModel(true) } title="Edit" className="font-medium text-white px-7 py-2 rounded-md bg-green-950" />
+        <BaseButton
+          onClick={() => setShowEditModel(true)}
+          title="Edit"
+          className="font-medium text-white px-7 py-2 rounded-md bg-green-950"
+        />
       </div>
-      <EditModel userInfo={userInfo} setUserInfo={setUserInfo} token={token}/>
+      <EditModel userInfo={userInfo} setUserInfo={setUserInfo} token={token} />
       <ChangePassword />
     </div>
   );

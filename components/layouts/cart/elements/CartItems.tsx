@@ -1,7 +1,12 @@
 import { BaseButton } from "../../../buttons";
 import { BlusIcon, TrashIcon } from "../../../icons";
 import { MinusIcon } from "../../../icons";
-import { atom, useRecoilState, useRecoilValue } from "recoil";
+import {
+  atom,
+  useRecoilState,
+  useRecoilValue,
+  useSetRecoilState,
+} from "recoil";
 import {
   AllCartsInfo,
   deleteCart,
@@ -23,13 +28,11 @@ export const CartLoading = atom({
 const CartItems = () => {
   const [carts, setCarts] = useRecoilState(FetchedCartItemsAtom);
   const token = useRecoilValue(TokenAtom);
-  const [selectedBranch, setSelectedBranch] =
-    useRecoilState(SelectedBranchAtom);
-  const [openMessageModal, setOpenMassegModal] =
-    useRecoilState(OpenMessageModalAtom);
-  const [wrongMessage, setWrrongMessage] = useRecoilState(ErroreMessageAtom);
+  const selectedBranch = useRecoilValue(SelectedBranchAtom);
+  const setOpenMassegModal = useSetRecoilState(OpenMessageModalAtom);
+  const setWrrongMessage = useSetRecoilState(ErroreMessageAtom);
   const [loading, setLoading] = useRecoilState(CartLoading);
-  const [allCartsInfo, setAllCartsInfo] = useRecoilState(AllCartsInfo);
+  const setAllCartsInfo = useSetRecoilState(AllCartsInfo);
 
   const timerRef = useRef() as MutableRefObject<NodeJS.Timeout>;
 

@@ -1,4 +1,4 @@
-import { atom, useRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import {CloseIcon} from "../../../icons";
 import FilterShop from "./FilterShop";
 import  {FillterProductAtom}  from "../../../../helper/state";

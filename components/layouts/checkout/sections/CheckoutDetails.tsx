@@ -1,5 +1,5 @@
 //@ts-ignore
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import {
   getClientToken,
@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 import { PayPalButton } from "react-paypal-button-v2";
 import { Spinner } from "../../../spinner";
 import { useRouter } from "next/router";
-import {toast} from "react-toastify"
+import { toast } from "react-toastify";
 
 interface IFormInputs {
   firstName: string;
@@ -29,7 +29,7 @@ interface PaymentProvider {
 }
 
 const CheckoutDetails = () => {
-  const [token, setToken] = useRecoilState(TokenAtom);
+  const token = useRecoilValue(TokenAtom);
   const [savedOrderId, setSavedOrderId] = useState<number>(0);
   const [checkout, setCheckOut] = useState(false);
   const [clientToken, setClientToken] = useState<string>();
@@ -45,7 +45,7 @@ const CheckoutDetails = () => {
   const [phone, setPhone] = useState<number>(0);
   const [paymentProvidorId, setPaymenProvidorId] = useState<number>();
   const [publicKey, setPublicKey] = useState<string>();
-  const [selectedBranch,setSelectedBranch]=useRecoilState(SelectedBranchAtom)
+  const selectedBranch = useRecoilValue(SelectedBranchAtom);
 
   const router = useRouter().query;
 
@@ -60,9 +60,9 @@ const CheckoutDetails = () => {
     setUserId(Number(id) || 0);
     const getData = async () => {
       const res = await getPaymentProvidor(selectedBranch?.id);
-      if(res===null){
-        toast.error("some thing went wrong")
-      }else{
+      if (res === null) {
+        toast.error("some thing went wrong");
+      } else {
         setPaymentProvidorState(res.result.payment_providers);
       }
     };
@@ -78,15 +78,14 @@ const CheckoutDetails = () => {
     });
   }, [paymentProvidorState]);
 
-
   useEffect(() => {
     const getData = async () => {
       setLoading(true);
       if (paymentProvidorId) {
         const res = await getClientToken(paymentProvidorId, token);
-        if(res===null){
-            toast.error("some thing went wrong")
-        }else{
+        if (res === null) {
+          toast.error("some thing went wrong");
+        } else {
           setClientToken(res.result.client_token);
         }
         if (res) {
@@ -96,7 +95,6 @@ const CheckoutDetails = () => {
     };
     getData();
   }, [paymentProvidorId, userId, email]);
-
 
   // const {
   //   control,

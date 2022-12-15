@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { atom, useRecoilState } from "recoil";
+import { atom, useRecoilState, useSetRecoilState } from "recoil";
 import { ShippingAddressIdAtom } from "../../../../helper";
 
 export const SelectDelivaryTypeAtom = atom({
@@ -19,17 +19,13 @@ const SelectDelivaryType = () => {
     SelectDelivaryTypeAtom
   );
   const [selectedMethod, setSelectedMethod] = useRecoilState(selctedMethodAtom);
-  const [shippingAddressId, setShippingAddressId] = useRecoilState(
-    ShippingAddressIdAtom
-  );
-
+  const setShippingAddressId = useSetRecoilState(ShippingAddressIdAtom);
 
   useEffect(() => {
-    if(selectedMethod==="PICKUP"){
-
-        setShippingAddressId(-1)
+    if (selectedMethod === "PICKUP") {
+      setShippingAddressId(-1);
     }
-  },[selectedMethod])
+  }, [selectedMethod]);
 
   return (
     <div

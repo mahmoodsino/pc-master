@@ -1,6 +1,5 @@
 import BaseButton from "../buttons/BaseButton";
 import { categoriesType } from "../../helper";
-//@ts-ignore
 import Slider from "react-slick";
 
 interface Props {
@@ -10,7 +9,7 @@ interface Props {
 }
 
 function SampleNextArrow(props: any) {
-  const { className, style, onClick } = props;
+  const {  style, onClick } = props;
   return (
     <div
       className={`text-black absolute right-0  -top-2   text  h-16 w-16   text-center cursor-pointer bg-white z-20 `}
@@ -36,7 +35,7 @@ function SampleNextArrow(props: any) {
 }
 
 function SamplePrevArrow(props: any) {
-  const { className, style, onClick } = props;
+  const {  style, onClick } = props;
   return (
     <div
       className={`text-black absolute -top-2 -left-6   h-16 w-10  text-center  cursor-pointer bg-white  z-20    `}
@@ -75,7 +74,6 @@ const Cheips = ({ categories, setItem,selectedItem }: Props) => {
     nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />,
     variableWidth: true,
-    // dotsClass: "carousal__shop",
   };
   return (
     <div className="">

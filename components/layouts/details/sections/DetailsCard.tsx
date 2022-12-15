@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
   addToCart,
   AllCartsInfo,
@@ -34,16 +34,12 @@ import { MoveToCartPageModalAtom } from "./MoveToCartPageModal";
 import useProtectPurchaseCard, { modifiersIdAtom } from "./ProtectPurchaseCard";
 
 const DetailsCard = () => {
-  const [detailsState, setDetailState] = useRecoilState(DetailsAtom);
-  const [token, setToken] = useRecoilState(TokenAtom);
+  const detailsState = useRecoilValue(DetailsAtom);
+  const token = useRecoilValue(TokenAtom);
   const [variationState, setVariationState] = useRecoilState(VariationAtom);
-  const [openAddToWishList, setOpenAddToWishList] = useRecoilState(
-    OpenAddToWishListAtom
-  );
+  const setOpenAddToWishList = useSetRecoilState(OpenAddToWishListAtom);
   const [wishList, setWishList] = useRecoilState(WishListAtom);
-  const [ContinueAsGuestModal, setContinueAsGuestModal] = useRecoilState(
-    CouninueAsGuestModalAtom
-  );
+  const setContinueAsGuestModal = useSetRecoilState(CouninueAsGuestModalAtom);
   const [names, setNames] = useState<any>({});
   const [isChange, setIsChange] = useState<boolean>(true);
   const [selectedAttributes, setSelectedAttributes] = useState<number[]>([]);
@@ -57,21 +53,19 @@ const DetailsCard = () => {
     parent: number;
   }>();
   const { modifiersId, render } = useProtectPurchaseCard();
-  const [carts, setCarts] = useRecoilState(FetchedCartItemsAtom);
-
+  const setCarts = useSetRecoilState(FetchedCartItemsAtom);
   const [newCart, setNewCart] = useRecoilState(NewCartAtom);
   const [removeLoading, setRemoveLoading] = useState(false);
   const { modifiersIdforModifiers, modifiersRender } = useModifiers();
   const [allModifires, setAllModifiers] = useState<number[]>([]);
   const [loading, setLoading] = useState(false);
-  const [allCartsInfo, setAllCartsInfo] = useRecoilState(AllCartsInfo);
-  const [MoveToCartPageModalState, setMoveToCartPageModalState] =
-    useRecoilState(MoveToCartPageModalAtom);
-  const [selectedBranch, setSelectedBranch] =
-    useRecoilState(SelectedBranchAtom);
-  const [openMessageModal, setOpenMassegModal] =
-    useRecoilState(OpenMessageModalAtom);
-  const [wrongMessage, setWrrongMessage] = useRecoilState(ErroreMessageAtom);
+  const setAllCartsInfo = useSetRecoilState(AllCartsInfo);
+  const setMoveToCartPageModalState = useSetRecoilState(
+    MoveToCartPageModalAtom
+  );
+  const selectedBranch = useRecoilValue(SelectedBranchAtom);
+  const setOpenMassegModal = useSetRecoilState(OpenMessageModalAtom);
+  const setWrrongMessage = useSetRecoilState(ErroreMessageAtom);
 
   useEffect(() => {
     for (let i = 0; i < detailsState?.variations?.length; i++) {

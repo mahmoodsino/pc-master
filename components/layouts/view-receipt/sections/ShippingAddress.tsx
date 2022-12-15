@@ -1,9 +1,9 @@
 import React from "react";
-import { useRecoilState } from "recoil";
+import {  useRecoilValue } from "recoil";
 import { OrderDetailsAtom } from "../../../../helper";
 
 const ShippingAddress = () => {
-  const [orderDetails, setOrderDetails] = useRecoilState(OrderDetailsAtom);
+  const orderDetails = useRecoilValue(OrderDetailsAtom);
 
   return (
     <div className=" shadow-[0_0_5px_rgba(0,0,0,0.12)] pl-7 pb-8 mb-10">

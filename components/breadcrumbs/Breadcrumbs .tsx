@@ -1,8 +1,6 @@
 import { useRouter } from "next/router";
 import BaseButton from "../buttons/BaseButton";
 
-
-
 const Breadcrumbs = () => {
   const push = useRouter().push
   const pathnames = useRouter().pathname.split("/").filter((x: string) => x);
@@ -20,7 +18,6 @@ const Breadcrumbs = () => {
             className="font-semibold tracking-[0.03em] uppercase"
             key={name}
           >
-            {" "}
             {name}
           </span>
         ) : (

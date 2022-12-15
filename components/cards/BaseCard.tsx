@@ -1,6 +1,5 @@
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
-import BaseButton from "../buttons/BaseButton";
+import React, { useState } from "react";
 import ShopCarousel from "../carousel/ShopCarousel";
 import HeartIcon from "../icons/HeartIcon";
 import no_image from "../../public/assets/image/no_image.jpg";
@@ -16,7 +15,6 @@ import {
   Variation,
   WishListAtom,
 } from "../../helper";
-import { useRouter } from "next/router";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { RedHeartIcon } from "../icons";
 import Link from "next/link";
@@ -43,22 +41,12 @@ const BaseCard = ({
   const [wishList, setWishList] = useRecoilState(WishListAtom);
   const token = useRecoilValue(TokenAtom);
   const setContinueAsGuestModal = useSetRecoilState(CouninueAsGuestModalAtom);
-  const [selectedBranch,setSelectedBranch]=useRecoilState(SelectedBranchAtom)
-  const [openMessageModal, setOpenMassegModal] =
-  useRecoilState(OpenMessageModalAtom);
-  const [wrongMessage,setWrrongMessage]=useRecoilState(ErroreMessageAtom)
+  const selectedBranch = useRecoilValue(SelectedBranchAtom);
+  const setOpenMassegModal = useSetRecoilState(OpenMessageModalAtom);
+  const setWrrongMessage = useSetRecoilState(ErroreMessageAtom);
 
-  const push = useRouter().push;
-
-  const handelDetails = async (detaiId: number) => {
-    push({
-      pathname: "/details",
-      query: { product: encodeURI(detaiId.toString()) },
-    });
-  };
 
   const handelAddVariationToWishList = async (clikedItem: Variation) => {
-    
     setWishList((prev) => {
       return [
         ...prev,
@@ -85,12 +73,11 @@ const BaseCard = ({
       "my favorait item",
       "my favorait item"
     );
-    if(res===null){
+    if (res === null) {
       setWrrongMessage("some thing went wrong");
-      setOpenMassegModal(true)
-    }
-    else{
-        setWishList(res.result.items);
+      setOpenMassegModal(true);
+    } else {
+      setWishList(res.result.items);
     }
   };
 
@@ -102,10 +89,10 @@ const BaseCard = ({
       const id = wishList[index].id;
       if (id) {
         const res = await deleteWishList(token, id);
-        if(res===null){
+        if (res === null) {
           setWrrongMessage("some thing went wrong");
-          setOpenMassegModal(true)
-        }else{
+          setOpenMassegModal(true);
+        } else {
           setWishList(res.result.items);
         }
       }
@@ -145,13 +132,15 @@ const BaseCard = ({
         </div>
         <div className="sm:hidden md:flex items-center justify-start  mt-3">
           <Link href={`/details?product=${id}`}>
-          <a className="py-0.5 px-4 text-white  bg-green-950 font-bold rounded-full">
-          Options
-          </a>
+            <a className="py-0.5 px-4 text-white  bg-green-950 font-bold rounded-full">
+              Options
+            </a>
           </Link>
-          
         </div>
-        <Link href={`/details?product=${id}`}  className="sm:block h-12 font-medium md:hidden mt-1 text-left">
+        <Link
+          href={`/details?product=${id}`}
+          className="sm:block h-12 font-medium md:hidden mt-1 text-left"
+        >
           <span className="md:hidden sm:block ">
             <span className="line-clamp222">{name}</span>
           </span>
@@ -164,7 +153,9 @@ const BaseCard = ({
         </span>
         <div className="flex items-center justify-between pt-3 mr-4 ">
           <span className=" sm:hidden text-sm md:leading-[19px]  h-fit md:block w-[80%]  md:tracking-[0.03em]">
-            <span title={name} className="line-clamp cursor-default">{name}</span>
+            <span title={name} className="line-clamp cursor-default">
+              {name}
+            </span>
           </span>
           <span className="text-lg sm:block md:hidden font-bold md:leading-[24px] md:tracking-[0.055em] mb-1">
             ${price}
@@ -186,7 +177,6 @@ const BaseCard = ({
           )}
         </div>
       </div>
-
     </div>
   );
 };

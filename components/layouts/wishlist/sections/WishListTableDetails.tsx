@@ -1,4 +1,4 @@
-import { useRecoilState } from "recoil";
+import {  useRecoilValue } from "recoil";
 import { WishListAtom, WishListItems } from "../../../../helper";
 import { BaseButton } from "../../../buttons";
 import { BlusIcon, CartIcon, MinusIcon } from "../../../icons";
@@ -17,7 +17,7 @@ const WishListTableDetails = ({
   handelDecreaseWishList,
   moveWishListToCart,
 }: Props) => {
-  const [wishList, setWishList] = useRecoilState(WishListAtom);
+  const wishList = useRecoilValue(WishListAtom);
 
   return (
     <div>
@@ -32,12 +32,9 @@ const WishListTableDetails = ({
             </tr>
           </thead>
           <tbody>
-            {wishList.map((item,i) => {
+            {wishList.map((item, i) => {
               return (
-                <tr
-                  key={i}
-                  className="border-b text-left text-gray-1150"
-                >
+                <tr key={i} className="border-b text-left text-gray-1150">
                   <td className=" p-2 w-[38%] ">
                     <div className="flex flex-row items-center space-x-5 ">
                       <BaseButton
@@ -52,7 +49,7 @@ const WishListTableDetails = ({
                       <div className="w-20 h-20">
                         {item.product?.image?.id ? (
                           <img
-                          style={{objectFit:"cover"}}
+                            style={{ objectFit: "cover" }}
                             className="h-20 w-20 "
                             src={item.product?.image.path}
                             alt=""

@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
+import React, { useEffect } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { BrandsAtom} from "../../../../helper";
 import { FiltersQueryAtom } from "./MainSection";
 
@@ -8,10 +8,8 @@ import { FiltersQueryAtom } from "./MainSection";
 let SleBran :number[] = []
 
 const useBrands = () => {
-  const [brands, setBrands] = useRecoilState(BrandsAtom);
-  const{push}=useRouter()
+  const brands = useRecoilValue(BrandsAtom);
   const [queryFilters,setQueryFilters]=useRecoilState(FiltersQueryAtom)
-  
   const { replace, query } = useRouter();
 
 

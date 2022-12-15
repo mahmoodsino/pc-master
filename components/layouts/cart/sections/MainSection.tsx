@@ -1,15 +1,12 @@
 import Link from "next/link";
 import React, { MutableRefObject, useEffect, useRef, useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
   AllCartsInfo,
-  AllWishListsInfoAtom,
   FetchedCartItemsAtom,
   getCartItems,
-  NewCartAtom,
   SelectedBranchAtom,
   TokenAtom,
-  WishListAtom,
 } from "../../../../helper";
 import { Breadcrumbs } from "../../../breadcrumbs";
 import { Searchbar } from "../../../header";
@@ -19,16 +16,16 @@ import { CartItems } from "../elements";
 import CartSummary from "./CartSummary";
 import { OpenSelectAddressAtom } from "./SelectAddAddress";
 import { SelectDelivaryTypeAtom } from "./SelectDelivaryType";
-import {toast} from "react-toastify"
+import { toast } from "react-toastify";
 
 const MainSection = () => {
   const [carts, setCarts] = useRecoilState(FetchedCartItemsAtom);
-  const [newCart, setNewCart] = useRecoilState(NewCartAtom);
-  const [token, setToken] = useRecoilState(TokenAtom);
-  const [allCartsInfo, setAllCartsInfo] = useRecoilState(AllCartsInfo);
-  const [allWishListsInfo, setAllWishListInfo] =
-    useRecoilState(AllWishListsInfoAtom);
-  const [wishList, setWishList] = useRecoilState(WishListAtom);
+  // const [newCart, setNewCart] = useRecoilState(NewCartAtom);
+  const token = useRecoilValue(TokenAtom);
+  const setAllCartsInfo = useSetRecoilState(AllCartsInfo);
+  // const [allWishListsInfo, setAllWishListInfo] =
+  //   useRecoilState(AllWishListsInfoAtom);
+  // const [wishList, setWishList] = useRecoilState(WishListAtom);
   const [loading, setLoading] = useState(false);
   const [openSelectAddress, setOpenSelectAddress] = useRecoilState(
     OpenSelectAddressAtom
@@ -37,24 +34,23 @@ const MainSection = () => {
     SelectDelivaryTypeAtom
   );
   const timerRef = useRef() as MutableRefObject<NodeJS.Timeout>;
-  const [selectedBranch,setSelectedBranch]=useRecoilState(SelectedBranchAtom)
-
+  const selectedBranch = useRecoilValue(SelectedBranchAtom);
 
   useEffect(() => {
     setLoading(true);
     const getData = async () => {
-      const res = await getCartItems(token,selectedBranch?.id);
-      if(res===null){
-        toast.error("wrong")
-      }else{
+      const res = await getCartItems(token, selectedBranch?.id);
+      if (res === null) {
+        toast.error("wrong");
+      } else {
         setCarts(res.result.items);
         setAllCartsInfo(res.result);
       }
-        setLoading(false);
+      setLoading(false);
     };
     if (token.length > 1) {
       clearTimeout(timerRef.current);
-      timerRef.current=setTimeout(() => {
+      timerRef.current = setTimeout(() => {
         getData();
       }, 1000);
     }
@@ -62,12 +58,11 @@ const MainSection = () => {
 
   return (
     <div
-      onClick={ () =>
-        (openSelectAddress === true
+      onClick={() =>
+        openSelectAddress === true
           ? setOpenSelectAddress(false)
-          : selectDelivaryTypeState === true
-          && setSelectDelivaryTypeState(false)
-          )
+          : selectDelivaryTypeState === true &&
+            setSelectDelivaryTypeState(false)
       }
       className="md:px-10  2xl:px-24 md:ml-4 my-16 2xl:container"
     >
@@ -113,7 +108,6 @@ const MainSection = () => {
         )}
       </div>
       <EditAddressModal />
-
     </div>
   );
 };

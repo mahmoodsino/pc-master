@@ -12,12 +12,8 @@ const MainSection = () => {
       </div>
       <div>
         <Title2 title="Register" />
-
-        
         <div className="lg:px-[17%] md:px-[7%] sm:px-[4%]">
           <FormSection />
-
-          
         </div>
       </div>
     </div>

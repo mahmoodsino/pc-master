@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { getAbouUsInfo, getWorkingHours, SelectedBranchAtom } from "../../../../helper";
 
 const MainSection = () => {
@@ -27,7 +27,7 @@ const MainSection = () => {
     wednesday_close: "",
     wednesday_open: "",
   });
-  const [selectedBranch,setSelectedBranch]=useRecoilState(SelectedBranchAtom)
+  const selectedBranch=useRecoilValue(SelectedBranchAtom)
 
   useEffect(() => {
     const getData = async () => {

@@ -1,5 +1,5 @@
-import {  useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
+import { useEffect, useState } from "react";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
   CitiesAtom,
   registerCountryAtom,
@@ -31,7 +31,7 @@ import {
   stateType,
 } from "../../../../../helper";
 import { Spinner, SpinnerWithBack } from "../../../../spinner";
-import {toast} from "react-toastify"
+import { toast } from "react-toastify";
 
 interface IFormInputs {
   addressName: string;
@@ -51,21 +51,17 @@ const EditAddressModal = () => {
   const [openAddNewAddressModal, setOpenAddNewAddressModal] = useRecoilState(
     OpenAddNewAddressModalAtom
   );
-  const [editSuccess, setEditSuccess] = useRecoilState(SuccessEdit);
-  const [registerCountry, setRegisterCountry] =
-    useRecoilState(registerCountryAtom);
-  const [token, setToken] = useRecoilState(TokenAtom);
-  const [editAddress, setEditAddress] = useRecoilState(EditAddressIdAtom);
-
-  const [shippingAddressId, setShippingAddressId] = useRecoilState(
-    ShippingAddressIdAtom
-  );
+  const setEditSuccess = useSetRecoilState(SuccessEdit);
+  const registerCountry = useRecoilValue(registerCountryAtom);
+  const token = useRecoilValue(TokenAtom);
+  const editAddress = useRecoilValue(EditAddressIdAtom);
+  const setShippingAddressId = useSetRecoilState(ShippingAddressIdAtom);
   const [countryId, setCountryId] = useState<number | undefined>();
   const [states, setStates] = useRecoilState(StatesAtom);
   const [stateId, setStateId] = useState<number | undefined>();
   const [cities, setCities] = useRecoilState(CitiesAtom);
-  const[loading,setLoading]=useState(false)
-  const [saveLoading,setSaveLoading]=useState(false)
+  const [loading, setLoading] = useState(false);
+  const [saveLoading, setSaveLoading] = useState(false);
 
   const customStyles: StylesConfig<optionTypeCountry> = {
     option: (provided: ActionMeta, state: ActionMeta) => ({
@@ -94,10 +90,8 @@ const EditAddressModal = () => {
     resolver: yupResolver(addressBookSchema),
   });
 
-  
-
   const submitForm = async (data: IFormInputs) => {
-    setLoading(true)
+    setLoading(true);
     if (openAddNewAddressModal) {
       const res = await handelAddAress(
         data.addressName,
@@ -111,9 +105,9 @@ const EditAddressModal = () => {
         data.check,
         token
       );
-      if(res===null){
-          toast.error("some thing went wrong")
-      }else{
+      if (res === null) {
+        toast.error("some thing went wrong");
+      } else {
         setShippingAddressId(res.data.id);
         setEditSuccess("addSucess");
       }
@@ -136,10 +130,9 @@ const EditAddressModal = () => {
         data.check,
         token
       );
-      if(res===null){
-        toast.error("some thing went wrong")
-
-      }else{
+      if (res === null) {
+        toast.error("some thing went wrong");
+      } else {
         setEditSuccess("EditSucsess");
       }
       setTimeout(() => {
@@ -147,7 +140,7 @@ const EditAddressModal = () => {
       }, 500);
       setOpenEditAddressModal(false);
     }
-    setLoading(false)
+    setLoading(false);
   };
   useEffect(() => {
     if (openEditAddressModal) {
@@ -220,7 +213,7 @@ const EditAddressModal = () => {
                       const handleSelectChange = async (
                         selectedOption: optionTypeCountry | null
                       ) => {
-                        setLoading(true)
+                        setLoading(true);
                         if (selectedOption?.value !== undefined) {
                           setCountryId(+selectedOption?.value);
                           setStates([]);
@@ -240,7 +233,7 @@ const EditAddressModal = () => {
                             }
                           );
                         }
-                        setLoading(false)
+                        setLoading(false);
                         onChange(selectedOption?.value);
                       };
                       return (
@@ -282,7 +275,7 @@ const EditAddressModal = () => {
                         const handleSelectChange = async (
                           selectedOption: stateType | null
                         ) => {
-                          setLoading(true)
+                          setLoading(true);
                           if (selectedOption?.value !== undefined) {
                             setStateId(+selectedOption.value);
                             setCities([]);
@@ -305,7 +298,7 @@ const EditAddressModal = () => {
                               }
                             );
                           }
-                          setLoading(false)
+                          setLoading(false);
                           onChange(selectedOption?.value);
                         };
                         return (
@@ -428,15 +421,15 @@ const EditAddressModal = () => {
                   className="md:px-6 cursor-pointer sm:px-3 py-2 border border-black font-medium"
                   type="button"
                 />
-                {!saveLoading ? 
-                <BaseButton
-                  type="submit"
-                  title="Save Changes"
-                  className="md:px-6 sm:px-3 py-2 border bg-green-950 text-white font-medium"
-                /> : 
-                <Spinner className="w-10"/>
-                
-              }
+                {!saveLoading ? (
+                  <BaseButton
+                    type="submit"
+                    title="Save Changes"
+                    className="md:px-6 sm:px-3 py-2 border bg-green-950 text-white font-medium"
+                  />
+                ) : (
+                  <Spinner className="w-10" />
+                )}
               </div>
             </form>
           </div>

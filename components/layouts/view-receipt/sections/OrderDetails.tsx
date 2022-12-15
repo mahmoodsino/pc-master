@@ -1,15 +1,14 @@
 import React from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import { OrderDetailsAtom } from "../../../../helper";
 
 const OrderDetails = () => {
-  const [orderDetails, setOrderDetails] = useRecoilState(OrderDetailsAtom);
+  const orderDetails = useRecoilValue(OrderDetailsAtom);
 
   let useType;
   if (typeof window !== "undefined") {
     useType = localStorage.getItem("type" || "");
   }
-
   return (
     <div className=" shadow-[0_0_5px_rgba(0,0,0,0.12)] pl-7 mb-10">
       <h1 className="font-bold text-xl pt-5 pb-5  text-gray-950 ">
@@ -37,15 +36,17 @@ const OrderDetails = () => {
         <div className="w-[60%] space-y-2 text-sm font-medium">
           <div className="md:ml-10 flex md:flex-row sm:flex-col">
             <h1 className="w-[30%] text-gray-1100 inline-block">Fullname:</h1>
-            {orderDetails.first_name ===null ? (
+            {orderDetails.first_name === null ? (
               <span className="text-gray-950">---</span>
             ) : (
-              <span className="text-gray-950">{orderDetails.first_name} {orderDetails.last_name}</span>
+              <span className="text-gray-950">
+                {orderDetails.first_name} {orderDetails.last_name}
+              </span>
             )}
           </div>
           <div className="md:ml-10 flex md:flex-row sm:flex-col">
             <h1 className="w-[30%] text-gray-1100  inline-block">Email:</h1>
-            {orderDetails.email ===null ? (
+            {orderDetails.email === null ? (
               <span className="text-gray-950">---</span>
             ) : (
               <span className="text-gray-950">{orderDetails.email}</span>

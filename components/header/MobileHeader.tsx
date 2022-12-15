@@ -20,14 +20,14 @@ import { useRouter } from "next/router";
 import { BaseButton } from "../buttons";
 
 const MobileHeader = () => {
-  const [showSidbarState, setShowSidbarState] = useRecoilState(ShowSidbarAtom);
+  const setShowSidbarState = useSetRecoilState(ShowSidbarAtom);
   const goingUp = useRecoilValue(goingUpAtom);
   const [activeDropDown, setActiveDropDown] =
     useRecoilState(ActiveDropDownAtom);
   const wishList = useRecoilValue(WishListAtom);
   const carts = useRecoilValue(FetchedCartItemsAtom);
   const setContinueAsGuestModal = useSetRecoilState(CouninueAsGuestModalAtom);
-  const [token, setToken] = useRecoilState(TokenAtom);
+  const token = useRecoilValue(TokenAtom);
 
   const { push } = useRouter();
 

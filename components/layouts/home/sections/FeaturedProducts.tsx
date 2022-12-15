@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import {
   ErroreMessageAtom,
   HomePageAtom,
   OpenMessageModalAtom,
   SelectedBranchAtom,
   TokenAtom,
-  WishListAtom,
 } from "../../../../helper/state";
 import { BaseCard } from "../../../cards";
 import { Cheips, MobaiChips } from "../../../inputs";
@@ -15,17 +14,15 @@ import { Spinner } from "../../../spinner";
 import { toast } from "react-toastify";
 
 const FeaturedProducts = () => {
-  const [homePageState, setHomePageState] = useRecoilState(HomePageAtom);
+  const homePageState = useRecoilValue(HomePageAtom);
   const [featuredProducts, setFeaturedProducts] = useState<ProductsType[]>([]);
-  const [token, setToken] = useRecoilState(TokenAtom);
-  const [wishList, setWishList] = useRecoilState(WishListAtom);
+  const token = useRecoilValue(TokenAtom);
+  // const [wishList, setWishList] = useRecoilState(WishListAtom);
   const [loading, setLoading] = useState(false);
   const [selected, setSelected] = useState<number>();
-  const [selectedBranch, setSelectedBranch] =
-    useRecoilState(SelectedBranchAtom);
-  const [openMessageModal, setOpenMassegModal] =
-    useRecoilState(OpenMessageModalAtom);
-  const [wrongMessage, setWrrongMessage] = useRecoilState(ErroreMessageAtom);
+  const selectedBranch = useRecoilValue(SelectedBranchAtom);
+  const setOpenMassegModal = useSetRecoilState(OpenMessageModalAtom);
+  const setWrrongMessage = useSetRecoilState(ErroreMessageAtom);
 
   const setItem = async (setItem: number) => {
     setLoading(true);
@@ -51,9 +48,8 @@ const FeaturedProducts = () => {
 
       setLoading(false);
     };
-      getData();
+    getData();
   }, [selectedBranch]);
-
 
   return (
     <div>
@@ -78,7 +74,7 @@ const FeaturedProducts = () => {
       </div>
       {!loading ? (
         <div className="grid sm:grid-cols-2 lg:grid-cols-5 md:grid-cols-3 my-5 gap-2 xl:mx-4  mb-10">
-          {featuredProducts.map((item,i) => {
+          {featuredProducts.map((item, i) => {
             return (
               <BaseCard
                 key={i}

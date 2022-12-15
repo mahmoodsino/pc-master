@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { categoriesType } from "../../../../helper/interfaces";
 import { shopArrowIcon } from "../../../icons/Icons";
 import { useRecoilState } from "recoil";
@@ -11,13 +11,6 @@ interface data {
 
 const ShopTree = ({ data }: data) => {
   const [ShopselectedParentId, setShopParentId] = useState(-1);
-  const [queryFilters, setQueryFilters] = useRecoilState(FiltersQueryAtom);
-  const {query,replace} = useRouter()
-
-
-  
-
-
 
   if (Array.isArray(data)) {
     return (

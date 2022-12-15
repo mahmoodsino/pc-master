@@ -1,50 +1,54 @@
-import {  useRecoilState, useRecoilValue } from "recoil";
-import {BaseButton} from "../../../../buttons";
-import {BaseInput} from "../../../../inputs";
-import { ChangePassAtom, ErroreMessageAtom, OpenMessageModalAtom, TokenAtom } from "../../../../../helper/state/index";
-import { useForm} from "react-hook-form";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { BaseButton } from "../../../../buttons";
+import { BaseInput } from "../../../../inputs";
+import {
+  ChangePassAtom,
+  ErroreMessageAtom,
+  OpenMessageModalAtom,
+  TokenAtom,
+} from "../../../../../helper/state/index";
+import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { changePasswordSchema } from "../../../../../helper/validation";
 import { useRouter } from "next/router";
 import { handelChangePassword } from "../../../../../helper";
-import { MessageModal } from "../../../../messageModal";
-import { useState } from "react";
-
 
 interface IFormInputs {
-  password:string,
-  newpassword:string,
-  confpassword:string
+  password: string;
+  newpassword: string;
+  confpassword: string;
 }
 const ChangePassword = () => {
   const [showChangePassword, setShowChangePassword] =
     useRecoilState(ChangePassAtom);
   const token = useRecoilValue(TokenAtom);
-  const [openMessageModal, setOpenMassegModal] =
-  useRecoilState(OpenMessageModalAtom);
-  const [wrongMessage,setWrrongMessage]=useRecoilState(ErroreMessageAtom)
-    const {
-      register,
-      handleSubmit,
-      formState: { errors },
-    } = useForm<IFormInputs>({
-      resolver: yupResolver(changePasswordSchema),
-    });
-  
-   
-    const push = useRouter().push
+  const setOpenMassegModal = useSetRecoilState(OpenMessageModalAtom);
+  const setWrrongMessage = useSetRecoilState(ErroreMessageAtom);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IFormInputs>({
+    resolver: yupResolver(changePasswordSchema),
+  });
 
-    const submitForm =async (data:IFormInputs) => {
-      
-        const res = await handelChangePassword(token,data.password,data.newpassword,data.confpassword)
-        if(res?.response?.data?.message){
-          setWrrongMessage(res?.response?.data?.message)
-        }else{
-          setShowChangePassword(false)
-          push("./")
-        }
+  const push = useRouter().push;
+
+  const submitForm = async (data: IFormInputs) => {
+    const res = await handelChangePassword(
+      token,
+      data.password,
+      data.newpassword,
+      data.confpassword
+    );
+    if (res?.response?.data?.message) {
+      setWrrongMessage(res?.response?.data?.message);
+      setOpenMassegModal(true);
+    } else {
+      setShowChangePassword(false);
+      push("./");
     }
-
+  };
 
   return (
     <div>
@@ -59,9 +63,30 @@ const ChangePassword = () => {
               Change Password
             </h1>
             <form onSubmit={handleSubmit(submitForm)}>
-          <BaseInput register={register} name="password" title="Old Password" placeholder="Old Password" type="password"  className={undefined} />
-          <BaseInput register={register} name="newpassword" title="New Password" placeholder="New Password" type="password"  className={undefined} />
-          <BaseInput register={register} name="confpassword" title="Confirm New Password" placeholder="Confirm New Password"  type="password"  className={undefined} />
+              <BaseInput
+                register={register}
+                name="password"
+                title="Old Password"
+                placeholder="Old Password"
+                type="password"
+                className={undefined}
+              />
+              <BaseInput
+                register={register}
+                name="newpassword"
+                title="New Password"
+                placeholder="New Password"
+                type="password"
+                className={undefined}
+              />
+              <BaseInput
+                register={register}
+                name="confpassword"
+                title="Confirm New Password"
+                placeholder="Confirm New Password"
+                type="password"
+                className={undefined}
+              />
               <div className="flex justify-between">
                 <BaseButton
                   onClick={() => setShowChangePassword(false)}

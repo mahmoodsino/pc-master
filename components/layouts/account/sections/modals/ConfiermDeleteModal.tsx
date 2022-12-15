@@ -1,5 +1,10 @@
-import { useRecoilState } from "recoil";
-import { ErroreMessageAtom, OpenMessageModalAtom, SuccessEdit, TokenAtom } from "../../../../../helper/state/";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import {
+  ErroreMessageAtom,
+  OpenMessageModalAtom,
+  SuccessEdit,
+  TokenAtom,
+} from "../../../../../helper/state/";
 import { BaseButton } from "../../../../buttons";
 import {
   AddresToDeleteIdAtom,
@@ -12,14 +17,12 @@ import { Spinner } from "../../../../spinner";
 const ConfiermDeleteModal = () => {
   const [openDeleteModal, setOpenDeleteModal] =
     useRecoilState(OpenDeleteModalAtom);
-  const [addressTodeleteId, setAddressTodeleteId] =
-    useRecoilState(AddresToDeleteIdAtom);
-  const [editSuccess, setEditSuccess] = useRecoilState(SuccessEdit);
+  const addressTodeleteId = useRecoilValue(AddresToDeleteIdAtom);
+  const setEditSuccess = useSetRecoilState(SuccessEdit);
   const [token, setToken] = useRecoilState(TokenAtom);
   const [loading, setLoading] = useState(false);
-  const [openMessageModal, setOpenMassegModal] =
-  useRecoilState(OpenMessageModalAtom);
-const [wrongMessage, setWrrongMessage] = useRecoilState(ErroreMessageAtom);
+  const setOpenMassegModal = useSetRecoilState(OpenMessageModalAtom);
+  const setWrrongMessage = useSetRecoilState(ErroreMessageAtom);
 
   if (typeof window !== "undefined") {
     setToken(localStorage.getItem("token") || "");
@@ -30,8 +33,8 @@ const [wrongMessage, setWrrongMessage] = useRecoilState(ErroreMessageAtom);
     const res = await deleteAddress(token, addressTodeleteId);
     if (res === null) {
       setOpenDeleteModal(false);
-      setWrrongMessage("some thing went wrong")
-      setOpenMassegModal(true)
+      setWrrongMessage("some thing went wrong");
+      setOpenMassegModal(true);
     } else {
       setEditSuccess("deleteSusecc");
     }

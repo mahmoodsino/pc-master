@@ -1,26 +1,26 @@
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import {
   getInstockInfo,
   InStockInfoAtom,
   VariationAtom,
 } from "../../../../helper";
 import { RightSignIcon } from "../../../icons";
-import {toast} from "react-toastify"
+import { toast } from "react-toastify";
 
 const Availablity = () => {
   const [instockInfo, setInstockInfo] = useRecoilState(InStockInfoAtom);
   const router = useRouter().query;
-  const [variationState, setVariationState] = useRecoilState(VariationAtom);
+  const variationState = useRecoilValue(VariationAtom);
 
   useEffect(() => {
     const getData = async () => {
       if (router.product) {
         const res = await getInstockInfo(+router.product);
-        if(res===null){
-          toast.error("some thing went wrong")
-        }else{
+        if (res === null) {
+          toast.error("some thing went wrong");
+        } else {
           setInstockInfo(res.result);
         }
       }

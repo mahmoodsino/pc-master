@@ -1,8 +1,4 @@
-import {
-  useRecoilState,
-  useRecoilValue,
-  useSetRecoilState,
-} from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
   ActiveDropDownAtom,
   AllCartsInfo,
@@ -21,7 +17,6 @@ import CartIcon from "../icons/CartIcon";
 import PersonIcon from "../icons/PersonIcon";
 import { useRouter } from "next/router";
 import { FiltersQueryAtom } from "../layouts/shop/sections/MainSection";
-import Link from "next/link";
 
 const Searchbar = () => {
   const [activeDropDown, setActiveDropDown] =
@@ -30,9 +25,9 @@ const Searchbar = () => {
   const wishList = useRecoilValue(WishListAtom);
   const carts = useRecoilValue(FetchedCartItemsAtom);
   const allCartsInfo = useRecoilValue(AllCartsInfo);
-  const [token, setToken] = useRecoilState(TokenAtom);
+  const token = useRecoilValue(TokenAtom);
   const setContinueAsGuestModal = useSetRecoilState(CouninueAsGuestModalAtom);
-  const [queryFilters, setQueryFilters] = useRecoilState(FiltersQueryAtom);
+  const setQueryFilters = useSetRecoilState(FiltersQueryAtom);
 
   const push = useRouter().push;
 
@@ -45,15 +40,13 @@ const Searchbar = () => {
   };
 
   const handelSearch = async () => {
-    setQueryFilters(prev => {
-      return(
-        {...prev,search:searchState}
-      )
-    })
+    setQueryFilters((prev) => {
+      return { ...prev, search: searchState };
+    });
     push({
-      query:{search:searchState},
-      pathname:"/shop"
-    })
+      query: { search: searchState },
+      pathname: "/shop",
+    });
   };
   let useType;
   if (typeof window !== "undefined") {

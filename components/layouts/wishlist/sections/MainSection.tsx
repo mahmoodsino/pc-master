@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { MutableRefObject, useEffect, useRef, useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
   AllWishListsInfoAtom,
   deleteWishList,
@@ -26,16 +26,13 @@ const MainSection = () => {
   const [allWishListsInfo, setAllWishListInfo] =
     useRecoilState(AllWishListsInfoAtom);
   const [wishList, setWishList] = useRecoilState(WishListAtom);
-  const [token, setToken] = useRecoilState(TokenAtom);
+  const token = useRecoilValue(TokenAtom);
   const [loading, setLoading] = useState(false);
   const timerRef = useRef() as MutableRefObject<NodeJS.Timeout>;
-  const [openMessageModal, setOpenMassegModal] =
-    useRecoilState(OpenMessageModalAtom);
-  const [wrongMessage, setWrrongMessage] = useRecoilState(ErroreMessageAtom);
-  const [selectedBranch, setSelectedBranch] =
-    useRecoilState(SelectedBranchAtom);
-  const [updateLoading,setUpdateLoading]=useState(false)
-
+  const setOpenMassegModal = useSetRecoilState(OpenMessageModalAtom);
+  const setWrrongMessage = useSetRecoilState(ErroreMessageAtom);
+  const selectedBranch = useRecoilValue(SelectedBranchAtom);
+  const [updateLoading, setUpdateLoading] = useState(false);
   const { push } = useRouter();
 
   useEffect(() => {
@@ -95,7 +92,7 @@ const MainSection = () => {
       let id = wishList[isItemInCarts].id;
       clearTimeout(timerRef.current);
       timerRef.current = setTimeout(async () => {
-        setUpdateLoading(true)
+        setUpdateLoading(true);
         if (id) {
           const res = await updateWishList(
             token,
@@ -107,12 +104,12 @@ const MainSection = () => {
           if (res === null) {
             setWrrongMessage("wrong");
             setOpenMassegModal(true);
-          }else{
+          } else {
             setWishList(res.result.items);
             setAllWishListInfo(res.result);
           }
         }
-        setUpdateLoading(false)
+        setUpdateLoading(false);
       }, 700);
     }
   };
@@ -137,7 +134,7 @@ const MainSection = () => {
       itemQuantity--;
       clearTimeout(timerRef.current);
       timerRef.current = setTimeout(async () => {
-        setUpdateLoading(true)
+        setUpdateLoading(true);
         const res = await updateWishList(
           token,
           id,
@@ -148,40 +145,38 @@ const MainSection = () => {
         if (res === null) {
           setWrrongMessage("some thing went wrong");
           setOpenMassegModal(true);
-        }
-        else{
+        } else {
           setWishList(res.result.items);
           setAllWishListInfo(res.result);
         }
-        setUpdateLoading(false)
+        setUpdateLoading(false);
       }, 700);
     } else if (itemQuantity === 1 || remove) {
-      setUpdateLoading(true)
+      setUpdateLoading(true);
       const res = await deleteWishList(token, id);
       if (res === null) {
         setWrrongMessage("some thing went wrong");
         setOpenMassegModal(true);
-      }
-      else{
+      } else {
         setWishList(res.result.items);
         setAllWishListInfo(res.result);
       }
-      setUpdateLoading(false)
+      setUpdateLoading(false);
     }
   };
 
   const moveWishListToCart = async (id: number) => {
-    setUpdateLoading(true)
+    setUpdateLoading(true);
     const res = await handelMoveWishListToCart(token, id);
     if (res === null) {
       setWrrongMessage("some thing went wrong");
       setOpenMassegModal(true);
-    }else if(res==400){
+    } else if (res == 400) {
       setWrrongMessage("there is no available quantity");
       setOpenMassegModal(true);
     }
     push("./cart");
-    setUpdateLoading(false)
+    setUpdateLoading(false);
   };
 
   return (
