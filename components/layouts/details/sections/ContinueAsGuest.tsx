@@ -94,7 +94,7 @@ const ContinueAsGuest = () => {
           </div>
         </div>
         {ContinueAsGuestModal ? (
-          <div className="opacity-25 fixed inset-0 z-50 bg-black  "></div>
+          <div onClick={() => setContinueAsGuestModal(false)} className="opacity-25 fixed inset-0 z-50 bg-black  "></div>
         ) : null}
       </>
     </div>

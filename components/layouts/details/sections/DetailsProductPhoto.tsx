@@ -1,8 +1,7 @@
-import Image from "next/image";
 import Slider from "react-slick";
-import {  useRecoilValue } from "recoil";
+import { useRecoilValue } from "recoil";
 import { DetailsAtom, VariationAtom } from "../../../../helper";
-import no_image from "../../../../public/assets/image/no_image.jpg";
+
 
 const DetailsProductPhoto = () => {
   const variationState = useRecoilValue(VariationAtom);
@@ -14,20 +13,22 @@ const DetailsProductPhoto = () => {
         <a className="">
           {variationState.images && variationState.images?.length !== 0 ? (
             <img
+              style={{ objectFit: "cover" }}
               width={75}
               height={75}
-              src={variationState.images[0]?.path}
+              src={variationState.images[i]?.path}
             />
           ) : detailsState.product.images &&
             detailsState.product.images.length !== 0 ? (
             <img
+              style={{ objectFit: "cover" }}
               className="w-[75px] h-[75px]"
               width={75}
               height={75}
               src={detailsState.product.images[i]?.path}
             />
           ) : (
-            <Image width={75} height={75} src={no_image} />
+            <img width={75} height={75} src="/alternative.png" />
           )}
         </a>
       );
@@ -53,7 +54,7 @@ const DetailsProductPhoto = () => {
             return (
               <div key={i} className="product-slider-img">
                 <img
-                  className="m-auto lg:w-[400px] md:w-[350px] sm:w-[260px] "
+                  className="m-auto lg:w-[400px] md:w-[350px] sm:w-[260px] lg:h-[400px] md:h-[350px] sm:h-[250px]"
                   src={img.path}
                 />
               </div>
@@ -64,14 +65,14 @@ const DetailsProductPhoto = () => {
             return (
               <div key={i} className="product-slider-img">
                 <img
-                  className="m-auto lg:w-[400px] md:w-[350px] px-2 sm:w-[250px] "
+                  className="m-auto lg:w-[400px] md:w-[350px] sm:w-[250px] px-2  lg:h-[400px] md:h-[350px] sm:h-[250px]"
                   src={img.path}
                 />
               </div>
             );
           })
         ) : (
-          <Image width={400} height={400} src={no_image} />
+          <img width={400} height={400} src="/alternative.png" />
         )}
       </Slider>
     </div>

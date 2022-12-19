@@ -1,8 +1,6 @@
-import Image from "next/image";
 import React, { useState } from "react";
 import ShopCarousel from "../carousel/ShopCarousel";
 import HeartIcon from "../icons/HeartIcon";
-import no_image from "../../public/assets/image/no_image.jpg";
 import {
   addToWishList,
   CouninueAsGuestModalAtom,
@@ -126,7 +124,7 @@ const BaseCard = ({
             <ShopCarousel img={image} hover={hover} />
           ) : (
             <div className=" mt-5  product-slider-img">
-              <Image width={200} height={150} src={no_image} />
+              <img width={200} height={150} src="/alternative.png" />
             </div>
           )}
         </div>
@@ -141,7 +139,7 @@ const BaseCard = ({
           href={`/details?product=${id}`}
           className="sm:block h-12 font-medium md:hidden mt-1 text-left"
         >
-          <span className="md:hidden sm:block ">
+          <span className="md:hidden cursor-pointer sm:block ">
             <span className="line-clamp222">{name}</span>
           </span>
         </Link>

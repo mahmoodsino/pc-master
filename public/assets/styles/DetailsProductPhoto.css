@@ -12,7 +12,12 @@
     border: 1px solid black;
     width: 60px;
   }
-  
+/* 
+
+  .slick-slider ul{
+    height: 0 !important;  
+  }
+   */
 
   @media screen and (max-width: 992px) {
     .slick-dots.slick-thumb li {

@@ -213,7 +213,7 @@ const CartItems = () => {
                     ) : (
                       <img
                         className="md:h-32 sm: sm:w-[90%] top-0 left-0 right-0 bottom-0 m-auto product-slider-img w-32 "
-                        src={"/assets/image/no_image.jpg"}
+                        src="/alternative.png"
                       />
                     )}
                   </div>

@@ -39,7 +39,8 @@ const Searchbar = () => {
     push("/wishlist");
   };
 
-  const handelSearch = async () => {
+  const handelSearch = async (e:any) => {
+    e.preventDefault()
     setQueryFilters((prev) => {
       return { ...prev, search: searchState };
     });
@@ -69,7 +70,8 @@ const Searchbar = () => {
             />
 
             <BaseButton
-              onClick={() => handelSearch()}
+            type="submit"
+              onClick={(e) => handelSearch(e)}
               className="absolute right-[41.5%]  top-0 mt-2.5 mr px-0.5 py-0.5"
             >
               {searchForInputIcon}

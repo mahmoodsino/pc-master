@@ -49,7 +49,8 @@ const FilterShop = () => {
     });
   };
 
-  const handelSearch = async () => {
+  const handelSearch = async (e:any) => {
+    e.preventDefault()
     setQueryFilters((prev) => {
       return { ...prev, search: searchState };
     });
@@ -81,23 +82,26 @@ const FilterShop = () => {
   return (
     <div className="mt-7 md:pl-10 lg:pl-0">
       <div className="sticky top-0">
-        <div className="text-gray-1400 flex cursor-pointer  ">
-          <BaseInput
-            placeholder="Search..."
-            onChange={(e) => setSearchState(e.target.value)}
-            value={searchState}
-            type="search"
-            className={
-              "border-2 box-border pl-3  sm:w-[100%] md:w-[100%]  h-10 outline-none  "
-            }
-          />
-          <BaseButton
-            onClick={() => handelSearch()}
-            className="md:w-[19%] sm:w-[50px] h-10 bg-green-950 hover:bg-green-950/90 inline-block rounded-r-md"
-          >
-            <div className="mr-3">{searchIcon}</div>
-          </BaseButton>
-        </div>
+        <form>
+          <div className="text-gray-1400 flex cursor-pointer  ">
+            <BaseInput
+              placeholder="Search..."
+              onChange={(e) => setSearchState(e.target.value)}
+              value={searchState}
+              type="search"
+              className={
+                "border-2 box-border pl-3  sm:w-[100%] md:w-[100%]  h-10 outline-none  "
+              }
+            />
+            <BaseButton
+              type="submit"
+              onClick={(e) => handelSearch(e)}
+              className="md:w-[19%] sm:w-[50px] h-10 bg-green-950 hover:bg-green-950/90 inline-block rounded-r-md"
+            >
+              <div className="mr-3">{searchIcon}</div>
+            </BaseButton>
+          </div>
+        </form>
         <div className="ml-2 mt-10">
           <span className="text-lg block font-bold tracking-[0.03em] text-[#7A797B]">
             FILTERS

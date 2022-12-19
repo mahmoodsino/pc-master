@@ -1,7 +1,7 @@
 import axios from "axios"
 import apiWorker from "../../axios"
 import { getConfig } from "../../users/logout/services"
-const root = process.env.NEXT_PUBLIC_PAY
+const root = process.env.NEXT_PUBLIC_ROOT
 
 interface Params {
     token: string,

@@ -270,7 +270,9 @@ const MainSection = () => {
             {!loading ? (
               <div className="sm:col-span-5 md:col-span-3 lg:col-span-4 md:ml-5 h-full mb-10">
                 <ShopProducts />
+                {totalPages >1 &&
                 <Pagination paginate={paginate} />
+                }
               </div>
             ) : (
               <div className=" sm:col-span-5 md:col-span-3 lg:col-span-4  right-0 left-0 mx-auto">

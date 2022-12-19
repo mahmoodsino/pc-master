@@ -142,8 +142,10 @@ const EditAddressModal = () => {
     }
     setLoading(false);
   };
+  console.log(editAddress);
   useEffect(() => {
     if (openEditAddressModal) {
+      
       setValue("addressName", editAddress.name);
       setValue("address", editAddress.address);
       setValue("cities", editAddress.city_name);
@@ -213,6 +215,10 @@ const EditAddressModal = () => {
                       const handleSelectChange = async (
                         selectedOption: optionTypeCountry | null
                       ) => {
+                        setCountryId(undefined);
+                        setStateId(undefined);
+                        setStates([]);
+                        setCities([]);
                         setLoading(true);
                         if (selectedOption?.value !== undefined) {
                           setCountryId(+selectedOption?.value);
@@ -249,7 +255,7 @@ const EditAddressModal = () => {
                           className="w-full  "
                           ref={ref}
                           name={name}
-                          placeholder="Countries"
+                          placeholder={editAddress?.country_name ? editAddress?.country_name : "Countries"}
                           options={registerCountry}
                           onChange={handleSelectChange}
                           isSearchable={true}
@@ -435,7 +441,7 @@ const EditAddressModal = () => {
           </div>
         </div>
         {openEditAddressModal || openAddNewAddressModal ? (
-          <div className="opacity-25 fixed inset-0 z-40 bg-black "></div>
+          <div onClick={() => (setOpenEditAddressModal(false),setOpenAddNewAddressModal(false))} className="opacity-25 fixed inset-0 z-40 bg-black "></div>
         ) : null}
       </>
       {loading && <SpinnerWithBack className="w-40" />}

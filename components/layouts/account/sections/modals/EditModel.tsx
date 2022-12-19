@@ -142,7 +142,7 @@ const EditModel = ({ userInfo, setUserInfo, token }: User) => {
           </div>
         </div>
         {showEditModel ? (
-          <div className="opacity-25 fixed inset-0 z-40 bg-black "></div>
+          <div onClick={() => setShowEditModel(false)} className="opacity-25 fixed inset-0 z-40 bg-black "></div>
         ) : null}
       </>
     </div>

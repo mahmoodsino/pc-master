@@ -45,7 +45,7 @@ const MoveToCartPageModal = () => {
           </div>
         </div>
         {MoveToCartPageModalState ? (
-          <div className="opacity-25 fixed inset-0 z-[99] bg-black  "></div>
+          <div onClick={() => setMoveToCartPageModalState(false)} className="opacity-25 fixed inset-0 z-[99] bg-black  "></div>
         ) : null}
       </>
     </div>

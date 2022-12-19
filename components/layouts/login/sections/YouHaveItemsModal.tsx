@@ -72,7 +72,7 @@ const YouHaveItemsModal = ({ guest_user_id }: Props) => {
           </div>
         </div>
         {openYouHaveItemsModal ? (
-          <div className="opacity-25 fixed inset-0 z-[99] bg-black  "></div>
+          <div onClick={() => setYouHaveItemsModal(false)} className="opacity-25 fixed inset-0 z-[99] bg-black  "></div>
         ) : null}
       </>
     </div>

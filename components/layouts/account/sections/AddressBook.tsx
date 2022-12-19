@@ -22,6 +22,7 @@ export interface addressType {
   city_name: string;
   post_code: number;
   id: number;
+  country_name:string
 }
 
 export const addressatom = atom<addressType[]>({

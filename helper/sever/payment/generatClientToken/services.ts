@@ -1,5 +1,5 @@
 import apiWorker from "../../axios"
-const root = process.env.NEXT_PUBLIC_PAY
+const root = process.env.NEXT_PUBLIC_ROOT
 const pay =process.env.NEXT_PUBLIC_PAYMENT_KEY
 const getClientToken = async (payment_provider_id:number,token:string) => {
     try {

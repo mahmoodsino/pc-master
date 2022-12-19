@@ -112,7 +112,7 @@ const MessageModal = ({ message }: Props) => {
           </div>
         </div>
         {openMessageModal ? (
-          <div className="opacity-25 fixed inset-0 z-[99] bg-black  "></div>
+          <div onClick={() => setOpenMassegModal(false)} className="opacity-25 fixed inset-0 z-[99] bg-black  "></div>
         ) : null}
       </>
     </div>

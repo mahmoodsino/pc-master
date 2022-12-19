@@ -2,7 +2,6 @@ import Image from "next/image";
 import Collapsible from "react-collapsible";
 import { useRecoilState } from "recoil";
 import { OrderDetailsAtom } from "../../helper";
-import no_image from "../../public/assets/image/no_image.jpg";
 import { BaseButton } from "../buttons";
 
 const CardReview = () => {
@@ -28,7 +27,7 @@ const CardReview = () => {
                           alt=""
                         />
                       ) : (
-                        <Image src={no_image} alt="" />
+                        <img src="/alternative.png" alt="" />
                       )}
                     </div>
                     <div className="flex  flex-col  md:w-64 md:text-sm space-y-0.5 sm:text-[13px] text-gray-1050 ml-2">

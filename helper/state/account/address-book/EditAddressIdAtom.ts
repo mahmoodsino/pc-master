@@ -9,7 +9,8 @@ import { addressType } from "../../../../components/layouts/account/sections/Add
       id:-1,
       city_name:"",
       post_code:0,
-      is_default:false
+      is_default:false,
+      country_name:""
     },
   });
 

@@ -152,7 +152,7 @@ const WriteReviewModal = ({ rated, text, id }: Props) => {
           </div>
         </div>
         {openWriteReviewModal || openUbdateReviewModal ? (
-          <div className="opacity-25 fixed inset-0 z-40 bg-black "></div>
+          <div onClick={() => (setOpenWriteReviewModal(false) , setOpenUpdateReviewModal(false))} className="opacity-25 fixed inset-0 z-40 bg-black "></div>
         ) : null}
       </>
     </div>

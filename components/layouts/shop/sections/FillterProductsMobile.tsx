@@ -25,6 +25,10 @@ const FillterProductsMobile = () => {
             <FilterShop />
           </div>
         </div>
+
+        {showFillterProducts ? (
+          <div onClick={() => setShowFillterProducts(false)} className="opacity-25 fixed inset-0 z-40 bg-black "></div>
+        ) : null}
       </>
     </div>
   );

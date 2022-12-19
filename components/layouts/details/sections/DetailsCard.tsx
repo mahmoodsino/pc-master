@@ -383,9 +383,6 @@ const DetailsCard = () => {
     }
   };
 
-  // useEffect(() => {
-
-  // }, [attributeToSetVAriation]);
 
   //for button
 
@@ -652,7 +649,7 @@ const DetailsCard = () => {
                     ? finallAddtoCart()
                     : setContinueAsGuestModal(true)
                 }
-                className={`text-white whitespace-nowrap  bg-green-950 tracking-[0.095em] px-3 py-1 rounded-full disabled:cursor-not-allowed disabled:bg-gray-500`}
+                className={`text-white whitespace-nowrap  bg-green-950 tracking-[0.095em] px-3 py-1 rounded-full disabled:cursor-not-allowed disabled:bg-green-950/50`}
               >
                 <CartIcon className="w-[19px] mb-0.5 mr-2 fill-white inline-block" />
                 Add To Cart

@@ -3,8 +3,7 @@ import { WishListAtom, WishListItems } from "../../../../helper";
 import { BaseButton } from "../../../buttons";
 import { BlusIcon, CartIcon, MinusIcon } from "../../../icons";
 import { CloseIcon } from "../../../icons";
-import Image from "next/image";
-import no_image from "../../../../public/assets/image/no_image.jpg";
+
 
 interface Props {
   handelincreaseWishList: (clickedItem: WishListItems) => void;
@@ -55,7 +54,7 @@ const WishListTableDetails = ({
                             alt=""
                           />
                         ) : (
-                          <Image src={no_image} />
+                          <img src="/alternative.png" />
                         )}
                       </div>
                       <div>
